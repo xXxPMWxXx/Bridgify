@@ -1,12 +1,13 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { config as dotEnvConfig } from 'dotenv';
+import 'bootstrap/dist/css/bootstrap.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import { Layout } from './Layout';
+import { Home } from './Home';
 
-
+//this have issue need find out why
 // // Load ENV variables
 // dotEnvConfig({
 // 	path:
@@ -18,15 +19,12 @@ import { Layout } from './Layout';
 
 ReactDOM.render(
 	<BrowserRouter>
-
-		
+		<Layout/>
+		<div className='mt-n1'></div>
 		<Routes>
-			<Route path="/" element={<Layout />} />
-		
+			<Route path="/Home" element={<Home />} />
 		</Routes>
 	</BrowserRouter>,
 	document.getElementById('root'));
 
-function dotEnvConfig(arg0: { path: string; }) {
-  throw new Error('Function not implemented.');
-}
+

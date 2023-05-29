@@ -15,9 +15,7 @@ export const Layout = () => {
 
 
     return (
-        <div className="App">
-
-
+        <div>
             <Navbar bg="light" variant="light" fixed="top"  >
                 <Container>
                     <Navbar.Brand href="/">DID</Navbar.Brand>
