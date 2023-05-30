@@ -4,6 +4,8 @@ import cors from 'cors';
 import express from 'express';
 import { services } from './services';
 
+//to access the variable in .env file as : process.env.{variableName}
+require('dotenv').config();
 const app = express();
 
 // Middlewares

@@ -1,12 +1,12 @@
 {
 	"name": "@bridgify/backend",
 	"version": "1.0.0",
-	
-	"description": "",
+	"author": "",
+	"description": "SMU .HEAP summer project",
 	"license": "MIT",
 	"main": "lib",
 	"private": true,
-	"repository": "https://github.com/amaurym/login-with-metamask-demo.git",
+	
 	"scripts": {
 		"build": "tsc",
 		"dev": "nodemon --watch 'src/**/*.ts' --exec 'yarn start'",
@@ -23,6 +23,7 @@
 		"@types/validator": "^13.1.0",
 		"body-parser": "^1.18.3",
 		"cors": "^2.8.5",
+		"dotenv": "^16.0.3",
 		"eth-sig-util": "^3.0.0",
 		"ethereumjs-util": "^7.0.5",
 		"express": "^4.16.4",
