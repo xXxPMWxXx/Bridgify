@@ -6,7 +6,6 @@
 	"license": "MIT",
 	"main": "lib",
 	"private": true,
-	
 	"scripts": {
 		"build": "tsc",
 		"dev": "nodemon --watch 'src/**/*.ts' --exec 'yarn start'",
@@ -14,6 +13,8 @@
 		"start": "ts-node src"
 	},
 	"dependencies": {
+		"@tensorflow/tfjs-core": "^4.7.0",
+		"@tensorflow/tfjs-node": "^4.7.0",
 		"@types/bluebird": "^3.5.33",
 		"@types/cors": "^2.8.8",
 		"@types/eth-sig-util": "^2.1.0",
@@ -21,15 +22,20 @@
 		"@types/express-jwt": "^0.0.42",
 		"@types/jsonwebtoken": "^8.5.0",
 		"@types/validator": "^13.1.0",
+		"@vladmandic/face-api": "^1.7.11",
 		"body-parser": "^1.18.3",
+		"canvas": "^2.11.2",
 		"cors": "^2.8.5",
 		"dotenv": "^16.0.3",
 		"eth-sig-util": "^3.0.0",
 		"ethereumjs-util": "^7.0.5",
-		"express": "^4.16.4",
+		"express": "^4.18.2",
+		"express-fileupload": "^1.4.0",
 		"express-jwt": "^6.0.0",
+		"fs": "0.0.1-security",
 		"jsonwebtoken": "^8.5.1",
 		"multer": "^1.4.5-lts.1",
+		"path": "^0.12.7",
 		"sequelize": "^6.3.5",
 		"sqlite3": "^5.0.3",
 		"web3": "^1.9.0"

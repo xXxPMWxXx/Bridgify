@@ -21,7 +21,7 @@ export const Layout = () => {
                     <Navbar.Brand href="/">DID</Navbar.Brand>
                     <Nav className="me-auto">
                         <Nav.Link href="/Home" >Home</Nav.Link>
-                        <Nav.Link href="/Create#Create" >Create</Nav.Link>
+                        <Nav.Link href="/" >Create</Nav.Link>
                         <Nav.Link href="/GrantAccess#GrantAccess">Grant Access</Nav.Link>
                         <Nav.Link href="/View#View" >View</Nav.Link>
                         <NavDropdown title="History" id="basic-nav-dropdown">
