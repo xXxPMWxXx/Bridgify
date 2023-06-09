@@ -3,14 +3,10 @@ const path = require("path");
 
 const baseDir = path.resolve(__dirname, "../../../../out");
 
-function saveFile(fileName, buf) {
+export function saveFile(fileName : string, buf : Buffer) {
   if (!fs.existsSync(baseDir)) {
     fs.mkdirSync(baseDir);
   }
 
   fs.writeFileSync(path.resolve(baseDir, fileName), buf);
 }
-
-module.exports = {
-  saveFile,
-};

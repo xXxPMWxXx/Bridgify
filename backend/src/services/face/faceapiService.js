@@ -43,6 +43,7 @@ async function main(file, filename) {
 
   console.log("Loading FaceAPI models");
   const modelPath = path.join(__dirname, modelPathRoot);
+  
   await faceapi.nets.ssdMobilenetv1.loadFromDisk(modelPath);
   optionsSSDMobileNet = new faceapi.SsdMobilenetv1Options({
     minConfidence: 0.5,
