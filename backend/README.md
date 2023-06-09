@@ -7,8 +7,9 @@ npx tsx faceRecognition.ts => to run one file
 
 #### Install mongoDB
 
-- brew install mongodb-community@6.0
 - brew install --cask mongodb-compass
+- brew tap mongodb/brew
+- brew install mongodb-community@6.0
 
 To run mongoDB:
 brew services start mongodb-community@6.0
