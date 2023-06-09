@@ -7,8 +7,7 @@ import { services } from './services';
 const fileUpload = require("express-fileupload");
 
 //test for face api
-const tf = require("@tensorflow/tfjs-node");
-// const faceapi = require("face-api.js");
+// const tf = require("@tensorflow/tfjs-node");
 
 const faceapi = require("@vladmandic/face-api/dist/face-api.node.js");
 const mongoose = require("mongoose");
@@ -152,7 +151,7 @@ async function getDescriptorsFromDB(file: any) {
 
 	// Load face matcher to find the matching face
 	const faceMatcher = new faceapi.FaceMatcher(faces, 0.6);
-console.log("------")
+
 	// Read the image using canvas or other method
 	const img = await canvas.loadImage(file);
 console.log(img)
