@@ -11,4 +11,6 @@ faceRouter.route('/').get(controller.forTest);
 
 faceRouter.route('/upload').post(controller.upload);
 
+faceRouter.route('/post-face').post(controller.postface);
 
+faceRouter.route('/check-face').post(controller.checkface);
