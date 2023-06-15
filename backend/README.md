@@ -1,3 +1,16 @@
+#### need to install python@2.7 in order to run npm install without error
+    - install pyenv => brew install pyenv
+    
+##### setup shell environment for pyenv (https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv)
+    - in your terminal run : (for mac)
+    echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
+    echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
+    echo 'eval "$(pyenv init -)"' >> ~/.bashrc
+
+##### pyenv commands
+    -pyenv versions
+    -pyenv global 2.7.18 => change your python version
+
 #### for npm install canvas 
   - Mac OS : brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
   - Windows : https://github.com/Automattic/node-canvas/wiki/Installation:-Windows
