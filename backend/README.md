@@ -1,4 +1,4 @@
-#### need to install python@2.7 in order to run npm install without error
+#### need to install python@3.10 and below in order to run npm install without error
     - install pyenv => brew install pyenv
     
 ##### setup shell environment for pyenv (https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv)
