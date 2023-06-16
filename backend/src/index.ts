@@ -29,6 +29,7 @@ app.use('/api', services);
 
 //To access the image by using http://localhost:8000/images/{fileName}
 app.use("/out", express.static("out"));
+app.use("/trained_face", express.static("trained_face"));
 app.use("/images", express.static('images'));
 app.use("/labeled_images", express.static('labeled_images'));
 
