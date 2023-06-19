@@ -40,9 +40,10 @@ const faceSchema = new mongoose.Schema({
         type: Array,
         required: true,
     },
-});
+} );
 
-const FaceModel = mongoose.model("Face", faceSchema);
+// Mongoose#model(name, [schema], [collection], [skipInit])
+const FaceModel = mongoose.model("Face", faceSchema, "Face");
 
 // async function image(file : any) {
 // 	const decoded = tf.node.decodeImage(file);
