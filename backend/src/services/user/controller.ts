@@ -15,22 +15,19 @@ const UserSchema = new mongoose.Schema({
 const UserModel = mongoose.model("User", UserSchema, "User")
 
 export const test = async (req: any, res: Response, next: NextFunction) => {
-  // 1. get user from the frontend
-  const newUser = { email: req.body.email, password: req.body.password }
-  // 2. check if the email is existed
-  const user = await UserModel.findOne({ email: req.body.email })
-  if (user != null) {
-    return res.status(200).json({ Message: `Email: ${req.body.email} was already register` })
-  }
+  // 1. get token from req
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1]
 
-  // 3. hash password
-  const hashedPassword = await bcrypt.hash(newUser.password, 10)
-
-  // 4. add a new user to mongodb
-  UserModel.collection.insertOne({ email: req.body.email, password: hashedPassword })
-
-  // 5. send status back to requestor
-  return res.status(200).json({ Message: `Password : ${hashedPassword}` })
+  // 2. verify token with secret key
+  jwt.verify(token, 'secret-key-shhhh', async (err: any, decoded: any) => {
+    // 3. allow user to get all users from mongodb
+    if (decoded) {
+      const allUsers = await UserModel.collection.find().toArray()
+      res.status(200).send(allUsers)
+    } else if (err) {
+      res.status(401).json({ error: 'You must have a valid token' })
+    }
+  })
 };
 
 
@@ -71,3 +68,21 @@ export const login = async (req: any, res: Response, next: NextFunction) => {
     res.send({ Message : 'No user found or invalid password' })
   }
 };
+
+
+// get all users
+export const getall = async (req: any, res: Response, next: NextFunction) => {
+  // 1. get token from req
+  const token = req.headers.authorization && req.headers.authorization.split(' ')[1]
+
+  // 2. verify token with secret key
+  jwt.verify(token, 'secret-key-shhhh', async (err: any, decoded: any) => {
+    // 3. allow user to get all users from mongodb
+    if (decoded) {
+      const allUsers = await UserModel.find().toArray()
+      res.status(200).send(allUsers)
+    } else if (err) {
+      res.status(401).json({ error: 'You must have a valid token' })
+    }
+  })
+}

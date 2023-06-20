@@ -43,7 +43,7 @@ const port = process.env.PORT || 8000;
 //connect to mongoDB
 mongoose.connect(
 	// `mongodb://localhost:27017/Bridgify`,
-	`mongodb+srv://admin:1234@bridgifydev.1jde3bj.mongodb.net/Bridgify?retryWrites=true&w=majority`,
+	`mongodb+srv://admin:<password>@bridgifydev.1jde3bj.mongodb.net/Bridgify?retryWrites=true&w=majority`,
 	{
 		useNewUrlParser: true
 	}
