@@ -42,14 +42,15 @@ const port = process.env.PORT || 8000;
 
 //connect to mongoDB
 mongoose.connect(
-	// `mongodb://localhost:27017/Bridgify`,
 	`mongodb+srv://admin:<password>@bridgifydev.1jde3bj.mongodb.net/Bridgify?retryWrites=true&w=majority`,
 	{
 		useNewUrlParser: true
 	}
 ).then(() => {
-	app.listen(process.env.PORT || 8000);
-	console.log("DB connected and server us running.");
+	app.listen(port, () => {
+		console.log(`Express app listening on localhost:${port}`)
+		console.log("DB connected and server us running.");
+	});
 }).catch((err: any) => {
 	console.log(err);
 });
