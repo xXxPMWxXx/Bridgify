@@ -15,3 +15,5 @@ userRouter.route('/signup').post(controller.signup);
 /** GET /api/user/login */
 userRouter.route('/login').get(controller.login);
 
+/** GET /api/user/getall */
+userRouter.route('/getall').get(controller.getall);
