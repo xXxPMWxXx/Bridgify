@@ -1,9 +1,9 @@
-import './db';
 import bodyParser from 'body-parser';
 import cors from 'cors';
 import express from 'express';
 import { services } from './services';
-
+import jwt from 'jsonwebtoken'
+import 'dotenv/config'
 const fileUpload = require("express-fileupload");
 
 //test for face api
@@ -14,9 +14,14 @@ const mongoose = require("mongoose");
 const { Canvas, Image } = require("canvas");
 const canvas = require("canvas");
 
+
 //to access the variable in .env file as : process.env.{variableName}
-require('dotenv').config();
 const app = express();
+
+// // get config vars
+// dotenv.config();
+// // access config var
+// process.env.TOKEN_SECRET;
 
 // Middlewares
 app.use(bodyParser.json());
@@ -38,7 +43,7 @@ const port = process.env.PORT || 8000;
 //connect to mongoDB
 mongoose.connect(
 	// `mongodb://localhost:27017/Bridgify`,
-	`mongodb+srv://admin:<password>@bridgifydev.1jde3bj.mongodb.net/Bridgify?retryWrites=true&w=majority`,
+	`mongodb+srv://admin:1234@bridgifydev.1jde3bj.mongodb.net/Bridgify?retryWrites=true&w=majority`,
 	{
 		useNewUrlParser: true
 	}
