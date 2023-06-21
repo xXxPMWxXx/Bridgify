@@ -1,4 +1,0 @@
-{
-    "appService.defaultWebAppToDeploy": "/subscriptions/3dab7a7c-4553-4a8c-a1d4-b3fd318b215d/resourceGroups/.HEAP/providers/Microsoft.Web/sites/BridgifyTest",
-    "appService.deploySubpath": "backend"
-}
