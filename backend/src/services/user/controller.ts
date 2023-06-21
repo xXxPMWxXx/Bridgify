@@ -3,9 +3,7 @@ import jwt from 'jsonwebtoken'
 import cors from 'cors'
 import 'dotenv/config'
 const bcrypt = require("bcryptjs")
-const mongoose = require("mongoose")
 const  UserModel = require('../../models/user');
-
 
 
 export const test = async (req: any, res: Response, next: NextFunction) => {
@@ -41,10 +39,11 @@ export const signup = async (req: any, res: Response, next: NextFunction) => {
   UserModel.collection.insertOne({ email: req.body.email, password: hashedPassword })
 
   // 5. send status back to requestor
-  return res.status(200).json({Message : `Password : ${hashedPassword}`})
+  return res.status(200).json({Message : `Email : ${req.body.email} register successfully`})
 };
 
 export const login = async (req: any, res: Response, next: NextFunction) => {
+
   // 1. find the user
   const user = await UserModel.collection.findOne({ email: req.body.email })
 

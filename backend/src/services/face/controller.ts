@@ -6,9 +6,7 @@ const path = require("path");
 const tf = require("@tensorflow/tfjs-node");
 const faceapi = require("@vladmandic/face-api/dist/face-api.node.js");
 const faceApiService = require("./faceApiService");
-const mongoose = require("mongoose");
 const  FaceModel = require('../../models/face');
-
 
 
 export const upload = async (req: any, res: Response, next: NextFunction) => {

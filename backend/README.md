@@ -18,7 +18,7 @@
 npx tsx faceRecognition.ts => to run one file 
 
 
-#### Install mongoDB
+#### Install mongoDB (ignore this)
 
 - brew install --cask mongodb-compass
 - brew tap mongodb/brew
@@ -29,3 +29,9 @@ brew services start mongodb-community@6.0
 
 To stop mongoDB:
 brew services stop mongodb-community@6.0
+
+#### Swagger (http://localhost:8000/doc/)
+To generate routing for new file, to show in the swagger UI
+    - Modify the endpointsFiles path in swagger.ts
+    - npm swagger-autogen => it will generate swagger_output_autogen.json
+    - copy everything in the path, paste it to swagger_output.json, and modify when necessary

@@ -13,7 +13,7 @@ userRouter.route('/test').get(controller.test);
 userRouter.route('/signup').post(controller.signup);
 
 /** GET /api/user/login */
-userRouter.route('/login').get(controller.login);
+userRouter.route('/login').post(controller.login);
 
 /** GET /api/user/getall */
 userRouter.route('/getall').get(controller.getall);

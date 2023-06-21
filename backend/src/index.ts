@@ -14,17 +14,27 @@ const mongoose = require("mongoose");
 const { Canvas, Image } = require("canvas");
 const canvas = require("canvas");
 
+const swaggerUi = require("swagger-ui-express");
+const swaggerFile = require('./swagger_output.json')
 
 //to access the variable in .env file as : process.env.{variableName}
 const app = express();
 
+//swagger
+app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
+  
 // // get config vars
 // dotenv.config();
 // // access config var
 // process.env.TOKEN_SECRET;
 
 // Middlewares
-app.use(bodyParser.json());
+app.use( bodyParser.json({limit: '50mb'}) );
+app.use(bodyParser.urlencoded({
+  limit: '50mb',
+  extended: true,
+  parameterLimit:50000
+}));
 app.use(cors());
 app.use(fileUpload());
 
