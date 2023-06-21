@@ -3,15 +3,16 @@ import jwt from 'jsonwebtoken'
 import cors from 'cors'
 import 'dotenv/config'
 const bcrypt = require("bcryptjs")
-const  UserModel = require('../../models/user');
+const UserModel = require('../../models/user');
 
+const jwt_secret: any = process.env.JWT_SECRET;
 
 export const test = async (req: any, res: Response, next: NextFunction) => {
   // 1. get token from req
   const token = req.headers.authorization && req.headers.authorization.split(' ')[1]
 
   // 2. verify token with secret key
-  jwt.verify(token, 'secret-key-shhhh', async (err: any, decoded: any) => {
+  jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
     // 3. allow user to get all users from mongodb
     if (decoded) {
       const allUsers = await UserModel.collection.find().toArray()
@@ -29,7 +30,7 @@ export const signup = async (req: any, res: Response, next: NextFunction) => {
   // 2. check if the email is existed
   const user = await UserModel.findOne({ email: req.body.email })
   if (user != null) {
-    return res.status(200).json({ Message: `Email: ${req.body.email} was already register` })
+    return res.status(400).json({ Message: `Email: ${req.body.email} was already register` })
   }
 
   // 3. hash password
@@ -39,7 +40,7 @@ export const signup = async (req: any, res: Response, next: NextFunction) => {
   UserModel.collection.insertOne({ email: req.body.email, password: hashedPassword })
 
   // 5. send status back to requestor
-  return res.status(200).json({Message : `Email : ${req.body.email} register successfully`})
+  return res.status(200).json({ Message: `Email : ${req.body.email} register successfully` })
 };
 
 export const login = async (req: any, res: Response, next: NextFunction) => {
@@ -53,12 +54,12 @@ export const login = async (req: any, res: Response, next: NextFunction) => {
   // 3. create jwt token = Authorization
   if (userAllowed) {
 
-    const accessToken = jwt.sign(user,'secret-key-shhhh',{expiresIn:604800})
-   
+    const accessToken = jwt.sign(user, jwt_secret, { expiresIn: "2h" })
+
     // 4. send JWT token to frontend requestor
     res.status(200).send({ accessToken: accessToken })
   } else {
-    res.send({ Message : 'No user found or invalid password' })
+    res.status(400).send({ Message: 'No user found or invalid password' })
   }
 };
 
@@ -69,7 +70,7 @@ export const getall = async (req: any, res: Response, next: NextFunction) => {
   const token = req.headers.authorization && req.headers.authorization.split(' ')[1]
 
   // 2. verify token with secret key
-  jwt.verify(token, 'secret-key-shhhh', async (err: any, decoded: any) => {
+  jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
     // 3. allow user to get all users from mongodb
     if (decoded) {
       const allUsers = await UserModel.collection.find().toArray()
