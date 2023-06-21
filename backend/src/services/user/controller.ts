@@ -2,17 +2,11 @@ import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken'
 import cors from 'cors'
 import 'dotenv/config'
-
 const bcrypt = require("bcryptjs")
 const mongoose = require("mongoose")
+const  UserModel = require('../../models/user');
 
 
-const UserSchema = new mongoose.Schema({
-  username: String,
-  password: String
-})
-
-const UserModel = mongoose.model("User", UserSchema, "User")
 
 export const test = async (req: any, res: Response, next: NextFunction) => {
   // 1. get token from req
@@ -52,7 +46,7 @@ export const signup = async (req: any, res: Response, next: NextFunction) => {
 
 export const login = async (req: any, res: Response, next: NextFunction) => {
   // 1. find the user
-  const user = await UserModel.findOne({ email: req.body.email })
+  const user = await UserModel.collection.findOne({ email: req.body.email })
 
   // 2. compare the password from req vs password in db - Authenticated ok
   const userAllowed = await bcrypt.compare(req.body.password, user.password)
@@ -60,7 +54,7 @@ export const login = async (req: any, res: Response, next: NextFunction) => {
   // 3. create jwt token = Authorization
   if (userAllowed) {
 
-    const accessToken = jwt.sign(user.toJSON(),'secret-key-shhhh',{expiresIn:604800})
+    const accessToken = jwt.sign(user,'secret-key-shhhh',{expiresIn:604800})
    
     // 4. send JWT token to frontend requestor
     res.status(200).send({ accessToken: accessToken })

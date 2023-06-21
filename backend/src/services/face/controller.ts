@@ -7,7 +7,7 @@ const tf = require("@tensorflow/tfjs-node");
 const faceapi = require("@vladmandic/face-api/dist/face-api.node.js");
 const faceApiService = require("./faceApiService");
 const mongoose = require("mongoose");
-
+const  FaceModel = require('../../models/face');
 
 
 
@@ -28,22 +28,6 @@ export const upload = async (req: any, res: Response, next: NextFunction) => {
         url: `http://localhost:8000/out/${file.name}`,
     });
 };
-
-
-const faceSchema = new mongoose.Schema({
-    label: {
-        type: String,
-        required: true,
-        unique: true,
-    },
-    descriptions: {
-        type: Array,
-        required: true,
-    },
-} );
-
-// Mongoose#model(name, [schema], [collection], [skipInit])
-const FaceModel = mongoose.model("Face", faceSchema, "Face");
 
 // async function image(file : any) {
 // 	const decoded = tf.node.decodeImage(file);
