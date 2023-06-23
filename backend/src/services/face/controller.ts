@@ -71,15 +71,21 @@ async function uploadLabeledImages(images: any, label: any) {
 // http://localhost:8000/api/face/post-face
 // app.post("/post-face", async (req: any, res: any) => {
 export const postface = async (req: any, res: any, next: NextFunction) => {
-    const { file } = req.files;
-    const label = req.body.label
-    let result = await uploadLabeledImages(file.data, label);
-    if (result) {
-
-        res.json({ message: "Face data stored successfully" })
-    } else {
-        res.json({ message: "Something went wrong, please try again." })
-
+    try {
+        const { file } = req.files;
+        const label = req.body.label
+        let result = await uploadLabeledImages(file.data, label);
+        if (result) {
+    
+            return res.status(200).json({ message: "Face data stored successfully" })
+        } else {
+            return res.status(400).json({ message: "Something went wrong, please try again." })
+    
+        }
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ "Message" : "Please make sure the input file is valid type" });
     }
 }
 
@@ -118,8 +124,14 @@ async function getDescriptorsFromDB(file: any) {
 
 // http://localhost:8000/api/face/check-face
 export const checkface = async (req: any, res: any, next: NextFunction) => {
-    const { file } = req.files;
-    let result = await getDescriptorsFromDB(file.data);
-    res.json({ result });
+    try {
+        const { file } = req.files;
+        let result = await getDescriptorsFromDB(file.data);
+        return res.status(200).json({ result });
+        
+    } catch (error) {
+        console.log(error)
+        return res.status(400).json({ "Message" : "Please make sure the input file is valid type" });
+    }
 
 };

@@ -54,7 +54,7 @@ export const login = async (req: any, res: Response, next: NextFunction) => {
   // 3. create jwt token = Authorization
   if (userAllowed) {
 
-    const accessToken = jwt.sign(user, jwt_secret, { expiresIn: "2h" })
+    const accessToken = jwt.sign(user, jwt_secret, { expiresIn: "1d" })
 
     // 4. send JWT token to frontend requestor
     res.status(200).send({ accessToken: accessToken })

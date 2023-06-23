@@ -16,10 +16,13 @@
 	"dependencies": {
 		"@tensorflow/tfjs-core": "^4.7.0",
 		"@tensorflow/tfjs-node": "^4.7.0",
+		"@types/bcryptjs": "^2.4.2",
 		"@types/bluebird": "^3.5.33",
 		"@types/cors": "^2.8.8",
+		"@types/express": "^4.17.17",
 		"@types/express-jwt": "^0.0.42",
 		"@types/jsonwebtoken": "^8.5.0",
+		"@types/node": "^20.3.1",
 		"@types/validator": "^13.1.0",
 		"@vladmandic/face-api": "^1.7.11",
 		"bcryptjs": "^2.4.3",
@@ -34,9 +37,10 @@
 		"jsonwebtoken": "^8.5.1",
 		"mongoose": "^7.2.2",
 		"multer": "^1.4.5-lts.1",
+		"nodemon": "^2.0.6",
 		"path": "^0.12.7",
-		"swagger-ui-express": "^4.6.3",
-		"swagger-autogen": "^2.23.2"
+		"swagger-autogen": "^2.23.2",
+		"swagger-ui-express": "^4.6.3"
 	},
 	"devDependencies": {
 		"@types/bcryptjs": "^2.4.2",
