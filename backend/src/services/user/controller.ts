@@ -104,6 +104,6 @@ export const getall = async (req: any, res: Response, next: NextFunction) => {
   });
 };
 
-// export const userProfile = async(req: any, res: Response, next: NextFunction) => {
-//   res.status(401).json({ message: "Authorized User!!" });
-// }
+export const userProfile = async(req: any, res: Response, next: NextFunction) => {
+  res.status(401).json({ message: "Authorized User!!" });
+}
