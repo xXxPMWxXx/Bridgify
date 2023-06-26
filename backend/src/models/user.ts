@@ -63,5 +63,6 @@ UserSchema.set("toJSON", {
  */
 UserSchema.plugin(uniqueValidator, { message: "Email already in use." });
 
-
-module.exports = mongoose.model("user", UserSchema, "User");
+const User = mongoose.model("user", UserSchema, "Test_User");
+// const User = mongoose.model("user", UserSchema, "User");
+module.exports = User;

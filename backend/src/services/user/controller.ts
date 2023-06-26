@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from "express";
+import { NextFunction, Request, Response, response } from "express";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import "dotenv/config";
@@ -25,49 +25,64 @@ export const test = async (req: any, res: Response, next: NextFunction) => {
 };
 
 export const signup = async (req: any, res: Response, next: NextFunction) => {
-  const {email, password} = req.body;
-
-  // 1. get user from the frontend
-  const newUser = { email: email, password: password };
-  // 2. check if the email is existed
+  const { email, password } = req.body;
+  // 1. check if the email is existed
   const user = await UserModel.findOne({ email: email });
   if (user != null) {
     return res
       .status(400)
-      .json({ Message: `Email: ${email} was already register` });
+      .json({ message: `Email: ${email} was already register` });
   }
 
+  // 2. get user from the frontend
+  const newUser = new UserModel(req.body);
+  console.log(newUser);
   // 3. hash password
   const hashedPassword = await bcrypt.hash(newUser.password, 10);
+  newUser.password = hashedPassword;
 
   // 4. add a new user to mongodb
-  UserModel.collection.insertOne({
-    email: email,
-    password: hashedPassword,
-  });
+  newUser
+    .save()
+    .then((response: any) => {
+      return res.status(200).send({
+        message: `Email : ${email} register successfully`,
+        data: response,
+      });
+    })
+    .catch((error: any) => {
+      return next(error);
+    });
 
-  // 5. send status back to requestor
-  return res
-    .status(200)
-    .json({ Message: `Email : ${email} register successfully` });
+  // UserModel.collection.insertOne({
+  //   email: email,
+  //   password: hashedPassword,
+  // });
+
+  // // 5. send status back to requestor
+  // return res
+  //   .status(200)
+  //   .json({ message: `Email : ${email} register successfully` });
 };
 
 export const login = async (req: any, res: Response, next: NextFunction) => {
-  const {email, password} =req.body;
+  const { email, password } = req.body;
+  console.log(email);
+  console.log(password);
   // 1. find the user
-  const user = await UserModel.collection.findOne({ email: email});
+  const user = await UserModel.collection.findOne({ email: email });
 
   // 2. compare the password from req vs password in db - Authenticated ok
   const userAllowed = await bcrypt.compare(password, user.password);
 
   // 3. create jwt token = Authorization
   if (userAllowed) {
-    const accessToken = jwt.sign(user, jwt_secret, { expiresIn: "1d" });
-
+    const accessToken = jwt.sign({data: email}, jwt_secret, { expiresIn: "1d" });
+    const results = { ...user, accessToken };
     // 4. send JWT token to frontend requestor
-    res.status(200).send({ accessToken: accessToken });
+    res.status(200).send({ message: "Success", data: results });
   } else {
-    res.status(400).send({ Message: "No user found or invalid password" });
+    res.status(400).send({ message: "No user found or invalid password" });
   }
 };
 

@@ -54,6 +54,9 @@
                 "email": {
                   "example": "any"
                 },
+                "name": {
+                  "example": "any"
+                },
                 "password": {
                   "example": "any"
                 }
