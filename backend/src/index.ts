@@ -60,7 +60,7 @@ mongoose.connect(
 ).then(() => {
 	app.listen(port, () => {
 		console.log(`Express app listening on localhost:${port}`)
-		console.log("DB connected and server us running.");
+		console.log("DB connected and server is running.");
 	});
 }).catch((err: any) => {
 	console.log(err);
