@@ -67,20 +67,25 @@ export const signup = async (req: any, res: Response, next: NextFunction) => {
 
 export const login = async (req: any, res: Response, next: NextFunction) => {
   const { email, password } = req.body;
-  console.log(email);
-  console.log(password);
+
   // 1. find the user
   const user = await UserModel.collection.findOne({ email: email });
 
-  // 2. compare the password from req vs password in db - Authenticated ok
-  const userAllowed = await bcrypt.compare(password, user.password);
+  if (user != null) {
+    // 2. compare the password from req vs password in db - Authenticated ok
+    const userAllowed = await bcrypt.compare(password, user.password);
+    if (userAllowed) {
 
-  // 3. create jwt token = Authorization
-  if (userAllowed) {
-    const accessToken = jwt.sign({data: email}, jwt_secret, { expiresIn: "1d" });
-    const results = { ...user, accessToken };
-    // 4. send JWT token to frontend requestor
-    res.status(200).send({ message: "Success", data: results });
+      // 3. create jwt token = Authorization
+      const accessToken = jwt.sign({ data: email }, jwt_secret, {
+        expiresIn: "1d",
+      });
+      const results = { ...user, accessToken };
+      // 4. send JWT token to frontend requestor
+      res.status(200).send({ message: "Success", data: results });
+    } else {
+      res.status(400).send({ message: "No user found or invalid password" });
+    }
   } else {
     res.status(400).send({ message: "No user found or invalid password" });
   }
@@ -104,6 +109,10 @@ export const getall = async (req: any, res: Response, next: NextFunction) => {
   });
 };
 
-export const userProfile = async(req: any, res: Response, next: NextFunction) => {
+export const userProfile = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
   res.status(401).json({ message: "Authorized User!!" });
-}
+};
