@@ -5,7 +5,7 @@
     "title": "Bridgify REST API",
     "description": "Swagger Document for Bridgify Backend API"
   },
-  "host": "localhost:8000",
+  "host": "http://13.229.138.25:8000",
   "basePath": "/api",
   "consumes": [
     "application/json",
