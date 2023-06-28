@@ -130,7 +130,13 @@
         "tags": [
           "Face"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
