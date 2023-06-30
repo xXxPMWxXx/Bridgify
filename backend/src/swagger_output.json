@@ -5,7 +5,7 @@
     "title": "Bridgify REST API",
     "description": "Swagger Document for Bridgify Backend API"
   },
-  "host": "localhost:8000",
+  "host": "13.229.138.25:8000",
   "basePath": "/api",
   "consumes": [
     "application/json",
@@ -150,7 +150,13 @@
         "tags": [
           "Face"
         ],
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "file",
+            "in": "formData",
+            "type": "file"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"

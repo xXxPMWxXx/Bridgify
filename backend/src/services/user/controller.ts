@@ -100,7 +100,7 @@ export const getall = async (req: any, res: Response, next: NextFunction) => {
   jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
     // 3. allow user to get all users from mongodb
     if (decoded) {
-      const allUsers = await UserModel.collection.find().toArray();
+      const allUsers = await UserModel.find();
       res.status(200).send(allUsers);
     } else if (err) {
       res.status(401).json({ error: "You must have a valid token" });

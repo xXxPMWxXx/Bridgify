@@ -5,7 +5,7 @@ const fileUpload = require("express-fileupload");
 const path = require("path");
 const tf = require("@tensorflow/tfjs-node");
 const faceapi = require("@vladmandic/face-api/dist/face-api.node.js");
-const faceApiService = require("./faceApiService");
+const faceApiService = require("./utils/faceapiService");
 const  FaceModel = require('../../models/face');
 
 

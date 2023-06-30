@@ -1,4 +1,4 @@
-const save = require("./utils/saveFile");
+const save = require("./saveFile");
 const path = require("path");
 
 const tf = require("@tensorflow/tfjs-node");
@@ -6,7 +6,7 @@ const tf = require("@tensorflow/tfjs-node");
 const canvas = require("canvas");
 
 const faceapi = require("@vladmandic/face-api/dist/face-api.node.js");
-const modelPathRoot = "../../faceAPIModel";
+const modelPathRoot = "../../../faceAPIModel";
 
 let optionsSSDMobileNet;
 
