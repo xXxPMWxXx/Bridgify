@@ -124,6 +124,26 @@
         }
       }
     },
+    "/user//user-profile": {
+      "get": {
+        "description": "",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "401": {
+            "description": "Authorized User!!"
+          }
+        }
+      }
+    },
     "/face/upload": {
       "post": {
         "description": "",

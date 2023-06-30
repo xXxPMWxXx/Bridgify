@@ -75,7 +75,6 @@ export const login = async (req: any, res: Response, next: NextFunction) => {
     // 2. compare the password from req vs password in db - Authenticated ok
     const userAllowed = await bcrypt.compare(password, user.password);
     if (userAllowed) {
-
       // 3. create jwt token = Authorization
       const accessToken = jwt.sign({ data: email }, jwt_secret, {
         expiresIn: "1d",
