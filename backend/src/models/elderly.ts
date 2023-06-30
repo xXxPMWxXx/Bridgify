@@ -1,9 +1,11 @@
+import { timeStamp } from "console";
+
 const mongoose = require("mongoose");
 const { Schema } = mongoose;
 const uniqueValidator = require("mongoose-unique-validator");
 
 const ElderlySchema = new Schema({
-    // last 4 character of NRIC?
+    // last 4 character of NRIC
     id: {
       type: String,
       required: true,
@@ -13,7 +15,8 @@ const ElderlySchema = new Schema({
       type: String,
       required: true,
     },
-    // format DD/MM/YYYY
+    //frontend need to follow
+    //format DD/MM/YYYY
     DOB: {
       type: String,
       required: true,
@@ -23,16 +26,15 @@ const ElderlySchema = new Schema({
     photo: {
       type: String
     },
-    // *** need to test this ***
-    // {current_activity: lunch , 
-    //  current_temp : 36.3 , 
-    //  medication:{list of medications }, 
-    //  condition:fine,   
-    //  condition_description : ‘…..’ , 
-    //  awake : True }
+    // take in JSON object
     status: {
-        
+
     },
+    created: {
+      type: Date,
+      default: new Date().toString()
+
+    }
   });
 
 module.exports = mongoose.model("Elderly", ElderlySchema, "Elderly");
