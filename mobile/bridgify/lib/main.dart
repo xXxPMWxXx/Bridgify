@@ -1,4 +1,3 @@
-import 'package:bridgify/accessories/hiddendrawer.dart';
 import 'package:bridgify/pages/login_signup_page.dart';
 import 'package:flutter/material.dart';
 
@@ -32,12 +31,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const HiddenDrawer(),
-      // routes: {
-      //   '/': (context) => _defaultHome,
-      //   '/home': (context) => const HomePage(),
-      //   '/login': (context) => const MainScreen(),
-      // },
+      // home: const HiddenDrawer(),
+      routes: {
+        '/': (context) => _defaultHome,
+        '/home': (context) => const HomePage(),
+        '/login': (context) => const MainScreen(),
+      },
     );
   }
 }

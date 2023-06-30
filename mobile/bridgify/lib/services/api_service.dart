@@ -5,7 +5,6 @@ import 'package:bridgify/models/login_response_model.dart';
 import 'package:bridgify/models/register_request_model.dart';
 import 'package:bridgify/models/register_response_model.dart';
 import 'package:http/http.dart' as http;
-import 'package:network_info_plus/network_info_plus.dart';
 
 import '../../config.dart';
 import 'shared_service.dart';
