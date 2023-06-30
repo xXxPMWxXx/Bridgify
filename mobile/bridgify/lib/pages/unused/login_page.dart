@@ -4,9 +4,9 @@ import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
-import '../services/api_service.dart';
-import '../config.dart';
-import '../models/login_request_model.dart';
+import '../../services/api_service.dart';
+import '../../config.dart';
+import '../../models/login_request_model.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({Key? key}) : super(key: key);

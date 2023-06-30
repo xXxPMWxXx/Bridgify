@@ -1,57 +1,53 @@
 import 'package:flutter/material.dart';
-import 'package:bridgify/services/api_service.dart';
-import 'package:bridgify/services/shared_service.dart';
 
-class HomePage extends StatefulWidget {
-  const HomePage({Key? key}) : super(key: key);
+class NavigationDrawer extends StatefulWidget {
+  const NavigationDrawer({super.key});
 
   @override
-  _HomePageState createState() => _HomePageState();
+  _NavigationDrawerState createState() => _NavigationDrawerState();
 }
 
-class _HomePageState extends State<HomePage> {
+class _NavigationDrawerState extends State<NavigationDrawer> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Bridgify'),
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.logout,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              SharedService.logout(context);
-            },
-          ),
-          const SizedBox(
-            width: 10,
-          ),
-        ],
+    return Drawer(
+        child: ListView(padding: EdgeInsets.zero, children: [
+      UserAccountsDrawerHeader(
+        accountName: const Text('George'),
+        accountEmail: const Text('george@gmail.com'),
+        currentAccountPicture: CircleAvatar(
+            child: ClipOval(child: Image.asset('images/test.png'))),
+        decoration: const BoxDecoration(
+            color: Colors.blueGrey,
+            image: DecorationImage(
+                image: AssetImage("images/drawer.png"), fit: BoxFit.cover)),
       ),
-      backgroundColor: Colors.grey[200],
-      body: userProfile(),
-    );
-  }
-
-  Widget userProfile() {
-    return FutureBuilder(
-      future: APIService.getUserProfile(),
-      builder: (
-        BuildContext context,
-        AsyncSnapshot<String> model,
-      ) {
-        if (model.hasData) {
-          print(model.data);
-          return Center(child: Text(model.data!));
-        }
-
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
+      ListTile(
+        leading: const Icon(Icons.home),
+        title: const Text("Home"),
+        onTap: () => print("Home tapped"),
+      ),
+      ListTile(
+        leading: Icon(Icons.health_and_safety_outlined),
+        title: Text("Health Records"),
+        onTap: () => print("Health tapped"),
+      ),
+      ListTile(
+        leading: const Icon(Icons.chat),
+        title: const Text("Chat"),
+        onTap: () => print("Chat tapped"),
+      ),
+      Divider(),
+      ListTile(
+        leading: const Icon(Icons.settings),
+        title: const Text("Settings"),
+        onTap: () => print("Settings tapped"),
+      ),
+      ListTile(
+        leading: const Icon(Icons.logout_rounded),
+        title: const Text("Sign Out"),
+        onTap: () => print("LogOut tapped"),
+      )
+    ]));
   }
 }

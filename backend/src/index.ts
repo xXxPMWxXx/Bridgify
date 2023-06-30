@@ -50,6 +50,9 @@ app.use("/trained_face", express.static("trained_face"));
 app.use("/images", express.static('images'));
 app.use("/labeled_images", express.static('labeled_images'));
 
+app.use("/elderly", express.static('elderly'));
+app.use("/post", express.static('post'));
+
 const port = process.env.PORT || 8000;
 
 //connect to mongoDB
