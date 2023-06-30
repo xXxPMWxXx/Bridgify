@@ -132,7 +132,7 @@ export const delete_elderly = async (req: any, res: Response, next: NextFunction
   });
 };
 
-// delete elderly profile
+// get elderly profile
 export const get = async (req: any, res: Response, next: NextFunction) => {
   // 1. get token from req
   const token =
@@ -158,3 +158,27 @@ export const get = async (req: any, res: Response, next: NextFunction) => {
     }
   });
 };
+
+// get all elderly profile
+export const getAll = async (req: any, res: Response, next: NextFunction) => {
+  // 1. get token from req
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+  // 2. verify token with secret key
+  jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+    // 3. allow elderly to update elderly details
+
+    const id = req.query.id;
+    if (decoded) {
+      // 4. check if the email is existed
+      const allElderly = await ElderlyModel.find({}).select('id name');
+      res.status(200).json(allElderly);
+
+    } else if (err) {
+      res.status(401).json({ error: "You must have a valid token" });
+    }
+  });
+};
+
+

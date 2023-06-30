@@ -17,3 +17,6 @@ elderlyRouter.route('/delete').delete(controller.delete_elderly);
 
 /** GET /api/elderly/get/?id=123A */
 elderlyRouter.route('/get').get(controller.get);
+
+/** GET /api/elderly/getAll */
+elderlyRouter.route('/getAll').get(controller.getAll);
