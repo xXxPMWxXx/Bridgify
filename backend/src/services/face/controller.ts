@@ -1,7 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import '@tensorflow/tfjs-node';
 const canvas = require('canvas');
-const fileUpload = require("express-fileupload");
 const path = require("path");
 const tf = require("@tensorflow/tfjs-node");
 const faceapi = require("@vladmandic/face-api/dist/face-api.node.js");

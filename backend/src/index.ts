@@ -1,11 +1,12 @@
-import bodyParser from 'body-parser';
+const bodyParser = require('body-parser')
 import cors from 'cors';
 import express from 'express';
 import { services } from './services';
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
-const fileUpload = require("express-fileupload");
+// const fileUpload = require("express-fileupload");
+
 
 //test for face api
 // const tf = require("@tensorflow/tfjs-node");
@@ -37,7 +38,7 @@ app.use(bodyParser.urlencoded({
   parameterLimit:50000
 }));
 app.use(cors());
-app.use(fileUpload());
+
 
 
 // Mount REST on /api
