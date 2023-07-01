@@ -282,26 +282,29 @@ class _MainScreenState extends State<MainScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      Align(
-                        alignment: Alignment.bottomRight,
-                        child: Padding(
-                          padding: const EdgeInsets.only(
-                            right: 25,
-                          ),
-                          child: RichText(
-                            text: TextSpan(
-                              style: const TextStyle(
-                                  color: Colors.grey, fontSize: 14.0),
-                              children: <TextSpan>[
-                                TextSpan(
-                                  text: 'Forget Password?',
-                                  style: const TextStyle(
-                                    color: Colors.grey,
+                      FadeAnimation(
+                        1.5,
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 25,
+                            ),
+                            child: RichText(
+                              text: TextSpan(
+                                style: const TextStyle(
+                                    color: Colors.grey, fontSize: 14.0),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'Forget Password?',
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {},
                                   ),
-                                  recognizer: TapGestureRecognizer()
-                                    ..onTap = () {},
-                                ),
-                              ],
+                                ],
+                              ),
                             ),
                           ),
                         ),
@@ -309,54 +312,57 @@ class _MainScreenState extends State<MainScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      Center(
-                        child: FormHelper.submitButton(
-                          height: 50,
-                          width: 250,
-                          "Login",
-                          () {
-                            if (validateAndSave()) {
-                              setState(() {
-                                isAPIcallProcess = true;
-                              });
+                      FadeAnimation(
+                        1.5,
+                        Center(
+                          child: FormHelper.submitButton(
+                            height: 50,
+                            width: 250,
+                            "Login",
+                            () {
+                              if (validateAndSave()) {
+                                setState(() {
+                                  isAPIcallProcess = true;
+                                });
 
-                              LoginRequestModel model = LoginRequestModel(
-                                email: emailLogin,
-                                password: passwordLogin,
-                              );
+                                LoginRequestModel model = LoginRequestModel(
+                                  email: emailLogin,
+                                  password: passwordLogin,
+                                );
 
-                              APIService.login(model).then(
-                                (response) {
-                                  setState(() {
-                                    isAPIcallProcess = false;
-                                  });
+                                APIService.login(model).then(
+                                  (response) {
+                                    setState(() {
+                                      isAPIcallProcess = false;
+                                    });
 
-                                  if (response) {
-                                    Navigator.pushNamedAndRemoveUntil(
-                                      context,
-                                      '/home',
-                                      (route) => false,
-                                    );
-                                  } else {
-                                    FormHelper.showSimpleAlertDialog(
-                                      context,
-                                      Config.appName,
-                                      "Invalid email/Password !!",
-                                      "OK",
-                                      () {
-                                        Navigator.of(context).pop();
-                                      },
-                                    );
-                                  }
-                                },
-                              );
-                            }
-                          },
-                          btnColor: HexColor("225518"),
-                          borderColor: HexColor("225518"),
-                          txtColor: Colors.white,
-                          borderRadius: 20,
-                          fontWeight: FontWeight.bold,
+                                    if (response) {
+                                      Navigator.pushNamedAndRemoveUntil(
+                                        context,
+                                        '/home',
+                                        (route) => false,
+                                      );
+                                    } else {
+                                      FormHelper.showSimpleAlertDialog(
+                                        context,
+                                        Config.appName,
+                                        "Invalid email/Password !!",
+                                        "OK",
+                                        () {
+                                          Navigator.of(context).pop();
+                                        },
+                                      );
+                                    }
+                                  },
+                                );
+                              }
+                            },
+                            btnColor: HexColor("225518"),
+                            borderColor: HexColor("225518"),
+                            txtColor: Colors.white,
+                            borderRadius: 20,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
                       const SizedBox(
@@ -484,220 +490,218 @@ class _MainScreenState extends State<MainScreen> {
                           style: TextStyle(fontSize: 20),
                         ),
                         const SizedBox(height: 20),
-                        FadeAnimation(
-                            1.4,
-                            Container(
-                              decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(10),
-                                boxShadow: const [
-                                  BoxShadow(
-                                      color: Color.fromRGBO(32, 132, 232, .3),
-                                      blurRadius: 20,
-                                      offset: Offset(0, 10))
-                                ],
+                        Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                            boxShadow: const [
+                              BoxShadow(
+                                  color: Color.fromRGBO(32, 132, 232, .3),
+                                  blurRadius: 20,
+                                  offset: Offset(0, 10))
+                            ],
+                          ),
+                          child: Column(
+                            children: <Widget>[
+                              Container(
+                                // padding: const EdgeInsetsDirectional.symmetric(
+                                //     horizontal: 5, vertical: 0),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: Colors.grey.shade200))),
+                                child: FormHelper.inputFieldWidget(
+                                  context,
+                                  "name",
+                                  "Name",
+                                  (onValidateVal) {
+                                    if (onValidateVal?.isEmpty &&
+                                        _pageState == 2) {
+                                      return "Empty Field detected";
+                                    }
+                                    return null;
+                                  },
+                                  (onSavedVal) {
+                                    nameSignUp = onSavedVal;
+                                  },
+                                  paddingRight: 0,
+                                  paddingLeft: 0,
+                                  paddingBottom: 0,
+                                  paddingTop: 0,
+                                  initialValue: "",
+                                  obscureText: false,
+                                  prefixIcon: const Icon(Icons.person),
+                                  showPrefixIcon: true,
+                                  prefixIconColor:
+                                      Colors.black.withOpacity(0.5),
+                                  textColor: Colors.black.withOpacity(0.7),
+                                  hintColor: Colors.grey.withOpacity(0.7),
+                                  borderFocusColor: Colors.white,
+                                  borderColor: Colors.white,
+                                  borderRadius: 0,
+                                  borderErrorColor: Colors.white,
+                                  errorBorderWidth: 0,
+                                  focusedErrorBorderWidth: 0,
+                                  borderFocusedErrorColor: Colors.white,
+                                ),
                               ),
-                              child: Column(
-                                children: <Widget>[
-                                  Container(
-                                    // padding: const EdgeInsetsDirectional.symmetric(
-                                    //     horizontal: 5, vertical: 0),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade200))),
-                                    child: FormHelper.inputFieldWidget(
-                                      context,
-                                      "name",
-                                      "Name",
-                                      (onValidateVal) {
-                                        if (onValidateVal?.isEmpty &&
-                                            _pageState == 2) {
-                                          return "Empty Field detected";
-                                        }
-                                        return null;
-                                      },
-                                      (onSavedVal) {
-                                        nameSignUp = onSavedVal;
-                                      },
-                                      paddingRight: 0,
-                                      paddingLeft: 0,
-                                      paddingBottom: 0,
-                                      paddingTop: 0,
-                                      initialValue: "",
-                                      obscureText: false,
-                                      prefixIcon: const Icon(Icons.person),
-                                      showPrefixIcon: true,
-                                      prefixIconColor:
-                                          Colors.black.withOpacity(0.5),
-                                      textColor: Colors.black.withOpacity(0.7),
-                                      hintColor: Colors.grey.withOpacity(0.7),
-                                      borderFocusColor: Colors.white,
-                                      borderColor: Colors.white,
-                                      borderRadius: 0,
-                                      borderErrorColor: Colors.white,
-                                      errorBorderWidth: 0,
-                                      focusedErrorBorderWidth: 0,
-                                      borderFocusedErrorColor: Colors.white,
-                                    ),
-                                  ),
-                                  /////////////////////////////////////////////////////////////////////////////////
-                                  Container(
-                                    // padding: const EdgeInsetsDirectional.symmetric(
-                                    //     horizontal: 5, vertical: 0),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade200))),
-                                    child: FormHelper.inputFieldWidget(
-                                      context,
-                                      "email",
-                                      "Email",
-                                      (onValidateVal) {
-                                        if (onValidateVal?.isEmpty &&
-                                            _pageState == 2) {
-                                          return "Empty Field detected";
-                                        }
-                                        return null;
-                                      },
-                                      (onSavedval) {
-                                        emailSignUp = onSavedval;
-                                      },
-                                      paddingRight: 0,
-                                      paddingLeft: 0,
-                                      paddingBottom: 0,
-                                      paddingTop: 0,
-                                      initialValue: "",
-                                      obscureText: false,
-                                      prefixIcon: const Icon(Icons.mail),
-                                      prefixIconColor:
-                                          Colors.black.withOpacity(0.5),
-                                      showPrefixIcon: true,
-                                      textColor: Colors.black.withOpacity(0.7),
-                                      hintColor: Colors.grey.withOpacity(0.7),
-                                      borderFocusColor: Colors.white,
-                                      borderColor: Colors.white,
-                                      borderRadius: 0,
-                                      borderErrorColor: Colors.white,
-                                      errorBorderWidth: 0,
-                                      focusedErrorBorderWidth: 0,
-                                      borderFocusedErrorColor: Colors.white,
-                                    ),
-                                  ),
-                                  //////////////////////////////////////////////////////////////
-                                  Container(
-                                    // padding: const EdgeInsetsDirectional.symmetric(
-                                    //     horizontal: 5, vertical: 0),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade200))),
-                                    child: FormHelper.inputFieldWidget(
-                                      context,
-                                      "password",
-                                      "Password",
-                                      (onValidateVal) {
-                                        if (onValidateVal?.isEmpty &&
-                                            _pageState == 2) {
-                                          return "Empty Field detected";
-                                        }
-                                        return null;
-                                      },
-                                      (onSavedVal) => {
-                                        passwordSignUp = onSavedVal,
-                                      },
-                                      paddingRight: 0,
-                                      paddingLeft: 0,
-                                      paddingBottom: 0,
-                                      paddingTop: 0,
-                                      initialValue: "",
-                                      obscureText: hidePassword,
-                                      prefixIcon: const Icon(Icons.lock),
-                                      showPrefixIcon: true,
-                                      prefixIconColor:
-                                          Colors.black.withOpacity(0.5),
-                                      textColor: Colors.black.withOpacity(0.7),
-                                      hintColor: Colors.grey.withOpacity(0.7),
-                                      borderFocusColor: Colors.white,
-                                      borderColor: Colors.white,
-                                      borderRadius: 0,
-                                      suffixIcon: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            hidePassword = !hidePassword;
-                                          });
-                                        },
-                                        color: Colors.black.withOpacity(0.5),
-                                        icon: Icon(
-                                          hidePassword
-                                              ? Icons.visibility_off
-                                              : Icons.visibility,
-                                        ),
-                                      ),
-                                      borderErrorColor: Colors.white,
-                                      errorBorderWidth: 0,
-                                      focusedErrorBorderWidth: 0,
-                                      borderFocusedErrorColor: Colors.white,
-                                    ),
-                                  ),
-                                  Container(
-                                    // padding: const EdgeInsetsDirectional.symmetric(
-                                    //     horizontal: 5, vertical: 0),
-                                    decoration: BoxDecoration(
-                                        border: Border(
-                                            bottom: BorderSide(
-                                                color: Colors.grey.shade200))),
-                                    child: FormHelper.inputFieldWidget(
-                                      context,
-                                      "confirm password",
-                                      "Confirm Password",
-                                      (onValidateVal) {
-                                        if (onValidateVal?.isEmpty &&
-                                            _pageState == 2) {
-                                          return "Empty Field detected";
-                                        }
-                                        return null;
-                                      },
-                                      (onSavedVal) => {
-                                        confirmPasswordSignUp = onSavedVal,
-                                      },
-                                      paddingRight: 0,
-                                      paddingLeft: 0,
-                                      paddingBottom: 0,
-                                      paddingTop: 0,
-                                      initialValue: "",
-                                      obscureText: hidePassword,
-                                      prefixIcon: const Icon(Icons.lock),
-                                      showPrefixIcon: true,
-                                      prefixIconColor:
-                                          Colors.black.withOpacity(0.5),
-                                      textColor: Colors.black.withOpacity(0.7),
-                                      hintColor: Colors.grey.withOpacity(0.7),
-                                      borderFocusColor: Colors.white,
-                                      borderColor: Colors.white,
-                                      borderRadius: 0,
-                                      suffixIcon: IconButton(
-                                        onPressed: () {
-                                          setState(() {
-                                            hidePassword = !hidePassword;
-                                          });
-                                        },
-                                        color: Colors.black.withOpacity(0.5),
-                                        icon: Icon(
-                                          hidePassword
-                                              ? Icons.visibility_off
-                                              : Icons.visibility,
-                                        ),
-                                      ),
-                                      borderErrorColor: Colors.white,
-                                      errorBorderWidth: 0,
-                                      focusedErrorBorderWidth: 0,
-                                      borderFocusedErrorColor: Colors.white,
-                                    ),
-                                  ),
-                                ],
+                              /////////////////////////////////////////////////////////////////////////////////
+                              Container(
+                                // padding: const EdgeInsetsDirectional.symmetric(
+                                //     horizontal: 5, vertical: 0),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: Colors.grey.shade200))),
+                                child: FormHelper.inputFieldWidget(
+                                  context,
+                                  "email",
+                                  "Email",
+                                  (onValidateVal) {
+                                    if (onValidateVal?.isEmpty &&
+                                        _pageState == 2) {
+                                      return "Empty Field detected";
+                                    }
+                                    return null;
+                                  },
+                                  (onSavedval) {
+                                    emailSignUp = onSavedval;
+                                  },
+                                  paddingRight: 0,
+                                  paddingLeft: 0,
+                                  paddingBottom: 0,
+                                  paddingTop: 0,
+                                  initialValue: "",
+                                  obscureText: false,
+                                  prefixIcon: const Icon(Icons.mail),
+                                  prefixIconColor:
+                                      Colors.black.withOpacity(0.5),
+                                  showPrefixIcon: true,
+                                  textColor: Colors.black.withOpacity(0.7),
+                                  hintColor: Colors.grey.withOpacity(0.7),
+                                  borderFocusColor: Colors.white,
+                                  borderColor: Colors.white,
+                                  borderRadius: 0,
+                                  borderErrorColor: Colors.white,
+                                  errorBorderWidth: 0,
+                                  focusedErrorBorderWidth: 0,
+                                  borderFocusedErrorColor: Colors.white,
+                                ),
                               ),
-                            )),
+                              //////////////////////////////////////////////////////////////
+                              Container(
+                                // padding: const EdgeInsetsDirectional.symmetric(
+                                //     horizontal: 5, vertical: 0),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: Colors.grey.shade200))),
+                                child: FormHelper.inputFieldWidget(
+                                  context,
+                                  "password",
+                                  "Password",
+                                  (onValidateVal) {
+                                    if (onValidateVal?.isEmpty &&
+                                        _pageState == 2) {
+                                      return "Empty Field detected";
+                                    }
+                                    return null;
+                                  },
+                                  (onSavedVal) => {
+                                    passwordSignUp = onSavedVal,
+                                  },
+                                  paddingRight: 0,
+                                  paddingLeft: 0,
+                                  paddingBottom: 0,
+                                  paddingTop: 0,
+                                  initialValue: "",
+                                  obscureText: hidePassword,
+                                  prefixIcon: const Icon(Icons.lock),
+                                  showPrefixIcon: true,
+                                  prefixIconColor:
+                                      Colors.black.withOpacity(0.5),
+                                  textColor: Colors.black.withOpacity(0.7),
+                                  hintColor: Colors.grey.withOpacity(0.7),
+                                  borderFocusColor: Colors.white,
+                                  borderColor: Colors.white,
+                                  borderRadius: 0,
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        hidePassword = !hidePassword;
+                                      });
+                                    },
+                                    color: Colors.black.withOpacity(0.5),
+                                    icon: Icon(
+                                      hidePassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                    ),
+                                  ),
+                                  borderErrorColor: Colors.white,
+                                  errorBorderWidth: 0,
+                                  focusedErrorBorderWidth: 0,
+                                  borderFocusedErrorColor: Colors.white,
+                                ),
+                              ),
+                              Container(
+                                // padding: const EdgeInsetsDirectional.symmetric(
+                                //     horizontal: 5, vertical: 0),
+                                decoration: BoxDecoration(
+                                    border: Border(
+                                        bottom: BorderSide(
+                                            color: Colors.grey.shade200))),
+                                child: FormHelper.inputFieldWidget(
+                                  context,
+                                  "confirm password",
+                                  "Confirm Password",
+                                  (onValidateVal) {
+                                    if (onValidateVal?.isEmpty &&
+                                        _pageState == 2) {
+                                      return "Empty Field detected";
+                                    }
+                                    return null;
+                                  },
+                                  (onSavedVal) => {
+                                    confirmPasswordSignUp = onSavedVal,
+                                  },
+                                  paddingRight: 0,
+                                  paddingLeft: 0,
+                                  paddingBottom: 0,
+                                  paddingTop: 0,
+                                  initialValue: "",
+                                  obscureText: hidePassword,
+                                  prefixIcon: const Icon(Icons.lock),
+                                  showPrefixIcon: true,
+                                  prefixIconColor:
+                                      Colors.black.withOpacity(0.5),
+                                  textColor: Colors.black.withOpacity(0.7),
+                                  hintColor: Colors.grey.withOpacity(0.7),
+                                  borderFocusColor: Colors.white,
+                                  borderColor: Colors.white,
+                                  borderRadius: 0,
+                                  suffixIcon: IconButton(
+                                    onPressed: () {
+                                      setState(() {
+                                        hidePassword = !hidePassword;
+                                      });
+                                    },
+                                    color: Colors.black.withOpacity(0.5),
+                                    icon: Icon(
+                                      hidePassword
+                                          ? Icons.visibility_off
+                                          : Icons.visibility,
+                                    ),
+                                  ),
+                                  borderErrorColor: Colors.white,
+                                  errorBorderWidth: 0,
+                                  focusedErrorBorderWidth: 0,
+                                  borderFocusedErrorColor: Colors.white,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -795,12 +799,10 @@ class _MainScreenState extends State<MainScreen> {
                         const SizedBox(
                           height: 20,
                         ),
-                        const FadeAnimation(
-                            1.7,
-                            Text(
-                              "Signup with Google or OTP",
-                              style: TextStyle(color: Colors.grey),
-                            )),
+                        const Text(
+                          "Signup with Google or OTP",
+                          style: TextStyle(color: Colors.grey),
+                        ),
                         const SizedBox(
                           height: 20,
                         ),
@@ -809,49 +811,42 @@ class _MainScreenState extends State<MainScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: <Widget>[
-                              FadeAnimation(
-                                1.9,
-                                Platform.isAndroid
-                                    ? MaterialButton(
-                                        onPressed: () {},
-                                        color: const Color.fromARGB(
-                                            255, 234, 67, 53),
-                                        textColor: Colors.white,
-                                        padding: const EdgeInsets.all(14),
-                                        shape: const CircleBorder(),
-                                        child: const Icon(
-                                          FontAwesomeIcons.google,
-                                          size: 19,
-                                        ),
-                                      )
-                                    : MaterialButton(
-                                        onPressed: () {},
-                                        color: const Color.fromARGB(
-                                            255, 255, 255, 255),
-                                        textColor:
-                                            Colors.black.withOpacity(0.7),
-                                        padding: const EdgeInsets.all(14),
-                                        shape: const CircleBorder(),
-                                        child: const Icon(
-                                          FontAwesomeIcons.apple,
-                                          size: 19,
-                                        ),
+                              Platform.isAndroid
+                                  ? MaterialButton(
+                                      onPressed: () {},
+                                      color: const Color.fromARGB(
+                                          255, 234, 67, 53),
+                                      textColor: Colors.white,
+                                      padding: const EdgeInsets.all(14),
+                                      shape: const CircleBorder(),
+                                      child: const Icon(
+                                        FontAwesomeIcons.google,
+                                        size: 19,
                                       ),
-                              ),
-                              FadeAnimation(
-                                  1.9,
-                                  MaterialButton(
-                                    onPressed: () {},
-                                    color:
-                                        const Color.fromARGB(255, 52, 168, 83),
-                                    textColor: Colors.white,
-                                    padding: const EdgeInsets.all(14),
-                                    shape: const CircleBorder(),
-                                    child: const Icon(
-                                      FontAwesomeIcons.mobileScreenButton,
-                                      size: 19,
+                                    )
+                                  : MaterialButton(
+                                      onPressed: () {},
+                                      color: const Color.fromARGB(
+                                          255, 255, 255, 255),
+                                      textColor: Colors.black.withOpacity(0.7),
+                                      padding: const EdgeInsets.all(14),
+                                      shape: const CircleBorder(),
+                                      child: const Icon(
+                                        FontAwesomeIcons.apple,
+                                        size: 19,
+                                      ),
                                     ),
-                                  )),
+                              MaterialButton(
+                                onPressed: () {},
+                                color: const Color.fromARGB(255, 52, 168, 83),
+                                textColor: Colors.white,
+                                padding: const EdgeInsets.all(14),
+                                shape: const CircleBorder(),
+                                child: const Icon(
+                                  FontAwesomeIcons.mobileScreenButton,
+                                  size: 19,
+                                ),
+                              ),
                             ],
                           ),
                         ),
@@ -868,23 +863,20 @@ class _MainScreenState extends State<MainScreen> {
                               _pageState = 1;
                             });
                           },
-                          child: FadeAnimation(
-                            1.5,
-                            Row(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  const Text(
-                                    "Already Have an Account? ",
-                                    style: TextStyle(color: Colors.grey),
-                                  ),
-                                  Text(
-                                    "Login",
-                                    style: TextStyle(
-                                        color: Colors.blue.shade900,
-                                        fontWeight: FontWeight.bold),
-                                  )
-                                ]),
-                          ),
+                          child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                const Text(
+                                  "Already Have an Account? ",
+                                  style: TextStyle(color: Colors.grey),
+                                ),
+                                Text(
+                                  "Login",
+                                  style: TextStyle(
+                                      color: Colors.blue.shade900,
+                                      fontWeight: FontWeight.bold),
+                                )
+                              ]),
                         ),
                       ],
                     ),

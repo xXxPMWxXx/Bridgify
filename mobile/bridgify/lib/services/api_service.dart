@@ -65,7 +65,7 @@ class APIService {
     );
   }
 
-  static Future<String> getUserProfile() async {
+  static Future<Object> getUserProfile() async {
     var loginDetails = await SharedService.loginDetails();
 
     Map<String, String> requestHeaders = {
@@ -82,7 +82,11 @@ class APIService {
     // print(response);
     // print(response.statusCode);
     if (response.statusCode == 401) {
-      return "hello ${loginDetails.data.name}";
+      return {
+        "name": loginDetails.data.name,
+        "email": loginDetails.data.email,
+        "elderly": loginDetails.data.linkedElderly
+      };
     } else {
       return "";
     }

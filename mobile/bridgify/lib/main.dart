@@ -1,10 +1,13 @@
-import 'package:bridgify/pages/login_signup_page.dart';
+import 'package:bridgify/pages/home_page.dart';
+import 'package:bridgify/pages/login_signup/login_signup_page.dart';
+import 'package:bridgify/pages/profile/profile_page.dart';
+import 'package:bridgify/pages/profile/update_profile_page.dart';
+import 'package:bridgify/services/shared_service.dart';
 import 'package:flutter/material.dart';
 
-import 'pages/home_page1.dart';
 // import 'pages/login_page.dart';
 // import 'pages/register_page.dart';
-import 'services/shared_service.dart';
+
 
 Widget _defaultHome = const MainScreen();
 
@@ -36,6 +39,8 @@ class MyApp extends StatelessWidget {
         '/': (context) => _defaultHome,
         '/home': (context) => const HomePage(),
         '/login': (context) => const MainScreen(),
+        '/profile': (context) => const ProfilePage(),
+        '/settings': (context) => const SettingsPage(),
       },
     );
   }

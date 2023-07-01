@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:bridgify/services/shared_service.dart';
+import 'dart:core';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -41,11 +42,23 @@ class _HomePageState extends State<HomePage> {
       future: APIService.getUserProfile(),
       builder: (
         BuildContext context,
-        AsyncSnapshot<String> model,
+        AsyncSnapshot<Object> model,
       ) {
         if (model.hasData) {
+          var userProfileData = model.data as Map<String, dynamic>;
+
+          var userName = userProfileData["name"];
+          var userEmail = userProfileData["email"];
           print(model.data);
-          return Center(child: Text(model.data!));
+          return Center(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Text('Name: $userName'),
+                Text('Email: $userEmail'),
+              ],
+            ),
+          );
         }
 
         return const Center(
