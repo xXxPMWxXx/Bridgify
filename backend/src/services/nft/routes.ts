@@ -23,31 +23,6 @@ const checkFileType = function (file: any, cb: any) {
     }
 };
 
-//return current date time as => YYYY-MM-DD HH:MM:SS
-function getCurrentData() {
-    let date_ob = new Date();
-    // current date
-    // adjust 0 before single digit date
-    let date = ("0" + date_ob.getDate()).slice(-2);
-
-    // current month
-    let month = ("0" + (date_ob.getMonth() + 1)).slice(-2);
-
-    // current year
-    let year = date_ob.getFullYear();
-
-    // current hours
-    let hours = date_ob.getHours();
-
-    // current minutes
-    let minutes = date_ob.getMinutes();
-
-    // current seconds
-    let seconds = date_ob.getSeconds();
-
-    const currentTime = year + "-" + month + "-" + date + " " + hours + ":" + minutes + ":" + seconds;
-    return currentTime;
-}
 
 //Setting storage engine
 const storageEngine = multer.diskStorage({
@@ -65,11 +40,6 @@ const upload = multer({
         checkFileType(file, cb);
     },
 });
-
-
-nftRouter.route('/createNFTMetadata').post(controller.createNFTMetadata);
-
-nftRouter.route('/getMetadata').get(controller.getMetadata);
 
 //for uploading file
 nftRouter.post("/uploadImage", upload.single("image"), controller.uploadImage);
