@@ -115,3 +115,36 @@ export const userProfile = async (
 ) => {
   res.status(401).json({ message: "Authorized User!!" });
 };
+
+
+export const update = async (req: any, res: Response, next: NextFunction) => {
+  // 1. get token from req
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+  // 2. verify token with secret key
+  jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+    // 3. update user details based on email
+    const { email, name, password} = req.body;
+    if (decoded) {
+      // 4. check if valid user email
+      const user = await UserModel.collection.findOne({ email: email });
+      if (user == null) {
+        return res
+          .status(400)
+          .json({ message: `User email: ${email} does not exit!` });
+      }
+      try {
+        // 5. hash password if user exists
+        const hashedPassword = await bcrypt.hash(password, 10);
+        await UserModel.updateOne({ email: email }, {name: name, password: hashedPassword});
+        res.status(200).send({ message: `User email : ${email} updated successfully` });
+      } catch (error) {
+        res.status(400).json({ error: "Update fail, please try again later" });
+      }
+
+    } else if (err) {
+      res.status(401).json({ error: "You must have a valid token" });
+    }
+  });
+};

@@ -20,3 +20,6 @@ userRouter.route('/getall').get(controller.getall);
 
 /** GET /api/user/user-profile */
 userRouter.route('/user-profile').get(controller.userProfile);
+
+/**  PUT /api/user/update*/
+userRouter.route('/update').put(controller.update);
