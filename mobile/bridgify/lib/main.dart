@@ -1,7 +1,8 @@
 import 'package:bridgify/pages/home_page.dart';
 import 'package:bridgify/pages/login_signup/login_signup_page.dart';
+import 'package:bridgify/pages/login_signup/otp_page.dart';
 import 'package:bridgify/pages/profile/profile_page.dart';
-import 'package:bridgify/pages/profile/update_profile_page.dart';
+import 'package:bridgify/pages/profile/settings_page.dart';
 import 'package:bridgify/services/shared_service.dart';
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: const HiddenDrawer(),
+      // home: const OTPPage(),
       routes: {
         '/': (context) => _defaultHome,
         '/home': (context) => const HomePage(),

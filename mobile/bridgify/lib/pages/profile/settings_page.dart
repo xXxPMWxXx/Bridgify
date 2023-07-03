@@ -1,6 +1,6 @@
 import 'package:bridgify/accessories/profile/account_option_row.dart';
 import 'package:bridgify/accessories/profile/notification_option_row.dart';
-import 'package:bridgify/pages/profile/profile_page.dart';
+import 'package:bridgify/services/shared_service.dart';
 import 'package:flutter/material.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -19,8 +19,7 @@ class _SettingsPageState extends State<SettingsPage> {
         backgroundColor: Theme.of(context).scaffoldBackgroundColor,
         leading: IconButton(
           onPressed: () {
-            Navigator.of(context).push(MaterialPageRoute(
-                builder: (BuildContext context) => ProfilePage()));
+            Navigator.pop(context);
           },
           icon: const Icon(
             Icons.arrow_back_ios,
@@ -41,10 +40,7 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               const Row(
                 children: [
-                  Icon(
-                    Icons.person,
-                    color: Color(0xFF27c1a9)
-                  ),
+                  Icon(Icons.person, color: Color(0xFF27c1a9)),
                   SizedBox(
                     width: 8,
                   ),
@@ -61,7 +57,6 @@ class _SettingsPageState extends State<SettingsPage> {
               const SizedBox(
                 height: 10,
               ),
-              BuildAccountOptionRow(title: "Change Password"),
               BuildAccountOptionRow(title: "Content Settings"),
               BuildAccountOptionRow(title: "Social"),
               BuildAccountOptionRow(title: "Language"),
@@ -104,7 +99,9 @@ class _SettingsPageState extends State<SettingsPage> {
                             const EdgeInsets.symmetric(horizontal: 60)),
                         shape: MaterialStateProperty.all(RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(20)))),
-                    onPressed: () {},
+                    onPressed: () {
+                      SharedService.logout(context);
+                    },
                     child: const Text(
                       "SIGN OUT",
                       style: TextStyle(

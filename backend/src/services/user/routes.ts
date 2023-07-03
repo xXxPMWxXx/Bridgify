@@ -22,4 +22,4 @@ userRouter.route('/getall').get(controller.getall);
 userRouter.route('/user-profile').get(controller.userProfile);
 
 /**  PUT /api/user/update*/
-userRouter.route('/update').put(controller.update);
+userRouter.route('/update').put(controller.updateUser);

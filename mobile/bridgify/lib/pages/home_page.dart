@@ -1,7 +1,6 @@
 import 'package:bridgify/accessories/avatar_builder.dart';
-import 'package:bridgify/accessories/drawer_item.dart';
-import 'package:bridgify/accessories/user_avatar.dart';
-import 'package:bridgify/pages/profile/profile_page.dart';
+import 'package:bridgify/accessories/drawer/drawer_item.dart';
+import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
 
@@ -48,9 +47,13 @@ class _HomePageState extends State<HomePage> {
                         ),
                         GestureDetector(
                           onTap: () {
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (BuildContext context) =>
-                                    const ProfilePage()));
+                            Navigator.pushNamed(
+                              context,
+                              '/profile',
+                            );
+                            // Navigator.of(context).push(MaterialPageRoute(
+                            //     builder: (BuildContext context) =>
+                            //         const ProfilePage()));
                           },
                           child: const UserAvatar(
                               filename: 'img1.jpeg', radius: 20),
@@ -159,66 +162,73 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.of(context).push(MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const ProfilePage()));
-                      },
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          UserAvatar(filename: 'img1.jpeg', radius: 32),
-                          SizedBox(
-                            width: 12,
-                          ),
-                          FutureBuilder(
-                              future: APIService.getUserProfile(),
-                              builder: (
-                                BuildContext context,
-                                AsyncSnapshot<Object> model,
-                              ) {
-                                if (model.hasData) {
-                                  var userProfileData =
-                                      model.data as Map<String, dynamic>;
+                    // GestureDetector(
+                    //   onTap: () {
+                    //     Navigator.pushNamed(
+                    //       context,
+                    //       '/profile',
+                    //     );
+                    //     // Navigator.of(context).push(
+                    //     //   MaterialPageRoute(
+                    //     //       builder: (BuildContext context) =>
+                    //     //           const ProfilePage()),
+                    //     // );
+                    //   },
+                    //   child: Row(
+                    //     mainAxisAlignment: MainAxisAlignment.center,
+                    //     children: [
+                    //       UserAvatar(filename: 'img1.jpeg', radius: 32),
+                    //       SizedBox(
+                    //         width: 12,
+                    //       ),
+                    //       // FutureBuilder(
+                    //       //     future: APIService.getUserProfile(),
+                    //       //     builder: (
+                    //       //       BuildContext context,
+                    //       //       AsyncSnapshot<Object> model,
+                    //       //     ) {
+                    //       //       if (model.hasData) {
+                    //       //         var userProfileData =
+                    //       //             model.data as Map<String, dynamic>;
 
-                                  var userName = userProfileData["name"];
-                                  var userEmail = userProfileData["email"];
-                                  print(model.data);
-                                  return Flexible(
-                                    child: Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      children: [
-                                        Text(
-                                          userName,
-                                          style: TextStyle(color: Colors.white),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                        Text(
-                                          userEmail,
-                                          // softWrap: true,
-                                          style: TextStyle(
-                                            color: Colors.white,
-                                          ),
-                                          overflow: TextOverflow.ellipsis,
-                                          maxLines: 1,
-                                        ),
-                                      ],
-                                    ),
-                                  );
-                                }
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }),
-                          SizedBox(
-                            width: 20,
-                          ),
-                        ],
-                      ),
-                    ),
+                    //       //         var userName = userProfileData["name"];
+                    //       //         var userEmail = userProfileData["email"];
+                    //       //         print(model.data);
+                    //       //         return Flexible(
+                    //       //           child: Column(
+                    //       //             crossAxisAlignment:
+                    //       //                 CrossAxisAlignment.start,
+                    //       //             children: [
+                    //       //               Text(
+                    //       //                 userName,
+                    //       //                 style: TextStyle(color: Colors.white),
+                    //       //                 overflow: TextOverflow.ellipsis,
+                    //       //                 maxLines: 1,
+                    //       //               ),
+                    //       //               Text(
+                    //       //                 userEmail,
+                    //       //                 // softWrap: true,
+                    //       //                 style: TextStyle(
+                    //       //                   color: Colors.white,
+                    //       //                 ),
+                    //       //                 overflow: TextOverflow.ellipsis,
+                    //       //                 maxLines: 1,
+                    //       //               ),
+                    //       //             ],
+                    //       //           ),
+                    //       //         );
+                    //       //       }
+                    //       //       return const Center(
+                    //       //         child: CircularProgressIndicator(),
+                    //       //       );
+                    //       //     },
+                    //       //     ),
+                    //       SizedBox(
+                    //         width: 20,
+                    //       ),
+                    //     ],
+                    //   ),
+                    // ),
                     const SizedBox(
                       height: 20,
                     ),

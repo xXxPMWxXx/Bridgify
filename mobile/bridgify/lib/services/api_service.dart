@@ -4,6 +4,7 @@ import 'package:bridgify/models/login_request_model.dart';
 import 'package:bridgify/models/login_response_model.dart';
 import 'package:bridgify/models/register_request_model.dart';
 import 'package:bridgify/models/register_response_model.dart';
+import 'package:bridgify/models/update_request_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../config.dart';
@@ -70,7 +71,7 @@ class APIService {
 
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
-      'Authorization': 'Basic ${loginDetails!.data.accessToken}'
+      'Authorization': 'Bearer ${loginDetails!.data.accessToken}'
     };
 
     var url = Uri.http(Config.apiURL, Config.userProfileAPI);
@@ -89,6 +90,45 @@ class APIService {
       };
     } else {
       return "";
+    }
+  }
+
+  static Future<bool> update(
+    UpdateUserRequestModel model,
+  ) async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url = Uri.http(
+      Config.apiURL,
+      Config.updateAPI,
+    );
+    print(url);
+
+    var response = await client.put(url,
+        headers: requestHeaders,
+        body: jsonEncode(model.toJson()),
+        encoding: utf8);
+
+    if (response.statusCode == 200) {
+      var jsonResponse = json.decode(response.body);
+      var jsonData = jsonResponse['data'];
+      jsonData['accessToken'] = currentLoginDetails!.data.accessToken;
+      var updatedResponse = {
+        "message": jsonResponse["message"],
+        "data": jsonData
+      };
+      String updatedResponseBody = json.encode(updatedResponse);
+      await SharedService.setLoginDetails(
+        loginResponseJson(updatedResponseBody),
+      );
+
+      return true;
+    } else {
+      return false;
     }
   }
 }

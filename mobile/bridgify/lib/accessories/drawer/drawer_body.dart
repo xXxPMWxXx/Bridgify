@@ -1,5 +1,5 @@
-import 'package:bridgify/accessories/user_avatar.dart';
-import 'package:bridgify/accessories/drawer_item.dart';
+import 'package:bridgify/accessories/profile/user_avatar.dart';
+import 'package:bridgify/accessories/drawer/drawer_item.dart';
 import 'package:flutter/material.dart';
 
 class DrawerBody extends StatefulWidget {

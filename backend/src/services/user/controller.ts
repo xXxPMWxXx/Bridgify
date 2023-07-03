@@ -117,8 +117,10 @@ export const userProfile = async (
 };
 
 
-export const update = async (req: any, res: Response, next: NextFunction) => {
+export const updateUser = async (req: any, res: Response, next: NextFunction) => {
   // 1. get token from req
+  console.log(req.body);
+  console.log(req.head);
   const token =
     req.headers.authorization && req.headers.authorization.split(" ")[1];
 
@@ -126,6 +128,7 @@ export const update = async (req: any, res: Response, next: NextFunction) => {
   jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
     // 3. update user details based on email
     const { email, name, password} = req.body;
+    
     if (decoded) {
       // 4. check if valid user email
       const user = await UserModel.collection.findOne({ email: email });
@@ -138,7 +141,14 @@ export const update = async (req: any, res: Response, next: NextFunction) => {
         // 5. hash password if user exists
         const hashedPassword = await bcrypt.hash(password, 10);
         await UserModel.updateOne({ email: email }, {name: name, password: hashedPassword});
-        res.status(200).send({ message: `User email : ${email} updated successfully` });
+
+        // get current user details with new access token
+        const currentUser = await UserModel.collection.findOne({email: email});
+        // const accessToken = jwt.sign({ data: email }, jwt_secret, {
+        //   expiresIn: "1d",
+        // });
+        const results = { ...currentUser/*, accessToken*/ };
+        res.status(200).send({ message: "Success", data: results });
       } catch (error) {
         res.status(400).json({ error: "Update fail, please try again later" });
       }

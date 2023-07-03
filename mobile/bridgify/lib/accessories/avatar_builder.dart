@@ -1,4 +1,4 @@
-import 'package:bridgify/accessories/user_avatar.dart';
+import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:flutter/material.dart';
 
 class BuildContactAvatar extends StatefulWidget {

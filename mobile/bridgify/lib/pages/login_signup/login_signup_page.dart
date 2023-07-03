@@ -22,7 +22,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  bool isAPIcallProcess = false;
+  bool isAPICallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String? emailLogin;
@@ -62,16 +62,17 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-          backgroundColor: HexColor("#225518"),
-          body: ProgressHUD(
-            inAsyncCall: isAPIcallProcess,
-            opacity: 0.3,
-            key: UniqueKey(),
-            child: Form(
-              key: globalFormKey,
-              child: _loginUI(context),
-            ),
-          )),
+        backgroundColor: HexColor("#225518"),
+        body: ProgressHUD(
+          inAsyncCall: isAPICallProcess,
+          opacity: 0.3,
+          key: UniqueKey(),
+          child: Form(
+            key: globalFormKey,
+            child: _loginUI(context),
+          ),
+        ),
+      ),
     );
   }
 
@@ -156,9 +157,12 @@ class _MainScreenState extends State<MainScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  const Text(
-                    "Log In to Begin",
-                    style: TextStyle(fontSize: 20),
+                  FadeAnimation(
+                    1.4,
+                    const Text(
+                      "Log In to Begin",
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Column(
@@ -322,7 +326,7 @@ class _MainScreenState extends State<MainScreen> {
                             () {
                               if (validateAndSave()) {
                                 setState(() {
-                                  isAPIcallProcess = true;
+                                  isAPICallProcess = true;
                                 });
 
                                 LoginRequestModel model = LoginRequestModel(
@@ -333,14 +337,13 @@ class _MainScreenState extends State<MainScreen> {
                                 APIService.login(model).then(
                                   (response) {
                                     setState(() {
-                                      isAPIcallProcess = false;
+                                      isAPICallProcess = false;
                                     });
 
                                     if (response) {
-                                      Navigator.pushNamedAndRemoveUntil(
+                                      Navigator.pushNamed(
                                         context,
                                         '/home',
-                                        (route) => false,
                                       );
                                     } else {
                                       FormHelper.showSimpleAlertDialog(
@@ -357,8 +360,8 @@ class _MainScreenState extends State<MainScreen> {
                                 );
                               }
                             },
-                            btnColor: HexColor("225518"),
-                            borderColor: HexColor("225518"),
+                            btnColor: HexColor("207A35"),
+                            borderColor: HexColor("207A35"),
                             txtColor: Colors.white,
                             borderRadius: 20,
                             fontWeight: FontWeight.bold,
@@ -724,7 +727,7 @@ class _MainScreenState extends State<MainScreen> {
                                 );
                               } else if (validateAndSave()) {
                                 setState(() {
-                                  isAPIcallProcess = true;
+                                  isAPICallProcess = true;
                                 });
 
                                 RegisterRequestModel model =
@@ -734,13 +737,13 @@ class _MainScreenState extends State<MainScreen> {
                                         password: passwordSignUp!);
                                 APIService.register(model).then((response) {
                                   setState(() {
-                                    isAPIcallProcess = false;
+                                    isAPICallProcess = false;
                                   });
 
                                   if (response.data != null) {
                                     if (validateAndSave()) {
                                       setState(() {
-                                        isAPIcallProcess = true;
+                                        isAPICallProcess = true;
                                       });
 
                                       LoginRequestModel model =
@@ -752,14 +755,13 @@ class _MainScreenState extends State<MainScreen> {
                                       APIService.login(model).then(
                                         (response) {
                                           setState(() {
-                                            isAPIcallProcess = false;
+                                            isAPICallProcess = false;
                                           });
 
                                           if (response) {
-                                            Navigator.pushNamedAndRemoveUntil(
+                                            Navigator.pushNamed(
                                               context,
                                               '/home',
-                                              (route) => false,
                                             );
                                           } else {
                                             FormHelper.showSimpleAlertDialog(
@@ -789,8 +791,8 @@ class _MainScreenState extends State<MainScreen> {
                                 });
                               }
                             },
-                            btnColor: HexColor("225518"),
-                            borderColor: HexColor("225518"),
+                            btnColor: HexColor("207A35"),
+                            borderColor: HexColor("207A35"),
                             txtColor: Colors.white,
                             borderRadius: 20,
                             fontWeight: FontWeight.bold,
