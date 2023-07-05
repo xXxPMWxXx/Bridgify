@@ -43,3 +43,4 @@ const upload = multer({
 
 //for uploading file
 nftRouter.post("/uploadImage", upload.single("image"), controller.uploadImage);
+nftRouter.post("/test",controller.test);

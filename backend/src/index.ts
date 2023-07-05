@@ -6,11 +6,9 @@ import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 var fileupload = require("express-fileupload");
 
-// const fileUpload = require("express-fileupload");
 
 
-//test for face api
-// const tf = require("@tensorflow/tfjs-node");
+
 
 const faceapi = require("@vladmandic/face-api/dist/face-api.node.js");
 const mongoose = require("mongoose");
