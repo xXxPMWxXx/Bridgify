@@ -5,8 +5,9 @@ const path = require("path");
 const tf = require("@tensorflow/tfjs-node");
 const faceapi = require("@vladmandic/face-api/dist/face-api.node.js");
 const faceApiService = require("./utils/faceapiService");
-const  FaceModel = require('../../models/face');
+const FaceModel = require('../../models/face');
 
+const baseDir = path.resolve(__dirname, "../../..");
 
 export const upload = async (req: any, res: Response, next: NextFunction) => {
     console.log("---")
@@ -72,19 +73,26 @@ async function uploadLabeledImages(images: any, label: any) {
 export const postface = async (req: any, res: any, next: NextFunction) => {
     try {
         const { file } = req.files;
+        // TODO:implement if file is null etc
+        // If no image submitted, exit
+        console.log(__dirname);
+        console.log(baseDir);
+        // Move the uploaded image to our upload folder
+        file.mv(baseDir + '/elderly/' + file.name);
+
         const label = req.body.label
         let result = await uploadLabeledImages(file.data, label);
         if (result) {
-    
+
             return res.status(200).json({ message: "Face data stored successfully" })
         } else {
             return res.status(400).json({ message: "Something went wrong, please try again." })
-    
+
         }
-        
+
     } catch (error) {
         console.log(error)
-        return res.status(400).json({ "Message" : "Please make sure the input file is valid type" });
+        return res.status(400).json({ "Message": "Please make sure the input file is valid type" });
     }
 }
 
@@ -125,12 +133,14 @@ async function getDescriptorsFromDB(file: any) {
 export const checkface = async (req: any, res: any, next: NextFunction) => {
     try {
         const { file } = req.files;
+        // Move the uploaded image to our upload folder
+        file.mv(baseDir + '/images/' + file.name);
         let result = await getDescriptorsFromDB(file.data);
         return res.status(200).json({ result });
-        
+
     } catch (error) {
         console.log(error)
-        return res.status(400).json({ "Message" : "Please make sure the input file is valid type" });
+        return res.status(400).json({ "Message": "Please make sure the input file is valid type" });
     }
 
 };
