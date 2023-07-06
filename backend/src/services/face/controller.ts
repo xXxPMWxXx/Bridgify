@@ -23,7 +23,7 @@ export const upload = async (req: any, res: Response, next: NextFunction) => {
 
     res.json({
         detectedFaces: result.length,
-        url: `http://localhost:8000/out/${file.name}`,
+        url: `http://localhost:8000/images/out/${file.name}`,
     });
 };
 
@@ -61,11 +61,15 @@ async function uploadLabeledImages(images: any, label: any) {
             label: label,
             descriptions: descriptions,
         });
-        await createFace.save();
-        return true;
+        try {
+            await createFace.save();
+            return true;
+        } catch (error) {
+            return false;
+        }
     } catch (error) {
         console.log(error);
-        return (error);
+        return false;
     }
 }
 // http://localhost:8000/api/face/post-face
@@ -77,55 +81,61 @@ export const postface = async (req: any, res: any, next: NextFunction) => {
         // If no image submitted, exit
         console.log(__dirname);
         console.log(baseDir);
-        // Move the uploaded image to our upload folder
-        file.mv(baseDir + '/elderly/' + file.name);
-
+        
         const label = req.body.label
         let result = await uploadLabeledImages(file.data, label);
         if (result) {
-
-            return res.status(200).json({ message: "Face data stored successfully" })
+            
+            // Move the uploaded image to our upload folder
+            console.log(file.name);
+            file.mv(baseDir + '/images/trained_face/' + label + '.png');
+            return res.status(200).json({ message: "Face data stored successfully",
+                                            for_development_url: `http://localhost:8000/images/trained_face/${label}.png`,
+                                            for_production_url: `http://13.229.138.25:8000/images/trained_face/${label}.png`, })
         } else {
-            return res.status(400).json({ message: "Something went wrong, please try again." })
-
+            return res.status(400).json({ message: "Something went wrong, make sure your label is unique and does not existed in the DB." })
         }
-
     } catch (error) {
         console.log(error)
-        return res.status(400).json({ "Message": "Please make sure the input file is valid type" });
+        return res.status(400).json({ message: "Please make sure the input file is valid type" , error : String(error)});
     }
 }
 
 async function getDescriptorsFromDB(file: any) {
-    // Get all the face data from mongodb and loop through each of them to read the data
-    let faces = await FaceModel.find();
+    try {
+        // Get all the face data from mongodb and loop through each of them to read the data
+        let faces = await FaceModel.find();
 
-    for (let i = 0; i < faces.length; i++) {
-        // Change the face data descriptors from Objects to Float32Array type
-        for (let j = 0; j < faces[i].descriptions.length; j++) {
-            faces[i].descriptions[j] = new Float32Array(Object.values(faces[i].descriptions[j]));
+        for (let i = 0; i < faces.length; i++) {
+            // Change the face data descriptors from Objects to Float32Array type
+            for (let j = 0; j < faces[i].descriptions.length; j++) {
+                faces[i].descriptions[j] = new Float32Array(Object.values(faces[i].descriptions[j]));
+            }
+            // Turn the DB face docs to
+            faces[i] = new faceapi.LabeledFaceDescriptors(faces[i].label, faces[i].descriptions);
         }
-        // Turn the DB face docs to
-        faces[i] = new faceapi.LabeledFaceDescriptors(faces[i].label, faces[i].descriptions);
+
+        // Load face matcher to find the matching face
+        const faceMatcher = new faceapi.FaceMatcher(faces, 0.6);
+
+        // Read the image using canvas or other method
+        const img = await canvas.loadImage(file);
+        console.log(img)
+
+        let temp = faceapi.createCanvasFromMedia(img);
+        // Process the image for the model
+        const displaySize = { width: img.width, height: img.height };
+        faceapi.matchDimensions(temp, displaySize);
+
+        // Find matching faces
+        const detections = await faceapi.detectAllFaces(img).withFaceLandmarks().withFaceDescriptors();
+        const resizedDetections = faceapi.resizeResults(detections, displaySize);
+        const results = resizedDetections.map((d: any) => faceMatcher.findBestMatch(d.descriptor));
+        return results;
+
+    } catch (error) {
+        return error;
     }
-
-    // Load face matcher to find the matching face
-    const faceMatcher = new faceapi.FaceMatcher(faces, 0.6);
-
-    // Read the image using canvas or other method
-    const img = await canvas.loadImage(file);
-    console.log(img)
-
-    let temp = faceapi.createCanvasFromMedia(img);
-    // Process the image for the model
-    const displaySize = { width: img.width, height: img.height };
-    faceapi.matchDimensions(temp, displaySize);
-
-    // Find matching faces
-    const detections = await faceapi.detectAllFaces(img).withFaceLandmarks().withFaceDescriptors();
-    const resizedDetections = faceapi.resizeResults(detections, displaySize);
-    const results = resizedDetections.map((d: any) => faceMatcher.findBestMatch(d.descriptor));
-    return results;
 }
 
 
@@ -133,10 +143,16 @@ async function getDescriptorsFromDB(file: any) {
 export const checkface = async (req: any, res: any, next: NextFunction) => {
     try {
         const { file } = req.files;
-        // Move the uploaded image to our upload folder
-        file.mv(baseDir + '/images/' + file.name);
         let result = await getDescriptorsFromDB(file.data);
-        return res.status(200).json({ result });
+
+        // *** TODO: process the result and store relevant data into the DB
+
+        // Move the uploaded image to our post folder
+        file.mv(baseDir + '/images/post/' + file.name);
+
+        return res.status(200).json({ result ,
+            for_development_url: `http://localhost:8000/images/post/${file.name}`,
+            for_production_url: `http://13.229.138.25:8000/images/post/${file.name}`, });
 
     } catch (error) {
         console.log(error)

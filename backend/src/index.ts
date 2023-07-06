@@ -40,9 +40,6 @@ app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 // // access config var
 // process.env.TOKEN_SECRET;
 
-
-
-
 // Mount REST on /api
 app.use('/api', services);
 
