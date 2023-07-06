@@ -8,3 +8,5 @@ export const postRouter = express.Router();
 
 /** GET /api/post/test */
 postRouter.route('/test').get(controller.test);
+
+postRouter.route('/create').post(controller.create);

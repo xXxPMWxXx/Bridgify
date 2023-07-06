@@ -1,30 +1,25 @@
 import { NextFunction, Request, Response } from 'express';
 import '@tensorflow/tfjs-node';
+
 const canvas = require('canvas');
 const path = require("path");
-const tf = require("@tensorflow/tfjs-node");
 const faceapi = require("@vladmandic/face-api/dist/face-api.node.js");
-const faceApiService = require("./utils/faceapiService");
+const faceApiService = require("../../services/utils/faceapiService");
 const FaceModel = require('../../models/face');
-
 const baseDir = path.resolve(__dirname, "../../..");
 
 export const upload = async (req: any, res: Response, next: NextFunction) => {
-    console.log("---")
-    const { file } = req.files;
-
-    console.log(file);
-    let result;
     try {
-        result = await faceApiService.detect(file.data, file.name);
+        const { file } = req.files;
+        const result = await faceApiService.detect(file.data, file.name);
+        res.json({
+            detectedFaces: result.length,
+            url: `http://localhost:8000/images/out/${file.name}`,
+        });
     } catch (error) {
         res.json(error);
     }
 
-    res.json({
-        detectedFaces: result.length,
-        url: `http://localhost:8000/images/out/${file.name}`,
-    });
 };
 
 // async function image(file : any) {
@@ -72,6 +67,7 @@ async function uploadLabeledImages(images: any, label: any) {
         return false;
     }
 }
+
 // http://localhost:8000/api/face/post-face
 // app.post("/post-face", async (req: any, res: any) => {
 export const postface = async (req: any, res: any, next: NextFunction) => {
@@ -156,7 +152,7 @@ export const checkface = async (req: any, res: any, next: NextFunction) => {
 
     } catch (error) {
         console.log(error)
-        return res.status(400).json({ "Message": "Please make sure the input file is valid type" });
+        return res.status(400).json({ message: "Please make sure the input file is valid type" , error : String(error)});
     }
 
 };
