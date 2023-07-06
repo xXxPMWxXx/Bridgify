@@ -9,7 +9,6 @@ import 'package:flutter/material.dart';
 // import 'pages/login_page.dart';
 // import 'pages/register_page.dart';
 
-
 Widget _defaultHome = const MainScreen();
 
 void main() async {
@@ -35,14 +34,14 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      // home: const OTPPage(),
-      routes: {
-        '/': (context) => _defaultHome,
-        '/home': (context) => const HomePage(),
-        '/login': (context) => const MainScreen(),
-        '/profile': (context) => const ProfilePage(),
-        '/settings': (context) => const SettingsPage(),
-      },
+      home: const OTPPage(),
+      // routes: {
+      //   '/': (context) => _defaultHome,
+      //   '/home': (context) => const HomePage(),
+      //   '/login': (context) => const MainScreen(),
+      //   '/profile': (context) => const ProfilePage(),
+      //   '/settings': (context) => const SettingsPage(),
+      // },
     );
   }
 }

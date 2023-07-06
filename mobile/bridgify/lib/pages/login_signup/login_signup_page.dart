@@ -866,19 +866,20 @@ class _MainScreenState extends State<MainScreen> {
                             });
                           },
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Already Have an Account? ",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                Text(
-                                  "Login",
-                                  style: TextStyle(
-                                      color: Colors.blue.shade900,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ]),
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Already Have an Account? ",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Text(
+                                "Login",
+                                style: TextStyle(
+                                    color: Colors.blue.shade900,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),

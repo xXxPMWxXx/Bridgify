@@ -132,7 +132,7 @@ export const updateUser = async (req: any, res: Response, next: NextFunction) =>
   // 2. verify token with secret key
   jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
     // 3. update user details based on email
-    const { email, name, password} = req.body;
+    const { profileImage, email, name, password} = req.body;
     
     if (decoded) {
       // 4. check if valid user email
@@ -149,11 +149,8 @@ export const updateUser = async (req: any, res: Response, next: NextFunction) =>
 
         // get current user details with new access token
         const currentUser = await UserModel.collection.findOne({email: email});
-        // const accessToken = jwt.sign({ data: email }, jwt_secret, {
-        //   expiresIn: "1d",
-        // });
-        const results = { ...currentUser/*, accessToken*/ };
-        res.status(200).send({ message: "Success", data: results });
+
+        res.status(200).send({ message: "Success", data: { ...currentUser } });
       } catch (error) {
         res.status(400).json({ error: "Update fail, please try again later" });
       }
@@ -162,4 +159,4 @@ export const updateUser = async (req: any, res: Response, next: NextFunction) =>
       res.status(401).json({ error: "You must have a valid token" });
     }
   });
-};
+}

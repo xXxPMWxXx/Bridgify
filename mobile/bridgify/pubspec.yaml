@@ -40,6 +40,7 @@ dependencies:
   snippet_coder_utils: ^1.0.14
   font_awesome_flutter: ^10.4.0
   simple_animations: ^4.2.0
+  pinput: ^2.2.11
 
 dev_dependencies:
   flutter_test:
