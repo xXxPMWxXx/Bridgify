@@ -19,11 +19,11 @@ SMU .HEAP 2023 G14
 ##### Debugging
 - `npm rebuild @tensorflow/tfjs-node --build-from-source` => for backend, as tfjs-node need this cmd to work
 
-###### Managing a signle seesion
+###### Managing a signle session
 - `tmux` => to start a session
 - `tmux attach` => to reconnect to the seesion, after login to new ssh
 
-###### Managing a signle seesion
+###### Managing a multiple session
 - `tmux new-session -s session_name` => Start(and connect to) a new named session
 - `tmux list-sessions` => List all active sessions
 - `tmux attach-session -t session_name` => Connect to a named session
