@@ -68,7 +68,26 @@ export const create = async (req: any, res: any, next: NextFunction) => {
         //variable to store into DB
         var elderlyInvolved: String[] = [];
         var postImages: String[] = [];
-        var imagesCount = 0;
+        var imagesCount = 1;
+
+        // for one image
+        if(images.name != undefined) {
+          let results = await faceService.getDescriptorsFromDB(images.data);
+
+          results.forEach((element: any) => {
+            const label = element["_label"];
+            //push known label to the faceFound
+            if (label != "unknown" && !elderlyInvolved.includes(label)) {
+              elderlyInvolved.push(label)
+            }
+          });
+          imagesCount++;
+          //store each of the image to images/post folder name format => email_date_imageCount.png 
+          //Notes : FE pass in the date as the datetime, not only the date
+          const imageName = `${author_email}_${dateTime}_${imagesCount}.png`;
+          images.mv(baseDir + `/images/post/${imageName}`);
+          postImages.push(imageName);
+        }
 
         // max 10 images
         for (let i = 0; i < 10; i++) {
@@ -94,7 +113,7 @@ export const create = async (req: any, res: any, next: NextFunction) => {
           images[i].mv(baseDir + `/images/post/${imageName}`);
           postImages.push(imageName);
         }
-
+      
         //create the DB object
         const newPost = new PostModel({
           "author_email": author_email,
