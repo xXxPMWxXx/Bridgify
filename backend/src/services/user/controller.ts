@@ -3,12 +3,13 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 import "dotenv/config";
 const bcrypt = require("bcryptjs");
+const path = require("path");
 const UserModel = require("../../models/user");
+const baseDir = path.resolve(__dirname, "../../..");
 
 const jwt_secret: any = process.env.JWT_SECRET;
 
 export const test = async (req: any, res: Response, next: NextFunction) => {
-
   try {
     // 1. get token from req
     const token =
@@ -25,7 +26,9 @@ export const test = async (req: any, res: Response, next: NextFunction) => {
       }
     });
   } catch (error) {
-    res.status(400).json({ error, message: "Make sure your request body is correct" });
+    res
+      .status(400)
+      .json({ error, message: "Make sure your request body is correct" });
   }
 };
 
@@ -57,9 +60,10 @@ export const signup = async (req: any, res: Response, next: NextFunction) => {
       .catch((error: any) => {
         return next(error);
       });
-
   } catch (error) {
-    res.status(400).json({ error, message: "Make sure your request body is correct" });
+    res
+      .status(400)
+      .json({ error, message: "Make sure your request body is correct" });
   }
 
   // UserModel.collection.insertOne({
@@ -97,15 +101,15 @@ export const login = async (req: any, res: Response, next: NextFunction) => {
     } else {
       res.status(400).send({ message: "No user found or invalid password" });
     }
-
   } catch (error) {
-    res.status(400).json({ error, message: "Make sure your request body is correct" });
+    res
+      .status(400)
+      .json({ error, message: "Make sure your request body is correct" });
   }
 };
 
 // get all users
 export const getall = async (req: any, res: Response, next: NextFunction) => {
-
   try {
     // 1. get token from req
     const token =
@@ -121,7 +125,9 @@ export const getall = async (req: any, res: Response, next: NextFunction) => {
       }
     });
   } catch (error) {
-    res.status(400).json({ error, message: "Make sure your request body is correct" });
+    res
+      .status(400)
+      .json({ error, message: "Make sure your request body is correct" });
   }
 };
 
@@ -133,18 +139,20 @@ export const userProfile = async (
   res.status(401).json({ message: "Authorized User!!" });
 };
 
-
-export const updateUser = async (req: any, res: Response, next: NextFunction) => {
+export const updateUser = async (
+  req: any,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     // 1. get token from req
-    console.log(req.body);
-    console.log(req.head);
     const token =
       req.headers.authorization && req.headers.authorization.split(" ")[1];
     // 2. verify token with secret key
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
       // 3. update user details based on email
-      const { profileImage, email, name, password } = req.body;
+      const { profileImage } = req.files
+      const { email, name, password } = req.body;
       if (decoded) {
         // 4. check if valid user email
         const user = await UserModel.collection.findOne({ email: email });
@@ -153,25 +161,51 @@ export const updateUser = async (req: any, res: Response, next: NextFunction) =>
             .status(400)
             .json({ message: `User email: ${email} does not exit!` });
         }
+        var imagePath = "";
         try {
-          // 5. hash password if user exists
-          const hashedPassword = await bcrypt.hash(password, 10);
-          await UserModel.updateOne({ email: email }, { name: name, password: hashedPassword });
-  
+          if(profileImage != null){
+            var extention_name = path.extname(profileImage.name)
+            imagePath = req.protocol + "://" + req.get("host") + '/images/user_profile/' + Date.now() + "--" + profileImage.name + extention_name
+            profileImage.mv(baseDir + '/images/user_profile/' + Date.now() + "--" + profileImage.name + extention_name);
+            console.log(imagePath);
+          }
+
+          //handle instance where password isnt changed
+          if(password == "" || password == null){
+            await UserModel.updateOne(
+              { email: email },
+              { profileImage: imagePath, name: name }
+            );
+          } else {
+            // 5. hash password if user exists
+            const hashedPassword = await bcrypt.hash(password, 10);
+            await UserModel.updateOne(
+              { email: email },
+              { profileImage: imagePath, name: name, password: hashedPassword }
+            );
+          }
+
+
           // get current user details with new access token
-          const currentUser = await UserModel.collection.findOne({ email: email });
-  
-          res.status(200).send({ message: "Success", data: { ...currentUser } });
+          const currentUser = await UserModel.collection.findOne({
+            email: email,
+          });
+
+          res
+            .status(200)
+            .send({ message: "Success", data: { ...currentUser } });
         } catch (error) {
-          res.status(400).json({ error: "Update fail, please try again later" });
+          res
+            .status(400)
+            .json({ error: "Update fail, please try again later" });
         }
-  
       } else if (err) {
         res.status(401).json({ error: "You must have a valid token" });
       }
     });
-    
   } catch (error) {
-    res.status(400).json({ error, message: "Make sure your request body is correct"});
+    res
+      .status(400)
+      .json({ error, message: "Make sure your request body is correct" });
   }
-}
+};

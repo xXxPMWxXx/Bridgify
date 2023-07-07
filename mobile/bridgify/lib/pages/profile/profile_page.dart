@@ -10,10 +10,10 @@ import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
 class ProfilePage extends StatefulWidget {
-  const ProfilePage({super.key});
+  const ProfilePage({Key? key}) : super(key: key);
 
   @override
-  State<ProfilePage> createState() => _ProfilePageState();
+  _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
@@ -152,20 +152,21 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             child: FormHelper.inputFieldWidget(
                               context,
-                              "name",
-                              "Name",
+                              "email",
+                              "Email",
                               (onValidateVal) {},
                               (onSavedVal) => {
-                                nameUpdate = onSavedVal,
+                                emailUpdate = onSavedVal,
                               },
+                              isReadonly: true,
                               paddingRight: 0,
                               paddingLeft: 0,
-                              initialValue: userName,
+                              initialValue: userEmail,
                               obscureText: false,
-                              prefixIcon: const Icon(Icons.person),
+                              prefixIcon: const Icon(Icons.mail),
                               showPrefixIcon: true,
                               prefixIconColor: Colors.black.withOpacity(0.5),
-                              textColor: Colors.black.withOpacity(0.7),
+                              textColor: Colors.grey,
                               hintColor: Colors.grey.withOpacity(0.7),
                               borderFocusColor: Colors.white,
                               borderColor: Colors.white,
@@ -184,18 +185,17 @@ class _ProfilePageState extends State<ProfilePage> {
                             ),
                             child: FormHelper.inputFieldWidget(
                               context,
-                              "email",
-                              "Email",
+                              "name",
+                              "Name",
                               (onValidateVal) {},
                               (onSavedVal) => {
-                                emailUpdate = onSavedVal,
+                                nameUpdate = onSavedVal,
                               },
-                              isReadonly: true,
                               paddingRight: 0,
                               paddingLeft: 0,
-                              initialValue: userEmail,
+                              initialValue: userName,
                               obscureText: false,
-                              prefixIcon: const Icon(Icons.mail),
+                              prefixIcon: const Icon(Icons.person),
                               showPrefixIcon: true,
                               prefixIconColor: Colors.black.withOpacity(0.5),
                               textColor: Colors.black.withOpacity(0.7),

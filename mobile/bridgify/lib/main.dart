@@ -34,14 +34,35 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: const OTPPage(),
-      // routes: {
-      //   '/': (context) => _defaultHome,
-      //   '/home': (context) => const HomePage(),
-      //   '/login': (context) => const MainScreen(),
-      //   '/profile': (context) => const ProfilePage(),
-      //   '/settings': (context) => const SettingsPage(),
-      // },
+      home: const FirstPage(),
+
+    );
+  }
+}
+
+class FirstPage extends StatefulWidget {
+  const FirstPage({super.key});
+
+  @override
+  State<FirstPage> createState() => _FirstPageState();
+}
+
+class _FirstPageState extends State<FirstPage> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Flutter Demo',
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+        primarySwatch: Colors.blue,
+      ),
+      routes: {
+      '/': (context) => _defaultHome,
+      '/home': (context) => const HomePage(),
+      '/login': (context) => const MainScreen(),
+      '/profile': (context) => const ProfilePage(),
+      '/settings': (context) => const SettingsPage(),
+    },
     );
   }
 }
