@@ -51,7 +51,6 @@ export const test = async (req: any, res: any, next: NextFunction) => {
 // to create a new post
 export const create = async (req: any, res: any, next: NextFunction) => {
 
-
   // 1. get token from req
   const token =
     req.headers.authorization && req.headers.authorization.split(" ")[1];
