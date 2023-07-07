@@ -151,7 +151,7 @@ export const updateUser = async (
     // 2. verify token with secret key
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
       // 3. update user details based on email
-      const { profileImage } = req.files
+      const { profileImage } = req.files;
       const { email, name, password } = req.body;
       if (decoded) {
         // 4. check if valid user email
@@ -163,15 +163,36 @@ export const updateUser = async (
         }
         var imagePath = "";
         try {
-          if(profileImage != null){
-            var extention_name = path.extname(profileImage.name)
-            imagePath = req.protocol + "://" + req.get("host") + '/images/user_profile/' + Date.now() + "--" + profileImage.name + extention_name
-            profileImage.mv(baseDir + '/images/user_profile/' + Date.now() + "--" + profileImage.name + extention_name);
+          if (profileImage != null) {
+            var extension_type = path.extname(profileImage.name);
+            const acceptableExtensions = [".png", ".jpg", ".jpeg"];
+            if (!acceptableExtensions.includes(extension_type)) {
+              return res
+                .status(400)
+                .json({ error: "Only .png, .jpg and .jpeg format allowed!" });
+            }
+            imagePath =
+              req.protocol +
+              "://" +
+              req.get("host") +
+              "/images/user_profile/" +
+              Date.now() +
+              "--" +
+              profileImage.name +
+              extension_type;
+            profileImage.mv(
+              baseDir +
+                "/images/user_profile/" +
+                Date.now() +
+                "--" +
+                profileImage.name +
+                extension_type
+            );
             console.log(imagePath);
           }
 
           //handle instance where password isnt changed
-          if(password == "" || password == null){
+          if (password == "" || password == null) {
             await UserModel.updateOne(
               { email: email },
               { profileImage: imagePath, name: name }
@@ -184,7 +205,6 @@ export const updateUser = async (
               { profileImage: imagePath, name: name, password: hashedPassword }
             );
           }
-
 
           // get current user details with new access token
           const currentUser = await UserModel.collection.findOne({
