@@ -8,10 +8,9 @@ const PostSchema = new Schema({
     required: true,
   },
   dateTime: {
-    type: Date,
+    type: String,
     required: true,
   },
-  // format DD/MM/YYYY
   description: {
     type: String,
     default: "No description"

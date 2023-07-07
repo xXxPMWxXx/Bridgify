@@ -7,6 +7,7 @@ const bcrypt = require("bcryptjs");
 const PostModel = require("../../models/post");
 const jwt_secret: any = process.env.JWT_SECRET;
 const faceService = require("../../services/utils/faceService");
+const getDateTime = require("../../services/utils/getDateTime");
 const path = require("path");
 const baseDir = path.resolve(__dirname, "../../..");
 
@@ -60,9 +61,10 @@ export const create = async (req: any, res: any, next: NextFunction) => {
     try {
       if (decoded) {
         // 3. allow elderly to update elderly details
-        const { author_email, dateTime, description, activity_type } = req.body;
+        const { author_email, description, activity_type } = req.body;
         const { images } = req.files;
-
+        //store in DB as String
+        const dateTime = getDateTime.now()
         //variable to store into DB
         var elderlyInvolved: String[] = [];
         var postImages: String[] = [];
@@ -93,6 +95,7 @@ export const create = async (req: any, res: any, next: NextFunction) => {
           postImages.push(imageName);
         }
 
+        //create the DB object
         const newPost = new PostModel({
           "author_email": author_email,
           "dateTime": dateTime,
@@ -129,3 +132,30 @@ export const create = async (req: any, res: any, next: NextFunction) => {
 
 };
 
+
+// get all post
+export const getAll = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    // 1. get token from req
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      // 3. allow elderly to update elderly details
+
+      const id = req.query.id;
+      if (decoded) {
+        // 4. check if the email is existed
+        const allPost = await PostModel.find({});
+        res.status(200).json(allPost);
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
+
+  } catch (error) {
+    res.status(400).json({ error, message: "Make sure your request body is correct" });
+  }
+};
