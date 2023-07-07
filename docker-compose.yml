@@ -1,0 +1,10 @@
+version: "3"
+services:
+  backend: 
+    build: 
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: bridgify-backend
+    ports:
+      - "8000:8000"
+  

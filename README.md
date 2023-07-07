@@ -8,6 +8,10 @@ SMU .HEAP 2023 G14
 - cd Bridgify/frontend => npm install
 - cd Bridgify => npm start => to run both frontend && backend
 
+### Docker
+- `docker compose up` => to build the image and run
+    - Notes: if have Segmentation fault => use Docker Desktop to start the container
+
 #### AWS EC2
 - `ssh -i "mw.pem" ubuntu@ec2-13-229-138-25.ap-southeast-1.compute.amazonaws.com` => connect to EC2 via ssh
 - `rm -rf node_modules/` => remove folder in ubuntu

@@ -3,12 +3,12 @@ FROM node:18-buster-slim
 
 WORKDIR /app
 
-# # copy other files as well
+# copy other files as well
 COPY . .
 
 RUN rm -rf /app/node_modules
 
-# # For install canvas
+# needed to install canvas
 RUN apt-get update
 RUN apt-get install -y build-essential \
     libcairo2-dev \
@@ -24,6 +24,7 @@ RUN apt-get install -y build-essential \
 
 RUN npm install
 
+# needed to avoid gyp error
 RUN npm rebuild @tensorflow/tfjs-node --build-from-source
 
 #expose the port
