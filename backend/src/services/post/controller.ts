@@ -127,10 +127,8 @@ export const create = async (req: any, res: any, next: NextFunction) => {
       return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
     }
   });
-
-
-
 };
+
 
 
 // get all post
@@ -142,9 +140,7 @@ export const getAll = async (req: any, res: Response, next: NextFunction) => {
 
     // 2. verify token with secret key
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
-      // 3. allow elderly to update elderly details
 
-      const id = req.query.id;
       if (decoded) {
         // 4. check if the email is existed
         const allPost = await PostModel.find({});
