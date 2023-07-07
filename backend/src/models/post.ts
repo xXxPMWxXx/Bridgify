@@ -7,7 +7,7 @@ const PostSchema = new Schema({
     type: String,
     required: true,
   },
-  date: {
+  dateTime: {
     type: Date,
     required: true,
   },
@@ -22,13 +22,17 @@ const PostSchema = new Schema({
   // photo path(http://13.229.138.25:8000/images/post/{fileName})
   // just need save the file name 
   // can be more than one
-  images: {
+  postImages: {
     type: Array,
     default: [],
   },
-  elderlyinvolved: {
+  elderlyInvolved: {
     type: Array,
     default: [],
+  },
+  imagesCount: {
+    type: Number,
+    default: 0,
   },
 });
 
