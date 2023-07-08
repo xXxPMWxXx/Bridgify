@@ -12,7 +12,16 @@ export const Home = () => {
     useEffect(() => {
     }, []);
     const token = window.localStorage.getItem('accessToken');
+    const userName = window.localStorage.getItem('userName');
+    const accRole = window.localStorage.getItem('accRole');
+    const linkedElderly = window.localStorage.getItem('linkedElderly');
+    const profileImage = window.localStorage.getItem('proofileImage')
     console.log(token);
+    console.log(userName);
+    console.log(accRole);
+    console.log(linkedElderly);
+    console.log(profileImage);
+
 
     return (
         <div>
