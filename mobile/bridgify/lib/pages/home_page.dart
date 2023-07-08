@@ -31,6 +31,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget loadHomePage() {
+    setState(() {});
     return Stack(
       children: [
         Column(
@@ -58,19 +59,55 @@ class _HomePageState extends State<HomePage> {
                           color: Color(0xFF171717),
                         ),
                       ),
-                      GestureDetector(
-                        onTap: () {
-                          Navigator.pushNamed(
-                            context,
-                            '/profile',
+                      FutureBuilder(
+                        future: APIService.getUserProfile(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Object> model) {
+                          var userProfileData =
+                              model.data as Map<String, dynamic>?;
+
+                          if (model.hasData) {
+                            var imagePath = userProfileData?["imagePath"];
+                            var name = userProfileData?["name"];
+                            var email = userProfileData?["email"];
+                            print(imagePath);
+                            return imagePath != "" && imagePath != null
+                                ? GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/profile',
+                                        arguments: {
+                                          'imagePath': imagePath,
+                                          'name': name,
+                                          'email': email
+                                        },
+                                      );
+                                    },
+                                    child: CircleAvatar(
+                                        radius: 22,
+                                        backgroundImage:
+                                            Image.network(imagePath).image))
+                                : GestureDetector(
+                                    onTap: () {
+                                      Navigator.pushNamed(
+                                        context,
+                                        '/profile',
+                                        arguments: {
+                                          'imagePath': imagePath,
+                                          'name': name,
+                                          'email': email
+                                        },
+                                      );
+                                    },
+                                    child: const UserAvatar(
+                                        filename: 'img1.jpeg', radius: 22));
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(),
                           );
-                          // Navigator.of(context).push(MaterialPageRoute(
-                          //     builder: (BuildContext context) =>
-                          //         const ProfilePage()));
                         },
-                        child:
-                            const UserAvatar(filename: 'img1.jpeg', radius: 20),
-                      )
+                      ),
                     ],
                   ),
                 ],
@@ -183,17 +220,33 @@ class _HomePageState extends State<HomePage> {
                         context,
                         '/profile',
                       );
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //       builder: (BuildContext context) =>
-                      //           const ProfilePage()),
-                      // );
                     },
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        UserAvatar(filename: 'img1.jpeg', radius: 32),
-                        SizedBox(
+                        FutureBuilder(
+                            future: APIService.getUserProfile(),
+                            builder: (BuildContext context,
+                                AsyncSnapshot<Object> model) {
+                              var userProfileData =
+                                  model.data as Map<String, dynamic>?;
+
+                              if (model.hasData) {
+                                var imagePath = userProfileData?["imagePath"];
+                                print(imagePath);
+                                return imagePath != "" && imagePath != null
+                                    ? CircleAvatar(
+                                        radius: 32,
+                                        backgroundImage:
+                                            Image.network(imagePath).image)
+                                    : const UserAvatar(
+                                        filename: 'img1.jpeg', radius: 32);
+                              }
+                              return const Center(
+                                child: CircularProgressIndicator(),
+                              );
+                            }),
+                        const SizedBox(
                           width: 12,
                         ),
                         FutureBuilder(
@@ -215,14 +268,15 @@ class _HomePageState extends State<HomePage> {
                                   children: [
                                     Text(
                                       userName,
-                                      style: TextStyle(color: Colors.white),
+                                      style:
+                                          const TextStyle(color: Colors.white),
                                       overflow: TextOverflow.ellipsis,
                                       maxLines: 1,
                                     ),
                                     Text(
                                       userEmail,
                                       // softWrap: true,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                         color: Colors.white,
                                       ),
                                       overflow: TextOverflow.ellipsis,
@@ -237,7 +291,7 @@ class _HomePageState extends State<HomePage> {
                             );
                           },
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 20,
                         ),
                       ],

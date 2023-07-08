@@ -28,7 +28,7 @@ class Data {
   Data({
     required this.email,
     required this.name,
-    required this.profileImage,
+    this.profileImage,
     required this.accRole,
     required this.linkedElderly,
     required this.dateCreated,
@@ -36,7 +36,7 @@ class Data {
   });
   late final String email;
   late final String name;
-  late final String profileImage;
+  late final String? profileImage;
   late final String accRole;
   late final List<dynamic> linkedElderly;
   late final String dateCreated;

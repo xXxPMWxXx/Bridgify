@@ -151,8 +151,11 @@ export const updateUser = async (
     // 2. verify token with secret key
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
       // 3. update user details based on email
-      const { profileImage } = req.files;
-      const { email, name, password } = req.body;
+      var profileImage;
+      const { email, name, password, imageChange } = req.body;
+      if(imageChange == "true"){
+        profileImage  = req.files.profileImage;
+      }
       if (decoded) {
         // 4. check if valid user email
         const user = await UserModel.collection.findOne({ email: email });
@@ -178,15 +181,13 @@ export const updateUser = async (
               "/images/user_profile/" +
               Date.now() +
               "--" +
-              profileImage.name +
-              extension_type;
+              profileImage.name
             profileImage.mv(
               baseDir +
                 "/images/user_profile/" +
                 Date.now() +
                 "--" +
-                profileImage.name +
-                extension_type
+                profileImage.name
             );
             console.log(imagePath);
           }

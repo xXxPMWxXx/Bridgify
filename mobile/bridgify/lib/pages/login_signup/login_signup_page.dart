@@ -352,7 +352,11 @@ class _MainScreenState extends State<MainScreen> {
                                         "Invalid email/Password !!",
                                         "OK",
                                         () {
-                                          Navigator.of(context).pop();
+                                          Navigator.pushNamedAndRemoveUntil(
+                                            context,
+                                            '/login',
+                                            (route) => false,
+                                          );
                                         },
                                       );
                                     }
@@ -722,7 +726,8 @@ class _MainScreenState extends State<MainScreen> {
                                   "Please re-confirm your password",
                                   "OK",
                                   () {
-                                    Navigator.pop(context);
+                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
                                   },
                                 );
                               } else if (validateAndSave()) {
@@ -770,7 +775,9 @@ class _MainScreenState extends State<MainScreen> {
                                               "Invalid name/Password !!",
                                               "OK",
                                               () {
-                                                Navigator.of(context).pop();
+                                                                                    Navigator.of(context, rootNavigator: true)
+                                        .pop();
+                                                Navigator.pop(context);
                                               },
                                             );
                                           }

@@ -41,6 +41,7 @@ dependencies:
   font_awesome_flutter: ^10.4.0
   simple_animations: ^4.2.0
   pinput: ^2.2.11
+  image_picker: ^0.8.4+2
 
 dev_dependencies:
   flutter_test:
