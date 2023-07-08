@@ -5,7 +5,9 @@ import React, { useEffect, useState } from 'react';
 
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, Navigate } from 'react-router-dom';
-import { Layout } from '../Layout';
+import { Layout, DefaultNavbar } from '../Layout';
+
+import {ResponsiveAppBar} from '../Navbar';
 
 export const Home = () => {
 
@@ -29,7 +31,9 @@ export const Home = () => {
 				token == null ?
 					<Navigate to="/Login" /> : <Navigate to="/" />
 			}
-            <Layout/>
+            < ResponsiveAppBar/>
+            {/* < Layout/> */}
+            < DefaultNavbar/>
             <p>Home page</p>
 
         </div>
