@@ -6,27 +6,15 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Layout } from './Layout';
 import { Home } from './Home';
-import { LogIn } from './Login';
-
-//this have issue need find out why
-// // Load ENV variables
-// dotEnvConfig({
-// 	path:
-// 		process.env.NODE_ENV === 'production'
-// 			? '.env.production'
-// 			: '.env.development',
-// });
+import { Login } from './Login';
 
 
 ReactDOM.render(
 	<BrowserRouter>
-		<Layout />
-		<div className='mt-n1'></div>
 		<Routes>
-			<Route path="/Login" element={<LogIn />} />
-			<Route path="/Home" element={<Home />} />
+			<Route path="/Login" element={<Login />} />
+			<Route path="/" element={<Home />} />
 		</Routes>
 	</BrowserRouter>,
 	document.getElementById('root'));

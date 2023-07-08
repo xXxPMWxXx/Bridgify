@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import backgroundImage from './images/logInBackground.jpeg';
 import icon from './images/icon.png';
 import {Helmet} from "react-helmet";
@@ -12,10 +12,49 @@ import {
   MDBInput
 }
 from 'mdb-react-ui-kit';
+import { useNavigate } from 'react-router-dom';
   
+export const Login = () => {
+    let navigate = useNavigate(); 
+    
+    //to store the input, need set onChange on the html code also
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [accessToken, setAccessToken] = useState(null);
 
+    const handleEmail = (e: any) => {
+        setEmail(e.target.value);
+    }
+    const handlePassword = (e: any) => {
+        setPassword(e.target.value);
+    }
+    const loginHandler = async () => {
+        // //calling backend API
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/login`, {
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            method: 'POST',
+            body: JSON.stringify({
+                "email" : email,
+                "password" : password,
+            })
+        })
+            .then(async (response) => {
+                const loginResponse = await response.json();
+                const data = loginResponse.data;
+                localStorage.setItem('accessToken', JSON.stringify(data.accessToken));
+                console.log(data.accessToken);
+                navigate('/Home');
+                if (!response.ok) {
+                    console.log(response);
+                }
+            })
+            .catch((err) => {
+                window.alert(err);
+            });
 
-export const LogIn = () => {
+    }
 
     return (
         <MDBContainer fluid>
@@ -41,12 +80,12 @@ export const LogIn = () => {
                         <h3 style={{color:'black', fontSize:60, fontWeight:700, textAlign:'center', marginTop:80, letterSpacing:0}}>Hi there!</h3>
                         <h4 style={{textAlign:'center', color:'black', fontSize:20, marginTop:-15, fontWeight:400}}>Welcome to Bridgify</h4>
 
-                        <MDBInput wrapperClass='mb-3 mx-5 w-75' label='Your email' id='formControlLg' type='email' size='lg' style={{marginTop: 40}}/>
-                        <MDBInput wrapperClass='mb-1 mx-5 w-75' label='Password' id='formControlLg' type='password' size="lg" />
+                        <MDBInput wrapperClass='mb-3 mx-5 w-75' label='Your email' id='formControlLg' type='email' size='lg' style={{marginTop: 40}} onChange={handleEmail} required/>
+                        <MDBInput wrapperClass='mb-1 mx-5 w-75' label='Password' id='formControlLg' type='password' size="lg" onChange={handlePassword} required/>
 
 
                         <p className="small mb-4 pb-lg-3 ms-5"><a className="text-muted" href="#!">Forgot password?</a></p>
-                        <MDBBtn className="mb-4 px-5 mx-5 w-75" size='lg' rounded color='dark'>Login</MDBBtn>
+                        <MDBBtn className="mb-4 px-5 mx-5 w-75" size='lg' rounded color='dark' onClick={loginHandler}>Login</MDBBtn>
                         <p className='ms-5'>Don't have an account? <a href="#!" className="link-info">Sign Up</a></p>
 
 
