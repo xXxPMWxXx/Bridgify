@@ -33,7 +33,7 @@ export const Home = () => {
 			}
             < ResponsiveAppBar/>
             {/* < Layout/> */}
-            < DefaultNavbar/>
+            {/* < DefaultNavbar/> */}
             <p>Home page</p>
 
         </div>
