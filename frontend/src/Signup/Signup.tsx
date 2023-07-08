@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import backgroundImage from '../images/logInBackground.jpeg';
 import icon from '../images/icon.png';
 import {Helmet} from "react-helmet";
-import './Login.css';
+import './Signup.css';
 import {
   MDBBtn,
   MDBContainer,
@@ -14,12 +14,14 @@ import {
 from 'mdb-react-ui-kit';
 import { useNavigate } from 'react-router-dom';
   
-export const Login = () => {
+export const Signup = () => {
     let navigate = useNavigate(); 
     
     //to store the input, need set onChange on the html code also
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [repassword, setRepassword] = useState('');
+    const [name, setName] = useState('');
 
     const handleEmail = (e: any) => {
         setEmail(e.target.value);
@@ -27,9 +29,18 @@ export const Login = () => {
     const handlePassword = (e: any) => {
         setPassword(e.target.value);
     }
-    const loginHandler = async () => {
+    const handleRepassword = (e: any) => {
+        setRepassword(e.target.value);
+    }
+    const handleName = (e: any) => {
+        setName(e.target.value);
+    }
+    const signupHandler = async () => {
+        if (password != repassword) {
+            window.alert("Password unmatch!")
+        }
         // //calling backend API
-        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/login`, {
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/signup`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -37,26 +48,17 @@ export const Login = () => {
             body: JSON.stringify({
                 "email" : email,
                 "password" : password,
+                "name" : name,
             })
         })
             .then(async (response) => {
                 if(response.status != 200) {
-                    window.alert("Email/Password invalid!");
+                    const singupResponse = await response.json();
+                    window.alert(singupResponse.message);
                 }else {
-                    
-                    const loginResponse = await response.json();
-                    const data = loginResponse.data;
-                    console.log(data);
-                    //pass the info to the local storage, so other page can access them
-                    localStorage.setItem('accessToken', JSON.stringify(data.accessToken));
-                    localStorage.setItem('userName', JSON.stringify(data.name));
-                    localStorage.setItem('accRole', JSON.stringify(data.accRole));
-                    localStorage.setItem('linkedElderly', JSON.stringify(data.linkedElderly));
-                    localStorage.setItem('profileImage', JSON.stringify(data.profileImage));
                     navigate('/');
-
                 }
-                
+               
             })
             .catch((err) => {
                 window.alert(err);
@@ -83,20 +85,20 @@ export const Login = () => {
                     </div>
 
 
-                    <div className='logIn'>
+                    <div className='signup'>
 
                         <h3 style={{color:'black', fontSize:60, fontWeight:700, textAlign:'center', marginTop:80, letterSpacing:0}}>Hi there!</h3>
                         <h4 style={{textAlign:'center', color:'black', fontSize:20, marginTop:-15, fontWeight:400}}>Welcome to Bridgify</h4>
 
-                        <MDBInput wrapperClass='mb-3 mx-5 w-75' label='Your email' id='formControlLg' type='email' size='lg' style={{marginTop: 40}} onChange={handleEmail} required/>
+                        <MDBInput wrapperClass='mb-1 mx-5 w-75' label='Your email' id='formControlLg' type='email' size='lg' style={{marginTop: 40}} onChange={handleEmail} required/>
+                        <MDBInput wrapperClass='mb-1 mx-5 w-75' label='Your name' id='formControlLg' type='text' size='lg' onChange={handleName} required/>
                         <MDBInput wrapperClass='mb-1 mx-5 w-75' label='Password' id='formControlLg' type='password' size="lg" onChange={handlePassword} required/>
+                        <MDBInput wrapperClass='mb-1 mx-5 w-75' label='Repeat your password' id='formControlLg' type='password' size="lg" onChange={handleRepassword} required/>
 
 
-                        <p className="small mb-4 pb-lg-3 ms-5"><a className="text-muted" href="#!">Forgot password?</a></p>
-                        <MDBBtn className="mb-4 px-5 mx-5 w-75" size='lg' rounded color='dark' onClick={loginHandler}>Login</MDBBtn>
-                        <p className='ms-5'>Don't have an account? <a href="/signup" className="link-info">Sign Up</a></p>
 
-
+                        <MDBBtn className="mb-4 px-5 mx-5 w-75" size='lg' rounded color='dark' style={{marginTop: 40}} onClick={signupHandler}>Signup</MDBBtn>
+                        
                     </div>
 
                 </MDBCol>
@@ -104,9 +106,7 @@ export const Login = () => {
                 <MDBCol sm='6' className='d-none d-sm-block px-0'>
                     <div>
                         <img src={backgroundImage}
-                        alt="Login image" className="w-100" style={{ objectFit: 'cover', objectPosition: 'left', width: "50%", height:"100%", justifyContent: "center", }}  />
-                        <p style={{color:'white' ,position:'absolute', left:1300, top:58, fontSize:13, fontWeight:500}}>SIGN UP</p>
-                        <MDBBtn rounded outline color='light'style={{position:'absolute', left:1370, top:50}}>Admin</MDBBtn>
+                        alt="image" className="w-100" style={{ objectFit: 'cover', objectPosition: 'left', width: "50%", height:"100%", justifyContent: "center", }}  />
                     </div>
                 </MDBCol>
 

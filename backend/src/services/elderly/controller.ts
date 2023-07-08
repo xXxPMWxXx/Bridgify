@@ -189,9 +189,7 @@ export const getAll = async (req: any, res: Response, next: NextFunction) => {
 
     // 2. verify token with secret key
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
-      // 3. allow elderly to update elderly details
 
-      const id = req.query.id;
       if (decoded) {
         // 4. check if the email is existed
         const allElderly = await ElderlyModel.find({}).select('id name');
