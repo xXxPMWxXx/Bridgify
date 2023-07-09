@@ -49,6 +49,30 @@ export const ResponsiveAppBar = () => {
         navigate('/login');
     };
 
+    const handleHealth = () => {
+        navigate('/health');
+    }
+
+    const handleHelp = () => {
+        navigate('/help');
+    }
+
+    const handleHome = () => {
+        navigate('/');
+    }
+
+    const handleMessage = () => {
+        navigate('/message');
+    }
+
+    const handleProfile = () => {
+        navigate('/profile');
+    }
+
+    const handleSetting = () => {
+        navigate('/setting');
+    }
+
     return (
         <AppBar position="static" style={{ background: '#588061' }} >
             <Container maxWidth="xl">
@@ -104,11 +128,11 @@ export const ResponsiveAppBar = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            <Button key='Home' onClick={handleCloseNavMenu} sx={{ my: 0, color: 'black', display: 'block' }} >Home</Button>
-                            <Button key='Health' onClick={handleCloseNavMenu} sx={{ my: 0, color: 'black', display: 'block' }} >Health</Button>
-                            <Button key='Message' onClick={handleCloseNavMenu} sx={{ my: 0, color: 'black', display: 'block' }} >Message</Button>
-                            <Button key='Profile' onClick={handleCloseNavMenu} sx={{ my: 0, color: 'black', display: 'block' }} >Profile</Button>
-                            <Button key='Setting' onClick={handleCloseNavMenu} sx={{ my: 0, color: 'black', display: 'block' }} >Setting</Button>
+                            <Button key='Home' onClick={handleHome} sx={{ my: 0, color: 'black', display: 'block' }} >Home</Button>
+                            <Button key='Health' onClick={handleHealth} sx={{ my: 0, color: 'black', display: 'block' }} >Health</Button>
+                            <Button key='Message' onClick={handleMessage} sx={{ my: 0, color: 'black', display: 'block' }} >Message</Button>
+                            <Button key='Profile' onClick={handleProfile} sx={{ my: 0, color: 'black', display: 'block' }} >Profile</Button>
+                            <Button key='Setting' onClick={handleSetting} sx={{ my: 0, color: 'black', display: 'block' }} >Setting</Button>
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -132,11 +156,11 @@ export const ResponsiveAppBar = () => {
                     </Typography>
 
                     <Box justifyContent="center" alignItems="center" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        <Button key='Home' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} >Home</Button>
-                        <Button key='Health' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} >Health</Button>
-                        <Button key='Message' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} >Message</Button>
-                        <Button key='Profile' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} >Profile</Button>
-                        <Button key='Setting' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} >Setting</Button>
+                        <Button key='Home' onClick={handleHome} sx={{ my: 2, color: 'white', display: 'block' }} >Home</Button>
+                        <Button key='Health' onClick={handleHealth} sx={{ my: 2, color: 'white', display: 'block' }} >Health</Button>
+                        <Button key='Message' onClick={handleMessage} sx={{ my: 2, color: 'white', display: 'block' }} >Message</Button>
+                        <Button key='Profile' onClick={handleProfile} sx={{ my: 2, color: 'white', display: 'block' }} >Profile</Button>
+                        <Button key='Setting' onClick={handleSetting} sx={{ my: 2, color: 'white', display: 'block' }} >Setting</Button>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
@@ -161,13 +185,13 @@ export const ResponsiveAppBar = () => {
                             open={Boolean(anchorElUser)}
                             onClose={handleCloseUserMenu}
                         >
-                            <MenuItem key='Profile' onClick={handleCloseUserMenu}>
+                            <MenuItem key='Profile' onClick={handleProfile}>
                                 <Typography textAlign="center">Profile</Typography>
                             </MenuItem>
-                            <MenuItem key='Setting' onClick={handleCloseUserMenu}>
+                            <MenuItem key='Setting' onClick={handleSetting}>
                                 <Typography textAlign="center">Setting</Typography>
                             </MenuItem>
-                            <MenuItem key='Help' onClick={handleCloseUserMenu}>
+                            <MenuItem key='Help' onClick={handleHelp}>
                                 <Typography textAlign="center">Help</Typography>
                             </MenuItem>
                             <MenuItem key='Logout' onClick={handledLogout}>

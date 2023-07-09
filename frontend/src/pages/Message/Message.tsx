@@ -1,14 +1,12 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import React, { useEffect, useState } from 'react';
 import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, Navigate } from 'react-router-dom';
 import { Layout, DefaultNavbar } from '../../Layout';
+
 import {ResponsiveAppBar} from '../../Navbar';
 import { Box, Typography } from '@mui/material';
 
-export const Home = () => {
+export const Message = () => {
 
     useEffect(() => {
     }, []);
@@ -28,19 +26,22 @@ export const Home = () => {
         <div>
             {
 				token == null ?
-					<Navigate to="/Login" /> : <Navigate to="/" />
+					<Navigate to="/Login" /> : <Navigate to="/Message" />
 			}
             < ResponsiveAppBar/>
-            {/* < Layout/> */}
-            {/* < DefaultNavbar/> */}
-           
-            <Box sx={{ textAlign: 'center', alignItems: 'center' }}>
+            <Box 
+                sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    
+                }}
+            >
                 <Typography align="center" variant='h2' paragraph>
-                    Home page under consturction,coming soon.
+                    Message page under consturction,coming soon.
                 </Typography>
             </Box>
 
         </div>
     )
 }
-
