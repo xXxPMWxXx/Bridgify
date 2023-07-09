@@ -54,7 +54,7 @@ export const ResponsiveAppBar = () => {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
 
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1}} />
+                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
                     {/* <img src={icon} alt="Logo" width={35} height={35}/> */}
                     <Typography
                         variant="h6"
@@ -104,11 +104,11 @@ export const ResponsiveAppBar = () => {
                                 display: { xs: 'block', md: 'none' },
                             }}
                         >
-                            {pages.map((page: any) => (
-                                <MenuItem key={page} onClick={handleCloseNavMenu}>
-                                    <Typography textAlign="center">{page}</Typography>
-                                </MenuItem>
-                            ))}
+                            <Button key='Home' onClick={handleCloseNavMenu} sx={{ my: 0, color: 'black', display: 'block' }} >Home</Button>
+                            <Button key='Health' onClick={handleCloseNavMenu} sx={{ my: 0, color: 'black', display: 'block' }} >Health</Button>
+                            <Button key='Message' onClick={handleCloseNavMenu} sx={{ my: 0, color: 'black', display: 'block' }} >Message</Button>
+                            <Button key='Profile' onClick={handleCloseNavMenu} sx={{ my: 0, color: 'black', display: 'block' }} >Profile</Button>
+                            <Button key='Setting' onClick={handleCloseNavMenu} sx={{ my: 0, color: 'black', display: 'block' }} >Setting</Button>
                         </Menu>
                     </Box>
                     <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
@@ -131,7 +131,7 @@ export const ResponsiveAppBar = () => {
                         Bridgify
                     </Typography>
 
-                    <Box justifyContent="center" alignItems="center" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' }}}>
+                    <Box justifyContent="center" alignItems="center" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Button key='Home' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} >Home</Button>
                         <Button key='Health' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} >Health</Button>
                         <Button key='Message' onClick={handleCloseNavMenu} sx={{ my: 2, color: 'white', display: 'block' }} >Message</Button>

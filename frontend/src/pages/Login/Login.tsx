@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
-import backgroundImage from '../images/logInBackground.jpeg';
-import icon from '../images/icon.png';
+import backgroundImage from '../../images/logInBackground.jpeg';
+import icon from '../../images/icon.png';
 import {Helmet} from "react-helmet";
 import './Login.css';
 import {
