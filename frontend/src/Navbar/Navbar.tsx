@@ -24,6 +24,11 @@ export const ResponsiveAppBar = () => {
     const [anchorElNav, setAnchorElNav] = React.useState<null | HTMLElement>(null);
     const [anchorElUser, setAnchorElUser] = React.useState<null | HTMLElement>(null);
 
+
+    let profileImage : any = window.localStorage.getItem('profileImage');
+    const profileImageSrc = `http://13.229.138.25:8000/images/user_profile/${profileImage}`;
+
+
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorElNav(event.currentTarget);
     };
@@ -166,7 +171,7 @@ export const ResponsiveAppBar = () => {
                     <Box sx={{ flexGrow: 0 }}>
                         <Tooltip title="Open settings">
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
-                                <Avatar alt="Remy Sharp" src="/static/images/avatar/2.jpg" />
+                                <Avatar alt="Remy Sharp" src={profileImageSrc} />
                             </IconButton>
                         </Tooltip>
                         <Menu

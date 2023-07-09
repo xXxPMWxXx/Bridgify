@@ -48,11 +48,11 @@ export const Login = () => {
                     const data = loginResponse.data;
                     console.log(data);
                     //pass the info to the local storage, so other page can access them
-                    localStorage.setItem('accessToken', JSON.stringify(data.accessToken));
-                    localStorage.setItem('userName', JSON.stringify(data.name));
-                    localStorage.setItem('accRole', JSON.stringify(data.accRole));
-                    localStorage.setItem('linkedElderly', JSON.stringify(data.linkedElderly));
-                    localStorage.setItem('profileImage', JSON.stringify(data.profileImage));
+                    localStorage.setItem('accessToken', data.accessToken);
+                    localStorage.setItem('userName', data.name);
+                    localStorage.setItem('accRole', data.accRole);
+                    localStorage.setItem('linkedElderly', data.linkedElderly);
+                    localStorage.setItem('profileImage', data.profileImage);
                     navigate('/');
 
                 }
