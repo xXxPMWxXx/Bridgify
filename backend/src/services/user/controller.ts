@@ -197,11 +197,11 @@ export const updateUser = async (
               extension_type;
             profileImage.mv(
               baseDir +
-                "/images/user_profile/" +
-                Date.now() +
-                "--" +
-                profileImage.name +
-                extension_type
+              "/images/user_profile/" +
+              Date.now() +
+              "--" +
+              profileImage.name +
+              extension_type
             );
             console.log(imagePath);
           }
@@ -300,24 +300,62 @@ export const reset = async (req: any, res: Response, next: NextFunction) => {
     //check if email exists
     const { email, newpassword } = req.body;
 
-    const user = await UserModel.findOne({ email });
+    const user = await UserModel.collection.findOne({ email });
 
     if (user == null) {
       return res
         .status(400)
         .json({ message: `User email: ${email} does not exit!` });
     }
-      //hash password and update it in database
-      const hashedPassword = await bcrypt.hash(newpassword, 10);
+    //hash password and update it in database
+    const hashedPassword = await bcrypt.hash(newpassword, 10);
 
-      try {
-        await UserModel.updateOne({ email: email }, {password:hashedPassword});
-        res.status(200).send({ message: `User email: ${email} password updated successfully` });
-      } catch (error) {
-        res.status(400).json({ error: "Update fail, please try again later" });
+    try {
+      await UserModel.updateOne({ email: email }, { password: hashedPassword });
+      res.status(200).send({ message: `User email: ${email} password updated successfully` });
+    } catch (error) {
+      res.status(400).json({ error: "Update fail, please try again later" });
+    }
+
+
+
+  } catch (error) {
+    res.status(400).send({ error });
+  }
+}
+
+export const linkElderly = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+
+      if (decoded) {
+        const data = req.body;
+
+        const email = data.email;
+        const user = await  UserModel.findOne({ email });
+
+        const elderlyID = data.elderlyID;
+
+        if (user == null) {
+          return res
+            .status(400)
+            .json({ message: `User email: ${email} does not exit!` });
+        }
+
+        user.linkedElderly.push(elderlyID);
+        console.log(user);
+        user.save().then( res.status(200).send({ message: `Elderly: ${elderlyID} linked to user: ${email} successfully` }));
+    
+       
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
       }
-
-      
+    });
 
   } catch (error) {
     res.status(400).send({ error });
