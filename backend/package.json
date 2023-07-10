@@ -38,7 +38,9 @@
 		"mongoose": "^7.2.2",
 		"mongoose-unique-validator": "^4.0.0",
 		"multer": "^1.4.5-lts.1",
+		"nodemailer": "^6.9.3",
 		"nodemon": "^2.0.6",
+		"otp-generator": "^4.0.1",
 		"swagger-autogen": "^2.23.2",
 		"swagger-ui-express": "^4.6.3"
 	},
