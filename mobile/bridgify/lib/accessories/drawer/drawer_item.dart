@@ -4,10 +4,12 @@ import 'package:flutter/material.dart';
 class DrawerItem extends StatelessWidget {
   final String title;
   final IconData icon;
+  final String path;
   const DrawerItem({
     super.key,
     required this.title,
     required this.icon,
+    required this.path,
   });
 
   @override
@@ -30,9 +32,16 @@ class DrawerItem extends StatelessWidget {
             const SizedBox(
               width: 40,
             ),
-            Text(
-              title,
-              style: const TextStyle(color: Colors.white, fontSize: 16),
+            GestureDetector(
+              onTap: () {
+                if (path != "") {
+                  Navigator.pushNamed(context, path);
+                }
+              },
+              child: Text(
+                title,
+                style: const TextStyle(color: Colors.white, fontSize: 16),
+              ),
             ),
           ],
         ),
