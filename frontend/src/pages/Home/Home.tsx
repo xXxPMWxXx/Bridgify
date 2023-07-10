@@ -25,8 +25,11 @@ export const Home = () => {
     console.log(profileImage);
     
     //change linkedElderly to Array
-    var elderlyArray = linkedElderly.split(",");
-    console.log(elderlyArray[0])
+    if(linkedElderly != null){
+        var elderlyArray = linkedElderly.split(",");
+        console.log(elderlyArray[0])
+    }
+    
 
     return (
         <div>

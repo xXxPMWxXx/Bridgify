@@ -23,3 +23,16 @@ userRouter.route('/user-profile').get(controller.userProfile);
 
 /**  PUT /api/user/update*/
 userRouter.route('/update').put(controller.updateUser);
+
+/** POST /api/user/linkToElderly */
+userRouter.route('/linkelderly').post(controller.linkElderly);
+
+//forget password
+/** GET /api/user/generateOTP */
+userRouter.route('/generateOTP').get(controller.generateOTP);
+
+/** GET /api/user/verifyOTP */
+userRouter.route('/verifyOTP').get(controller.verifyOTP);
+
+/** POST /api/user/reset */
+userRouter.route('/reset').post(controller.reset);

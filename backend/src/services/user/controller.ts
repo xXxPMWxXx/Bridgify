@@ -6,6 +6,21 @@ const bcrypt = require("bcryptjs");
 const path = require("path");
 const UserModel = require("../../models/user");
 const baseDir = path.resolve(__dirname, "../../..");
+const otpGenerator = require('otp-generator')
+const nodemailer = require("nodemailer");
+
+const transporter = nodemailer.createTransport({
+  service: "hotmail",
+  auth: {
+    user: 'bridgifyteam@hotmail.com',
+    pass: 'Bridgify123'
+  },
+  debug: true, // show debug output
+  logger: true, // log information in console
+  // tls: {
+  //     rejectUnauthorized: false
+  // }
+});
 
 const jwt_secret: any = process.env.JWT_SECRET;
 
@@ -230,3 +245,120 @@ export const updateUser = async (
       .json({ error, message: "Make sure your request body is correct" });
   }
 };
+
+let OTP = "0000";
+export async function generateOTP(req: any, res: Response) {
+  try {
+    const { email } = req.body;
+    // 1. check if there is such user
+    const user = await UserModel.collection.findOne({ email: email });
+
+    if (user != null) {
+
+      OTP = await otpGenerator.generate(4, { lowerCaseAlphabets: false, upperCaseAlphabets: false, specialChars: false })
+      console.log(OTP);
+
+      //contents of the email
+      const info = await transporter.sendMail({
+        from: '"Bridgify Team" <bridgifyteam@hotmail.com>', // sender address
+        to: email, // receiver
+        subject: "Bridgify: Password Recovery", // Subject line
+        html: "<p>Dear customer,</p><p>We have received a request to reset your Bridgify Account password.</p><p>Your OTP is: <b>" + OTP + "</b></p><p>Yours Sincerely,<br>Bridgify Team"
+      });
+
+      res.status(200).send({ message: "Success, OTP sent to " + email, OTP: OTP });
+
+    } else {
+      res.status(400).send({ message: "No such user" });
+    }
+
+  } catch (error) {
+    res.status(400).send({ error });
+  }
+
+
+}
+
+export async function verifyOTP(req: any, res: Response) {
+  try {
+    const { code } = req.body;
+
+    if (OTP == code) {
+      res.status(200).send({ message: "Success" });
+    } else {
+      res.status(400).send({ error: "Please key in valid code" });
+    }
+
+  } catch (error) {
+    res.status(400).send({ error });
+  }
+
+}
+
+//reset password
+export const reset = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    //check if email exists
+    const { email, newpassword } = req.body;
+
+    const user = await UserModel.collection.findOne({ email });
+
+    if (user == null) {
+      return res
+        .status(400)
+        .json({ message: `User email: ${email} does not exit!` });
+    }
+    //hash password and update it in database
+    const hashedPassword = await bcrypt.hash(newpassword, 10);
+
+    try {
+      await UserModel.updateOne({ email: email }, { password: hashedPassword });
+      res.status(200).send({ message: `User email: ${email} password updated successfully` });
+    } catch (error) {
+      res.status(400).json({ error: "Update fail, please try again later" });
+    }
+
+
+
+  } catch (error) {
+    res.status(400).send({ error });
+  }
+}
+
+export const linkElderly = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+
+      if (decoded) {
+        const data = req.body;
+
+        const email = data.email;
+        const user = await  UserModel.findOne({ email });
+
+        const elderlyID = data.elderlyID;
+
+        if (user == null) {
+          return res
+            .status(400)
+            .json({ message: `User email: ${email} does not exit!` });
+        }
+
+        user.linkedElderly.push(elderlyID);
+        console.log(user);
+        user.save().then( res.status(200).send({ message: `Elderly: ${elderlyID} linked to user: ${email} successfully` }));
+    
+       
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
+
+  } catch (error) {
+    res.status(400).send({ error });
+  }
+}
