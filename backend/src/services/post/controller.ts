@@ -67,7 +67,7 @@ export const create = async (req: any, res: any, next: NextFunction) => {
         //variable to store into DB
         var elderlyInvolved: String[] = [];
         var postImages: String[] = [];
-        var imagesCount = 1;
+        var imagesCount = 0;
 
         // for one image
         if(images.name != undefined) {
