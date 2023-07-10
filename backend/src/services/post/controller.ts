@@ -51,7 +51,6 @@ export const test = async (req: any, res: any, next: NextFunction) => {
 // to create a new post
 export const create = async (req: any, res: any, next: NextFunction) => {
 
-
   // 1. get token from req
   const token =
     req.headers.authorization && req.headers.authorization.split(" ")[1];
@@ -68,7 +67,7 @@ export const create = async (req: any, res: any, next: NextFunction) => {
         //variable to store into DB
         var elderlyInvolved: String[] = [];
         var postImages: String[] = [];
-        var imagesCount = 1;
+        var imagesCount = 0;
 
         // for one image
         if(images.name != undefined) {

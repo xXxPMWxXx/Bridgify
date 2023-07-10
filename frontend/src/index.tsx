@@ -6,29 +6,35 @@ import 'bootstrap/dist/css/bootstrap.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Layout } from './Layout';
-import { Home } from './Home';
-import { Login } from './Login';
+import { Health } from './pages/Health';
+import { Help } from './pages/Help';
+import { Home } from './pages/Home';
+import { Login } from './pages/Login';
+import { Message } from './pages/Message';
+import { Page404 } from './pages/Page404';
+import { Profile } from './pages/Profile';
+import { Setting } from './pages/Setting';
+import { Signup } from './pages/Signup';
+import { Sign } from 'crypto';
+import { createRoot } from 'react-dom/client';
 
-//this have issue need find out why
-// // Load ENV variables
-// dotEnvConfig({
-// 	path:
-// 		process.env.NODE_ENV === 'production'
-// 			? '.env.production'
-// 			: '.env.development',
-// });
 
-
-ReactDOM.render(
+const container: any = document.getElementById('root');
+const root = createRoot(container);
+root.render(
 	<BrowserRouter>
-		<Layout />
-		<div className='mt-n1'></div>
 		<Routes>
+			<Route path="/Health" element={<Health />} />
+			<Route path="/Help" element={<Help />} />
+			<Route path="/" element={<Home />} />
 			<Route path="/Login" element={<Login />} />
-			<Route path="/Home" element={<Home />} />
+			<Route path="/Message" element={<Message />} />
+			<Route path="/404" element={<Page404 />} />
+			<Route path="/Profile" element={<Profile />} />
+			<Route path="/Setting" element={<Setting />} />
+			<Route path="/Signup" element={<Signup />} />
+			<Route path="/*" element={<Page404 />} />
 		</Routes>
-	</BrowserRouter>,
-	document.getElementById('root'));
+	</BrowserRouter>);
 
 

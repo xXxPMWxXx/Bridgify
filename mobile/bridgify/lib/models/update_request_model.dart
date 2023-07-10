@@ -1,17 +1,19 @@
-import 'dart:io';
-
 class UpdateUserRequestModel {
+  late String? name;
+  late String? password;
+  late String? email;
+  late String? profileImage;
   UpdateUserRequestModel({
-    this.name,
-    this.password,
-    this.email,
-    this.profileImage,
-  });
-  late final String? name;
-  late final String? password;
-  late final String? email;
-  late final String? profileImage;
-
+    String? name,
+    String? password,
+    String? email,
+    String? profileImage,
+  }) {
+    this.name = name ?? '';
+    this.password = password ?? '';
+    this.email = email ?? '';
+    this.profileImage = profileImage ?? '';
+  }
   UpdateUserRequestModel.fromJson(Map<String, dynamic> json) {
     name = json['name'];
     password = json['password'];

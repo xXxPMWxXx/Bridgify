@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/update_request_model.dart';
@@ -5,6 +7,7 @@ import 'package:bridgify/pages/home_page.dart';
 import 'package:bridgify/pages/profile/settings_page.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
@@ -20,8 +23,12 @@ class _ProfilePageState extends State<ProfilePage> {
   bool isAPICallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
+  Object? model;
+  UpdateUserRequestModel? updateUserRequestModel;
+  bool isImageSelected = false;
   String? nameUpdate;
   String? emailUpdate;
+  String? imagePathUpdate;
   String? passwordUpdate;
   String? confirmPasswordUpdate;
 
@@ -34,7 +41,11 @@ class _ProfilePageState extends State<ProfilePage> {
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leading: IconButton(
             onPressed: () {
-              Navigator.pop(context);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/home',
+                (route) => false,
+              );
             },
             icon: const Icon(
               Icons.arrow_back_ios,
@@ -75,6 +86,25 @@ class _ProfilePageState extends State<ProfilePage> {
     );
   }
 
+  @override
+  void initState() {
+    super.initState();
+    updateUserRequestModel = UpdateUserRequestModel();
+
+    Future.delayed(Duration.zero, () {
+      if (ModalRoute.of(context)?.settings.arguments != null) {
+        final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
+        nameUpdate = arguments['name'];
+        print(nameUpdate);
+        imagePathUpdate = arguments['imagePath'];
+        print(imagePathUpdate);
+        emailUpdate = arguments["email"];
+        print(emailUpdate);
+        setState(() {});
+      }
+    });
+  }
+
   Container _profileUI(BuildContext context) {
     return Container(
       padding: const EdgeInsets.only(left: 16, top: 25, right: 16),
@@ -88,228 +118,279 @@ class _ProfilePageState extends State<ProfilePage> {
               "Edit profile",
               style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
             ),
-            Center(
-              child: Stack(
-                children: [
-                  Container(
-                    width: 130,
-                    height: 130,
-                    decoration: BoxDecoration(
-                        border: Border.all(
-                          width: 4,
-                          color: Theme.of(context).scaffoldBackgroundColor,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                              spreadRadius: 2,
-                              blurRadius: 10,
-                              color: Colors.black.withOpacity(0.1),
-                              offset: const Offset(0, 10))
-                        ],
-                        shape: BoxShape.circle),
-                    child: const UserAvatar(filename: "img1.jpeg", radius: 65),
-                  ),
-                  Positioned(
-                    bottom: 0,
-                    right: 0,
-                    child: Container(
-                        height: 40,
-                        width: 40,
-                        decoration: BoxDecoration(
-                          color: Color(0xFF27c1a9),
-                          shape: BoxShape.circle,
-                          border: Border.all(
-                              width: 4,
-                              color: Theme.of(context).scaffoldBackgroundColor),
-                        ),
-                        child: const Icon(Icons.edit, color: Colors.white)),
-                  )
-                ],
-              ),
+            picPicker(
+              context,
+              imagePathUpdate ?? "",
+              isImageSelected,
+              (file) => {
+                setState(
+                  () {
+                    //model.productPic = file.path;
+                    imagePathUpdate = file.path;
+                    print(imagePathUpdate);
+                    updateUserRequestModel!.profileImage = imagePathUpdate;
+                    print(updateUserRequestModel!.profileImage);
+                    isImageSelected = true;
+                  },
+                )
+              },
             ),
-            const SizedBox(
-              height: 35,
-            ),
-            FutureBuilder(
-                future: APIService.getUserProfile(),
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<Object> model,
-                ) {
-                  if (model.hasData) {
-                    var userProfileData = model.data as Map<String, dynamic>;
+            // Center(
+            //   child: Stack(
+            //     children: [
+            //       Container(
+            //         width: 130,
+            //         height: 130,
+            //         decoration: BoxDecoration(
+            //             border: Border.all(
+            //               width: 4,
+            //               color: Theme.of(context).scaffoldBackgroundColor,
+            //             ),
+            //             boxShadow: [
+            //               BoxShadow(
+            //                   spreadRadius: 2,
+            //                   blurRadius: 10,
+            //                   color: Colors.black.withOpacity(0.1),
+            //                   offset: const Offset(0, 10))
+            //             ],
+            //             shape: BoxShape.circle),
+            //         child: FutureBuilder(
+            //           future: APIService.getUserProfile(),
+            //           builder:
+            //               (BuildContext context, AsyncSnapshot<Object> model) {
+            //             var userProfileData =
+            //                 model.data as Map<String, dynamic>?;
 
-                    var userName = userProfileData["name"];
-                    var userEmail = userProfileData["email"];
-                    return Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: <Widget>[
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(color: Colors.grey.shade200),
-                              ),
-                            ),
-                            child: FormHelper.inputFieldWidget(
-                              context,
-                              "email",
-                              "Email",
-                              (onValidateVal) {},
-                              (onSavedVal) => {
-                                emailUpdate = onSavedVal,
-                              },
-                              isReadonly: true,
-                              paddingRight: 0,
-                              paddingLeft: 0,
-                              initialValue: userEmail,
-                              obscureText: false,
-                              prefixIcon: const Icon(Icons.mail),
-                              showPrefixIcon: true,
-                              prefixIconColor: Colors.black.withOpacity(0.5),
-                              textColor: Colors.grey,
-                              hintColor: Colors.grey.withOpacity(0.7),
-                              borderFocusColor: Colors.white,
-                              borderColor: Colors.white,
-                              borderRadius: 0,
-                              borderErrorColor: Colors.white,
-                              errorBorderWidth: 0,
-                              focusedErrorBorderWidth: 0,
-                              borderFocusedErrorColor: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                              border: Border(
-                                bottom: BorderSide(color: Colors.grey.shade200),
-                              ),
-                            ),
-                            child: FormHelper.inputFieldWidget(
-                              context,
-                              "name",
-                              "Name",
-                              (onValidateVal) {},
-                              (onSavedVal) => {
-                                nameUpdate = onSavedVal,
-                              },
-                              paddingRight: 0,
-                              paddingLeft: 0,
-                              initialValue: userName,
-                              obscureText: false,
-                              prefixIcon: const Icon(Icons.person),
-                              showPrefixIcon: true,
-                              prefixIconColor: Colors.black.withOpacity(0.5),
-                              textColor: Colors.black.withOpacity(0.7),
-                              hintColor: Colors.grey.withOpacity(0.7),
-                              borderFocusColor: Colors.white,
-                              borderColor: Colors.white,
-                              borderRadius: 0,
-                              borderErrorColor: Colors.white,
-                              errorBorderWidth: 0,
-                              focusedErrorBorderWidth: 0,
-                              borderFocusedErrorColor: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey.shade200))),
-                            child: FormHelper.inputFieldWidget(
-                              context,
-                              "password",
-                              "Password",
-                              (onValidateVal) {},
-                              (onSavedVal) => {
-                                passwordUpdate = onSavedVal,
-                              },
-                              paddingRight: 0,
-                              paddingLeft: 0,
-                              paddingBottom: 0,
-                              paddingTop: 0,
-                              initialValue: "",
-                              obscureText: hidePassword,
-                              prefixIcon: const Icon(Icons.lock),
-                              showPrefixIcon: true,
-                              prefixIconColor: Colors.black.withOpacity(0.5),
-                              textColor: Colors.black.withOpacity(0.7),
-                              hintColor: Colors.grey.withOpacity(0.7),
-                              borderFocusColor: Colors.white,
-                              borderColor: Colors.white,
-                              borderRadius: 0,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    hidePassword = !hidePassword;
-                                  });
-                                },
-                                color: Colors.black.withOpacity(0.5),
-                                icon: Icon(
-                                  hidePassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                ),
-                              ),
-                              borderErrorColor: Colors.white,
-                              errorBorderWidth: 0,
-                              focusedErrorBorderWidth: 0,
-                              borderFocusedErrorColor: Colors.white,
-                            ),
-                          ),
-                          Container(
-                            decoration: BoxDecoration(
-                                border: Border(
-                                    bottom: BorderSide(
-                                        color: Colors.grey.shade200))),
-                            child: FormHelper.inputFieldWidget(
-                              context,
-                              "confirm password",
-                              "Confirm Password",
-                              (onValidateVal) {},
-                              (onSavedVal) => {
-                                confirmPasswordUpdate = onSavedVal,
-                              },
-                              paddingRight: 0,
-                              paddingLeft: 0,
-                              paddingBottom: 0,
-                              paddingTop: 0,
-                              initialValue: "",
-                              obscureText: hidePassword,
-                              prefixIcon: const Icon(Icons.lock),
-                              showPrefixIcon: true,
-                              prefixIconColor: Colors.black.withOpacity(0.5),
-                              textColor: Colors.black.withOpacity(0.7),
-                              hintColor: Colors.grey.withOpacity(0.7),
-                              borderFocusColor: Colors.white,
-                              borderColor: Colors.white,
-                              borderRadius: 0,
-                              suffixIcon: IconButton(
-                                onPressed: () {
-                                  setState(() {
-                                    hidePassword = !hidePassword;
-                                  });
-                                },
-                                color: Colors.black.withOpacity(0.5),
-                                icon: Icon(
-                                  hidePassword
-                                      ? Icons.visibility_off
-                                      : Icons.visibility,
-                                ),
-                              ),
-                              borderErrorColor: Colors.white,
-                              errorBorderWidth: 0,
-                              focusedErrorBorderWidth: 0,
-                              borderFocusedErrorColor: Colors.white,
-                            ),
-                          ),
-                          // buildTextField("Name", userName, false),
-                          // buildTextField("Email", userEmail, false),
-                          // buildTextField("Password", "*********", false)
-                        ]);
-                  }
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                }),
+            //             if (model.hasData) {
+            //               var imagePath = userProfileData?["imagePath"];
+
+            //               return imagePath != "" && imagePath != null
+            //                   ? CircleAvatar(
+            //                       radius: 32,
+            //                       backgroundImage:
+            //                           Image.network(imagePath).image)
+            //                   : const UserAvatar(
+            //                       filename: 'img1.jpeg', radius: 32);
+            //             }
+            //             return const Center(
+            //               child: CircularProgressIndicator(),
+            //             );
+            //           },
+            //         ),
+            //       ),
+            //       Positioned(
+            //         bottom: 0,
+            //         right: 0,
+            //         child: Container(
+            //           height: 40,
+            //           width: 40,
+            //           decoration: BoxDecoration(
+            //             color: Color(0xFF27c1a9),
+            //             shape: BoxShape.circle,
+            //             border: Border.all(
+            //                 color: Theme.of(context).scaffoldBackgroundColor),
+            //           ),
+            //           child: IconButton(
+            //             onPressed: () {
+            //               Future<XFile?> _imageFile;
+            //               ImagePicker _picker = ImagePicker();
+            //               try {
+            //                 _imageFile =
+            //                     _picker.pickImage(source: ImageSource.gallery);
+            //                 _imageFile.then((file) async {
+            //                   (file) => {
+            //                         setState(() {
+            //                           imagePathUpdate = file?.path;
+            //                         })
+            //                       };
+            //                   Navigator.of(context).pop();
+            //                 });
+            //               } catch (e) {
+            //                 FormHelper.showSimpleAlertDialog(
+            //                   context,
+            //                   Config.appName,
+            //                   "Invalid field change !!",
+            //                   "OK",
+            //                   () {
+            //                     Navigator.of(context).pop();
+            //                   },
+            //                 );
+            //               }
+            //             },
+            //             icon: const Icon(Icons.edit, color: Colors.white),
+            //           ),
+            //         ),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey.shade200),
+                    ),
+                  ),
+                  child: FormHelper.inputFieldWidget(
+                    context,
+                    "email",
+                    "Email",
+                    (onValidateVal) {},
+                    (onSavedVal) => {
+                      updateUserRequestModel!.email = onSavedVal,
+                    },
+                    isReadonly: true,
+                    paddingRight: 0,
+                    paddingLeft: 0,
+                    // initialValue: updateUserRequestModel!.email == null ? "" : updateUserRequestModel!.email.toString(),
+                    initialValue: emailUpdate ?? "",
+                    obscureText: false,
+                    prefixIcon: const Icon(Icons.mail),
+                    showPrefixIcon: true,
+                    prefixIconColor: Colors.black.withOpacity(0.5),
+                    textColor: Colors.grey,
+                    hintColor: Colors.grey.withOpacity(0.7),
+                    borderFocusColor: Colors.white,
+                    borderColor: Colors.white,
+                    borderRadius: 0,
+                    borderErrorColor: Colors.white,
+                    errorBorderWidth: 0,
+                    focusedErrorBorderWidth: 0,
+                    borderFocusedErrorColor: Colors.white,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey.shade200),
+                    ),
+                  ),
+                  child: FormHelper.inputFieldWidget(
+                    context,
+                    "name",
+                    "Name",
+                    (onValidateVal) {
+                      if (onValidateVal.isEmpty) {
+                        return 'Please input a valid name.';
+                      }
+
+                      return null;
+                    },
+                    (onSavedVal) => {
+                      updateUserRequestModel!.name = onSavedVal,
+                    },
+                    paddingRight: 0,
+                    paddingLeft: 0,
+                    initialValue: nameUpdate ?? "",
+                    obscureText: false,
+                    prefixIcon: const Icon(Icons.person),
+                    showPrefixIcon: true,
+                    prefixIconColor: Colors.black.withOpacity(0.5),
+                    textColor: Colors.black.withOpacity(0.7),
+                    hintColor: Colors.grey.withOpacity(0.7),
+                    borderFocusColor: Colors.white,
+                    borderColor: Colors.white,
+                    borderRadius: 0,
+                    borderErrorColor: Colors.white,
+                    errorBorderWidth: 0,
+                    focusedErrorBorderWidth: 0,
+                    borderFocusedErrorColor: Colors.white,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(color: Colors.grey.shade200))),
+                  child: FormHelper.inputFieldWidget(
+                    context,
+                    "password",
+                    "Password",
+                    (onValidateVal) {},
+                    (onSavedVal) => {
+                      passwordUpdate = onSavedVal,
+                    },
+                    paddingRight: 0,
+                    paddingLeft: 0,
+                    paddingBottom: 0,
+                    paddingTop: 0,
+                    initialValue: "",
+                    obscureText: hidePassword,
+                    prefixIcon: const Icon(Icons.lock),
+                    showPrefixIcon: true,
+                    prefixIconColor: Colors.black.withOpacity(0.5),
+                    textColor: Colors.black.withOpacity(0.7),
+                    hintColor: Colors.grey.withOpacity(0.7),
+                    borderFocusColor: Colors.white,
+                    borderColor: Colors.white,
+                    borderRadius: 0,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                      },
+                      color: Colors.black.withOpacity(0.5),
+                      icon: Icon(
+                        hidePassword ? Icons.visibility_off : Icons.visibility,
+                      ),
+                    ),
+                    borderErrorColor: Colors.white,
+                    errorBorderWidth: 0,
+                    focusedErrorBorderWidth: 0,
+                    borderFocusedErrorColor: Colors.white,
+                  ),
+                ),
+                Container(
+                  decoration: BoxDecoration(
+                      border: Border(
+                          bottom: BorderSide(color: Colors.grey.shade200))),
+                  child: FormHelper.inputFieldWidget(
+                    context,
+                    "confirm password",
+                    "Confirm Password",
+                    (onValidateVal) {},
+                    (onSavedVal) => {
+                      confirmPasswordUpdate = onSavedVal,
+                    },
+                    paddingRight: 0,
+                    paddingLeft: 0,
+                    paddingBottom: 0,
+                    paddingTop: 0,
+                    initialValue: "",
+                    obscureText: hidePassword,
+                    prefixIcon: const Icon(Icons.lock),
+                    showPrefixIcon: true,
+                    prefixIconColor: Colors.black.withOpacity(0.5),
+                    textColor: Colors.black.withOpacity(0.7),
+                    hintColor: Colors.grey.withOpacity(0.7),
+                    borderFocusColor: Colors.white,
+                    borderColor: Colors.white,
+                    borderRadius: 0,
+                    suffixIcon: IconButton(
+                      onPressed: () {
+                        setState(() {
+                          hidePassword = !hidePassword;
+                        });
+                      },
+                      color: Colors.black.withOpacity(0.5),
+                      icon: Icon(
+                        hidePassword ? Icons.visibility_off : Icons.visibility,
+                      ),
+                    ),
+                    borderErrorColor: Colors.white,
+                    errorBorderWidth: 0,
+                    focusedErrorBorderWidth: 0,
+                    borderFocusedErrorColor: Colors.white,
+                  ),
+                ),
+                // buildTextField("Name", userName, false),
+                // buildTextField("Email", userEmail, false),
+                // buildTextField("Password", "*********", false)
+              ],
+            ),
             // buildTextField("Name", "John Doe", false),
             // buildTextField("Email", "JohnDoe@email.com", false),
             // buildTextField("Password", "*********", true),
@@ -323,10 +404,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: 250,
                   "CANCEL",
                   () {
-                    Navigator.pushNamed(
-                      context,
-                      '/profile',
-                    );
+                    setState(() {
+                      passwordUpdate = "";
+                      confirmPasswordUpdate = "";
+                    });
                   },
                   btnColor: HexColor("FFFFFF"),
                   borderColor: HexColor("FFFFFF"),
@@ -355,21 +436,33 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: 250,
                   "SAVE",
                   () {
-                    if (validateAndSave()) {
+                    // passwordUpdate = passwordUpdate ?? "";
+                    // confirmPasswordUpdate = confirmPasswordUpdate ?? "";
+                    print(passwordUpdate);
+                    print(confirmPasswordUpdate);
+                    print(passwordUpdate != confirmPasswordUpdate);
+                    if (validateAndSave() &&
+                        passwordUpdate != confirmPasswordUpdate) {
+                      FormHelper.showSimpleAlertDialog(
+                        context,
+                        Config.appName,
+                        "Please key in and confirm password again!!",
+                        "OK",
+                        () {
+                          Navigator.of(context, rootNavigator: true).pop();
+                        },
+                      );
+                    } else if (validateAndSave()) {
                       setState(() {
                         isAPICallProcess = true;
                       });
-                      print(nameUpdate);
-                      print(emailUpdate);
-                      print(passwordUpdate);
-                      // UpdateUserRequestModel and UpdateUserResponseModel
-                      UpdateUserRequestModel model = UpdateUserRequestModel(
-                        name: nameUpdate,
-                        email: emailUpdate,
-                        password: passwordUpdate,
-                      );
+                      if (passwordUpdate != null) {
+                        updateUserRequestModel!.password = passwordUpdate;
+                      }
 
-                      APIService.update(model).then(
+                      APIService.update(
+                              updateUserRequestModel!, isImageSelected)
+                          .then(
                         (response) {
                           setState(() {
                             isAPICallProcess = false;
@@ -377,18 +470,18 @@ class _ProfilePageState extends State<ProfilePage> {
 
                           if (response) {
                             setState(() {
-                              nameUpdate = nameUpdate;
-                              emailUpdate = emailUpdate;
                               passwordUpdate = "";
+                              confirmPasswordUpdate = "";
                             });
                           } else {
                             FormHelper.showSimpleAlertDialog(
                               context,
                               Config.appName,
-                              "Invalid email/Password !!",
+                              "Invalid field change !!",
                               "OK",
                               () {
-                                Navigator.of(context).pop();
+                                Navigator.of(context, rootNavigator: true)
+                                    .pop();
                               },
                             );
                           }
@@ -467,5 +560,75 @@ class _ProfilePageState extends State<ProfilePage> {
       return true;
     }
     return false;
+  }
+
+  static Widget picPicker(BuildContext context, String fileName,
+      bool isImageSelected, Function onFilePicked) {
+    Future<XFile?> _imageFile;
+    ImagePicker _picker = ImagePicker();
+
+    return GestureDetector(
+      onTap: () {
+        try {
+          _imageFile = _picker.pickImage(source: ImageSource.gallery);
+          _imageFile.then((file) async {
+            onFilePicked(file);
+            // Navigator.of(context).pop();
+          });
+        } catch (e) {
+          Navigator.of(context).pop();
+        }
+      },
+      child: Center(
+        child: Stack(
+          children: [
+            Container(
+                width: 130,
+                height: 130,
+                decoration: BoxDecoration(
+                    border: Border.all(
+                      width: 4,
+                      color: Theme.of(context).scaffoldBackgroundColor,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                          spreadRadius: 2,
+                          blurRadius: 10,
+                          color: Colors.black.withOpacity(0.1),
+                          offset: const Offset(0, 10))
+                    ],
+                    shape: BoxShape.circle),
+                child: fileName.isNotEmpty
+                    ? isImageSelected
+                        ? CircleAvatar(
+                            radius: 32,
+                            backgroundImage: Image.file(File(fileName)).image)
+                        : CircleAvatar(
+                            radius: 32,
+                            backgroundImage: Image.network(fileName).image)
+                    : CircleAvatar(
+                        radius: 32,
+                        backgroundImage: Image.network(
+                                "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png")
+                            .image)),
+            Positioned(
+              bottom: 0,
+              right: 0,
+              child: Container(
+                height: 40,
+                width: 40,
+                decoration: BoxDecoration(
+                  color: Color(0xFF27c1a9),
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                      color: Theme.of(context).scaffoldBackgroundColor),
+                ),
+                child: const Icon(Icons.edit, color: Colors.white),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }

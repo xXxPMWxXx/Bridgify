@@ -84,6 +84,7 @@ class APIService {
     // print(response.statusCode);
     if (response.statusCode == 401) {
       return {
+        "imagePath": loginDetails.data.profileImage,
         "name": loginDetails.data.name,
         "email": loginDetails.data.email,
         "elderly": loginDetails.data.linkedElderly
@@ -94,8 +95,7 @@ class APIService {
   }
 
   static Future<bool> update(
-    UpdateUserRequestModel model,
-  ) async {
+      UpdateUserRequestModel model, bool isFileSelected) async {
     var currentLoginDetails = await SharedService.loginDetails();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
@@ -107,16 +107,30 @@ class APIService {
       Config.updateAPI,
     );
     print(url);
+    var request = http.MultipartRequest("put", url);
+    request.headers.addAll(requestHeaders);
+    request.fields["email"] = model.email!;
+    request.fields["name"] = model.name!;
+    request.fields["password"] = model.password!;
+    if (!isFileSelected) {
+      request.fields["imageChange"] = "false";
+    } else if (model.profileImage != null) {
+      request.fields["imageChange"] = "true";
+      http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+        'profileImage',
+        model.profileImage!,
+      );
 
-    var response = await client.put(url,
-        headers: requestHeaders,
-        body: jsonEncode(model.toJson()),
-        encoding: utf8);
+      request.files.add(multipartFile);
+    }
+    http.StreamedResponse streamResponse = await request.send();
+
+    final response = await http.Response.fromStream(streamResponse);
 
     if (response.statusCode == 200) {
       var jsonResponse = json.decode(response.body);
       var jsonData = jsonResponse['data'];
-      jsonData['accessToken'] = currentLoginDetails!.data.accessToken;
+      jsonData['accessToken'] = currentLoginDetails.data.accessToken;
       var updatedResponse = {
         "message": jsonResponse["message"],
         "data": jsonData
