@@ -1,6 +1,8 @@
 import 'package:bridgify/accessories/avatar_builder.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
+import 'package:bridgify/accessories/post/post_item.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
+import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
 
@@ -18,6 +20,7 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
+    setState(() {});
   }
 
   @override
@@ -31,7 +34,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget loadHomePage() {
-    setState(() {});
     return Stack(
       children: [
         Column(
@@ -170,11 +172,70 @@ class _HomePageState extends State<HomePage> {
                     topRight: Radius.circular(40)),
                 color: Color(0xFFEFFFFC),
               ),
+              //posts
               child: ListView(
                 padding: const EdgeInsets.only(left: 25),
               ),
             ))
       ],
+    );
+  }
+
+  Widget loadPosts() {
+    return FutureBuilder(
+      future: APIService.getPosts(),
+      builder: (
+        BuildContext context,
+        AsyncSnapshot<List<PostResponseModel>?> model,
+      ) {
+        if (model.hasData) {
+          return postList(model.data);
+        }
+
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+    );
+  }
+
+  Widget postList(posts) {
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              ListView.builder(
+                shrinkWrap: true,
+                physics: const ClampingScrollPhysics(),
+                scrollDirection: Axis.vertical,
+                itemCount: posts.length,
+                itemBuilder: (context, index) {
+                  return PostItem(
+                    // model: posts[index],
+                    // onDelete: (PostResponseModel model) {
+                    //   setState(() {
+                    //     isApiCallProcess = true;
+                    //   });
+
+                    //   APIService.deleteProduct(model.id).then(
+                    //     (response) {
+                    //       setState(() {
+                    //         isApiCallProcess = false;
+                    //       });
+                    //     },
+                    //   );
+                    // },
+                  );
+                },
+              ),
+            ],
+          )
+        ],
+      ),
     );
   }
 
@@ -305,24 +366,34 @@ class _HomePageState extends State<HomePage> {
                     height: 20,
                     color: Colors.white,
                   ),
-                  const DrawerItem(title: 'Home', icon: Icons.home),
-                  const DrawerItem(title: 'Chats', icon: Icons.chat_bubble),
                   const DrawerItem(
-                      title: 'Heatlh Records', icon: Icons.notifications),
-                  const DrawerItem(title: 'Settings', icon: Icons.settings),
+                      title: 'Home', icon: Icons.home, path: '/home'),
+                  const DrawerItem(
+                      title: 'Chats',
+                      icon: Icons.chat_bubble,
+                      path: '/profile'),
+                  const DrawerItem(
+                      title: 'Heatlh Records',
+                      icon: Icons.notifications,
+                      path: '/posts'),
+                  const DrawerItem(
+                      title: 'Settings',
+                      icon: Icons.settings,
+                      path: '/settings'),
                   const Divider(
                     thickness: 2.5,
                     height: 20,
                     color: Colors.white,
                   ),
-                  const DrawerItem(title: 'Help', icon: Icons.help),
                   const DrawerItem(
-                    title: 'About App',
-                    icon: Icons.phone_android_rounded,
-                  )
+                      title: 'Help', icon: Icons.help, path: '/home'),
+                  const DrawerItem(
+                      title: 'About App',
+                      icon: Icons.phone_android_rounded,
+                      path: '/home'),
                 ],
               ),
-              const DrawerItem(title: 'Log out', icon: Icons.logout)
+              const DrawerItem(title: 'Log out', icon: Icons.logout, path: "")
             ],
           ),
         ),

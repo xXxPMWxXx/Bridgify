@@ -29,7 +29,6 @@ const baseDir = path.resolve(__dirname, "../../..");
 
 // for testing only
 export const test = async (req: any, res: any, next: NextFunction) => {
-
   // 1. get token from req
   const token =
     req.headers.authorization && req.headers.authorization.split(" ")[1];
@@ -40,17 +39,14 @@ export const test = async (req: any, res: any, next: NextFunction) => {
     const { id } = req.body;
     if (decoded) {
       res.status(200).json({ message: "test method from post controller" });
-
     } else if (err) {
       res.status(401).json({ error: "You must have a valid token" });
     }
   });
-
 };
 
 // to create a new post
 export const create = async (req: any, res: any, next: NextFunction) => {
-
   // 1. get token from req
   const token =
     req.headers.authorization && req.headers.authorization.split(" ")[1];
@@ -63,25 +59,25 @@ export const create = async (req: any, res: any, next: NextFunction) => {
         const { author_email, description, activity_type } = req.body;
         const { images } = req.files;
         //store in DB as String
-        const dateTime = getDateTime.now()
+        const dateTime = getDateTime.now();
         //variable to store into DB
         var elderlyInvolved: String[] = [];
         var postImages: String[] = [];
         var imagesCount = 0;
 
         // for one image
-        if(images.name != undefined) {
+        if (images.name != undefined) {
           let results = await faceService.getDescriptorsFromDB(images.data);
 
           results.forEach((element: any) => {
             const label = element["_label"];
             //push known label to the faceFound
             if (label != "unknown" && !elderlyInvolved.includes(label)) {
-              elderlyInvolved.push(label)
+              elderlyInvolved.push(label);
             }
           });
           imagesCount++;
-          //store each of the image to images/post folder name format => email_date_imageCount.png 
+          //store each of the image to images/post folder name format => email_date_imageCount.png
           //Notes : FE pass in the date as the datetime, not only the date
           const imageName = `${author_email}_${dateTime}_${imagesCount}.png`;
           images.mv(baseDir + `/images/post/${imageName}`);
@@ -103,25 +99,25 @@ export const create = async (req: any, res: any, next: NextFunction) => {
             const label = element["_label"];
             //push known label to the faceFound
             if (label != "unknown" && !elderlyInvolved.includes(label)) {
-              elderlyInvolved.push(label)
+              elderlyInvolved.push(label);
             }
           });
-          //store each of the image to images/post folder name format => email_date_imageCount.png 
+          //store each of the image to images/post folder name format => email_date_imageCount.png
           //Notes : FE pass in the date as the datetime, not only the date
           const imageName = `${author_email}_${dateTime}_${imagesCount}.png`;
           images[i].mv(baseDir + `/images/post/${imageName}`);
           postImages.push(imageName);
         }
-      
+
         //create the DB object
         const newPost = new PostModel({
-          "author_email": author_email,
-          "dateTime": dateTime,
-          "description": description,
-          "activity_type": activity_type,
-          "postImages": postImages,
-          "elderlyInvolved": elderlyInvolved,
-          "imagesCount": imagesCount,
+          author_email: author_email,
+          dateTime: dateTime,
+          description: description,
+          activity_type: activity_type,
+          postImages: postImages,
+          elderlyInvolved: elderlyInvolved,
+          imagesCount: imagesCount,
         });
 
         // add a new post to mongodb
@@ -136,18 +132,19 @@ export const create = async (req: any, res: any, next: NextFunction) => {
           .catch((error: any) => {
             return next(error);
           });
-
       } else if (err) {
         res.status(401).json({ error: "You must have a valid token" });
       }
-
     } catch (error) {
-      return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
+      return res
+        .status(400)
+        .json({
+          message: "Please make sure the input file is valid type",
+          error: String(error),
+        });
     }
   });
 };
-
-
 
 // get all post
 export const getAll = async (req: any, res: Response, next: NextFunction) => {
@@ -158,18 +155,17 @@ export const getAll = async (req: any, res: Response, next: NextFunction) => {
 
     // 2. verify token with secret key
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
-
       if (decoded) {
         // 4. check if the email is existed
         const allPost = await PostModel.find({});
-        res.status(200).json(allPost);
-
+        res.status(200).json({ message: "Success", data: allPost });
       } else if (err) {
         res.status(401).json({ error: "You must have a valid token" });
       }
     });
-
   } catch (error) {
-    res.status(400).json({ error, message: "Make sure your request body is correct" });
+    res
+      .status(400)
+      .json({ error, message: "Make sure your request body is correct" });
   }
 };
