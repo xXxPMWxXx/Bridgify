@@ -148,23 +148,26 @@ class APIService {
   }
 
   static Future<List<PostResponseModel>?> getPosts() async {
+    var currentLoginDetails = await SharedService.loginDetails();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
     };
 
     var url = Uri.http(
       Config.apiURL,
-      Config.updateAPI,
+      Config.getPostsAPI,
     );
 
     var response = await client.get(
       url,
       headers: requestHeaders,
     );
-
+    print(response.statusCode);
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-
+      print(data);
+      print(postFromJson(data["data"]));
       return postFromJson(data["data"]);
     } else {
       return null;

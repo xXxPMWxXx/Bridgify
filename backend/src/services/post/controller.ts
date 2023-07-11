@@ -81,7 +81,8 @@ export const create = async (req: any, res: any, next: NextFunction) => {
           //Notes : FE pass in the date as the datetime, not only the date
           const imageName = `${author_email}_${dateTime}_${imagesCount}.png`;
           images.mv(baseDir + `/images/post/${imageName}`);
-          postImages.push(imageName);
+          const imagePath = req.protocol + '://' + req.get("host") + '/images/post/' + imageName;
+          postImages.push(imagePath);
         }
 
         // max 10 images
@@ -106,7 +107,8 @@ export const create = async (req: any, res: any, next: NextFunction) => {
           //Notes : FE pass in the date as the datetime, not only the date
           const imageName = `${author_email}_${dateTime}_${imagesCount}.png`;
           images[i].mv(baseDir + `/images/post/${imageName}`);
-          postImages.push(imageName);
+          const imagePath = req.protocol + '://' + req.get("host") + '/images/post/' + imageName;
+          postImages.push(imagePath);
         }
 
         //create the DB object

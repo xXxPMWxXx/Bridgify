@@ -166,6 +166,7 @@ export const updateUser = async (
     // 2. verify token with secret key
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
       // 3. update user details based on email
+      //imageChange required to indicate update of profile or not
       var profileImage;
       const { email, name, password, imageChange } = req.body;
       if(imageChange == "true"){
@@ -180,7 +181,7 @@ export const updateUser = async (
             .json({ message: `User email: ${email} does not exit!` });
         }
         var imagePath = "";
-        try {
+        // try {
           if (profileImage != null) {
             var extension_type = path.extname(profileImage.name);
             const acceptableExtensions = [".png", ".jpg", ".jpeg"];
@@ -230,11 +231,11 @@ export const updateUser = async (
           res
             .status(200)
             .send({ message: "Success", data: { ...currentUser } });
-        } catch (error) {
-          res
-            .status(400)
-            .json({ error: "Update fail, please try again later" });
-        }
+        // } catch (error) {
+        //   res
+        //     .status(400)
+        //     .json({ error: "Update fail, please try again later" });
+        // }
       } else if (err) {
         res.status(401).json({ error: "You must have a valid token" });
       }

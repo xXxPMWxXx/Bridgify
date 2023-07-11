@@ -1,6 +1,6 @@
 import 'package:bridgify/accessories/avatar_builder.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
-import 'package:bridgify/accessories/post/post_item.dart';
+import 'package:bridgify/accessories/post/build_post.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
@@ -172,70 +172,24 @@ class _HomePageState extends State<HomePage> {
                     topRight: Radius.circular(40)),
                 color: Color(0xFFEFFFFC),
               ),
-              //posts
-              child: ListView(
-                padding: const EdgeInsets.only(left: 25),
-              ),
-            ))
-      ],
-    );
-  }
+              child: FutureBuilder(
+                future: APIService.getPosts(),
+                builder: (
+                  BuildContext context,
+                  AsyncSnapshot<List<PostResponseModel>?> model,
+                ) {
+                  if (model.hasData) {
+                    return BuildPost(models: model.data);
+                  }
 
-  Widget loadPosts() {
-    return FutureBuilder(
-      future: APIService.getPosts(),
-      builder: (
-        BuildContext context,
-        AsyncSnapshot<List<PostResponseModel>?> model,
-      ) {
-        if (model.hasData) {
-          return postList(model.data);
-        }
-
-        return const Center(
-          child: CircularProgressIndicator(),
-        );
-      },
-    );
-  }
-
-  Widget postList(posts) {
-    return SingleChildScrollView(
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                itemCount: posts.length,
-                itemBuilder: (context, index) {
-                  return PostItem(
-                    // model: posts[index],
-                    // onDelete: (PostResponseModel model) {
-                    //   setState(() {
-                    //     isApiCallProcess = true;
-                    //   });
-
-                    //   APIService.deleteProduct(model.id).then(
-                    //     (response) {
-                    //       setState(() {
-                    //         isApiCallProcess = false;
-                    //       });
-                    //     },
-                    //   );
-                    // },
+                  return const Center(
+                    child: CircularProgressIndicator(),
                   );
                 },
               ),
-            ],
-          )
-        ],
-      ),
+              //posts
+            ))
+      ],
     );
   }
 

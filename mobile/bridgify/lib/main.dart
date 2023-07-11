@@ -4,7 +4,6 @@ import 'package:bridgify/accessories/post/picture_carousel.dart';
 import 'package:bridgify/pages/home_page.dart';
 import 'package:bridgify/pages/login_signup/login_signup_page.dart';
 import 'package:bridgify/pages/login_signup/otp_page.dart';
-import 'package:bridgify/pages/post/post_list.dart';
 import 'package:bridgify/pages/profile/profile_page.dart';
 import 'package:bridgify/pages/profile/settings_page.dart';
 import 'package:bridgify/services/shared_service.dart';
@@ -52,8 +51,8 @@ class MyApp extends StatelessWidget {
       ),
       // home: PictureCarousel(images: images),
       // home: PictureSingle(urlImage: images[0]),
-      home: const BuildPost(),
-      //home: const FirstPage(),
+      // home: const BuildPost(),
+      home: const FirstPage(),
     );
   }
 }
@@ -80,7 +79,6 @@ class _FirstPageState extends State<FirstPage> {
         '/login': (context) => const MainScreen(),
         '/profile': (context) => const ProfilePage(),
         '/settings': (context) => const SettingsPage(),
-        '/posts': (context) => const PostList(),
       },
     );
   }
