@@ -1,21 +1,70 @@
 import React, { useState } from 'react';
+import Avatar from '@mui/material/Avatar';
+import Button from '@mui/material/Button';
+import CssBaseline from '@mui/material/CssBaseline';
+import TextField from '@mui/material/TextField';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Link from '@mui/material/Link';
+import Paper from '@mui/material/Paper';
+import Box from '@mui/material/Box';
+import Grid from '@mui/material/Grid';
+import { borders } from '@mui/system';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+import Typography from '@mui/material/Typography';
+import { createTheme, ThemeProvider } from '@mui/material/styles';
 import backgroundImage from '../../images/logInBackground.jpeg';
-import icon from '../../images/icon.png';
-import {Helmet} from "react-helmet";
-import './Login.css';
-import {
-  MDBBtn,
-  MDBContainer,
-  MDBRow,
-  MDBCol,
-  MDBIcon,
-  MDBInput
-}
-from 'mdb-react-ui-kit';
+import logo from '../../images/icon.png';
 import { useNavigate } from 'react-router-dom';
-  
-export const Login = () => {
-    let navigate = useNavigate(); 
+
+function Copyright(props: any) {
+  return (
+    <Typography variant="body2" color="text.secondary" align="center" {...props}>
+      {'Copyright © '}
+      <Link color="inherit" href="https://mui.com/">
+        Bridgify
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+    </Typography>
+  );
+}
+
+// TODO remove, this demo shouldn't need to reset the theme.
+//const defaultTheme = createTheme();
+const myTheme = createTheme({
+    palette: {
+        background:{
+            default: '#FEF9F9'
+        }
+    }
+});
+
+// const { palette } = createTheme();
+// const { augmentColor } = palette;
+// const createColor = (mainColor) => augmentColor({color: { main: mainColor }});
+// const theme = createTheme({
+//     palette: {
+//         darkGreen: createColor('#588061'),
+//         lightPink :createColor('#FEF9F9'),
+//         pink: createColor('#E7B5AC'),
+//     },
+// });
+
+export function Login() {
+
+  //idk if this block of code is needed bc i dont really know what it does
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    const data = new FormData(event.currentTarget);
+    console.log({
+      email: data.get('email'),
+      password: data.get('password'),
+    });
+  };
+  //end block
+
+  let navigate = useNavigate(); 
     
     //to store the input, need set onChange on the html code also
     const [email, setEmail] = useState('');
@@ -64,55 +113,101 @@ export const Login = () => {
 
     }
 
-    return (
-        <MDBContainer fluid>
-            <MDBRow>
-                <MDBCol sm='6'>
-
-                    <div className='background'>
-                        <Helmet>
-                            <style>
-                                {'body { background-color: #FEF9F9; }'}
-                            </style>
-                        </Helmet>
-                    </div>
-
-                    <div className='d-flex flex-row ps-5 pt-5'>
-                        <img src={icon} alt="Logo" width={35} height={35}/>
-                        <span className="h1 fw-bold mb-0" style={{color:'black', fontSize:18, textAlign:'center', marginTop:7, marginLeft:7}}>Bridgify</span>
-                    </div>
-
-
-                    <div className='logIn'>
-
-                        <h3 style={{color:'black', fontSize:60, fontWeight:700, textAlign:'center', marginTop:80, letterSpacing:0}}>Hi there!</h3>
-                        <h4 style={{textAlign:'center', color:'black', fontSize:20, marginTop:-15, fontWeight:400}}>Welcome to Bridgify</h4>
-
-                        <MDBInput wrapperClass='mb-3 mx-5 w-75' label='Your email' id='formControlLg' type='email' size='lg' style={{marginTop: 40}} onChange={handleEmail} required/>
-                        <MDBInput wrapperClass='mb-1 mx-5 w-75' label='Password' id='formControlLg' type='password' size="lg" onChange={handlePassword} required/>
-
-
-                        <p className="small mb-4 pb-lg-3 ms-5"><a className="text-muted" href="#!">Forgot password?</a></p>
-                        <MDBBtn className="mb-4 px-5 mx-5 w-75" size='lg' rounded color='dark' onClick={loginHandler}>Login</MDBBtn>
-                        <p className='ms-5'>Don't have an account? <a href="/signup" className="link-info">Sign Up</a></p>
-
-
-                    </div>
-
-                </MDBCol>
-
-                <MDBCol sm='6' className='d-none d-sm-block px-0'>
-                    <div>
-                        <img src={backgroundImage}
-                        alt="Login image" className="w-100" style={{ objectFit: 'cover', objectPosition: 'left', width: "50%", height:"100%", justifyContent: "center", }}  />
-                        <p style={{color:'white' ,position:'absolute', left:1300, top:58, fontSize:13, fontWeight:500}}>SIGN UP</p>
-                        <MDBBtn rounded outline color='light'style={{position:'absolute', left:1370, top:50}}>Admin</MDBBtn>
-                    </div>
-                </MDBCol>
-
-            </MDBRow>
-
-        </MDBContainer>
-    );
+  return (
+    
+    <ThemeProvider theme={myTheme}>
+      <Grid container component="main" sx={{ height: '100vh' }}>
+        <CssBaseline />
+        <Grid
+          item
+          xs={false}
+          sm={4}
+          md={7}
+          sx={{
+            backgroundImage: `url(${backgroundImage})`,
+            backgroundRepeat: 'no-repeat',
+            backgroundColor: (t) =>
+              t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+            backgroundSize: 'cover',
+            backgroundPosition: 'center',
+          }}
+        />
+        <Grid item xs={12} sm={8} md={5} component={Paper} elevation={6} square>
+          <Box
+            sx={{
+              my: 8,
+              mx: 4,
+              display: 'flex',
+              flexDirection: 'column',
+              alignItems: 'center',
+            }}
+          >
+            <div style={{display: 'flex', alignItems: 'left', flexWrap: 'wrap', justifyContent:'flex-start'}}>
+                <a href='/Login'>
+                <img src={logo} alt="Logo" width={28} height={28} style={{marginLeft:-230, marginTop:-5, position:'absolute'}}/>
+                <span style={{color:'black', fontSize:15, textAlign:'left', marginTop:-1.5, marginLeft:-195, fontWeight:500, position:'absolute'}}>Bridgify</span>
+                </a>
+                <Button
+                type="submit"
+                variant="outlined"
+                color='inherit'
+                sx={{ mt: 3, mb: 2 , fontWeight:500, borderRadius:8, position: 'absolute', top:30, right:80}}
+              >
+                Admin
+              </Button>
+            </div>
+            <Typography component="h1" variant="h5" sx={{fontWeight: 'bold', fontSize: 55, letterSpacing: -2, marginTop: 8, marginBottom: -1.5}}>
+              Hi there!
+            </Typography>
+            <Typography sx={{fontWeight: 500, marginBottom: 3}}>
+                Welcome to Bridgify
+            </Typography>
+            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1}}>
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                id="email"
+                label="Email Address"
+                name="email"
+                autoComplete="email"
+                autoFocus
+              />
+              <TextField
+                margin="normal"
+                required
+                fullWidth
+                name="password"
+                label="Password"
+                type="password"
+                id="password"
+                autoComplete="current-password"
+              />
+              <Button
+                type="submit"
+                fullWidth
+                variant="contained"
+                sx={{ mt: 3, mb: 2, backgroundColor:'black' }}
+              >
+                Log In
+              </Button>
+              <Grid container>
+                <Grid item xs>
+                  <Link href="#" variant="body2">
+                    Forgot password?
+                  </Link>
+                </Grid>
+                <Grid item>
+                  <Link href="/signUp" variant="body2">
+                    {"Don't have an account? Sign Up"}
+                  </Link>
+                </Grid>
+              </Grid>
+              <Copyright sx={{ mt: 5 }} />
+            </Box>
+          </Box>
+        </Grid>
+      </Grid>
+    </ThemeProvider>
+  );
 }
-
