@@ -13,8 +13,8 @@ const RecordSchema = new Schema({
         required: true,
         default: "other"
     },
-    date: {
-        type: Date,
+    dateTime: {
+        type: String,
         required: true
     },
     name: {
