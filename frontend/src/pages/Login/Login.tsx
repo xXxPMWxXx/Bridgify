@@ -101,7 +101,7 @@ export function Login() {
           localStorage.setItem('accRole', data.accRole);
           localStorage.setItem('linkedElderly', data.linkedElderly);
           localStorage.setItem('profileImage', data.profileImage);
-          navigate('/');
+          navigate('/home');
 
         }
 

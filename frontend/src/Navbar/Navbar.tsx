@@ -13,9 +13,9 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
-import icon from '../images/icon.png';
+import logo from '../images/icon-white.png';
 
-const pages = ['Products', 'Pricing', 'Blog'];
+const pages = ['Home', 'Health', 'Message', 'Profile', 'Settings'];
 const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
 
 export const ResponsiveAppBar = () => {
@@ -83,8 +83,7 @@ export const ResponsiveAppBar = () => {
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
 
-                    <AdbIcon sx={{ display: { xs: 'none', md: 'flex' }, mr: 1 }} />
-                    {/* <img src={icon} alt="Logo" width={35} height={35}/> */}
+                <img src={logo} alt="Logo" width={50} height={50} style={{marginLeft:5, marginRight:8}}></img>
                     <Typography
                         variant="h6"
                         noWrap
@@ -93,11 +92,13 @@ export const ResponsiveAppBar = () => {
                         sx={{
                             mr: 2,
                             display: { xs: 'none', md: 'flex' },
-                            fontFamily: 'monospace',
-                            fontWeight: 700,
-                            letterSpacing: '.3rem',
+                            fontFamily: 'Roboto',
+                            fontWeight: 500,
+                            letterSpacing: 0,
                             color: 'inherit',
                             textDecoration: 'none',
+                            fontSize:15,
+                            marginLeft:-1.3
                         }}
                     >
                         Bridgify
