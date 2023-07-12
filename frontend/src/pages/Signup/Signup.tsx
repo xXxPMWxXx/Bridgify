@@ -192,6 +192,7 @@ export function Signup() {
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, backgroundColor:'black' }}
+                onClick={signupHandler}
               >
                 Create Account
               </Button>
