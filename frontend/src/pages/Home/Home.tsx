@@ -6,7 +6,19 @@ import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, Navigate } from 'react-router-dom';
 import { Layout, DefaultNavbar } from '../../Layout';
 import {ResponsiveAppBar} from '../../Navbar';
-import { Box, Typography } from '@mui/material';
+import { Box, Grid, Typography } from '@mui/material';
+import { styled } from '@mui/system';
+import backgroundImage from '../../images/background.png';
+
+const Background = styled("div") ({
+    position: 'absolute', 
+    width: '100%', 
+    height: '45%',
+    backgroundImage: `url(${backgroundImage})`,
+    backgroundPosition: 'center',
+    backgroundSize: 'cover', 
+    backgroundRepeat: 'no-repeat'
+})
 
 export const Home = () => {
 
@@ -41,11 +53,17 @@ export const Home = () => {
             {/* < Layout/> */}
             {/* < DefaultNavbar/> */}
            
-            <Box sx={{ textAlign: 'center', alignItems: 'center' }}>
-                <Typography align="center" variant='h2' paragraph>
-                    Home page under consturction,coming soon.
+            <Background />
+
+            <div style={{display:'flex', justifyContent:'center'}}>
+                <Typography component="h1" align="center" sx={{color:'white', position:'absolute', fontFamily:'Roboto', fontWeight:500, fontSize:45, marginTop:5}}>
+                        Welcome!
                 </Typography>
-            </Box>
+            </div>
+
+            <div style={{alignItems: 'center'}}>
+                
+            </div>
 
         </div>
     )

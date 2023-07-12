@@ -79,11 +79,11 @@ export const ResponsiveAppBar = () => {
     }
 
     return (
-        <AppBar position="static" style={{ background: '#588061' }} >
+        <AppBar position="static" style={{ background: '#30685E' }} >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
-
-                <img src={logo} alt="Logo" width={50} height={50} style={{marginLeft:5, marginRight:8}}></img>
+                    {/* need to research on how to get rid of this logo when hamburger bar opens */}
+                    <img src={logo} alt="Logo" width={50} height={50} style={{marginLeft:5, marginRight:8}}></img>
                     <Typography
                         variant="h6"
                         noWrap
@@ -103,6 +103,7 @@ export const ResponsiveAppBar = () => {
                     >
                         Bridgify
                     </Typography>
+
 
                     {/* for hamburger bar */}
                     <Box sx={{ flexGrow: 1, display: { xs: 'flex', md: 'none' } }}>
@@ -141,7 +142,6 @@ export const ResponsiveAppBar = () => {
                             <Button key='Setting' onClick={handleSetting} sx={{ my: 0, color: 'black', display: 'block' }} >Setting</Button>
                         </Menu>
                     </Box>
-                    <AdbIcon sx={{ display: { xs: 'flex', md: 'none' }, mr: 1 }} />
                     <Typography
                         variant="h5"
                         noWrap
@@ -151,9 +151,9 @@ export const ResponsiveAppBar = () => {
                             mr: 2,
                             display: { xs: 'flex', md: 'none' },
                             flexGrow: 1,
-                            fontFamily: 'monospace',
+                            fontFamily: 'Roboto',
                             fontWeight: 700,
-                            letterSpacing: '.3rem',
+                            letterSpacing: 0,
                             color: 'inherit',
                             textDecoration: 'none',
                         }}
