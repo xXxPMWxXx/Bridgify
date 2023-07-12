@@ -33,11 +33,11 @@ function Copyright(props: any) {
 // TODO remove, this demo shouldn't need to reset the theme.
 //const defaultTheme = createTheme();
 const myTheme = createTheme({
-    palette: {
-        background:{
-            default: '#FEF9F9'
-        }
+  palette: {
+    background: {
+      default: '#FEF9F9'
     }
+  }
 });
 
 // const { palette } = createTheme();
@@ -62,57 +62,58 @@ export function Login() {
   //   });
   // };
 
-  let navigate = useNavigate(); 
-    
-    //to store the input, need set onChange on the html code also
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('');
+  let navigate = useNavigate();
 
-    const handleEmail = (e: any) => {
-        setEmail(e.target.value);
-    }
-    const handlePassword = (e: any) => {
-        setPassword(e.target.value);
-    }
-    const loginHandler = async () => {
-        // //calling backend API
-        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/login`, {
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            method: 'POST',
-            body: JSON.stringify({
-                "email" : email,
-                "password" : password,
-            })
-        })
-            .then(async (response) => {
-                if(response.status != 200) {
-                    window.alert("Email/Password invalid!");
-                }else {
-                    
-                    const loginResponse = await response.json();
-                    const data = loginResponse.data;
-                    console.log(data);
-                    //pass the info to the local storage, so other page can access them
-                    localStorage.setItem('accessToken', data.accessToken);
-                    localStorage.setItem('userName', data.name);
-                    localStorage.setItem('accRole', data.accRole);
-                    localStorage.setItem('linkedElderly', data.linkedElderly);
-                    localStorage.setItem('profileImage', data.profileImage);
-                    navigate('/');
+  //to store the input, need set onChange on the html code also
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
 
-                }
-                
-            })
-            .catch((err) => {
-                window.alert(err);
-            });
+  const handleEmail = (e: any) => {
+    setEmail(e.target.value);
+  }
+  const handlePassword = (e: any) => {
+    setPassword(e.target.value);
+  }
+  const loginHandler = async () => {
+    // //calling backend API
+    fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/login`, {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      method: 'POST',
+      body: JSON.stringify({
+        "email": email,
+        "password": password,
+      })
+    })
+      .then(async (response) => {
+        if (response.status != 200) {
+          window.alert("Email/Password invalid!");
+        } else {
 
-    }
+          console.log("testing");
+          const loginResponse = await response.json();
+          const data = loginResponse.data;
+          console.log(data);
+          //pass the info to the local storage, so other page can access them
+          localStorage.setItem('accessToken', data.accessToken);
+          localStorage.setItem('userName', data.name);
+          localStorage.setItem('accRole', data.accRole);
+          localStorage.setItem('linkedElderly', data.linkedElderly);
+          localStorage.setItem('profileImage', data.profileImage);
+          navigate('/');
+
+        }
+
+      })
+      .catch((err) => {
+        window.alert(err);
+      });
+
+  }
 
   return (
-    
+
     <ThemeProvider theme={myTheme}>
       <Grid container component="main" sx={{ height: '100vh' }}>
         <CssBaseline />
@@ -140,27 +141,27 @@ export function Login() {
               alignItems: 'center',
             }}
           >
-            <div style={{display: 'flex', alignItems: 'left', flexWrap: 'wrap', justifyContent:'flex-start'}}>
-                <a href='/Login'>
-                <img src={logo} alt="Logo" width={28} height={28} style={{marginLeft:-230, marginTop:-5, position:'absolute'}}/>
-                <span style={{color:'black', fontSize:15, textAlign:'left', marginTop:-1.5, marginLeft:-195, fontWeight:500, position:'absolute'}}>Bridgify</span>
-                </a>
-                <Button
+            <div style={{ display: 'flex', alignItems: 'left', flexWrap: 'wrap', justifyContent: 'flex-start' }}>
+              <a href='/Login'>
+                <img src={logo} alt="Logo" width={28} height={28} style={{ marginLeft: -230, marginTop: -5, position: 'absolute' }} />
+                <span style={{ color: 'black', fontSize: 15, textAlign: 'left', marginTop: -1.5, marginLeft: -195, fontWeight: 500, position: 'absolute' }}>Bridgify</span>
+              </a>
+              <Button
                 type="submit"
                 variant="outlined"
                 color='inherit'
-                sx={{ mt: 3, mb: 2 , fontWeight:500, borderRadius:8, position: 'absolute', top:30, right:80}}
+                sx={{ mt: 3, mb: 2, fontWeight: 500, borderRadius: 8, position: 'absolute', top: 30, right: 80 }}
               >
                 Admin
               </Button>
             </div>
-            <Typography component="h1" variant="h5" sx={{fontWeight: 'bold', fontSize: 55, letterSpacing: -2, marginTop: 8, marginBottom: -1.5}}>
+            <Typography component="h1" variant="h5" sx={{ fontWeight: 'bold', fontSize: 55, letterSpacing: -2, marginTop: 8, marginBottom: -1.5 }}>
               Hi there!
             </Typography>
-            <Typography sx={{fontWeight: 500, marginBottom: 3}}>
-                Welcome to Bridgify
+            <Typography sx={{ fontWeight: 500, marginBottom: 3 }}>
+              Welcome to Bridgify
             </Typography>
-            <Box component="form" noValidate onSubmit={loginHandler} sx={{ mt: 1}}>
+            <Box component="form" noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -184,10 +185,11 @@ export function Login() {
                 onChange={handlePassword}
               />
               <Button
-                type="submit"
+                type="button"
                 fullWidth
                 variant="contained"
-                sx={{ mt: 3, mb: 2, backgroundColor:'black' }}
+                sx={{ mt: 3, mb: 2, backgroundColor: 'black' }}
+                onClick={loginHandler}
               >
                 Log In
               </Button>
