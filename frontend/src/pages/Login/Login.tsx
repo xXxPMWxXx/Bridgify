@@ -53,16 +53,14 @@ const myTheme = createTheme({
 
 export function Login() {
 
-  //idk if this block of code is needed bc i dont really know what it does
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
-  //end block
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
 
   let navigate = useNavigate(); 
     
@@ -162,7 +160,7 @@ export function Login() {
             <Typography sx={{fontWeight: 500, marginBottom: 3}}>
                 Welcome to Bridgify
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1}}>
+            <Box component="form" noValidate onSubmit={loginHandler} sx={{ mt: 1}}>
               <TextField
                 margin="normal"
                 required
@@ -172,6 +170,7 @@ export function Login() {
                 name="email"
                 autoComplete="email"
                 autoFocus
+                onChange={handleEmail}
               />
               <TextField
                 margin="normal"
@@ -182,6 +181,7 @@ export function Login() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={handlePassword}
               />
               <Button
                 type="submit"

@@ -52,14 +52,14 @@ const myTheme = createTheme({
 // });
 
 export function Signup() {
-  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    console.log({
-      email: data.get('email'),
-      password: data.get('password'),
-    });
-  };
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
 
   let navigate = useNavigate(); 
     
@@ -79,7 +79,7 @@ export function Signup() {
     }
     const signupHandler = async () => {
         // //calling backend API
-        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/signup`, {
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/User/signup`, {
             headers: {
                 'Content-Type': 'application/json',
             },
@@ -151,7 +151,7 @@ export function Signup() {
             <Typography component="h1" variant="h5" sx={{fontWeight: 'bold', fontSize: 45, letterSpacing: -2, marginTop: 11, marginBottom: 1}}>
               Create your account
             </Typography>
-            <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1}}>
+            <Box component="form" noValidate onSubmit={signupHandler} sx={{ mt: 1}}>
               <TextField
                 margin="normal"
                 required
@@ -162,6 +162,7 @@ export function Signup() {
                 autoComplete="name"
                 autoFocus
                 size="medium"
+                onChange={handleName}
               />
               <TextField
                 margin="normal"
@@ -173,6 +174,7 @@ export function Signup() {
                 autoComplete="email"
                 autoFocus
                 size="medium"
+                onChange={handleEmail}
               />
               <TextField
                 margin="normal"
@@ -183,6 +185,7 @@ export function Signup() {
                 type="password"
                 id="password"
                 autoComplete="current-password"
+                onChange={handlePassword}
               />
               <Button
                 type="submit"
