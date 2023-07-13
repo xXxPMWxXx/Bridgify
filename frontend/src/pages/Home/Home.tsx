@@ -9,6 +9,7 @@ import {ResponsiveAppBar} from '../../Navbar';
 import { Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import backgroundImage from '../../images/background.png';
+import ElderlyStatus from './elderlyStatus';
 
 const Background = styled("div") ({
     position: 'absolute', 
@@ -19,6 +20,17 @@ const Background = styled("div") ({
     backgroundSize: 'cover', 
     backgroundRepeat: 'no-repeat'
 })
+
+const elderlyStatuses = [
+    {
+        name: 'Megan J.',
+        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
+        status: 'Awake',
+        activity: 'Lunch',
+        medication: 'Taken',
+        condition: 'Fine',
+    }
+];
 
 export const Home = () => {
 
@@ -61,9 +73,13 @@ export const Home = () => {
                 </Typography>
             </div>
 
-            <div style={{alignItems: 'center'}}>
-                
-            </div>
+            <main>
+                <Grid container spacing={4}>
+                    {elderlyStatuses.map((post) => (
+                        <ElderlyStatus key={post.name} post={post} />
+                    ))}
+                </Grid>
+            </main>
 
         </div>
     )
