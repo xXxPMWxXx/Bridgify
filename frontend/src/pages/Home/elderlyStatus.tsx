@@ -1,0 +1,67 @@
+import * as React from 'react';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
+import Link from '@mui/material/Link';
+import Box from '@mui/material/Box';
+import { CardActionArea, CardContent, CardMedia } from '@mui/material';
+import { Card } from 'react-bootstrap';
+import { BorderAllRounded, SportsRugbySharp } from '@mui/icons-material';
+import awakeIcon from '../../images/awakeStatus.png';
+import asleepIcon from '../../images/asleepStatus.png';
+import { url } from 'inspector';
+
+interface elderlyStatusInfo {
+    post: {
+        name: string;
+        image: string;
+        status: string;
+        activity: string;
+        medication: string;
+        condition: string;
+    };
+}
+
+export default function elderlyStatus(props: elderlyStatusInfo) {
+    const { post } = props;
+
+    return (
+        <Grid item xs={12} md={6}>
+            <CardActionArea component="a">
+                <Card style={{display: 'flex', width:350, height:150, backgroundColor:'rgba(249, 224, 219, 0.80)', borderRadius:'10px'}}>
+                    <CardContent sx={{flex: 1}}>
+                        <CardMedia 
+                        component="img"
+                        sx={{borderRadius:'50%', width:70, height:70, marginBottom:0, marginTop:-4.5, marginLeft:1}}
+                        image={post.image}
+                        />
+                        <Typography component="h2" variant="h5" sx={{fontSize:20, fontFamily:'Roboto', fontColor:'Black', fontWeight:600, marginLeft:11.7, marginTop:-4.2}}>
+                            {post.name}
+                        </Typography>
+                        <Card style={{display:'flex', width:80, height:25, backgroundColor:'#F9E0DB', borderRadius:'10px', marginLeft:230, marginTop:-22}}>
+                            <CardMedia 
+                            component="img"
+                            sx={{display:'flex', position:'absolute', width:13, marginLeft:1.15, marginTop:0.8}}
+                            image={post.status === 'Awake' ? awakeIcon : asleepIcon}
+                            />
+                            <Typography variant="subtitle1" sx={{fontFamily:'Roboto', color:'rgba(0, 0, 0, 0.50)', fontSize:14, marginLeft:3.2}}>
+                                {post.status}
+                            </Typography>
+                        </Card>
+                        <div style={{marginTop:10, marginLeft:14}}>
+                            <Typography variant="subtitle1" style={{marginBottom:-6}}>
+                                Current Activity: {post.activity}
+                            </Typography>
+                            <Typography variant="subtitle1" style={{marginBottom:-6}}>
+                                Medication: {post.medication}
+                            </Typography>
+                            <Typography variant="subtitle1">
+                                Condition: {post.condition}
+                            </Typography>
+                        </ div>
+                    </CardContent>
+                </Card>
+            </CardActionArea>
+        </Grid>
+    );
+}
