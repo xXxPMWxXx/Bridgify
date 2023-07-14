@@ -2,6 +2,7 @@ import { NextFunction, Request, Response, response } from "express";
 import jwt from "jsonwebtoken";
 import cors from "cors";
 import "dotenv/config";
+import { image } from "@tensorflow/tfjs-core";
 
 const bcrypt = require("bcryptjs");
 const PostModel = require("../../models/post");
@@ -46,6 +47,8 @@ export const test = async (req: any, res: any, next: NextFunction) => {
 };
 
 // to create a new post
+//to access the image => http://13.229.138.25:8000/images/post/{imageName}
+//http://13.229.138.25:8000/images/post/admin@gmail.com_2023-07-10T15:14:54_1.png
 export const create = async (req: any, res: any, next: NextFunction) => {
   // 1. get token from req
   const token =
@@ -64,6 +67,8 @@ export const create = async (req: any, res: any, next: NextFunction) => {
         var elderlyInvolved: String[] = [];
         var postImages: String[] = [];
         var imagesCount = 0;
+        var devImageURL: String[] = [];
+        var imageURL: String[] = [];
 
         // for one image
         if (images.name != undefined) {
@@ -81,8 +86,9 @@ export const create = async (req: any, res: any, next: NextFunction) => {
           //Notes : FE pass in the date as the datetime, not only the date
           const imageName = `${author_email}_${dateTime}_${imagesCount}.png`;
           images.mv(baseDir + `/images/post/${imageName}`);
-          const imagePath = req.protocol + '://' + req.get("host") + '/images/post/' + imageName;
-          postImages.push(imagePath);
+          postImages.push(imageName);
+          imageURL.push(`http://13.229.138.25:8000/images/post/${imageName}`);
+          devImageURL.push(`http://localhost:8000/images/post/${imageName}`);
         }
 
         // max 10 images
@@ -107,8 +113,9 @@ export const create = async (req: any, res: any, next: NextFunction) => {
           //Notes : FE pass in the date as the datetime, not only the date
           const imageName = `${author_email}_${dateTime}_${imagesCount}.png`;
           images[i].mv(baseDir + `/images/post/${imageName}`);
-          const imagePath = req.protocol + '://' + req.get("host") + '/images/post/' + imageName;
-          postImages.push(imagePath);
+          postImages.push(imageName);
+          imageURL.push(`http://13.229.138.25:8000/images/post/${imageName}`);
+          devImageURL.push(`http://localhost:8000/images/post/${imageName}`);
         }
 
         //create the DB object
@@ -129,6 +136,8 @@ export const create = async (req: any, res: any, next: NextFunction) => {
             return res.status(200).send({
               message: `Post created successfully`,
               elderlyInvolved: JSON.stringify(elderlyInvolved),
+              imageURL: imageURL,
+              devImageURL: devImageURL,
             });
           })
           .catch((error: any) => {
