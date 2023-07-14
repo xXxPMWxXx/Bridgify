@@ -22,27 +22,27 @@ interface elderlyStatusInfo {
     };
 }
 
-export default function elderlyStatus(props: elderlyStatusInfo) {
+export default function ElderlyStatus(props: elderlyStatusInfo) {
     const { post } = props;
 
     return (
-        <Grid item xs={12} md={6}>
+        <Grid item xs={5} md={6}>
             <CardActionArea component="a">
-                <Card style={{display: 'flex', width:350, height:150, backgroundColor:'rgba(249, 224, 219, 0.80)', borderRadius:'10px'}}>
+                <Card style={{display: 'flex', width:330, height:145, backgroundColor:'rgba(249, 224, 219, 0.80)', borderRadius:'10px', marginLeft:20, marginTop:12}}>
                     <CardContent sx={{flex: 1}}>
                         <CardMedia 
-                        component="img"
-                        sx={{borderRadius:'50%', width:70, height:70, marginBottom:0, marginTop:-4.5, marginLeft:1}}
-                        image={post.image}
+                            component="img"
+                            sx={{borderRadius:'50%', width:70, height:70, marginBottom:0, marginTop:-4.5, marginLeft:1}}
+                            image={post.image}
                         />
                         <Typography component="h2" variant="h5" sx={{fontSize:20, fontFamily:'Roboto', fontColor:'Black', fontWeight:600, marginLeft:11.7, marginTop:-4.2}}>
                             {post.name}
                         </Typography>
-                        <Card style={{display:'flex', width:80, height:25, backgroundColor:'#F9E0DB', borderRadius:'10px', marginLeft:230, marginTop:-22}}>
+                        <Card style={{display:'flex', width:80, height:25, backgroundColor:'#F9E0DB', borderRadius:'10px', marginLeft:212, marginTop:-22}}>
                             <CardMedia 
-                            component="img"
-                            sx={{display:'flex', position:'absolute', width:13, marginLeft:1.15, marginTop:0.8}}
-                            image={post.status === 'Awake' ? awakeIcon : asleepIcon}
+                                component="img"
+                                sx={{display:'flex', position:'absolute', width:13, marginLeft:1.15, marginTop:0.8}}
+                                image={post.status === 'Awake' ? awakeIcon : asleepIcon}
                             />
                             <Typography variant="subtitle1" sx={{fontFamily:'Roboto', color:'rgba(0, 0, 0, 0.50)', fontSize:14, marginLeft:3.2}}>
                                 {post.status}
@@ -58,7 +58,7 @@ export default function elderlyStatus(props: elderlyStatusInfo) {
                             <Typography variant="subtitle1">
                                 Condition: {post.condition}
                             </Typography>
-                        </ div>
+                        </div>
                     </CardContent>
                 </Card>
             </CardActionArea>

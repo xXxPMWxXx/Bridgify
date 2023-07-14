@@ -29,7 +29,31 @@ const elderlyStatuses = [
         activity: 'Lunch',
         medication: 'Taken',
         condition: 'Fine',
-    }
+    },
+    {
+        name: 'Henry.',
+        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
+        status: 'Awake',
+        activity: 'Lunch',
+        medication: 'Taken',
+        condition: 'Fine',
+    },
+    {
+        name: 'Henry.',
+        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
+        status: 'Asleep',
+        activity: 'Lunch',
+        medication: 'Taken',
+        condition: 'Fine',
+    },
+        {
+        name: 'Henry.',
+        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
+        status: 'Asleep',
+        activity: 'Lunch',
+        medication: 'Taken',
+        condition: 'Fine',
+    },
 ];
 
 export const Home = () => {
@@ -74,11 +98,15 @@ export const Home = () => {
             </div>
 
             <main>
-                <Grid container spacing={4}>
-                    {elderlyStatuses.map((post) => (
-                        <ElderlyStatus key={post.name} post={post} />
-                    ))}
-                </Grid>
+                <Box display='flex' justifyContent='center' alignItems='center' height='60vh' width='100%'>
+                    <Grid container spacing={-5} justifyContent="center">
+                        {elderlyStatuses.map((post, index) => ( // Add index as the second parameter
+                        <Grid item key={post.name} xs={12} sm={6} md={4} lg={3} xl={2} sx={{ marginBottom: (index + 1) % 4 === 0 ? 2 : 0 }}>
+                            <ElderlyStatus post={post} />
+                        </Grid>
+                        ))}
+                    </Grid>
+                </Box>
             </main>
 
         </div>
