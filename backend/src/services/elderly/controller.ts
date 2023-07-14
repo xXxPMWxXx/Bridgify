@@ -192,7 +192,7 @@ export const getAll = async (req: any, res: Response, next: NextFunction) => {
 
       if (decoded) {
         // 4. check if the email is existed
-        const allElderly = await ElderlyModel.find({}).select('id name');
+        const allElderly = await ElderlyModel.find({}).select('id name photo');
         res.status(200).json(allElderly);
 
       } else if (err) {
