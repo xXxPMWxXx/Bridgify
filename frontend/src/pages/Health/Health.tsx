@@ -5,6 +5,8 @@ import { Layout, DefaultNavbar } from '../../Layout';
 
 import {ResponsiveAppBar} from '../../Navbar';
 import { Box, Typography } from '@mui/material';
+import HealthTable from './HealthTable';
+
 
 export const Health = () => {
 
@@ -40,6 +42,8 @@ export const Health = () => {
                     Health page under consturction,coming soon.
                 </Typography>
             </Box>
+
+            <HealthTable />
 
         </div>
     )
