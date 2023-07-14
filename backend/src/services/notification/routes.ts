@@ -9,3 +9,6 @@ export const notificationRouter = express.Router();
 /** GET /api/notification/test */
 notificationRouter.route('/test').get(controller.test);
 
+/** POST /api/notification/create */
+notificationRouter.route('/create').post(controller.create);
+
