@@ -5,6 +5,7 @@ import "dotenv/config";
 const bcrypt = require("bcryptjs");
 const path = require("path");
 const UserModel = require("../../models/user");
+const ElderlyModel = require("../../models/elderly");
 const baseDir = path.resolve(__dirname, "../../..");
 const otpGenerator = require('otp-generator')
 const nodemailer = require("nodemailer");
@@ -169,8 +170,8 @@ export const updateUser = async (
       //imageChange required to indicate update of profile or not
       var profileImage;
       const { email, name, password, imageChange } = req.body;
-      if(imageChange == "true"){
-        profileImage  = req.files.profileImage;
+      if (imageChange == "true") {
+        profileImage = req.files.profileImage;
       }
       if (decoded) {
         // 4. check if valid user email
@@ -182,55 +183,55 @@ export const updateUser = async (
         }
         var imagePath = "";
         // try {
-          if (profileImage != null) {
-            var extension_type = path.extname(profileImage.name);
-            const acceptableExtensions = [".png", ".jpg", ".jpeg"];
-            if (!acceptableExtensions.includes(extension_type)) {
-              return res
-                .status(400)
-                .json({ error: "Only .png, .jpg and .jpeg format allowed!" });
-            }
-            imagePath =
-              req.protocol +
-              "://" +
-              req.get("host") +
-              "/images/user_profile/" +
-              Date.now() +
-              "--" +
-              profileImage.name
-            profileImage.mv(
-              baseDir +
-                "/images/user_profile/" +
-                Date.now() +
-                "--" +
-                profileImage.name
-            );
-            console.log(imagePath);
+        if (profileImage != null) {
+          var extension_type = path.extname(profileImage.name);
+          const acceptableExtensions = [".png", ".jpg", ".jpeg"];
+          if (!acceptableExtensions.includes(extension_type)) {
+            return res
+              .status(400)
+              .json({ error: "Only .png, .jpg and .jpeg format allowed!" });
           }
+          imagePath =
+            req.protocol +
+            "://" +
+            req.get("host") +
+            "/images/user_profile/" +
+            Date.now() +
+            "--" +
+            profileImage.name
+          profileImage.mv(
+            baseDir +
+            "/images/user_profile/" +
+            Date.now() +
+            "--" +
+            profileImage.name
+          );
+          console.log(imagePath);
+        }
 
-          //handle instance where password isnt changed
-          if (password == "" || password == null) {
-            await UserModel.updateOne(
-              { email: email },
-              { profileImage: imagePath, name: name }
-            );
-          } else {
-            // 5. hash password if user exists
-            const hashedPassword = await bcrypt.hash(password, 10);
-            await UserModel.updateOne(
-              { email: email },
-              { profileImage: imagePath, name: name, password: hashedPassword }
-            );
-          }
+        //handle instance where password isnt changed
+        if (password == "" || password == null) {
+          await UserModel.updateOne(
+            { email: email },
+            { profileImage: imagePath, name: name }
+          );
+        } else {
+          // 5. hash password if user exists
+          const hashedPassword = await bcrypt.hash(password, 10);
+          await UserModel.updateOne(
+            { email: email },
+            { profileImage: imagePath, name: name, password: hashedPassword }
+          );
+        }
 
-          // get current user details with new access token
-          const currentUser = await UserModel.collection.findOne({
-            email: email,
-          });
+        // get current user details with new access token
+        const currentUser = await UserModel.collection.findOne({
+          email: email,
+        });
 
-          res
-            .status(200)
-            .send({ message: "Success", data: { ...currentUser } });
+        res
+          .status(200)
+          .send({ message: "Success", data: { ...currentUser } });
         // } catch (error) {
         //   res
         //     .status(400)
@@ -336,23 +337,77 @@ export const linkElderly = async (req: any, res: Response, next: NextFunction) =
 
       if (decoded) {
         const data = req.body;
-
         const email = data.email;
-        const user = await  UserModel.findOne({ email });
-
         const elderlyID = data.elderlyID;
+        const user = await UserModel.findOne({ email });
+        //Notes: the name need match with the DB field name
+        const elderly = await ElderlyModel.findOne({ 'id': elderlyID });
+        const linkedElderly = user.linkedElderly;
 
         if (user == null) {
           return res
             .status(400)
-            .json({ message: `User email: ${email} does not exit!` });
+            .json({ message: `User Email: ${email} does not exist!` });
+        }
+        if (elderly == null) {
+          return res
+            .status(400)
+            .json({ message: `Elderly ID: ${elderlyID} does not exist!` });
+        }
+        if (linkedElderly.includes(elderlyID) == true) {
+          return res
+            .status(400)
+            .json({ message: `User Email: ${email} already linked to Elderly ID: ${elderlyID}!` });
         }
 
         user.linkedElderly.push(elderlyID);
         console.log(user);
-        user.save().then( res.status(200).send({ message: `Elderly: ${elderlyID} linked to user: ${email} successfully` }));
-    
-       
+        user.save().then(res.status(200).send({ message: `Elderly: ${elderlyID} linked to user: ${email} successfully` }));
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
+
+  } catch (error) {
+    res.status(400).send({ error });
+  }
+}
+
+export const removeLinkElderly = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+
+      if (decoded) {
+        const data = req.body;
+        const email = data.email;
+        const elderlyID = data.elderlyID;
+        const user = await UserModel.findOne({ email });
+        const elderly = await ElderlyModel.findOne({ 'id': elderlyID });
+        const linkedElderly = user.linkedElderly;
+        
+        if (user == null) {
+          return res
+            .status(400)
+            .json({ message: `User Email: ${email} does not exist!` });
+        }
+        if (elderly == null) {
+          return res
+            .status(400)
+            .json({ message: `Elderly ID: ${elderlyID} does not exist!` });
+        }
+        if (linkedElderly.includes(elderlyID) != true) {
+          return res
+            .status(400)
+            .json({ message: `User Email: ${email} does not linked to Elderly ID: ${elderlyID}!` });
+        }
+
+        user.linkedElderly.pull(elderlyID);
+        console.log(user);
+        user.save().then(res.status(200).send({ message: `Elderly: ${elderlyID} removed from user: ${email} successfully` }));
 
       } else if (err) {
         res.status(401).json({ error: "You must have a valid token" });
