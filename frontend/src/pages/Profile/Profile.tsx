@@ -6,23 +6,27 @@ import { Alert, Avatar, Box, Button, FormControl, FormControlLabel, Grid, Radio,
 
 
 export const Profile = () => {
-
     useEffect(() => {
+        setLinkedElderly(window.localStorage.getItem('linkedElderly'));
     }, []);
-    const token = window.localStorage.getItem('accessToken');
-    const userName = window.localStorage.getItem('userName');
-    const accRole = window.localStorage.getItem('accRole');
-    const linkedElderly = window.localStorage.getItem('linkedElderly');
-    const profileImage = window.localStorage.getItem('profileImage')
-    const email = window.localStorage.getItem('email')
-    const profileImageSrc = `http://13.229.138.25:8000/images/user_profile/${profileImage}`;
-    const [elderlyID, setElderlyID] = useState('');
-    const [mode, setMode] = useState('Add');
 
+    const [linkedElderly, setLinkedElderly] : any = useState('');
     //error , warning , info , success
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [alertType, setAlertType]: any = useState('info');
     const [alertMsg, setAlertMsg] = useState('');
+    const [elderlyID, setElderlyID] = useState('');
+    const [mode, setMode] = useState('Add');
+    
+    const token = window.localStorage.getItem('accessToken');
+    const userName = window.localStorage.getItem('userName');
+    const accRole = window.localStorage.getItem('accRole');
+    const profileImage = window.localStorage.getItem('profileImage')
+    const email = window.localStorage.getItem('email')
+
+    
+    const profileImageSrc = `http://13.229.138.25:8000/images/user_profile/${profileImage}`;
+
 
     const handleElderlyID = (e: any) => {
         setElderlyID(e.target.value);
@@ -38,7 +42,7 @@ export const Profile = () => {
             APIMethod = 'remove-linkElderly';
         }
         // //calling backend API
-        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/${APIMethod}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/user/${APIMethod}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -58,7 +62,9 @@ export const Profile = () => {
                     setAlertMsg(apiResponse['message']);
                 } else {
                     const apiResponse = await response.json();
-                    const message = apiResponse.message;
+                    setLinkedElderly(apiResponse['linkElderly'].toString());
+                    localStorage.setItem('linkedElderly', apiResponse['linkElderly'].toString());
+                    
                     //show alert msg
                     setOpenSnackbar(true);
                     setAlertType('success');
@@ -69,6 +75,7 @@ export const Profile = () => {
             .catch((err) => {
                 window.alert(err);
             });
+    
     }
 
     const handleSnackbarClose = () => {

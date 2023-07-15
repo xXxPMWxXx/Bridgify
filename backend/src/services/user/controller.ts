@@ -361,8 +361,11 @@ export const linkElderly = async (req: any, res: Response, next: NextFunction) =
         }
 
         user.linkedElderly.push(elderlyID);
-        console.log(user);
-        user.save().then(res.status(200).send({ message: `Elderly: ${elderlyID} linked to user: ${email} successfully` }));
+        console.log(user.linkedElderly);
+        user.save().then(res.status(200).send({
+          message: `Elderly: ${elderlyID} linked to user: ${email} successfully`,
+          linkElderly: user.linkedElderly
+        }));
       } else if (err) {
         res.status(401).json({ error: "You must have a valid token" });
       }
@@ -388,7 +391,7 @@ export const removeLinkElderly = async (req: any, res: Response, next: NextFunct
         const user = await UserModel.findOne({ email });
         const elderly = await ElderlyModel.findOne({ 'id': elderlyID });
         const linkedElderly = user.linkedElderly;
-        
+
         if (user == null) {
           return res
             .status(400)
@@ -406,8 +409,11 @@ export const removeLinkElderly = async (req: any, res: Response, next: NextFunct
         }
 
         user.linkedElderly.pull(elderlyID);
-        console.log(user);
-        user.save().then(res.status(200).send({ message: `Elderly: ${elderlyID} removed from user: ${email} successfully` }));
+        console.log(user.linkedElderly)
+        user.save().then(res.status(200).send({
+          message: `Elderly: ${elderlyID} removed from user: ${email} successfully`,
+          linkElderly: user.linkedElderly
+        }));
 
       } else if (err) {
         res.status(401).json({ error: "You must have a valid token" });
