@@ -42,7 +42,7 @@ export const Profile = () => {
             APIMethod = 'remove-linkElderly';
         }
         // //calling backend API
-        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/user/${APIMethod}`, {
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/${APIMethod}`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
