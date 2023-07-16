@@ -1,6 +1,3 @@
-import 'package:bridgify/accessories/post/build_post.dart';
-import 'package:bridgify/accessories/post/picture_single.dart';
-import 'package:bridgify/accessories/post/picture_carousel.dart';
 import 'package:bridgify/pages/home_page.dart';
 import 'package:bridgify/pages/login_signup/login_signup_page.dart';
 import 'package:bridgify/pages/login_signup/otp_page.dart';
@@ -31,18 +28,7 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    List<String> images = [
-      "https://picsum.photos/id/240/200/300",
-      "https://picsum.photos/id/241/200/300",
-      "https://picsum.photos/id/242/200/300",
-      "https://picsum.photos/id/243/200/300",
-      "https://picsum.photos/id/244/200/300",
-      "https://picsum.photos/id/250/200/300",
-      "https://picsum.photos/id/251/200/300",
-      "https://picsum.photos/id/252/200/300",
-      "https://picsum.photos/id/253/200/300",
-      "https://picsum.photos/id/254/200/300",
-    ];
+
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,

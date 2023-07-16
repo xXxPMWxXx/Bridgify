@@ -1,4 +1,5 @@
 import 'package:bridgify/accessories/post/post_text.dart';
+import 'package:bridgify/config.dart';
 import 'package:flutter/material.dart';
 
 class PictureCarousel extends StatefulWidget {
@@ -61,6 +62,7 @@ class _PictureCarouselState extends State<PictureCarousel> {
                 });
               },
               itemBuilder: (context, index) {
+                widget.images[index % widget.images.length];
                 return Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
@@ -74,7 +76,9 @@ class _PictureCarouselState extends State<PictureCarousel> {
                     // ],
                     image: DecorationImage(
                       fit: BoxFit.cover,
-                      image: Image.network(
+                      image: Image.network('http://' +
+                              Config.apiURL +
+                              '/images/post/' +
                               widget.images[index % widget.images.length])
                           .image,
                     ),
@@ -100,7 +104,6 @@ class _PictureCarouselState extends State<PictureCarousel> {
             text: widget.description + " #${widget.activity}",
             fontSize: 16,
           ),
-
           SizedBox(
             height: 10,
           )

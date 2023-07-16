@@ -2,6 +2,7 @@ import 'package:bridgify/accessories/avatar_builder.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
 import 'package:bridgify/accessories/post/build_post.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
+import 'package:bridgify/config.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -72,7 +73,6 @@ class _HomePageState extends State<HomePage> {
                             var imagePath = userProfileData?["imagePath"];
                             var name = userProfileData?["name"];
                             var email = userProfileData?["email"];
-                            print(imagePath);
                             return imagePath != "" && imagePath != null
                                 ? GestureDetector(
                                     onTap: () {
@@ -88,8 +88,12 @@ class _HomePageState extends State<HomePage> {
                                     },
                                     child: CircleAvatar(
                                         radius: 22,
-                                        backgroundImage:
-                                            Image.network(imagePath).image))
+                                        backgroundImage: Image.network(
+                                                'http://' +
+                                                    Config.apiURL +
+                                                    '/images/user_profile/' +
+                                                    imagePath)
+                                            .image))
                                 : GestureDetector(
                                     onTap: () {
                                       Navigator.pushNamed(
@@ -248,12 +252,15 @@ class _HomePageState extends State<HomePage> {
 
                               if (model.hasData) {
                                 var imagePath = userProfileData?["imagePath"];
-                                print(imagePath);
                                 return imagePath != "" && imagePath != null
                                     ? CircleAvatar(
                                         radius: 32,
-                                        backgroundImage:
-                                            Image.network(imagePath).image)
+                                        backgroundImage: Image.network(
+                                                'http://' +
+                                                    Config.apiURL +
+                                                    '/images/user_profile/' +
+                                                    imagePath)
+                                            .image)
                                     : const UserAvatar(
                                         filename: 'img1.jpeg', radius: 32);
                               }
@@ -276,7 +283,6 @@ class _HomePageState extends State<HomePage> {
 
                               var userName = userProfileData["name"];
                               var userEmail = userProfileData["email"];
-                              print(model.data);
                               return Flexible(
                                 child: Column(
                                   crossAxisAlignment: CrossAxisAlignment.start,
