@@ -21,6 +21,84 @@ import Checkbox from '@mui/joy/Checkbox';
 import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import { Add } from '@mui/icons-material';
+import TuneIcon from '@mui/icons-material/Tune';
+import logo from './327H.png'; 
+// const images = require.context('backend\images\trained_face', true);
+
+
+
+// const elderlyFetcher = async (elderlyID:any) => {
+//   console.log("elderlyFetcher called");
+//   // event.preventDefault();
+//   const token = window.localStorage.getItem('accessToken');
+//   // const elderlyID = "327H";
+
+//   // //calling backend API
+//   fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/get/?id=${elderlyID}`, {
+//     headers: {
+//       'Authorization': `Bearer ${token}`,
+//       'Content-Type': 'application/json',
+//     },
+//     method: 'GET'
+//   })
+//     .then(async (response) => {
+//       if (response.status != 200) {
+//         console.log("error fetching data")
+//         return null;
+
+//       } else {
+//         console.log("loaded")
+//         const data = await response.json();
+//         const { name: elderlyName, photo } = data;
+//         console.log({ elderlyName, photo });
+
+//         return { elderlyName, photo };
+
+//       }
+
+//     })
+//     .catch((err) => {
+//       window.alert(err);
+//       return null;
+//     });
+
+// }
+
+const testButton = (e: any) => {
+  e.preventDefault();
+  console.log('The link was clicked.');
+  window.alert("CLICKED");
+}
+
+// const elderlyFetcher = async (elderlyID:any) => {
+//   console.log("elderlyFetcher called");
+
+//   try {
+//     const token = window.localStorage.getItem('accessToken');
+//     const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/get/?id=${elderlyID}`, {
+//       headers: {
+//         'Authorization': `Bearer ${token}`,
+//         'Content-Type': 'application/json',
+//       },
+//       method: 'GET'
+//     });
+
+//     if (response.status !== 200) {
+//       console.log("error fetching data");
+//       return null;
+//     } else {
+//       console.log("loaded");
+//       const data = await response.json();
+//       const { name: elderlyName, photo } = data;
+//       console.log({ elderlyName, photo });
+//       return { elderlyName, photo };
+//     }
+//   } catch (err) {
+//     window.alert(err);
+//     return null;
+//   }
+// };
+
 
 const rows = [
   {
@@ -164,10 +242,110 @@ function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) 
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function OrderTable() {
-  const [order, setOrder] = React.useState<Order>('desc');
-  const [selected, setSelected] = React.useState<readonly string[]>([]);
-  const [open, setOpen] = React.useState(false);
+export default function HealthTable() {
+  const [rows, setRows] = React.useState<any[]>([]);
+  const [fetchAdditional, setFetchAdditional] = React.useState(false);
+
+
+
+  //fetch initial data
+  React.useEffect(() => {
+    const token = window.localStorage.getItem('accessToken');
+
+    // //calling backend API
+    fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/getAll`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'GET'
+    })
+      .then(async (response) => {
+        if (response.status != 200) {
+          console.log(response.json())
+
+        } else {
+          const data = await response.json();
+          setRows(data);
+          setFetchAdditional(true);
+          console.log("first useeffect called")
+        }
+
+      })
+      .catch((err) => {
+        window.alert(err);
+      });
+
+  }, []);
+
+  //fetch additional data
+  React.useEffect(() => {
+    const token = window.localStorage.getItem('accessToken');
+    // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
+
+
+    if (fetchAdditional) {
+      // //calling backend API
+      fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/elderly/getAll`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        method: 'GET'
+      })
+        .then(async (response) => {
+          if (response.status != 200) {
+            console.log("error fetching elderly")
+
+          } else {
+            const data = await response.json();
+
+            const updatedRows = rows.map(row => {
+
+              const foundItem = data.find((item: { id: any; }) => item.id === row.elderlyID);
+
+              // Check if 'foundItem' exists (it will be undefined if no match is found)
+              if (foundItem) {
+                console.log("found")
+                // Create a new object with all properties from 'row' and add the 'color' property from 'foundItem'
+                return {
+                  ...row,
+                  elderlyName: foundItem.name,
+                  elderlyPhoto: foundItem.photo
+                };
+              } else {
+                console.log("not found")
+              }
+
+              // If no matching item is found, return the original 'row' object
+              return row;
+
+            });
+
+            console.log(updatedRows);
+            console.log("second useeffect end");
+
+            // Set the updated rows in the state
+            setRows(updatedRows);
+            setFetchAdditional(false);
+
+          }
+
+        })
+        .catch((err) => {
+          window.alert(err);
+        });
+
+
+    }
+    
+
+
+
+
+  }, [fetchAdditional]);
+
+ 
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
@@ -200,51 +378,8 @@ export default function OrderTable() {
   );
   return (
     <React.Fragment>
-      <Sheet
-        className="SearchAndFilters-mobile"
-        sx={{
-          display: {
-            xs: 'flex',
-            sm: 'none',
-          },
-          my: 1,
-          gap: 1,
-        }}
-      >
-        <Input
-          size="sm"
-          placeholder="Search"
-          startDecorator={<i data-feather="search" />}
-          sx={{ flexGrow: 1 }}
-        />
-        <IconButton
-          size="sm"
-          variant="outlined"
-          color="neutral"
-          onClick={() => setOpen(true)}
-        >
-          <i data-feather="filter" />
-        </IconButton>
-        <Modal open={open} onClose={() => setOpen(false)}>
-          <ModalDialog aria-labelledby="filter-modal" layout="fullscreen">
-            <ModalClose />
-            <Typography id="filter-modal" level="h2">
-              Filters
-            </Typography>
-            <Divider sx={{ my: 2 }} />
-            <Sheet sx={{ display: 'flex', flexDirection: 'column', gap: 2 }}>
-              {renderFilters()}
-              <Button color="primary" onClick={() => setOpen(false)}>
-                Submit
-              </Button>
-            </Sheet>
-          </ModalDialog>
-        </Modal>
-      </Sheet>
-      <Box 
-        sx={{
-          alignItems: 'center',
-        }}>
+
+
       <Sheet
         className="SearchAndFilters-tabletUp"
         sx={{
@@ -255,40 +390,35 @@ export default function OrderTable() {
           },
           flexWrap: 'wrap',
           gap: 1.5,
-        
+
+          marginLeft: "auto",
+          marginRight: "auto"
+
         }}
       >
-        <FormControl sx={{ flex: 1 }} size="sm">
+        {/* Search Bar */}
+        <FormControl sx={{ width: "30%" }}>
           <Input placeholder="Search" startDecorator={<i data-feather="search" />} />
         </FormControl>
-         <Button
+        {/* Filter */}
+        <IconButton aria-label="filter">
+          <TuneIcon /></IconButton>
+        {/* Add Document */}
+        <Button
           startDecorator={<Add />}
           disabled={false}
-          onClick={function () { }}
+          // onClick={function () { }}
           size="sm"
           variant="outlined"
+        // onClick={() => { elderlyFetcher("327H")}}
+        // onClick={testButton}
+        // onClick={elderlyFetcher}
+
         > Add Document</Button>
 
 
       </Sheet>
-      </Box>
 
-      {/* <Sheet
-        sx={{
-          width: '80%',
-          flex: 1,
-          minHeight: 0,
-          alignItems: 'right'
-        }}>
-        <Button
-          startDecorator={<Add />}
-          disabled={false}
-          onClick={function () { }}
-          size="sm"
-          variant="outlined"
-        > Add Document</Button>
-      </Sheet> */}
-      {/* table */}
       <Box
         sx={{
           display: 'flex',
@@ -348,22 +478,24 @@ export default function OrderTable() {
               </tr>
             </thead>
             <tbody>
-              {stableSort(rows, getComparator(order, 'id')).map((row) => (
-                <tr key={row.id}>
-                  <td style={{ padding: 12 }}>{row.date}</td>
-                  <td style={{ padding: 12 }}>{row.id}</td>
-                  <td style={{ padding: 12 }}>{row.customer.email}</td>
+              {rows.map((row) => (
+
+                <tr key={row._id}>
+                  <td style={{ padding: 12 }}>{row.dateTime}</td>
+                  <td style={{ padding: 12 }}>{row.document_no}</td>
+                  <td style={{ padding: 12 }}>{row.name}</td>
+                  {/* <td style={{ padding: 12 }}>{row.elderlyName}</td> */}
                   <td >
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                      <Avatar size="sm">{row.customer.initial}</Avatar>
-                      {/* <Avatar alt="Remy Sharp" src="/static/images/avatar/1.jpg" /> */}
+                      {/* <Avatar size="sm">{row.customer.initial}</Avatar> */}
+                      <Avatar alt={row.elderlyName} src={`backend/images/trained_face/${row.elderlyPhoto}`} />
                       <div>
                         <Typography
                           fontWeight="lg"
                           level="body3"
                           textColor="text.primary"
                         >
-                          {row.customer.name}
+                          {row.elderlyName}
                         </Typography>
                       </div>
                     </Box>
@@ -375,7 +507,7 @@ export default function OrderTable() {
           </Table>
         </Sheet>
       </Box>
-      <Box
+      {/* <Box
         className="Pagination-mobile"
         sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}
       >
@@ -398,8 +530,8 @@ export default function OrderTable() {
         >
           <i data-feather="arrow-right" />
         </IconButton>
-      </Box>
-      <Box
+      </Box> */}
+      {/* <Box
         className="Pagination-laptopUp"
         sx={{
           pt: 4,
@@ -441,7 +573,7 @@ export default function OrderTable() {
         >
           Next
         </Button>
-      </Box>
+      </Box> */}
     </React.Fragment>
   );
 }
