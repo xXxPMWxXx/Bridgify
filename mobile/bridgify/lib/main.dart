@@ -1,3 +1,4 @@
+import 'package:bridgify/config.dart';
 import 'package:bridgify/pages/home_page.dart';
 import 'package:bridgify/pages/login_signup/login_signup_page.dart';
 import 'package:bridgify/pages/login_signup/otp_page.dart';
@@ -5,6 +6,7 @@ import 'package:bridgify/pages/profile/profile_page.dart';
 import 'package:bridgify/pages/profile/settings_page.dart';
 import 'package:bridgify/services/shared_service.dart';
 import 'package:flutter/material.dart';
+import 'package:zego_zimkit/services/services.dart';
 
 // import 'pages/login_page.dart';
 // import 'pages/register_page.dart';
@@ -12,6 +14,12 @@ import 'package:flutter/material.dart';
 Widget _defaultHome = const MainScreen();
 
 void main() async {
+    final appId = await DataManagement.getSecretData(StoredString.appId);
+  final appSignKey =
+      await DataManagement.getSecretData(StoredString.appSignKey);
+
+  await ZIMKit().init(appID: int.parse(appId), appSign: appSignKey);
+
   WidgetsFlutterBinding.ensureInitialized();
 
   // Get result of the login function.

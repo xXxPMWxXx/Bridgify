@@ -87,7 +87,7 @@ export const create = async (req: any, res: any, next: NextFunction) => {
           const imageName = `${author_email}_${dateTime}_${imagesCount}.png`;
           images.mv(baseDir + `/images/post/${imageName}`);
           postImages.push(imageName);
-          imageURL.push(`http://13.229.138.25:8000/images/post/${imageName}`);
+          imageURL.push(`http://13.228.86.148:8000/images/post/${imageName}`);
           devImageURL.push(`http://localhost:8000/images/post/${imageName}`);
         }
 
