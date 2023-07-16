@@ -47,7 +47,7 @@ export const test = async (req: any, res: any, next: NextFunction) => {
 };
 
 // to create a new post
-//to access the image => http://13.229.138.25:8000/images/post/{imageName}
+//to access the image => http://13.228.86.148:8000/images/post/{imageName}
 //http://13.229.138.25:8000/images/post/admin@gmail.com_2023-07-10T15:14:54_1.png
 export const create = async (req: any, res: any, next: NextFunction) => {
   // 1. get token from req
