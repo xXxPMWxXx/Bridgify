@@ -246,7 +246,10 @@ export default function HealthTable() {
   const [rows, setRows] = React.useState<any[]>([]);
   const [fetchAdditional, setFetchAdditional] = React.useState(false);
 
-
+  // const getImagePath = (imageName: String) => {
+  //   console.log(`../../../backend/images/trained_face/${imageName}`)
+  //   return `../../backend/images/trained_face/327H.png`;
+  // };
 
   //fetch initial data
   React.useEffect(() => {
@@ -306,8 +309,8 @@ export default function HealthTable() {
 
               // Check if 'foundItem' exists (it will be undefined if no match is found)
               if (foundItem) {
-                console.log("found")
-                // Create a new object with all properties from 'row' and add the 'color' property from 'foundItem'
+                console.log("found " + foundItem.id)
+                // Create a new object with all properties from 'row' along with the elderly name and photo
                 return {
                   ...row,
                   elderlyName: foundItem.name,
@@ -407,7 +410,6 @@ export default function HealthTable() {
         <Button
           startDecorator={<Add />}
           disabled={false}
-          // onClick={function () { }}
           size="sm"
           variant="outlined"
         // onClick={() => { elderlyFetcher("327H")}}
@@ -484,11 +486,9 @@ export default function HealthTable() {
                   <td style={{ padding: 12 }}>{row.dateTime}</td>
                   <td style={{ padding: 12 }}>{row.document_no}</td>
                   <td style={{ padding: 12 }}>{row.name}</td>
-                  {/* <td style={{ padding: 12 }}>{row.elderlyName}</td> */}
                   <td >
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                      {/* <Avatar size="sm">{row.customer.initial}</Avatar> */}
-                      <Avatar alt={row.elderlyName} src={`backend/images/trained_face/${row.elderlyPhoto}`} />
+                      <Avatar alt={row.elderlyName} src={`http://localhost:8000/images/trained_face/${row.elderlyPhoto}`} />
                       <div>
                         <Typography
                           fontWeight="lg"
