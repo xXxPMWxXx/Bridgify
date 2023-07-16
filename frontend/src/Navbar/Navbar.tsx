@@ -26,7 +26,7 @@ export const ResponsiveAppBar = () => {
 
 
     let profileImage : any = window.localStorage.getItem('profileImage');
-    const profileImageSrc = `http://13.229.138.25:8000/images/user_profile/${profileImage}`;
+    const profileImageSrc = `http://13.228.86.148:8000/images/user_profile/${profileImage}`;
 
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {

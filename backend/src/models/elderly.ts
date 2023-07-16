@@ -21,7 +21,7 @@ const ElderlySchema = new Schema({
       type: String,
       required: true,
     },
-    // photo path(http://13.229.138.25:8000/elderly/{fileName})
+    // photo path(http://13.228.86.148:8000/elderly/{fileName})
     // just need save the file name 
     photo: {
       type: String

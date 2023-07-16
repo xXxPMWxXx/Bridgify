@@ -41,9 +41,9 @@ To generate routing for new file, to show in the swagger UI
 - `ssh -i "mw.pem" ubuntu@ec2-13-229-138-25.ap-southeast-1.compute.amazonaws.com` => connect to EC2 via ssh
 - `rm -rf node_modules/` => remove folder in ubuntu
 ##### Endpoint
-- http://13.229.138.25:3000 => fronend
-- http://13.229.138.25:8000 => backend
-- http://13.229.138.25:8000/doc => backend swagger
+- http://13.228.86.148:3000 => fronend
+- http://13.228.86.148:8000 => backend
+- http://13.228.86.148:8000/doc => backend swagger
 
 ##### Debugging
 - `npm rebuild @tensorflow/tfjs-node --build-from-source` => for backend, as tfjs-node need this cmd to work

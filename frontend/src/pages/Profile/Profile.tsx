@@ -25,7 +25,7 @@ export const Profile = () => {
     const email = window.localStorage.getItem('email')
 
     
-    const profileImageSrc = `http://13.229.138.25:8000/images/user_profile/${profileImage}`;
+    const profileImageSrc = `http://13.228.86.148:8000/images/user_profile/${profileImage}`;
 
 
     const handleElderlyID = (e: any) => {
