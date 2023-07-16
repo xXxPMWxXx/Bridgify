@@ -181,8 +181,8 @@ export const getSelected = async (req: any, res: any, next: NextFunction) => {
   jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
     try {
       if (decoded) {
-        const data = req.body;
-        // console.log(data);
+        const data = req.query;
+        console.log(data.elderlyID);
         const records = await RecordModel.find({ elderlyID: data.elderlyID });
         res.status(200).json({ records });
 
