@@ -1,10 +1,5 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import React, { useEffect, useState } from 'react';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, Navigate } from 'react-router-dom';
-import { Layout, DefaultNavbar } from '../../Layout';
 import {ResponsiveAppBar} from '../../Navbar';
 import { Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
@@ -21,69 +16,87 @@ const Background = styled("div") ({
     backgroundRepeat: 'no-repeat'
 })
 
-const elderlyStatuses = [
-    {
-        name: 'Megan J.',
-        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
-        status: 'Awake',
-        activity: 'Lunch',
-        medication: 'Taken',
-        condition: 'Fine',
-    },
-    {
-        name: 'Henry.',
-        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
-        status: 'Awake',
-        activity: 'Lunch',
-        medication: 'Taken',
-        condition: 'Fine',
-    },
-    {
-        name: 'Henry.',
-        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
-        status: 'Asleep',
-        activity: 'Lunch',
-        medication: 'Taken',
-        condition: 'Fine',
-    },
-        {
-        name: 'Henry.',
-        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
-        status: 'Asleep',
-        activity: 'Lunch',
-        medication: 'Taken',
-        condition: 'Fine',
-    },
-];
 
 export const Home = () => {
 
     useEffect(() => {
+        elderlyStatuses();
     }, []);
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [alertType, setAlertType]: any = useState('info');
+    const [alertMsg, setAlertMsg] = useState('');
+
+    // const linkedElderly = window.localStorage.getItem('linkedElderly')
     const token = window.localStorage.getItem('accessToken');
     const userName = window.localStorage.getItem('userName');
     const accRole = window.localStorage.getItem('accRole');
-    const linkedElderly : any = window.localStorage.getItem('linkedElderly');
-    const profileImage = window.localStorage.getItem('profileImage')
+    const profileImage = window.localStorage.getItem('profileImage');
+    const email = window.localStorage.getItem('email');
+
+
     console.log("-----Home-----");
     console.log(token);
     console.log(userName);
     console.log(accRole);
-    console.log(linkedElderly);
+    // console.log(linkedElderly);
     console.log(profileImage);
+    console.log(email);
+
+    const[elderly, setElderly]: any[] = useState([]);
     
     //change linkedElderly to Array
-    if(linkedElderly != null){
-        var elderlyArray = linkedElderly.split(",");
-        console.log(elderlyArray[0])
-    }
+    // if(linkedElderly != null){
+    //     var elderlyArray = linkedElderly.split(",");
+    //     // console.log(elderlyArray[0])
+    // }
+
+    const elderlyStatuses = async () => {
+        try {
+          const APImethod = 'getByUser';
+      
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/${APImethod}?email=${email}`, {
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': `Bearer ${token}`,
+            },
+            method: 'GET',
+          });
+          
+          if (!response.ok) {
+            const apiResponse = await response.json();
+            // Show alert message
+            setOpenSnackbar(true);
+            setAlertType('error');
+            setAlertMsg(apiResponse['message']);
+            return;
+          }
+
+          const elderlyResponse = await response.json();
+        //   console.log(elderlyResponse);
+          const elderlyArray = elderlyResponse.map((elderly: any) => ({
+            name: elderly.name,
+            image: `http://13.229.138.25:8000/images/trained_face/${elderly.photo}`,
+            status: elderly.status.awake === 'True' ? 'Awake' : 'Asleep',
+            activity: elderly.status.current_activity,
+            medication: elderly.status.taken_med === 'True' ? 'Taken' : 'Not Taken',
+            condition: elderly.status.condition,
+          }));
+          
+          setElderly(elderlyArray);
+        } catch (error) {
+          console.error('Error fetching linked elderly:', error);
+          window.alert('Error: Failed to fetch linked elderly');
+        }
+      };
+      
     
 
     return (
         <div>
             {
 				token == null ?
-					<Navigate to="/Login" /> : <Navigate to="/" />
+					<Navigate to="/Login" /> : <Navigate to="/Home" />
 			}
             < ResponsiveAppBar/>
             {/* < Layout/> */}
@@ -100,8 +113,8 @@ export const Home = () => {
             <main>
                 <Box display='flex' justifyContent='center' alignItems='center' height='60vh' width='100%'>
                     <Grid container spacing={-5} justifyContent="center">
-                        {elderlyStatuses.map((post, index) => ( // Add index as the second parameter
-                        <Grid item key={post.name} xs={12} sm={6} md={4} lg={3} xl={2} sx={{ marginBottom: (index + 1) % 4 === 0 ? 2 : 0 }}>
+                        {elderly.map((post:any) => ( // Add index as the second parameter
+                        <Grid item key={post.name} xs={12} sm={6} md={4} lg={3} xl={2}>
                             <ElderlyStatus post={post} />
                         </Grid>
                         ))}

@@ -65,7 +65,7 @@ export const create = async (req: any, res: any, next: NextFunction) => {
         const file = req.files.doc;
 
         //only accepts one file
-        const fileName = `${data.elderly_name}_${data.name}_${data.document_no}` + path.extname(file.name);
+        const fileName = `${data.elderlyID}_${data.name}_${data.document_no}` + path.extname(file.name);
         file.mv(baseDir + `/records/${fileName}`);
 
         //create the DB object
@@ -101,6 +101,29 @@ export const create = async (req: any, res: any, next: NextFunction) => {
   });
 };
 
+// // to update a record
+// export const update = async (req: any, res: any, next: NextFunction) => {
+
+//   // 1. get token from req
+//   const token =
+//     req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+//   // 2. verify token with secret key
+//   jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+//     try {
+//       if (decoded) {
+//         const {elderlyID, document_no} = req.body;
+
+//       } else if (err) {
+//         res.status(401).json({ error: "You must have a valid token" });
+//       }
+//     } catch (error) {
+//       return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
+//     }
+//   });
+// };
+
+
 // to delete a new post
 // export const deleteRecord = async (req: any, res: any, next: NextFunction) => {
 
@@ -135,7 +158,7 @@ export const display = async (req: any, res: any, next: NextFunction) => {
   jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
     try {
       if (decoded) {
-        const data = req.body;
+        const data = req.query;
         const fileName = data.fileName;
         res.sendFile(baseDir + `/records/${fileName}`);
       } else if (err) {
@@ -158,8 +181,8 @@ export const getSelected = async (req: any, res: any, next: NextFunction) => {
   jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
     try {
       if (decoded) {
-        const data = req.body;
-        // console.log(data);
+        const data = req.query;
+        console.log(data.elderlyID);
         const records = await RecordModel.find({ elderlyID: data.elderlyID });
         res.status(200).json({ records });
 
@@ -171,7 +194,6 @@ export const getSelected = async (req: any, res: any, next: NextFunction) => {
     }
   });
 };
-
 
 
 // to get all records for admin
