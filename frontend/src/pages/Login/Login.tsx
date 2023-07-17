@@ -53,20 +53,20 @@ const myTheme = createTheme({
 
 export function Login() {
 
-  let navigate = useNavigate();
-  //validation method
-  const validateEmail = (email: any) => {
-    // Regular expression to validate email format
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
+  // const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+  //   event.preventDefault();
+  //   const data = new FormData(event.currentTarget);
+  //   console.log({
+  //     email: data.get('email'),
+  //     password: data.get('password'),
+  //   });
+  // };
 
-  //variables
+  let navigate = useNavigate();
+
+  //to store the input, need set onChange on the html code also
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  //validation
-  const [emailError, setEmailError] = useState(false);
-  const [helperText, setHelperText] = useState('');
 
   const handleEmail = (e: any) => {
     setEmail(e.target.value);
@@ -74,16 +74,7 @@ export function Login() {
   const handlePassword = (e: any) => {
     setPassword(e.target.value);
   }
-  const loginHandler = async (event: any) => {
-    event.preventDefault();
-    if (!validateEmail(email)) {
-      setEmailError(true);
-      setHelperText('Please enter a valid email address.');
-      return;
-    }else {
-      setEmailError(false);
-      setHelperText('');
-    }
+  const loginHandler = async () => {
     // //calling backend API
     fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/login`, {
       headers: {
@@ -170,7 +161,7 @@ export function Login() {
             <Typography sx={{ fontWeight: 500, marginBottom: 3 }}>
               Welcome to Bridgify
             </Typography>
-            <form onSubmit={loginHandler}>
+            <Box component="form" noValidate sx={{ mt: 1 }}>
               <TextField
                 margin="normal"
                 required
@@ -180,8 +171,6 @@ export function Login() {
                 name="email"
                 autoComplete="email"
                 autoFocus
-                error={emailError}
-                helperText={helperText}
                 onChange={handleEmail}
               />
               <TextField
@@ -196,10 +185,11 @@ export function Login() {
                 onChange={handlePassword}
               />
               <Button
-                type="submit"
+                type="button"
                 fullWidth
                 variant="contained"
                 sx={{ mt: 3, mb: 2, backgroundColor: 'black' }}
+                onClick={loginHandler}
               >
                 Log In
               </Button>
@@ -216,7 +206,7 @@ export function Login() {
                 </Grid>
               </Grid>
               <Copyright sx={{ mt: 5 }} />
-            </form>
+            </Box>
           </Box>
         </Grid>
       </Grid>

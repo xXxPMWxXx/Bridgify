@@ -42,7 +42,7 @@ export default function ElderlyStatus(props: elderlyStatusInfo) {
                             <CardMedia 
                                 component="img"
                                 sx={{display:'flex', position:'absolute', width:13, marginLeft:1.15, marginTop:0.8}}
-                                image={post.status === 'Awake' ? awakeIcon : asleepIcon}
+                                image={post.status === 'True' ? awakeIcon : asleepIcon}
                             />
                             <Typography variant="subtitle1" sx={{fontFamily:'Roboto', color:'rgba(0, 0, 0, 0.50)', fontSize:14, marginLeft:3.2}}>
                                 {post.status}
