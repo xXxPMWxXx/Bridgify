@@ -5,7 +5,9 @@ import { config as dotEnvConfig } from 'dotenv';
 import 'bootstrap/dist/css/bootstrap.css';
 import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
+import { createRoot } from 'react-dom/client';
+//for normal user
 import { Health } from './pages/Health';
 import { Help } from './pages/Help';
 import { Home } from './pages/Home';
@@ -15,8 +17,11 @@ import { Page404 } from './pages/Page404';
 import { Profile } from './pages/Profile';
 import { Setting } from './pages/Setting';
 import { Signup } from './pages/Signup';
-import { Sign } from 'crypto';
-import { createRoot } from 'react-dom/client';
+//for admin user
+import { Elderly_admin } from './pages/Elderly(admin)';
+import { Home_admin } from './pages/Home(admin)';
+import { Post_admin } from './pages/Post(admin)';
+
 
 
 const container: any = document.getElementById('root');
@@ -26,7 +31,8 @@ root.render(
 		<Routes>
 			<Route path="/Health" element={<Health />} />
 			<Route path="/Help" element={<Help />} />
-			<Route path="/" element={<Home />} />
+			<Route path="/Home" element={<Home />} />
+			<Route path="/" element={<Navigate to="/Home" />} />
 			<Route path="/Login" element={<Login />} />
 			<Route path="/Message" element={<Message />} />
 			<Route path="/404" element={<Page404 />} />
@@ -34,6 +40,9 @@ root.render(
 			<Route path="/Setting" element={<Setting />} />
 			<Route path="/Signup" element={<Signup />} />
 			<Route path="/*" element={<Page404 />} />
+			<Route path="/Home-admin" element={<Home_admin />} />
+			<Route path="/Elderly-admin" element={<Elderly_admin />} />
+			<Route path="/Post-admin" element={<Post_admin />} />
 		</Routes>
 	</BrowserRouter>);
 

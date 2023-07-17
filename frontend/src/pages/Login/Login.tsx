@@ -78,7 +78,7 @@ export function Login() {
       setEmailError(true);
       setHelperText('Please enter a valid email address.');
       return;
-    }else {
+    } else {
       setEmailError(false);
       setHelperText('');
     }
@@ -109,7 +109,12 @@ export function Login() {
           localStorage.setItem('linkedElderly', data.linkedElderly);
           localStorage.setItem('profileImage', data.profileImage);
           localStorage.setItem('email', data.email);
-          navigate('/home');
+          
+          if (data.accRole == 'Admin') {
+            navigate('/home-admin');
+          } else {
+            navigate('/home');
+          }
 
         }
 

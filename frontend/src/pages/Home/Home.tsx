@@ -78,7 +78,7 @@ export const Home = () => {
         <div>
             {
 				token == null ?
-					<Navigate to="/Login" /> : <Navigate to="/" />
+					<Navigate to="/Login" /> : <Navigate to="/Home" />
 			}
             < ResponsiveAppBar/>
             {/* < Layout/> */}
