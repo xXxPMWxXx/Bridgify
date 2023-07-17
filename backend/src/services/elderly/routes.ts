@@ -20,3 +20,6 @@ elderlyRouter.route('/get').get(controller.get);
 
 /** GET /api/elderly/getAll */
 elderlyRouter.route('/getAll').get(controller.getAll);
+
+/** GET /api/elderly/get/?email={} */
+elderlyRouter.route('/getByUser').get(controller.getByUser);

@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import {ResponsiveAppBar} from '../../Navbar';
+import { ResponsiveAppBarAdmin } from '../../Navbar';
 import { Box, Typography } from '@mui/material';
 
-export const Message = () => {
+export const Elderly_admin = () => {
 
     useEffect(() => {
     }, []);
@@ -22,20 +22,24 @@ export const Message = () => {
     return (
         <div>
             {
-				token == null ?
-					<Navigate to="/Login" /> : <Navigate to="/Message" />
-			}
-            < ResponsiveAppBar/>
-            <Box 
+                token == null ?
+                    <Navigate to="/Login" /> : <Navigate to="/Elderly-admin" />
+            }
+            {
+                token != null && accRole != 'Admin' ?
+                    <Navigate to="/Forbidden" /> : null
+            }
+            < ResponsiveAppBarAdmin />
+            <Box
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    
+
                 }}
             >
                 <Typography align="center" variant='h2' paragraph>
-                    Message page under consturction,coming soon.
+                    Elderly(admin) page under construction,coming soon.
                 </Typography>
             </Box>
 

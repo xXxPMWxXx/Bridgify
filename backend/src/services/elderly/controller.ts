@@ -4,6 +4,7 @@ import cors from "cors";
 import "dotenv/config";
 const bcrypt = require("bcryptjs");
 const ElderlyModel = require("../../models/elderly");
+const UserModel = require("../../models/user");
 
 const jwt_secret: any = process.env.JWT_SECRET;
 
@@ -194,6 +195,48 @@ export const getAll = async (req: any, res: Response, next: NextFunction) => {
         // 4. check if the email is existed
         const allElderly = await ElderlyModel.find({});
         res.status(200).json(allElderly);
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
+
+  } catch (error) {
+    res.status(400).json({ error, message: "Make sure your request body is correct" });
+  }
+};
+
+// get a list of elderly profile link to a certain user
+export const getByUser = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    // 1. get token from req
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      // 3. allow elderly to update elderly details
+
+      if (decoded) {
+        const email = req.query.email;
+        // 4. check if the user email is existed
+        const user = await UserModel.findOne({ 'email': email });
+        if (user == null) {
+          return res
+            .status(400)
+            .json({ message: `User email: ${email} does not exit!` });
+        }
+        const linkedElderly = user.linkedElderly;
+        //if not linked elderly
+        if (linkedElderly.length == 0) {
+          return res
+            .status(200)
+            .json({ message: `User email: ${email} have not link to any elderly yet!` });
+        }
+
+        const elderly =  await ElderlyModel.find({'id' : {$in : linkedElderly}})
+        console.log(linkedElderly);
+        res.status(200).json(elderly);
 
       } else if (err) {
         res.status(401).json({ error: "You must have a valid token" });

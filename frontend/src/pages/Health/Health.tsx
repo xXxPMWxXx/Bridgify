@@ -1,8 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, Navigate } from 'react-router-dom';
-import { Layout, DefaultNavbar } from '../../Layout';
-
 import {ResponsiveAppBar} from '../../Navbar';
 import { Box, Typography } from '@mui/material';
 import HealthTable from './HealthTable';

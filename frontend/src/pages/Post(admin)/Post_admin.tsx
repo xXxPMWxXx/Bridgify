@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import {ResponsiveAppBar} from '../../Navbar';
+import {ResponsiveAppBarAdmin} from '../../Navbar';
 import { Box, Typography } from '@mui/material';
 
-export const Message = () => {
+export const Post_admin = () => {
 
     useEffect(() => {
     }, []);
@@ -23,9 +23,13 @@ export const Message = () => {
         <div>
             {
 				token == null ?
-					<Navigate to="/Login" /> : <Navigate to="/Message" />
+					<Navigate to="/Login" /> : <Navigate to="/Post-admin" />
 			}
-            < ResponsiveAppBar/>
+            {
+                token != null && accRole != 'Admin'? 
+                <Navigate to="/Forbidden" /> : null
+            }
+            < ResponsiveAppBarAdmin/>
             <Box 
                 sx={{
                     display: 'flex',
@@ -35,7 +39,7 @@ export const Message = () => {
                 }}
             >
                 <Typography align="center" variant='h2' paragraph>
-                    Message page under consturction,coming soon.
+                    Post(admin) page under construction,coming soon.
                 </Typography>
             </Box>
 
