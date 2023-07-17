@@ -22,185 +22,13 @@ import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import { Add } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
-import logo from './327H.png'; 
-// const images = require.context('backend\images\trained_face', true);
+const imageBASEURL = 'http://13.228.86.148:8000/images/trained_face';
+// const imageBASEURL = 'http://localhost:8000/images/trained_face';
 
 
 
-// const elderlyFetcher = async (elderlyID:any) => {
-//   console.log("elderlyFetcher called");
-//   // event.preventDefault();
-//   const token = window.localStorage.getItem('accessToken');
-//   // const elderlyID = "327H";
-
-//   // //calling backend API
-//   fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/get/?id=${elderlyID}`, {
-//     headers: {
-//       'Authorization': `Bearer ${token}`,
-//       'Content-Type': 'application/json',
-//     },
-//     method: 'GET'
-//   })
-//     .then(async (response) => {
-//       if (response.status != 200) {
-//         console.log("error fetching data")
-//         return null;
-
-//       } else {
-//         console.log("loaded")
-//         const data = await response.json();
-//         const { name: elderlyName, photo } = data;
-//         console.log({ elderlyName, photo });
-
-//         return { elderlyName, photo };
-
-//       }
-
-//     })
-//     .catch((err) => {
-//       window.alert(err);
-//       return null;
-//     });
-
-// }
-
-const testButton = (e: any) => {
-  e.preventDefault();
-  console.log('The link was clicked.');
-  window.alert("CLICKED");
-}
-
-// const elderlyFetcher = async (elderlyID:any) => {
-//   console.log("elderlyFetcher called");
-
-//   try {
-//     const token = window.localStorage.getItem('accessToken');
-//     const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/get/?id=${elderlyID}`, {
-//       headers: {
-//         'Authorization': `Bearer ${token}`,
-//         'Content-Type': 'application/json',
-//       },
-//       method: 'GET'
-//     });
-
-//     if (response.status !== 200) {
-//       console.log("error fetching data");
-//       return null;
-//     } else {
-//       console.log("loaded");
-//       const data = await response.json();
-//       const { name: elderlyName, photo } = data;
-//       console.log({ elderlyName, photo });
-//       return { elderlyName, photo };
-//     }
-//   } catch (err) {
-//     window.alert(err);
-//     return null;
-//   }
-// };
 
 
-const rows = [
-  {
-    id: 'INV-1234',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'O',
-      name: 'Olivia Ryhe',
-      email: 'olivia@email.com',
-    },
-    subscription: 'Yearly',
-  },
-  {
-    id: 'INV-1233',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Steve Hampton',
-      email: 'steve.hamp@email.com',
-    },
-    subscription: 'Monthly',
-  },
-  {
-    id: 'INV-1232',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'C',
-      name: 'Ciaran Murray',
-      email: 'ciaran.murray@email.com',
-    },
-    subscription: 'Yearly',
-  },
-  {
-    id: 'INV-1231',
-    date: 'Feb 3, 2023',
-    status: 'Refunded',
-    customer: {
-      initial: 'M',
-      name: 'Maria Macdonald',
-      email: 'maria.mc@email.com',
-    },
-    subscription: 'Yearly',
-  },
-  {
-    id: 'INV-1230',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'C',
-      name: 'Charles Fulton',
-      email: 'fulton@email.com',
-    },
-    subscription: 'Yearly',
-  },
-  {
-    id: 'INV-1229',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'J',
-      name: 'Jay Hooper',
-      email: 'hooper@email.com',
-    },
-    subscription: 'Yearly',
-  },
-  {
-    id: 'INV-1228',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'K',
-      name: 'Krystal Stevens',
-      email: 'k.stevens@email.com',
-    },
-    subscription: 'Monthly',
-  },
-  {
-    id: 'INV-1227',
-    date: 'Feb 3, 2023',
-    status: 'Paid',
-    customer: {
-      initial: 'S',
-      name: 'Sachin Flynn',
-      email: 's.flyn@email.com',
-    },
-    subscription: 'Monthly',
-  },
-  {
-    id: 'INV-1226',
-    date: 'Feb 3, 2023',
-    status: 'Cancelled',
-    customer: {
-      initial: 'B',
-      name: 'Bradley Rosales',
-      email: 'brad123@email.com',
-    },
-    subscription: 'Monthly',
-  },
-];
 
 function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
   if (b[orderBy] < a[orderBy]) {
@@ -246,10 +74,8 @@ export default function HealthTable() {
   const [rows, setRows] = React.useState<any[]>([]);
   const [fetchAdditional, setFetchAdditional] = React.useState(false);
 
-  // const getImagePath = (imageName: String) => {
-  //   console.log(`../../../backend/images/trained_face/${imageName}`)
-  //   return `../../backend/images/trained_face/327H.png`;
-  // };
+  const [pdfUrl, setPdfUrl] = React.useState('');
+
 
   //fetch initial data
   React.useEffect(() => {
@@ -288,7 +114,7 @@ export default function HealthTable() {
 
 
     if (fetchAdditional) {
-      // //calling backend API
+      //calling getall for elderly
       fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/elderly/getAll`, {
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -341,14 +167,73 @@ export default function HealthTable() {
 
 
     }
-    
+
 
 
 
 
   }, [fetchAdditional]);
 
- 
+  const fetchDoc = async () => {
+    console.log("fetchDoc called");
+    // event.preventDefault();
+    const token = window.localStorage.getItem('accessToken');
+    // const elderlyID = "327H";
+
+    //calling backend API
+    fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/get?fileName=531H_Heart Report_#323145.pdf`, {
+      headers: {
+        'Authorization': `Bearer ${token}`,
+        'Content-Type': 'application/json',
+      },
+      method: 'GET'
+
+    })
+      .then((response) => response.blob())
+      .then((myBlob) => {
+        const pdfUrl = URL.createObjectURL(myBlob);
+        setPdfUrl(pdfUrl);
+        window.open(pdfUrl, '_blank');
+      });
+
+
+  }
+
+  // const testButton = (e: any) => {
+  //   e.preventDefault();
+  //   console.log('The link was clicked.');
+  //   window.alert("CLICKED");
+  // }
+
+  // const elderlyFetcher = async (elderlyID:any) => {
+  //   console.log("elderlyFetcher called");
+
+  //   try {
+  //     const token = window.localStorage.getItem('accessToken');
+  //     const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/get/?id=${elderlyID}`, {
+  //       headers: {
+  //         'Authorization': `Bearer ${token}`,
+  //         'Content-Type': 'application/json',
+  //       },
+  //       method: 'GET'
+  //     });
+
+  //     if (response.status !== 200) {
+  //       console.log("error fetching data");
+  //       return null;
+  //     } else {
+  //       console.log("loaded");
+  //       const data = await response.json();
+  //       const { name: elderlyName, photo } = data;
+  //       console.log({ elderlyName, photo });
+  //       return { elderlyName, photo };
+  //     }
+  //   } catch (err) {
+  //     window.alert(err);
+  //     return null;
+  //   }
+  // };
+
   const renderFilters = () => (
     <React.Fragment>
       <FormControl size="sm">
@@ -476,6 +361,7 @@ export default function HealthTable() {
                 <th style={{ padding: 12 }}>Document No</th>
                 <th style={{ padding: 12 }}>Name</th>
                 <th style={{ padding: 12 }}>Elderly</th>
+                <th style={{ padding: 12 }}>File</th>
 
               </tr>
             </thead>
@@ -488,23 +374,27 @@ export default function HealthTable() {
                   <td style={{ padding: 12 }}>{row.name}</td>
                   <td >
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                      <Avatar alt={row.elderlyName} src={`http://localhost:8000/images/trained_face/${row.elderlyPhoto}`} />
+                      <Avatar alt={row.elderlyName} src={`${imageBASEURL}/${row.elderlyPhoto}`} />
                       <div>
-                        <Typography
-                          fontWeight="lg"
-                          level="body3"
-                          textColor="text.primary"
-                        >
-                          {row.elderlyName}
-                        </Typography>
+
+                        {row.elderlyName}
                       </div>
                     </Box>
                   </td>
+                  {/* <td style={{
+                    width: '20px',
 
+
+                  }}>
+                    <IconButton aria-label="filter" onClick={fetchDoc}>
+                      <TuneIcon /></IconButton>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
           </Table>
+
+         
         </Sheet>
       </Box>
       {/* <Box

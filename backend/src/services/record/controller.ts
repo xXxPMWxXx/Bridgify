@@ -158,7 +158,7 @@ export const display = async (req: any, res: any, next: NextFunction) => {
   jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
     try {
       if (decoded) {
-        const data = req.body;
+        const data = req.query;
         const fileName = data.fileName;
         res.sendFile(baseDir + `/records/${fileName}`);
       } else if (err) {
