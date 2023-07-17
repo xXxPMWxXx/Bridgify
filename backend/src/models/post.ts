@@ -18,7 +18,7 @@ const PostSchema = new Schema({
   activity_type: {
     type: String,
   },
-  // photo path(http://13.229.138.25:8000/images/post/{fileName})
+  // photo path(http://13.228.86.148:8000/images/post/{fileName})
   // just need save the file name 
   // can be more than one
   postImages: {

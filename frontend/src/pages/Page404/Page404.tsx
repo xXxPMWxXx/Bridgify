@@ -12,10 +12,6 @@ export const Page404 = () => {
 
     return (
         <div>
-            {
-				token == null ?
-					<Navigate to="/Login" /> : <Navigate to="/" />
-			}
             <Button key='Home' onClick={handleClick} sx={{ my: 2, color: 'red', display: 'block' }} ><u>back</u></Button>
             <Box 
                 sx={{

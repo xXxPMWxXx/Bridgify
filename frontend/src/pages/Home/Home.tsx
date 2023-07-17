@@ -1,10 +1,5 @@
-import Container from 'react-bootstrap/Container';
-import Nav from 'react-bootstrap/Nav';
-import Navbar from 'react-bootstrap/Navbar';
 import React, { useEffect, useState } from 'react';
-import NavDropdown from 'react-bootstrap/NavDropdown';
 import { Link, Navigate } from 'react-router-dom';
-import { Layout, DefaultNavbar } from '../../Layout';
 import {ResponsiveAppBar} from '../../Navbar';
 import { Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
@@ -96,7 +91,7 @@ export const Home = () => {
         <div>
             {
 				token == null ?
-					<Navigate to="/Login" /> : <Navigate to="/" />
+					<Navigate to="/Login" /> : <Navigate to="/Home" />
 			}
             < ResponsiveAppBar/>
             {/* < Layout/> */}

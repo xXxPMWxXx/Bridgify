@@ -27,6 +27,10 @@ userRouter.route('/update').put(controller.updateUser);
 /** POST /api/user/linkToElderly */
 userRouter.route('/linkelderly').post(controller.linkElderly);
 
+/** POST /api/user/linkToElderly */
+userRouter.route('/remove-linkelderly').post(controller.removeLinkElderly);
+
+
 //forget password
 /** GET /api/user/generateOTP */
 userRouter.route('/generateOTP').get(controller.generateOTP);

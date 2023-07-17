@@ -1,4 +1,5 @@
 import 'package:bridgify/accessories/post/post_text.dart';
+import 'package:bridgify/config.dart';
 import 'package:flutter/material.dart';
 
 class PictureSingle extends StatelessWidget {
@@ -13,6 +14,7 @@ class PictureSingle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print('http://' + Config.apiURL + '/images/post/' + image);
     return Container(
       margin: EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
@@ -57,7 +59,9 @@ class PictureSingle extends StatelessWidget {
                 ],
                 image: DecorationImage(
                   fit: BoxFit.cover,
-                  image: Image.network(image).image,
+                  image: Image.network(
+                          'http://' + Config.apiURL + '/images/post/' + image)
+                      .image,
                 ),
               ),
             ),

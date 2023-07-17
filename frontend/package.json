@@ -17,7 +17,6 @@
     "@types/react-dom": "^18.2.4",
     "@types/react-helmet": "^6.1.6",
     "bootstrap": "^5.2.3",
-    "mdb-react-ui-kit": "^6.1.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.7.4",
     "react-dom": "^18.2.0",
@@ -48,5 +47,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "webpack": "^5.88.1"
   }
 }

@@ -73,21 +73,17 @@ async function uploadLabeledImages(images: any, label: any) {
 export const postface = async (req: any, res: any, next: NextFunction) => {
     try {
         const { file } = req.files;
-        // TODO:implement if file is null etc
-        // If no image submitted, exit
-        console.log(__dirname);
-        console.log(baseDir);
-        
+
         const label = req.body.label
+        const elderlyID = req.body.elderlyID
         let result = await uploadLabeledImages(file.data, label);
         if (result) {
             
             // Move the uploaded image to our upload folder
-            console.log(file.name);
-            file.mv(baseDir + '/images/trained_face/' + label + '.png');
+            file.mv(baseDir + '/images/trained_face/' + elderlyID + '.png');
             return res.status(200).json({ message: "Face data stored successfully",
-                                            for_development_url: `http://localhost:8000/images/trained_face/${label}.png`,
-                                            for_production_url: `http://13.229.138.25:8000/images/trained_face/${label}.png`, })
+                                            for_development_url: `http://localhost:8000/images/trained_face/${elderlyID}.png`,
+                                            for_production_url: `http://13.228.86.148:8000/images/trained_face/${elderlyID}.png`, })
         } else {
             return res.status(400).json({ message: "Something went wrong, make sure your label is unique and does not existed in the DB." })
         }
@@ -148,7 +144,7 @@ export const checkface = async (req: any, res: any, next: NextFunction) => {
 
         return res.status(200).json({ result ,
             for_development_url: `http://localhost:8000/images/post/${file.name}`,
-            for_production_url: `http://13.229.138.25:8000/images/post/${file.name}`, });
+            for_production_url: `http://13.228.86.148:8000/images/post/${file.name}`, });
 
     } catch (error) {
         console.log(error)

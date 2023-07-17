@@ -605,7 +605,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             backgroundImage: Image.file(File(fileName)).image)
                         : CircleAvatar(
                             radius: 32,
-                            backgroundImage: Image.network(fileName).image)
+                            backgroundImage: Image.network(
+                                                'http://' +
+                                                    Config.apiURL +
+                                                    '/images/user_profile/' +
+                                                    fileName).image)
                     : CircleAvatar(
                         radius: 32,
                         backgroundImage: Image.network(

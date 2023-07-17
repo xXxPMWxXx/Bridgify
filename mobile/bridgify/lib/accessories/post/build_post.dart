@@ -19,17 +19,18 @@ class _BuildPostState extends State<BuildPost> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-          flex: 2,
-          child: ListView.builder(
-            shrinkWrap: true,
-            physics: const ClampingScrollPhysics(),
-            scrollDirection: Axis.vertical,
-            padding: EdgeInsets.all(0),
-            itemCount: widget.models!.length,
-            itemBuilder: (context, index){
-              return BuildPicture(model: widget.models![index]);
-          },)
-        )
+            flex: 2,
+            child: ListView.builder(
+              shrinkWrap: true,
+              physics: const ClampingScrollPhysics(),
+              scrollDirection: Axis.vertical,
+              padding: EdgeInsets.all(0),
+              itemCount: widget.models!.length,
+              itemBuilder: (context, index) {
+                return BuildPicture(
+                    model: widget.models![widget.models!.length - 1 - index]);
+              },
+            ))
       ],
     );
   }
