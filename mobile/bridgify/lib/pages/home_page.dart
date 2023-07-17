@@ -6,6 +6,7 @@ import 'package:bridgify/config.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:zego_zimkit/services/services.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -244,30 +245,31 @@ class _HomePageState extends State<HomePage> {
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         FutureBuilder(
-                            future: APIService.getUserProfile(),
-                            builder: (BuildContext context,
-                                AsyncSnapshot<Object> model) {
+                          future: APIService.getUserProfile(),
+                          builder: (
+                            BuildContext context,
+                            AsyncSnapshot<Object> model,
+                          ) {
+                            if (model.hasData) {
                               var userProfileData =
                                   model.data as Map<String, dynamic>?;
-
-                              if (model.hasData) {
-                                var imagePath = userProfileData?["imagePath"];
-                                return imagePath != "" && imagePath != null
-                                    ? CircleAvatar(
-                                        radius: 32,
-                                        backgroundImage: Image.network(
-                                                'http://' +
-                                                    Config.apiURL +
-                                                    '/images/user_profile/' +
-                                                    imagePath)
-                                            .image)
-                                    : const UserAvatar(
-                                        filename: 'img1.jpeg', radius: 32);
-                              }
-                              return const Center(
-                                child: CircularProgressIndicator(),
-                              );
-                            }),
+                              var imagePath = userProfileData?["imagePath"];
+                              return imagePath != "" && imagePath != null
+                                  ? CircleAvatar(
+                                      radius: 32,
+                                      backgroundImage: Image.network('http://' +
+                                              Config.apiURL +
+                                              '/images/user_profile/' +
+                                              imagePath)
+                                          .image)
+                                  : const UserAvatar(
+                                      filename: 'img1.jpeg', radius: 32);
+                            }
+                            return const Center(
+                              child: CircularProgressIndicator(),
+                            );
+                          },
+                        ),
                         const SizedBox(
                           width: 12,
                         ),
@@ -326,34 +328,75 @@ class _HomePageState extends State<HomePage> {
                     height: 20,
                     color: Colors.white,
                   ),
-                  const DrawerItem(
-                      title: 'Home', icon: Icons.home, path: '/home'),
-                  const DrawerItem(
-                      title: 'Chats',
-                      icon: Icons.chat_bubble,
-                      path: '/profile'),
-                  const DrawerItem(
+                  DrawerItem(
+                      title: 'Home',
+                      icon: Icons.home,
+                      onTapPath: () {
+                        Navigator.pushNamed(context, "/home");
+                      }),
+                  FutureBuilder(
+                    future: APIService.getUserProfile(),
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<Object> model,
+                    ) {
+                      if (model.hasData) {
+                        var userProfileData =
+                            model.data as Map<String, dynamic>;
+
+                        var userName = userProfileData["name"];
+                        var userEmail = userProfileData["email"];
+
+                        return DrawerItem(
+                            title: 'Chats',
+                            icon: Icons.chat_bubble,
+                            onTapPath: () async {
+                              await ZIMKit().connectUser(
+                                id: userEmail,
+                                name: userName,
+                              );
+
+                              if (!mounted) return;
+                              Navigator.pushNamed(context, "/chat");
+                            });
+                      }
+                      return SizedBox(
+                        height: 0,
+                      );
+                    },
+                  ),
+                  DrawerItem(
                       title: 'Heatlh Records',
                       icon: Icons.notifications,
-                      path: '/posts'),
-                  const DrawerItem(
+                      onTapPath: () {
+                        Navigator.pushNamed(context, "/home");
+                      }),
+                  DrawerItem(
                       title: 'Settings',
                       icon: Icons.settings,
-                      path: '/settings'),
+                      onTapPath: () {
+                        Navigator.pushNamed(context, "/settings");
+                      }),
                   const Divider(
                     thickness: 2.5,
                     height: 20,
                     color: Colors.white,
                   ),
-                  const DrawerItem(
-                      title: 'Help', icon: Icons.help, path: '/home'),
-                  const DrawerItem(
+                  DrawerItem(
+                      title: 'Help',
+                      icon: Icons.help,
+                      onTapPath: () {
+                        Navigator.pushNamed(context, "/home");
+                      }),
+                  DrawerItem(
                       title: 'About App',
                       icon: Icons.phone_android_rounded,
-                      path: '/home'),
+                      onTapPath: () {
+                        Navigator.pushNamed(context, "/home");
+                      }),
                 ],
               ),
-              const DrawerItem(title: 'Log out', icon: Icons.logout, path: "")
+              const DrawerItem(title: 'Log out', icon: Icons.logout)
             ],
           ),
         ),

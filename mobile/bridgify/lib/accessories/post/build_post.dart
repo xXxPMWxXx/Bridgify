@@ -1,6 +1,4 @@
 import 'package:bridgify/accessories/post/build_picture.dart';
-import 'package:bridgify/accessories/post/picture_carousel.dart';
-import 'package:bridgify/accessories/post/picture_single.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:flutter/material.dart';
 

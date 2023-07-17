@@ -1,4 +1,5 @@
 import 'package:bridgify/config.dart';
+import 'package:bridgify/pages/chat/chat_screen.dart';
 import 'package:bridgify/pages/home_page.dart';
 import 'package:bridgify/pages/login_signup/login_signup_page.dart';
 import 'package:bridgify/pages/login_signup/otp_page.dart';
@@ -14,7 +15,9 @@ import 'package:zego_zimkit/services/services.dart';
 Widget _defaultHome = const MainScreen();
 
 void main() async {
-    final appId = await DataManagement.getSecretData(StoredString.appId);
+  await DataManagement.loadEnvFile;
+
+  final appId = await DataManagement.getSecretData(StoredString.appId);
   final appSignKey =
       await DataManagement.getSecretData(StoredString.appSignKey);
 
@@ -36,7 +39,6 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-
     return MaterialApp(
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
@@ -73,6 +75,8 @@ class _FirstPageState extends State<FirstPage> {
         '/login': (context) => const MainScreen(),
         '/profile': (context) => const ProfilePage(),
         '/settings': (context) => const SettingsPage(),
+        '/chat': (context) => const ChatScreen(
+            conversationID: 'admin_account', conversationType: ZIMConversationType.peer)
       },
     );
   }

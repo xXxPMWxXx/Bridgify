@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/update_request_model.dart';
@@ -438,18 +439,21 @@ class _ProfilePageState extends State<ProfilePage> {
                   () {
                     // passwordUpdate = passwordUpdate ?? "";
                     // confirmPasswordUpdate = confirmPasswordUpdate ?? "";
-                    print(passwordUpdate);
-                    print(confirmPasswordUpdate);
-                    print(passwordUpdate != confirmPasswordUpdate);
                     if (validateAndSave() &&
                         passwordUpdate != confirmPasswordUpdate) {
-                      FormHelper.showSimpleAlertDialog(
-                        context,
-                        Config.appName,
-                        "Please key in and confirm password again!!",
-                        "OK",
-                        () {
-                          Navigator.of(context, rootNavigator: true).pop();
+                      showDialog(
+                        context: context,
+                        builder: (context) {
+                          return Dialog(
+                            backgroundColor: Colors.white,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(24),
+                            ),
+                            child: const InvalidCredentialsView(
+                              primaryText: 'Passwords input need to match',
+                              secondaryText: 'Please re-confirm your password',
+                            ),
+                          );
                         },
                       );
                     } else if (validateAndSave()) {
@@ -474,14 +478,18 @@ class _ProfilePageState extends State<ProfilePage> {
                               confirmPasswordUpdate = "";
                             });
                           } else {
-                            FormHelper.showSimpleAlertDialog(
-                              context,
-                              Config.appName,
-                              "Invalid field change !!",
-                              "OK",
-                              () {
-                                Navigator.of(context, rootNavigator: true)
-                                    .pop();
+                            showDialog(
+                              context: context,
+                              builder: (context) {
+                                return Dialog(
+                                  backgroundColor: Colors.white,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(24),
+                                  ),
+                                  child: const InvalidCredentialsView(
+                                    primaryText: 'Invalid field change !!',
+                                  ),
+                                );
                               },
                             );
                           }
@@ -605,15 +613,16 @@ class _ProfilePageState extends State<ProfilePage> {
                             backgroundImage: Image.file(File(fileName)).image)
                         : CircleAvatar(
                             radius: 32,
-                            backgroundImage: Image.network(
-                                                'http://' +
-                                                    Config.apiURL +
-                                                    '/images/user_profile/' +
-                                                    fileName).image)
+                            backgroundImage: Image.network('http://' +
+                                    Config.apiURL +
+                                    '/images/user_profile/' +
+                                    fileName)
+                                .image)
                     : CircleAvatar(
                         radius: 32,
-                        backgroundImage: Image.network(
-                                "https://upload.wikimedia.org/wikipedia/commons/thumb/6/65/No-Image-Placeholder.svg/1665px-No-Image-Placeholder.svg.png")
+                        backgroundImage: Image.network('http://' +
+                                Config.apiURL +
+                                '/images/user_profile/default.png')
                             .image)),
             Positioned(
               bottom: 0,

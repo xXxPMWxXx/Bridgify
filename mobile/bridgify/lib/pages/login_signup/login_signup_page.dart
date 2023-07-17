@@ -1,18 +1,20 @@
 import 'dart:io';
+import 'dart:math';
 
 import 'package:bridgify/accessories/background.dart';
+import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/accessories/fadeAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
 
 import 'package:flutter/gestures.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/login_request_model.dart';
 import 'package:bridgify/models/register_request_model.dart';
 import 'package:bridgify/services/api_service.dart';
-import 'package:snippet_coder_utils/hex_color.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -157,9 +159,9 @@ class _MainScreenState extends State<MainScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  FadeAnimation(
+                  const FadeAnimation(
                     1.4,
-                    const Text(
+                    Text(
                       "Log In to Begin",
                       style: TextStyle(fontSize: 20),
                     ),
@@ -346,16 +348,21 @@ class _MainScreenState extends State<MainScreen> {
                                         '/home',
                                       );
                                     } else {
-                                      FormHelper.showSimpleAlertDialog(
-                                        context,
-                                        Config.appName,
-                                        "Invalid email/Password !!",
-                                        "OK",
-                                        () {
-                                          Navigator.pushNamedAndRemoveUntil(
-                                            context,
-                                            '/login',
-                                            (route) => false,
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Dialog(
+                                            backgroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(24),
+                                            ),
+                                            child: const InvalidCredentialsView(
+                                              primaryText:
+                                                  'Invalid email/password detected!',
+                                              secondaryText:
+                                                  'Please re-enter login credentials',
+                                            ),
                                           );
                                         },
                                       );
@@ -720,14 +727,21 @@ class _MainScreenState extends State<MainScreen> {
                             () {
                               if (validateAndSave() &&
                                   confirmPasswordSignUp != passwordSignUp) {
-                                FormHelper.showSimpleAlertDialog(
-                                  context,
-                                  Config.appName,
-                                  "Please re-confirm your password",
-                                  "OK",
-                                  () {
-                                    Navigator.of(context, rootNavigator: true)
-                                        .pop();
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(24),
+                                      ),
+                                      child: const InvalidCredentialsView(
+                                        primaryText:
+                                            'Passwords input need to match',
+                                        secondaryText:
+                                            'Please re-confirm your password',
+                                      ),
+                                    );
                                   },
                                 );
                               } else if (validateAndSave()) {
@@ -764,20 +778,28 @@ class _MainScreenState extends State<MainScreen> {
                                           });
 
                                           if (response) {
+                                            print('hello1');
                                             Navigator.pushNamed(
                                               context,
                                               '/home',
                                             );
                                           } else {
-                                            FormHelper.showSimpleAlertDialog(
-                                              context,
-                                              Config.appName,
-                                              "Invalid name/Password !!",
-                                              "OK",
-                                              () {
-                                                                                    Navigator.of(context, rootNavigator: true)
-                                        .pop();
-                                                Navigator.pop(context);
+                                            showDialog(
+                                              context: context,
+                                              builder: (context) {
+                                                return Dialog(
+                                                  backgroundColor: Colors.white,
+                                                  shape: RoundedRectangleBorder(
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            24),
+                                                  ),
+                                                  child:
+                                                      const InvalidCredentialsView(
+                                                    primaryText:
+                                                        'Invalid name/Password',
+                                                  ),
+                                                );
                                               },
                                             );
                                           }
@@ -785,15 +807,53 @@ class _MainScreenState extends State<MainScreen> {
                                       );
                                     }
                                   } else {
-                                    FormHelper.showSimpleAlertDialog(
-                                      context,
-                                      Config.appName,
-                                      response.message,
-                                      "OK",
-                                      () {
-                                        Navigator.pop(context);
+                                    /*() {
+                                      if (validateAndSave()) {
+                                        setState(() {
+                                          isAPICallProcess = true;
+                                        });
+
+                                        LoginRequestModel model =
+                                            LoginRequestModel(
+                                          email: emailLogin,
+                                          password: passwordLogin,
+                                        );
+
+                                        APIService.login(model).then(
+                                          (response) {
+                                            setState(() {
+                                              isAPICallProcess = false;
+                                            });
+
+                                            if (response) {
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/home',
+                                              );
+                                            } else {*/
+                                    print('hello2');
+                                    showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                          backgroundColor: Colors.white,
+                                          shape: RoundedRectangleBorder(
+                                            borderRadius:
+                                                BorderRadius.circular(24),
+                                          ),
+                                          child: const InvalidCredentialsView(
+                                            primaryText: 'User already exists!',
+                                            secondaryText:
+                                                'Please re-enter login credentials',
+                                          ),
+                                        );
                                       },
                                     );
+                                    // }
+                                    // },
+                                    // );
+                                    // }
+                                    // };
                                   }
                                 });
                               }

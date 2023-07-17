@@ -192,9 +192,9 @@ export const updateUser = async (
               .json({ error: "Only .png, .jpg and .jpeg format allowed!" });
           }
           imagePath =
-            // "http://172.31.208.1:8000/images/user_profile/" +
-            // Date.now() +
-            // "--" +
+            // "http://13.228.86.148:8000/images/user_profile/" +
+            Date.now() +
+            "--" +
             profileImage.name;
           profileImage.mv(
             baseDir +

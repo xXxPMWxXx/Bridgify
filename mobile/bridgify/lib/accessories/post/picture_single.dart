@@ -14,7 +14,6 @@ class PictureSingle extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print('http://' + Config.apiURL + '/images/post/' + image);
     return Container(
       margin: EdgeInsets.only(bottom: 8),
       padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
