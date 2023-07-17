@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import {ResponsiveAppBarAdmin} from '../../Navbar';
+import { ResponsiveAppBarAdmin } from '../../Navbar';
 import { Box, Typography } from '@mui/material';
 
 export const Home_admin = () => {
@@ -22,20 +22,20 @@ export const Home_admin = () => {
     return (
         <div>
             {
-				token == null ?
-					<Navigate to="/Login" /> : <Navigate to="/Home-admin" />
-			}
-            {
-                accRole != 'Admin' ? 
-                <Navigate to="/Page404" /> : null
+                token == null ?
+                    <Navigate to="/Login" /> : <Navigate to="/Home-admin" />
             }
-            < ResponsiveAppBarAdmin/>
-            <Box 
+            {
+                token != null && accRole != 'Admin' ?
+                    <Navigate to="/Forbidden" /> : null
+            }
+            < ResponsiveAppBarAdmin />
+            <Box
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
                     alignItems: 'center',
-                    
+
                 }}
             >
                 <Typography align="center" variant='h2' paragraph>

@@ -26,8 +26,8 @@ export const Post_admin = () => {
 					<Navigate to="/Login" /> : <Navigate to="/Post-admin" />
 			}
             {
-                accRole != 'Admin' ? 
-                <Navigate to="/Page404" /> : null
+                token != null && accRole != 'Admin'? 
+                <Navigate to="/Forbidden" /> : null
             }
             < ResponsiveAppBarAdmin/>
             <Box 

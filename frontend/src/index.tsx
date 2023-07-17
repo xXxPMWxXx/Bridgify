@@ -17,6 +17,7 @@ import { Page404 } from './pages/Page404';
 import { Profile } from './pages/Profile';
 import { Setting } from './pages/Setting';
 import { Signup } from './pages/Signup';
+import { Forbidden } from './pages/Forbidden';
 //for admin user
 import { Elderly_admin } from './pages/Elderly(admin)';
 import { Home_admin } from './pages/Home(admin)';
@@ -39,6 +40,7 @@ root.render(
 			<Route path="/Profile" element={<Profile />} />
 			<Route path="/Setting" element={<Setting />} />
 			<Route path="/Signup" element={<Signup />} />
+			<Route path="/Forbidden" element={<Forbidden />} />
 			<Route path="/*" element={<Page404 />} />
 			<Route path="/Home-admin" element={<Home_admin />} />
 			<Route path="/Elderly-admin" element={<Elderly_admin />} />
