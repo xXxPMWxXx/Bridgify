@@ -20,71 +20,76 @@ const Background = styled("div") ({
 export const Home = () => {
 
     useEffect(() => {
-        if(elderly.length === 0){
-            const interval  = setInterval(() => elderlyStatuses(), 1000)
-            return () => {
-                clearInterval(interval);
-            }
-        }
+        elderlyStatuses();
     }, []);
-    
+
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [alertType, setAlertType]: any = useState('info');
+    const [alertMsg, setAlertMsg] = useState('');
+
+    // const linkedElderly = window.localStorage.getItem('linkedElderly')
     const token = window.localStorage.getItem('accessToken');
     const userName = window.localStorage.getItem('userName');
     const accRole = window.localStorage.getItem('accRole');
-    const linkedElderly : any = window.localStorage.getItem('linkedElderly');
-    const profileImage = window.localStorage.getItem('profileImage')
+    const profileImage = window.localStorage.getItem('profileImage');
+    const email = window.localStorage.getItem('email');
+
+
     console.log("-----Home-----");
     console.log(token);
     console.log(userName);
     console.log(accRole);
-    console.log(linkedElderly);
+    // console.log(linkedElderly);
     console.log(profileImage);
+    console.log(email);
 
     const[elderly, setElderly]: any[] = useState([]);
     
     //change linkedElderly to Array
-    if(linkedElderly != null){
-        var elderlyArray = linkedElderly.split(",");
-        console.log(elderlyArray[0])
-    }
+    // if(linkedElderly != null){
+    //     var elderlyArray = linkedElderly.split(",");
+    //     // console.log(elderlyArray[0])
+    // }
 
-    const elderlyStatuses = async ()=> {
-        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/getAll`, {
+    const elderlyStatuses = async () => {
+        try {
+          const APImethod = 'getByUser';
+      
+          const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/${APImethod}?email=${email}`, {
             headers: {
               'Content-Type': 'application/json',
-              'Authorization': 'Bearer ' + token,
+              'Authorization': `Bearer ${token}`,
             },
             method: 'GET',
-          })
-            .then(async (response) => {
-              if (response.status != 200) {
-                window.alert("Error: No elderly linked");
-              } else {
+          });
+          
+          if (!response.ok) {
+            const apiResponse = await response.json();
+            // Show alert message
+            setOpenSnackbar(true);
+            setAlertType('error');
+            setAlertMsg(apiResponse['message']);
+            return;
+          }
+
+          const elderlyResponse = await response.json();
+        //   console.log(elderlyResponse);
+          const elderlyArray = elderlyResponse.map((elderly: any) => ({
+            name: elderly.name,
+            image: `http://13.229.138.25:8000/images/trained_face/${elderly.photo}`,
+            status: elderly.status.awake === 'True' ? 'Awake' : 'Asleep',
+            activity: elderly.status.current_activity,
+            medication: elderly.status.taken_med === 'True' ? 'Taken' : 'Not Taken',
+            condition: elderly.status.condition,
+          }));
+          
+          setElderly(elderlyArray);
+        } catch (error) {
+          console.error('Error fetching linked elderly:', error);
+          window.alert('Error: Failed to fetch linked elderly');
+        }
+      };
       
-                console.log("testing");
-                const elderlyResponse = await response.json();
-                console.log(elderlyResponse);
-                for(var i = 0; i < elderlyResponse.length; i++){
-                    const statusObj = elderlyResponse[i]['status']
-                    
-                    const elderlyObj:any = {
-                        name: elderlyResponse[i]['name'],
-                        image: `http://13.229.138.25:8000/images/trained_face/${elderlyResponse[i]['photo']}`,
-                        status: statusObj['awake'],
-                        activity: statusObj['current_activity'],
-                        medication: 'Taken',
-                        condition: statusObj['condition'],
-                    }
-                    elderly.push(elderlyObj)
-                }
-                console.log(elderly)
-            }
-      
-            })
-            .catch((err) => {
-              window.alert(err);
-            });
-    }
     
 
     return (

@@ -231,7 +231,7 @@ export const getByUser = async (req: any, res: Response, next: NextFunction) => 
         if (linkedElderly.length == 0) {
           return res
             .status(200)
-            .json({ message: `User email: ${email} have not link to any elderly yet!` });
+            .json({ message: `User email: ${email} is not linked to any elderly yet!` });
         }
 
         const elderly =  await ElderlyModel.find({'id' : {$in : linkedElderly}})
