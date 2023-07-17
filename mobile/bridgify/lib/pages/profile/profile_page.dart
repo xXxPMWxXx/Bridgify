@@ -4,7 +4,7 @@ import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/update_request_model.dart';
-import 'package:bridgify/pages/home_page.dart';
+import 'package:bridgify/pages/home/Child/home_page.dart';
 import 'package:bridgify/pages/profile/settings_page.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';

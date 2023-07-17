@@ -1,6 +1,8 @@
 import 'package:bridgify/config.dart';
+import 'package:bridgify/models/login_response_model.dart';
 import 'package:bridgify/pages/chat/chat_screen.dart';
-import 'package:bridgify/pages/home_page.dart';
+import 'package:bridgify/pages/home/Admin/admin_home_page.dart';
+import 'package:bridgify/pages/home/Child/home_page.dart';
 import 'package:bridgify/pages/login_signup/login_signup_page.dart';
 import 'package:bridgify/pages/login_signup/otp_page.dart';
 import 'package:bridgify/pages/profile/profile_page.dart';
@@ -28,7 +30,11 @@ void main() async {
   // Get result of the login function.
   bool _result = await SharedService.isLoggedIn();
   if (_result) {
-    _defaultHome = const HomePage();
+    LoginResponseModel? loginDetails = await SharedService.loginDetails();
+    if (loginDetails!.data.accRole == 'Child') {
+      _defaultHome = const HomePage();
+    } else
+      _defaultHome = const AdminHomePage();
   }
   runApp(const MyApp());
 }
@@ -71,12 +77,21 @@ class _FirstPageState extends State<FirstPage> {
       ),
       routes: {
         '/': (context) => _defaultHome,
-        '/home': (context) => const HomePage(),
         '/login': (context) => const MainScreen(),
-        '/profile': (context) => const ProfilePage(),
         '/settings': (context) => const SettingsPage(),
+        '/profile': (context) => const ProfilePage(),
+
+        //Child user
+        '/home': (context) => const HomePage(),
+        
+
         '/chat': (context) => const ChatScreen(
-            conversationID: 'admin_account', conversationType: ZIMConversationType.peer)
+            conversationID: 'admin_account',
+            conversationType: ZIMConversationType.peer),
+        //Admin user
+        '/Adminhome': (context) => const AdminHomePage(),
+        //chat function for admins would house all users that message it
+        //reassign elderlies page
       },
     );
   }

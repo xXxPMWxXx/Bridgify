@@ -88,7 +88,7 @@ class APIService {
         "imagePath": loginDetails.data.profileImage,
         "name": loginDetails.data.name,
         "email": loginDetails.data.email,
-        "elderly": loginDetails.data.linkedElderly
+        "elderly": loginDetails.data.linkedElderly,
       };
     } else {
       return "";
