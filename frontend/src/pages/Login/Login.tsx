@@ -3,8 +3,6 @@ import Avatar from '@mui/material/Avatar';
 import Button from '@mui/material/Button';
 import CssBaseline from '@mui/material/CssBaseline';
 import TextField from '@mui/material/TextField';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Checkbox from '@mui/material/Checkbox';
 import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
@@ -80,7 +78,7 @@ export function Login() {
       setEmailError(true);
       setHelperText('Please enter a valid email address.');
       return;
-    }else {
+    } else {
       setEmailError(false);
       setHelperText('');
     }
@@ -110,7 +108,13 @@ export function Login() {
           localStorage.setItem('accRole', data.accRole);
           localStorage.setItem('linkedElderly', data.linkedElderly);
           localStorage.setItem('profileImage', data.profileImage);
-          navigate('/home');
+          localStorage.setItem('email', data.email);
+          
+          if (data.accRole == 'Admin') {
+            navigate('/home-admin');
+          } else {
+            navigate('/home');
+          }
 
         }
 
