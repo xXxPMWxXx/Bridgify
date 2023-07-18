@@ -76,7 +76,7 @@ export const Home = () => {
         //   console.log(elderlyResponse);
           const elderlyArray = elderlyResponse.map((elderly: any) => ({
             name: elderly.name,
-            image: `http://13.229.138.25:8000/images/trained_face/${elderly.photo}`,
+            image: `http://13.228.86.148:8000/images/trained_face/${elderly.photo}`,
             status: elderly.status.awake === 'True' ? 'Awake' : 'Asleep',
             activity: elderly.status.current_activity,
             medication: elderly.status.taken_med === 'True' ? 'Taken' : 'Not Taken',

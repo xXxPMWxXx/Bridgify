@@ -15,9 +15,6 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 import logo from '../images/icon-white.png';
 
-const pages = ['Home', 'Health', 'Message', 'Profile', 'Settings'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 export const ResponsiveAppBar = () => {
     let navigate = useNavigate();
 

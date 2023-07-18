@@ -23,7 +23,7 @@ export const About = () => {
         <div>
             {
 				token == null ?
-					<Navigate to="/Login" /> : <Navigate to="/Setting" />
+					<Navigate to="/Login" /> : <Navigate to="/About" />
 			}
             < ResponsiveAppBar/>
             <Box 
