@@ -1,23 +1,100 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { ResponsiveAppBarAdmin } from '../../Navbar';
-import { Box, Typography } from '@mui/material';
+import { Box, Typography, Tab, Tabs, LinearProgress, Modal, Avatar, } from '@mui/material';
+import { TabContext, TabPanel } from '@mui/lab';
+import MUIDataTable from "mui-datatables";
+
+const delay = (ms: number) => new Promise(
+    resolve => setTimeout(resolve, ms)
+);
 
 export const Elderly_admin = () => {
 
-    useEffect(() => {
-    }, []);
     const token = window.localStorage.getItem('accessToken');
-    const userName = window.localStorage.getItem('userName');
     const accRole = window.localStorage.getItem('accRole');
-    const linkedElderly = window.localStorage.getItem('linkedElderly');
-    const profileImage = window.localStorage.getItem('proofileImage')
-    console.log(token);
-    console.log(userName);
-    console.log(accRole);
-    console.log(linkedElderly);
-    console.log(profileImage);
 
+    const [value, setValue] = React.useState('Elderly List');
+
+    const handleChange = (event: React.SyntheticEvent, newValue: string) => {
+        setValue(newValue);
+    };
+
+    //for datatable
+    const columns = ["ID", "Name", "DOB", "Date Created", "Current Activity", 
+    "Medication", "Temperature", "Condition", "Awake", "Taken Med", 
+    {
+        name: "elderlyPhoto",
+        label: "Photo",
+        options: {
+          customBodyRender: (value:any) => {
+            return (
+              <Avatar variant="rounded" src={`http://13.228.86.148:8000/images/trained_face/${value}`} >
+              </Avatar>
+            )
+          }
+        }
+      }];
+
+    const [elderlyData, setElderlyData]: any[] = useState([]);
+    const [dataLoaded, setDataLoaded] = useState(false);
+
+    //for modal
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+    const [open, setOpen] = React.useState(false);
+
+    const loadElderlyData = async () => {
+        // //calling backend API
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/getAll`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            method: 'GET',
+        })
+            .then(async (response) => {
+                if (response.status != 200) {
+                    window.alert("Something is wrong!");
+                } else {
+                    const data = await response.json();
+                    data.forEach((elderly: any) => {
+                        const status = elderly.status;
+                        const row = [elderly.id, elderly.name, elderly.DOB, elderly.created,
+                        status.current_activity, status.medication.toString(), status.current_temp, status.condition,
+                        status.awake, status.taken_med, elderly.photo]
+                        elderlyData.push(row)
+                    });
+                    setDataLoaded(true);
+                    //close the modal
+                    setOpen(false);
+                }
+            })
+            .catch((err) => {
+                window.alert(err);
+            });
+    }
+
+    useEffect(() => {
+        async function loadData() {
+            setOpen(true);
+            await delay(1000);
+            loadElderlyData();
+        }
+
+        if (!dataLoaded) {
+            loadData();
+        }
+    }, []);
 
     return (
         <div>
@@ -30,17 +107,55 @@ export const Elderly_admin = () => {
                     <Navigate to="/Forbidden" /> : null
             }
             < ResponsiveAppBarAdmin />
-            <Box
-                sx={{
-                    display: 'flex',
-                    justifyContent: 'center',
-                    alignItems: 'center',
 
-                }}
-            >
-                <Typography align="center" variant='h2' paragraph>
-                    Elderly(admin) page under construction,coming soon.
-                </Typography>
+            <Box sx={{ width: '100%', typography: 'body1' }}>
+                <TabContext value={value}>
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <Tabs value={value} onChange={handleChange} textColor="inherit" indicatorColor="primary" centered>
+                            <Tab label="Elderly List" value="Elderly List" />
+                            <Tab label="Insert Elderly" value="Insert Elderly" />
+                        </Tabs>
+                    </Box>
+
+                    <TabPanel value="Elderly List">
+                        <br />
+                        <br />
+                        <Box
+                            sx={{
+                                display: 'flex',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                            }}
+                        >
+                            {dataLoaded ?
+
+                                <MUIDataTable
+                                    title={"Elderly Lists"}
+                                    data={elderlyData}
+                                    columns={columns}
+                                /> :
+
+                                <Modal
+                                    keepMounted
+                                    open={open}
+                                    aria-labelledby="loading"
+                                    aria-describedby="loading user data"
+                                >
+                                    <Box sx={style}>
+                                        <Typography id="loading" variant="h6" component="h2">
+                                            Loading user data, please wait.
+                                        </Typography>
+                                        <LinearProgress />
+                                    </Box>
+                                </Modal>
+                            }
+                        </Box>
+                    </TabPanel>
+
+                    <TabPanel value="Insert Elderly">
+                        Implement Insert Elderly
+                    </TabPanel>
+                </TabContext>
             </Box>
 
         </div>

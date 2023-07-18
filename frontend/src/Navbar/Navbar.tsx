@@ -74,12 +74,12 @@ export const ResponsiveAppBar = () => {
         navigate('/profile');
     }
 
-    const handleSetting = () => {
-        navigate('/setting');
+    const handleAbout = () => {
+        navigate('/about');
     }
 
     return (
-        <AppBar position="static" style={{ background: '#30685E' }} >
+        <AppBar position="sticky" style={{ background: '#30685E' }} >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     {/* need to research on how to get rid of this logo when hamburger bar opens */}
@@ -139,7 +139,7 @@ export const ResponsiveAppBar = () => {
                             <Button key='Health' onClick={handleHealth} sx={{ my: 0, color: 'black', display: 'block' }} >Health</Button>
                             <Button key='Message' onClick={handleMessage} sx={{ my: 0, color: 'black', display: 'block' }} >Message</Button>
                             <Button key='Profile' onClick={handleProfile} sx={{ my: 0, color: 'black', display: 'block' }} >Profile</Button>
-                            <Button key='Setting' onClick={handleSetting} sx={{ my: 0, color: 'black', display: 'block' }} >Setting</Button>
+                            <Button key='About' onClick={handleAbout} sx={{ my: 0, color: 'black', display: 'block' }} >About</Button>
                         </Menu>
                     </Box>
                     <Typography
@@ -166,7 +166,7 @@ export const ResponsiveAppBar = () => {
                         <Button key='Health' onClick={handleHealth} sx={{ my: 2, color: 'white', display: 'block' }} >Health</Button>
                         <Button key='Message' onClick={handleMessage} sx={{ my: 2, color: 'white', display: 'block' }} >Message</Button>
                         <Button key='Profile' onClick={handleProfile} sx={{ my: 2, color: 'white', display: 'block' }} >Profile</Button>
-                        <Button key='Setting' onClick={handleSetting} sx={{ my: 2, color: 'white', display: 'block' }} >Setting</Button>
+                        <Button key='About' onClick={handleAbout} sx={{ my: 2, color: 'white', display: 'block' }} >About</Button>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
@@ -194,8 +194,8 @@ export const ResponsiveAppBar = () => {
                             <MenuItem key='Profile' onClick={handleProfile}>
                                 <Typography textAlign="center">Profile</Typography>
                             </MenuItem>
-                            <MenuItem key='Setting' onClick={handleSetting}>
-                                <Typography textAlign="center">Setting</Typography>
+                            <MenuItem key='About' onClick={handleAbout}>
+                                <Typography textAlign="center">About</Typography>
                             </MenuItem>
                             <MenuItem key='Help' onClick={handleHelp}>
                                 <Typography textAlign="center">Help</Typography>
@@ -262,7 +262,7 @@ export const ResponsiveAppBarAdmin = () => {
 
 
     return (
-        <AppBar position="static" style={{ background: '#30685E' }} >
+        <AppBar position="sticky" style={{ background: '#30685E' }} >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <img src={logo} alt="Logo" width={50} height={50} style={{ marginLeft: 5, marginRight: 8 }}></img>
@@ -318,8 +318,8 @@ export const ResponsiveAppBarAdmin = () => {
                             }}
                         >
                             <Button key='Home' onClick={handleHomeAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Home</Button>
-                            <Button key='Elderly' onClick={handleElderlyAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Health</Button>
-                            <Button key='Post' onClick={handlePostAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Message</Button>
+                            <Button key='Elderly' onClick={handleElderlyAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Elderly</Button>
+                            <Button key='Post' onClick={handlePostAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Post</Button>
                         </Menu>
                     </Box>
                     <Typography

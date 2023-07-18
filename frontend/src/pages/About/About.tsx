@@ -3,7 +3,7 @@ import { Link, Navigate } from 'react-router-dom';
 import {ResponsiveAppBar} from '../../Navbar';
 import { Box, Typography } from '@mui/material';
 
-export const Setting = () => {
+export const About = () => {
 
     useEffect(() => {
     }, []);
@@ -35,7 +35,7 @@ export const Setting = () => {
                 }}
             >
                 <Typography align="center" variant='h2' paragraph>
-                    Setting page under consturction,coming soon.
+                    About page under consturction,coming soon.
                 </Typography>
             </Box>
 
