@@ -5,6 +5,7 @@ import { Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
 import backgroundImage from '../../images/background.png';
 import ElderlyStatus from './elderlyStatus';
+import Posts from './posts';
 
 const Background = styled("div") ({
     position: 'absolute', 
@@ -15,6 +16,16 @@ const Background = styled("div") ({
     backgroundSize: 'cover', 
     backgroundRepeat: 'no-repeat'
 })
+
+const posts = [
+    {
+        elderlyInvolved: 'Amy',
+        profileImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLP-Khig_cQdjFjvvyq73E4SZ6hqJBtcqjlEH-L9kUFg&s',
+        caption: 'was captured in a picture during lunch',
+        time: 2,
+        images:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLP-Khig_cQdjFjvvyq73E4SZ6hqJBtcqjlEH-L9kUFg&s',
+    },
+]
 
 
 export const Home = () => {
@@ -105,7 +116,7 @@ export const Home = () => {
             <Background />
 
             <div style={{display:'flex', justifyContent:'center'}}>
-                <Typography component="h1" align="center" sx={{color:'white', position:'absolute', fontFamily:'Roboto', fontWeight:500, fontSize:45, marginTop:5}}>
+                <Typography component="h1" align="center" sx={{color:'white', position:'absolute', fontFamily:'Roboto', fontWeight:500, fontSize:42, marginTop:5}}>
                         Welcome!
                 </Typography>
             </div>
@@ -117,6 +128,24 @@ export const Home = () => {
                         <Grid item key={post.name} xs={12} sm={6} md={4} lg={3} xl={2}>
                             <ElderlyStatus post={post} />
                         </Grid>
+                        ))}
+                    </Grid>
+                </Box>
+            </main>
+
+            <div>
+                <Typography component="h2" align="left" alignItems="left" sx={{color:'black', position:'absolute', fontFamily:'Roboto', fontWeight:500, fontSize:22, marginLeft:9, marginTop:-9}}>
+                    Posts
+                </Typography>
+            </div>
+
+            <main>
+                <Box display='flex' justifyContent='left' alignItems='left' width='70%'>
+                    <Grid>
+                        {posts.map((post:any) => (
+                            <Grid item key={post.elderlyInvolved}>
+                                <Posts post={post} />
+                            </Grid>
                         ))}
                     </Grid>
                 </Box>
