@@ -126,74 +126,20 @@ class _AdminHomePageState extends State<AdminHomePage> {
           top: 100,
           left: 0,
           right: 0,
+          bottom: 0,
           child: Container(
-            padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
-            height: 210,
-            decoration: const BoxDecoration(
-                color: Color(0xFF27c1a9),
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40))),
-            child: Column(
-              children: [
-                const SizedBox(height: 10),
-                const Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Elderly Profiles",
-                      style: TextStyle(color: Colors.white, fontSize: 16),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 10),
-                SizedBox(
-                  height: 90,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: const [
-                      BuildContactAvatar(name: 'Alla', fileName: 'img1.jpeg'),
-                      BuildContactAvatar(name: 'July', fileName: 'img1.jpeg'),
-                      BuildContactAvatar(name: 'Mikle', fileName: 'img1.jpeg'),
-                      BuildContactAvatar(name: 'Kler', fileName: 'img1.jpeg'),
-                    ],
-                  ),
-                )
-              ],
-            ),
-          ),
-        ),
-        Positioned(
-            top: 260,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
               padding: const EdgeInsets.symmetric(vertical: 15),
               decoration: const BoxDecoration(
                 borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40)),
+                  topLeft: Radius.circular(40),
+                  topRight: Radius.circular(40),
+                ),
                 color: Color(0xFFEFFFFC),
               ),
-              child: FutureBuilder(
-                future: APIService.getPosts(),
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<List<PostResponseModel>?> model,
-                ) {
-                  if (model.hasData) {
-                    return BuildPost(models: model.data);
-                  }
-
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
+              child: Container()
               //posts
-            ))
+              ),
+        ),
       ],
     );
   }
@@ -332,41 +278,28 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       title: 'Home',
                       icon: Icons.home,
                       onTapPath: () {
+                        Navigator.pushNamed(context, "/AdminHome");
+                      }),
+                  DrawerItem(
+                      title: 'Chats',
+                      icon: Icons.chat_bubble,
+                      onTapPath: () async {
+                        await ZIMKit().connectUser(
+                          id: 'admin_account',
+                          name: 'Administrator',
+                        );
+
+                        if (!mounted) return;
+                        Navigator.pushNamed(context, "/adminchat");
+                      }),
+                  DrawerItem(
+                      title: 'Post History',
+                      icon: Icons.notifications,
+                      onTapPath: () {
                         Navigator.pushNamed(context, "/home");
                       }),
-                  FutureBuilder(
-                    future: APIService.getUserProfile(),
-                    builder: (
-                      BuildContext context,
-                      AsyncSnapshot<Object> model,
-                    ) {
-                      if (model.hasData) {
-                        var userProfileData =
-                            model.data as Map<String, dynamic>;
-
-                        var userName = userProfileData["name"];
-                        var userEmail = userProfileData["email"];
-
-                        return DrawerItem(
-                            title: 'Chats',
-                            icon: Icons.chat_bubble,
-                            onTapPath: () async {
-                              await ZIMKit().connectUser(
-                                id: userEmail,
-                                name: userName,
-                              );
-
-                              if (!mounted) return;
-                              Navigator.pushNamed(context, "/chat");
-                            });
-                      }
-                      return SizedBox(
-                        height: 0,
-                      );
-                    },
-                  ),
                   DrawerItem(
-                      title: 'Heatlh Records',
+                      title: 'Link elderly',
                       icon: Icons.notifications,
                       onTapPath: () {
                         Navigator.pushNamed(context, "/home");
