@@ -143,7 +143,7 @@ export const Elderly_admin = () => {
                                 >
                                     <Box sx={style}>
                                         <Typography id="loading" variant="h6" component="h2">
-                                            Loading user data, please wait.
+                                            Loading elderly data, please wait.
                                         </Typography>
                                         <LinearProgress />
                                     </Box>
