@@ -355,6 +355,14 @@ export const linkElderly = async (
             .status(400)
             .json({ message: `Elderly ID: ${elderlyID} does not exist!` });
         }
+       
+        if(linkedElderly.length >= 4) {
+          return res
+            .status(400)
+            .json({
+              message: `User Email: ${email} already linked to 4 elderly!`,
+            });
+        }
         if (linkedElderly.includes(elderlyID) == true) {
           return res
             .status(400)
@@ -364,7 +372,6 @@ export const linkElderly = async (
         }
 
         user.linkedElderly.push(elderlyID);
-        console.log(user.linkedElderly);
         user.save().then(
           res.status(200).send({
             message: `Elderly: ${elderlyID} linked to user: ${email} successfully`,
