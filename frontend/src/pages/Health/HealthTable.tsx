@@ -22,7 +22,7 @@ import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import { Add } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
-const imageBASEURL = 'http://13.228.86.148:8000/images/trained_face';
+const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
 // const imageBASEURL = 'http://localhost:8000/images/trained_face';
 
 

@@ -71,9 +71,11 @@ export const Home_admin = () => {
             });
     }
 
+    //to customise mui datatable
     const options = {
-        filterType: 'checkbox',
+        
     };
+
     useEffect(() => {
         async function loadData() {
             setOpen(true);
@@ -112,6 +114,7 @@ export const Home_admin = () => {
                         title={"User Accounts"}
                         data={userData}
                         columns={columns}
+                        options={options}
                     /> :
 
                     <Modal

@@ -29,7 +29,7 @@ export const Elderly_admin = () => {
         options: {
           customBodyRender: (value:any) => {
             return (
-              <Avatar variant="rounded" src={`http://13.228.86.148:8000/images/trained_face/${value}`} >
+              <Avatar variant="rounded" src={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/${value}`} >
               </Avatar>
             )
           }
@@ -84,6 +84,11 @@ export const Elderly_admin = () => {
             });
     }
 
+     //to customise mui datatable
+     const options = {
+        
+     };
+
     useEffect(() => {
         async function loadData() {
             setOpen(true);
@@ -133,6 +138,7 @@ export const Elderly_admin = () => {
                                     title={"Elderly Lists"}
                                     data={elderlyData}
                                     columns={columns}
+                                    options={options}
                                 /> :
 
                                 <Modal
