@@ -1,20 +1,33 @@
+List<PostRequestModel> postFromJson(dynamic str) =>
+    List<PostRequestModel>.from((str).map((x) => PostRequestModel.fromJson(x)));
+
 class PostRequestModel {
+  late String? authorEmail;
+  late String? description;
+  late String? activityType;
+  late List<String>? postImages;
+
   PostRequestModel({
-    this.email,
-    this.password,
+    this.authorEmail,
+    this.description,
+    this.activityType,
+    this.postImages,
   });
-  late final String? email;
-  late final String? password;
 
   PostRequestModel.fromJson(Map<String, dynamic> json) {
-    email = json['email'];
-    password = json['password'];
+    authorEmail = json['author_email'];
+    description = json['description'];
+    activityType = json['activity_type'];
+    postImages =
+        List<String>.from(json['postImages']?.map((x) => x.toString()) ?? []);
   }
 
   Map<String, dynamic> toJson() {
     final _data = <String, dynamic>{};
-    _data['email'] = email;
-    _data['password'] = password;
+    _data['author_email'] = authorEmail;
+    _data['description'] = description;
+    _data['activity_type'] = activityType;
+    _data['postImages'] = postImages;
     return _data;
   }
 }

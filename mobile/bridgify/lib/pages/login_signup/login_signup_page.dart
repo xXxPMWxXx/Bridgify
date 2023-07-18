@@ -343,10 +343,22 @@ class _MainScreenState extends State<MainScreen> {
                                     });
 
                                     if (response) {
-                                      Navigator.pushNamed(
-                                        context,
-                                        '/home',
-                                      );
+                                      APIService.getUserProfile()
+                                          .then((loginDetails) {
+                                        Map userDetails = loginDetails
+                                            as Map<String, dynamic>;
+                                        if (userDetails["accRole"] == "Admin") {
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/adminhome',
+                                          );
+                                        } else {
+                                          Navigator.pushNamed(
+                                            context,
+                                            '/home',
+                                          );
+                                        }
+                                      });
                                     } else {
                                       showDialog(
                                         context: context,
@@ -778,11 +790,23 @@ class _MainScreenState extends State<MainScreen> {
                                           });
 
                                           if (response) {
-                                            print('hello1');
-                                            Navigator.pushNamed(
-                                              context,
-                                              '/home',
-                                            );
+                                            APIService.getUserProfile()
+                                                .then((loginDetails) {
+                                              Map userDetails = loginDetails
+                                                  as Map<String, dynamic>;
+                                              if (userDetails["accRole"] ==
+                                                  "Admin") {
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  '/adminhome',
+                                                );
+                                              } else {
+                                                Navigator.pushNamed(
+                                                  context,
+                                                  '/home',
+                                                );
+                                              }
+                                            });
                                           } else {
                                             showDialog(
                                               context: context,

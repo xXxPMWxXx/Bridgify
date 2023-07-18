@@ -89,6 +89,7 @@ class APIService {
         "name": loginDetails.data.name,
         "email": loginDetails.data.email,
         "elderly": loginDetails.data.linkedElderly,
+        "accRole": loginDetails.data.accRole,
       };
     } else {
       return "";

@@ -83,13 +83,11 @@ class _FirstPageState extends State<FirstPage> {
 
         //Child user
         '/home': (context) => const HomePage(),
-        
-
         '/chat': (context) => const ChatScreen(
             conversationID: 'admin_account',
             conversationType: ZIMConversationType.peer),
         //Admin user
-        '/Adminhome': (context) => const AdminHomePage(),
+        '/adminhome': (context) => const AdminHomePage(),
         //chat function for admins would house all users that message it
         //reassign elderlies page
       },
