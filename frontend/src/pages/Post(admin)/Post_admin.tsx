@@ -82,7 +82,7 @@ export const Post_admin = () => {
     }
 
     const options = {
-        filterType: 'checkbox',
+        
     };
     useEffect(() => {
         async function loadData() {
@@ -134,6 +134,7 @@ export const Post_admin = () => {
                                     title={"Elderly Lists"}
                                     data={postData}
                                     columns={columns}
+                                    options={options}
                                 /> :
 
                                 <Modal

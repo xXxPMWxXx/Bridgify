@@ -23,7 +23,7 @@ export const ResponsiveAppBar = () => {
 
 
     let profileImage: any = window.localStorage.getItem('profileImage');
-    const profileImageSrc = `http://13.228.86.148:8000/images/user_profile/${profileImage}`;
+    const profileImageSrc = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/user_profile/${profileImage}`;
 
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -216,7 +216,7 @@ export const ResponsiveAppBarAdmin = () => {
 
 
     let profileImage: any = window.localStorage.getItem('profileImage');
-    const profileImageSrc = `http://13.228.86.148:8000/images/user_profile/${profileImage}`;
+    const profileImageSrc = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/user_profile/${profileImage}`;
 
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
