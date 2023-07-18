@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom';
 import './index.css';
 import { config as dotEnvConfig } from 'dotenv';
 import 'bootstrap/dist/css/bootstrap.css';
-import 'mdb-react-ui-kit/dist/css/mdb.min.css';
 import "@fortawesome/fontawesome-free/css/all.min.css";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
@@ -15,7 +14,7 @@ import { Login } from './pages/Login';
 import { Message } from './pages/Message';
 import { Page404 } from './pages/Page404';
 import { Profile } from './pages/Profile';
-import { Setting } from './pages/Setting';
+import { About } from './pages/About';
 import { Signup } from './pages/Signup';
 import { Forbidden } from './pages/Forbidden';
 //for admin user
@@ -38,7 +37,7 @@ root.render(
 			<Route path="/Message" element={<Message />} />
 			<Route path="/404" element={<Page404 />} />
 			<Route path="/Profile" element={<Profile />} />
-			<Route path="/Setting" element={<Setting />} />
+			<Route path="/About" element={<About />} />
 			<Route path="/Signup" element={<Signup />} />
 			<Route path="/Forbidden" element={<Forbidden />} />
 			<Route path="/*" element={<Page404 />} />

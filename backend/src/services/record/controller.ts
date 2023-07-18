@@ -151,23 +151,33 @@ export const create = async (req: any, res: any, next: NextFunction) => {
 export const display = async (req: any, res: any, next: NextFunction) => {
 
   // 1. get token from req
-  const token =
-    req.headers.authorization && req.headers.authorization.split(" ")[1];
+  // const token =
+  //   req.headers.authorization && req.headers.authorization.split(" ")[1];
+  try {
+
+    const data = req.query;
+    const fileName = data.fileName;
+    res.sendFile(baseDir + `/records/${fileName}`);
+    // res.status(200).json({ message: "File sent successfully" });
+  } catch (error) {
+    return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
+  }
+
 
   // 2. verify token with secret key
-  jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
-    try {
-      if (decoded) {
-        const data = req.query;
-        const fileName = data.fileName;
-        res.sendFile(baseDir + `/records/${fileName}`);
-      } else if (err) {
-        res.status(401).json({ error: "You must have a valid token" });
-      }
-    } catch (error) {
-      return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
-    }
-  });
+  // jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+  //   try {
+  //     if (decoded) {
+  //       const data = req.query;
+  //       const fileName = data.fileName;
+  //       res.sendFile(baseDir + `/records/${fileName}`);
+  //     } else if (err) {
+  //       res.status(401).json({ error: "You must have a valid token" });
+  //     }
+  //   } catch (error) {
+  //     return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
+  //   }
+  // });
 };
 
 // to get all records for one specific elderly for user side

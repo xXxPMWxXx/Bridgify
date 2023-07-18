@@ -22,7 +22,7 @@ import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import Typography from '@mui/joy/Typography';
 import { Add } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
-const imageBASEURL = 'http://13.228.86.148:8000/images/trained_face';
+const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
 // const imageBASEURL = 'http://localhost:8000/images/trained_face';
 
 
@@ -174,27 +174,31 @@ export default function HealthTable() {
 
   }, [fetchAdditional]);
 
-  const fetchDoc = async () => {
+  const fetchDoc = async (fileName: any) => {
     console.log("fetchDoc called");
     // event.preventDefault();
     const token = window.localStorage.getItem('accessToken');
     // const elderlyID = "327H";
 
     //calling backend API
-    fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/get?fileName=531H_Heart Report_#323145.pdf`, {
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      method: 'GET'
+    window.open(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/display?fileName=${fileName}`, '_blank');
+    // window.open(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/display?fileName=327H_Insulin_765334.pdf`, '_blank');
 
-    })
-      .then((response) => response.blob())
-      .then((myBlob) => {
-        const pdfUrl = URL.createObjectURL(myBlob);
-        setPdfUrl(pdfUrl);
-        window.open(pdfUrl, '_blank');
-      });
+    // fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/get?fileName=531H_Heart Report_#323145.pdf`, {
+    //   headers: {
+    //     'Authorization': `Bearer ${token}`,
+    //     'Content-Type': 'application/json',
+    //   },
+    //   method: 'GET'
+
+    // })
+    //   .then((response) => response.blob())
+    //   .then((myBlob) => {
+    //     const pdfUrl = URL.createObjectURL(myBlob);
+    //     setPdfUrl(pdfUrl);
+    //     window.open(pdfUrl, '_blank');
+        
+    //   });
 
 
   }
@@ -298,7 +302,7 @@ export default function HealthTable() {
           size="sm"
           variant="outlined"
         // onClick={() => { elderlyFetcher("327H")}}
-        // onClick={testButton}
+        // onClick={fetchDoc}
         // onClick={elderlyFetcher}
 
         > Add Document</Button>
@@ -381,14 +385,14 @@ export default function HealthTable() {
                       </div>
                     </Box>
                   </td>
-                  {/* <td style={{
+                  <td style={{
                     width: '20px',
 
 
                   }}>
-                    <IconButton aria-label="filter" onClick={fetchDoc}>
+                    <IconButton aria-label="filter" onClick={()=>fetchDoc(row.document_path)}>
                       <TuneIcon /></IconButton>
-                  </td> */}
+                  </td>
                 </tr>
               ))}
             </tbody>

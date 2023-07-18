@@ -23,12 +23,8 @@ export const Profile = () => {
     const accRole = window.localStorage.getItem('accRole');
     const profileImage = window.localStorage.getItem('profileImage')
     const email = window.localStorage.getItem('email')
-    console.log(accRole);
-    console.log(profileImage);
-    console.log(email);
-
     
-    const profileImageSrc = `http://13.228.86.148:8000/images/user_profile/${profileImage}`;
+    const profileImageSrc = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/user_profile/${profileImage}`;
 
 
     const handleElderlyID = (e: any) => {

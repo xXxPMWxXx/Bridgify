@@ -15,9 +15,6 @@ import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from 'react-router-dom';
 import logo from '../images/icon-white.png';
 
-const pages = ['Home', 'Health', 'Message', 'Profile', 'Settings'];
-const settings = ['Profile', 'Account', 'Dashboard', 'Logout'];
-
 export const ResponsiveAppBar = () => {
     let navigate = useNavigate();
 
@@ -26,7 +23,7 @@ export const ResponsiveAppBar = () => {
 
 
     let profileImage: any = window.localStorage.getItem('profileImage');
-    const profileImageSrc = `http://13.228.86.148:8000/images/user_profile/${profileImage}`;
+    const profileImageSrc = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/user_profile/${profileImage}`;
 
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -74,12 +71,12 @@ export const ResponsiveAppBar = () => {
         navigate('/profile');
     }
 
-    const handleSetting = () => {
-        navigate('/setting');
+    const handleAbout = () => {
+        navigate('/about');
     }
 
     return (
-        <AppBar position="static" style={{ background: '#30685E' }} >
+        <AppBar position="sticky" style={{ background: '#30685E' }} >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     {/* need to research on how to get rid of this logo when hamburger bar opens */}
@@ -139,7 +136,7 @@ export const ResponsiveAppBar = () => {
                             <Button key='Health' onClick={handleHealth} sx={{ my: 0, color: 'black', display: 'block' }} >Health</Button>
                             <Button key='Message' onClick={handleMessage} sx={{ my: 0, color: 'black', display: 'block' }} >Message</Button>
                             <Button key='Profile' onClick={handleProfile} sx={{ my: 0, color: 'black', display: 'block' }} >Profile</Button>
-                            <Button key='Setting' onClick={handleSetting} sx={{ my: 0, color: 'black', display: 'block' }} >Setting</Button>
+                            <Button key='About' onClick={handleAbout} sx={{ my: 0, color: 'black', display: 'block' }} >About</Button>
                         </Menu>
                     </Box>
                     <Typography
@@ -166,7 +163,7 @@ export const ResponsiveAppBar = () => {
                         <Button key='Health' onClick={handleHealth} sx={{ my: 2, color: 'white', display: 'block' }} >Health</Button>
                         <Button key='Message' onClick={handleMessage} sx={{ my: 2, color: 'white', display: 'block' }} >Message</Button>
                         <Button key='Profile' onClick={handleProfile} sx={{ my: 2, color: 'white', display: 'block' }} >Profile</Button>
-                        <Button key='Setting' onClick={handleSetting} sx={{ my: 2, color: 'white', display: 'block' }} >Setting</Button>
+                        <Button key='About' onClick={handleAbout} sx={{ my: 2, color: 'white', display: 'block' }} >About</Button>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>
@@ -194,8 +191,8 @@ export const ResponsiveAppBar = () => {
                             <MenuItem key='Profile' onClick={handleProfile}>
                                 <Typography textAlign="center">Profile</Typography>
                             </MenuItem>
-                            <MenuItem key='Setting' onClick={handleSetting}>
-                                <Typography textAlign="center">Setting</Typography>
+                            <MenuItem key='About' onClick={handleAbout}>
+                                <Typography textAlign="center">About</Typography>
                             </MenuItem>
                             <MenuItem key='Help' onClick={handleHelp}>
                                 <Typography textAlign="center">Help</Typography>
@@ -219,7 +216,7 @@ export const ResponsiveAppBarAdmin = () => {
 
 
     let profileImage: any = window.localStorage.getItem('profileImage');
-    const profileImageSrc = `http://13.228.86.148:8000/images/user_profile/${profileImage}`;
+    const profileImageSrc = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/user_profile/${profileImage}`;
 
 
     const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
@@ -262,7 +259,7 @@ export const ResponsiveAppBarAdmin = () => {
 
 
     return (
-        <AppBar position="static" style={{ background: '#30685E' }} >
+        <AppBar position="sticky" style={{ background: '#30685E' }} >
             <Container maxWidth="xl">
                 <Toolbar disableGutters>
                     <img src={logo} alt="Logo" width={50} height={50} style={{ marginLeft: 5, marginRight: 8 }}></img>
@@ -318,8 +315,8 @@ export const ResponsiveAppBarAdmin = () => {
                             }}
                         >
                             <Button key='Home' onClick={handleHomeAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Home</Button>
-                            <Button key='Elderly' onClick={handleElderlyAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Health</Button>
-                            <Button key='Post' onClick={handlePostAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Message</Button>
+                            <Button key='Elderly' onClick={handleElderlyAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Elderly</Button>
+                            <Button key='Post' onClick={handlePostAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Post</Button>
                         </Menu>
                     </Box>
                     <Typography
