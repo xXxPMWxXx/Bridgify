@@ -2,85 +2,74 @@
 import * as React from 'react';
 import { ColorPaletteProp } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
-import Box from '@mui/joy/Box';
-import Button from '@mui/joy/Button';
-import Chip from '@mui/joy/Chip';
-import Divider from '@mui/joy/Divider';
-import FormControl from '@mui/joy/FormControl';
-import FormLabel from '@mui/joy/FormLabel';
-import Link from '@mui/joy/Link';
-import Input from '@mui/joy/Input';
-import Modal from '@mui/joy/Modal';
+import { Navigate } from 'react-router-dom';
+import { ResponsiveAppBarAdmin } from '../../Navbar';
+import { Box, FormControl, Input, LinearProgress, Modal, Typography } from '@mui/material';
 import ModalDialog from '@mui/joy/ModalDialog';
 import ModalClose from '@mui/joy/ModalClose';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
 import Table from '@mui/joy/Table';
-import Sheet from '@mui/joy/Sheet';
+import {Sheet,Button} from '@mui/joy';
 import Checkbox from '@mui/joy/Checkbox';
 import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
-import Typography from '@mui/joy/Typography';
 import { Add } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
-const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
-// const imageBASEURL = 'http://localhost:8000/images/trained_face';
+import MUIDataTable from 'mui-datatables';
+
+
+import FormLabel from '@mui/joy/FormLabel';
+import Link from '@mui/joy/Link';
+
+
+// const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
+const imageBASEURL = 'http://localhost:8000/images/trained_face';
+
+
+const delay = (ms: number) => new Promise(
+  resolve => setTimeout(resolve, ms)
+);
 
 
 
 
-
-
-function descendingComparator<T>(a: T, b: T, orderBy: keyof T) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-type Order = 'asc' | 'desc';
-
-function getComparator<Key extends keyof any>(
-  order: Order,
-  orderBy: Key,
-): (
-  a: { [key in Key]: number | string },
-  b: { [key in Key]: number | string },
-) => number {
-  return order === 'desc'
-    ? (a, b) => descendingComparator(a, b, orderBy)
-    : (a, b) => -descendingComparator(a, b, orderBy);
-}
-
-// Since 2020 all major browsers ensure sort stability with Array.prototype.sort().
-// stableSort() brings sort stability to non-modern browsers (notably IE11). If you
-// only support modern browsers you can replace stableSort(exampleArray, exampleComparator)
-// with exampleArray.slice().sort(exampleComparator)
-function stableSort<T>(array: readonly T[], comparator: (a: T, b: T) => number) {
-  const stabilizedThis = array.map((el, index) => [el, index] as [T, number]);
-  stabilizedThis.sort((a, b) => {
-    const order = comparator(a[0], b[0]);
-    if (order !== 0) {
-      return order;
-    }
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map((el) => el[0]);
-}
 
 export default function HealthTable() {
   const [rows, setRows] = React.useState<any[]>([]);
   const [fetchAdditional, setFetchAdditional] = React.useState(false);
 
-  const [pdfUrl, setPdfUrl] = React.useState('');
+  const columns = [{
+    name: "dateTime",
+    label: "Date",
+  }, {
+    name: "document_no",
+    label: "Document No",
+  }, {
+    name: "name",
+    label: "Document Name",
+    options: {
+      filter: true,
+      sort: true,
+    }
+  }, {
+    name: "elderlyPhoto",
+    label: "Elderly", 
+    options: {
+      customBodyRender: (value: any,tableMeta: any, updateValue: any) => {
+        return (
+          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+            <Avatar size="sm" alt={value} src={`${imageBASEURL}/${value}`} />
+           
+          </Box>
+        )
+      }
+    }
+  }];
+  // const columns = ["Date", "Document No", "Document Name", "Elderly"];
+  const token = window.localStorage.getItem('accessToken');
+  // const accRole = window.localStorage.getItem('accRole');
 
-
-  //fetch initial data
-  React.useEffect(() => {
-    const token = window.localStorage.getItem('accessToken');
-
+  const loadUserData = async () => {
     // //calling backend API
     fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/getAll`, {
       headers: {
@@ -105,11 +94,40 @@ export default function HealthTable() {
         window.alert(err);
       });
 
-  }, []);
+  }
+
+
+  //fetch initial data
+  // React.useEffect(() => {
+
+  //   // //calling backend API
+  //   fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/getAll`, {
+  //     headers: {
+  //       'Authorization': `Bearer ${token}`,
+  //       'Content-Type': 'application/json',
+  //     },
+  //     method: 'GET'
+  //   })
+  //     .then(async (response) => {
+  //       if (response.status != 200) {
+  //         console.log(response.json())
+
+  //       } else {
+  //         const data = await response.json();
+  //         setRows(data);
+  //         setFetchAdditional(true);
+  //         console.log("first useeffect called")
+  //       }
+
+  //     })
+  //     .catch((err) => {
+  //       window.alert(err);
+  //     });
+
+  // }, []);
 
   //fetch additional data
   React.useEffect(() => {
-    const token = window.localStorage.getItem('accessToken');
     // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
 
 
@@ -157,6 +175,7 @@ export default function HealthTable() {
             // Set the updated rows in the state
             setRows(updatedRows);
             setFetchAdditional(false);
+            setDataLoaded(true)
 
           }
 
@@ -197,11 +216,24 @@ export default function HealthTable() {
     //     const pdfUrl = URL.createObjectURL(myBlob);
     //     setPdfUrl(pdfUrl);
     //     window.open(pdfUrl, '_blank');
-        
+
     //   });
 
 
   }
+
+  //for modal
+  const style = {
+    position: 'absolute' as 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%, -50%)',
+    width: 400,
+    bgcolor: 'background.paper',
+    border: '2px solid #000',
+    boxShadow: 24,
+    p: 4,
+  };
 
   // const testButton = (e: any) => {
   //   e.preventDefault();
@@ -238,36 +270,76 @@ export default function HealthTable() {
   //   }
   // };
 
-  const renderFilters = () => (
-    <React.Fragment>
-      <FormControl size="sm">
-        <FormLabel>Status</FormLabel>
-        <Select
-          placeholder="Filter by status"
-          slotProps={{ button: { sx: { whiteSpace: 'nowrap' } } }}
-        >
-          <Option value="paid">Paid</Option>
-          <Option value="pending">Pending</Option>
-          <Option value="refunded">Refunded</Option>
-          <Option value="cancelled">Cancelled</Option>
-        </Select>
-      </FormControl>
+  const [open, setOpen] = React.useState(false);
+  const [dataLoaded, setDataLoaded] = React.useState(false);
 
-      <FormControl size="sm">
-        <FormLabel>Category</FormLabel>
-        <Select placeholder="All">
-          <Option value="all">All</Option>
-        </Select>
-      </FormControl>
 
-      <FormControl size="sm">
-        <FormLabel>Customer</FormLabel>
-        <Select placeholder="All">
-          <Option value="all">All</Option>
-        </Select>
-      </FormControl>
-    </React.Fragment>
-  );
+  React.useEffect(() => {
+    async function loadData() {
+      setOpen(true);
+      await delay(1000);
+      loadUserData();
+    }
+
+    if (!dataLoaded) {
+      loadData();
+    }
+  }, []);
+
+  const options = {
+
+  };
+
+  // return (
+  //   <div>
+
+  //     <br />
+  //     <br />
+
+  //     <Box
+  //       sx={{
+  //         // display: 'flex',
+  //         width: "80%",
+  //         alignItems: 'center',
+  //         margin: "auto",
+  //       }}
+  //     >
+
+  //       {/* <MUIDataTable
+  //           title={"Elderly Records"}
+  //           data={rows}
+  //           columns={columns}
+  //           options={options}
+  //         /> */}
+  //       {dataLoaded ?
+
+  //         <MUIDataTable
+  //           title={"Elderly Records"}
+  //           data={rows}
+  //           columns={columns}
+  //           options={options}
+  //         /> :
+
+  //         <Modal
+  //           keepMounted
+  //           open={open}
+  //           aria-labelledby="loading"
+  //           aria-describedby="loading user data"
+  //         >
+  //           <Box sx={style}>
+  //             <Typography id="loading" variant="h6" component="h2">
+  //               Loading user data, please wait.
+  //             </Typography>
+  //             <LinearProgress />
+  //           </Box>
+  //         </Modal>
+  //       }
+  //     </Box>
+
+  //   </div>
+  // )
+
+
   return (
     <React.Fragment>
 
@@ -290,7 +362,7 @@ export default function HealthTable() {
       >
         {/* Search Bar */}
         <FormControl sx={{ width: "30%" }}>
-          <Input placeholder="Search" startDecorator={<i data-feather="search" />} />
+          <Input placeholder="Search" />
         </FormControl>
         {/* Filter */}
         <IconButton aria-label="filter">
@@ -342,37 +414,17 @@ export default function HealthTable() {
             <thead>
               <tr>
 
-                { /* <th style={{ width: 140, padding: 12 }}>
-                <Link
-                  underline="none"
-                  color="primary"
-                  component="button"
-                  onClick={() => setOrder(order === 'asc' ? 'desc' : 'asc')}
-                  fontWeight="lg"
-                  endDecorator={<i data-feather="arrow-down" />}
-                  sx={{
-                    '& svg': {
-                      transition: '0.2s',
-                      transform:
-                        order === 'desc' ? 'rotate(0deg)' : 'rotate(180deg)',
-                    },
-                  }}
-                >
-                  Invoice
-                </Link>
-              </th> */}
                 <th style={{ padding: 12 }}>Date</th>
                 <th style={{ padding: 12 }}>Document No</th>
                 <th style={{ padding: 12 }}>Name</th>
                 <th style={{ padding: 12 }}>Elderly</th>
-                <th style={{ padding: 12 }}>File</th>
 
               </tr>
             </thead>
             <tbody>
               {rows.map((row) => (
 
-                <tr key={row._id}>
+                <tr key={row._id} onClick={()=>fetchDoc(row.document_path)}>
                   <td style={{ padding: 12 }}>{row.dateTime}</td>
                   <td style={{ padding: 12 }}>{row.document_no}</td>
                   <td style={{ padding: 12 }}>{row.name}</td>
@@ -380,94 +432,27 @@ export default function HealthTable() {
                     <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                       <Avatar alt={row.elderlyName} src={`${imageBASEURL}/${row.elderlyPhoto}`} />
                       <div>
-
                         {row.elderlyName}
                       </div>
                     </Box>
                   </td>
-                  <td style={{
+                  {/* <td style={{
                     width: '20px',
 
 
                   }}>
                     <IconButton aria-label="filter" onClick={()=>fetchDoc(row.document_path)}>
                       <TuneIcon /></IconButton>
-                  </td>
+                  </td> */}
                 </tr>
               ))}
             </tbody>
           </Table>
 
-         
+
         </Sheet>
       </Box>
-      {/* <Box
-        className="Pagination-mobile"
-        sx={{ display: { xs: 'flex', md: 'none' }, alignItems: 'center' }}
-      >
-        <IconButton
-          aria-label="previous page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-        >
-          <i data-feather="arrow-left" />
-        </IconButton>
-        <Typography level="body2" mx="auto">
-          Page 1 of 10
-        </Typography>
-        <IconButton
-          aria-label="next page"
-          variant="outlined"
-          color="neutral"
-          size="sm"
-        >
-          <i data-feather="arrow-right" />
-        </IconButton>
-      </Box> */}
-      {/* <Box
-        className="Pagination-laptopUp"
-        sx={{
-          pt: 4,
-          gap: 1,
-          [`& .${iconButtonClasses.root}`]: { borderRadius: '50%' },
-          display: {
-            xs: 'none',
-            md: 'flex',
-          },
-        }}
-      >
-        <Button
-          size="sm"
-          variant="plain"
-          color="neutral"
-          startDecorator={<i data-feather="arrow-left" />}
-        >
-          Previous
-        </Button>
 
-        <Box sx={{ flex: 1 }} />
-        {['1', '2', '3', '…', '8', '9', '10'].map((page) => (
-          <IconButton
-            key={page}
-            size="sm"
-            variant={Number(page) ? 'outlined' : 'plain'}
-            color="neutral"
-          >
-            {page}
-          </IconButton>
-        ))}
-        <Box sx={{ flex: 1 }} />
-
-        <Button
-          size="sm"
-          variant="plain"
-          color="neutral"
-          endDecorator={<i data-feather="arrow-right" />}
-        >
-          Next
-        </Button>
-      </Box> */}
     </React.Fragment>
   );
 }
