@@ -1,6 +1,3 @@
-List<PostRequestModel> postFromJson(dynamic str) =>
-    List<PostRequestModel>.from((str).map((x) => PostRequestModel.fromJson(x)));
-
 class PostRequestModel {
   late String? authorEmail;
   late String? description;

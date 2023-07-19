@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:bridgify/models/login_request_model.dart';
 import 'package:bridgify/models/login_response_model.dart';
+import 'package:bridgify/models/post_request_model.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/models/register_request_model.dart';
 import 'package:bridgify/models/register_response_model.dart';
@@ -172,6 +173,38 @@ class APIService {
       return postFromJson(data["data"]);
     } else {
       return null;
+    }
+  }
+
+  static Future<bool> createPosts(PostRequestModel model) async {
+//updateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    var url = Uri.http(
+      Config.apiURL,
+      Config.createPostAPI,
+    );
+
+    var request = http.MultipartRequest("post", url);
+    request.fields["authorEmail"] = model.authorEmail!;
+    request.fields["description"] = model.description!;
+    request.fields["activityType"] = model.activityType!;
+
+    for (var i = 0; i < model.postImages!.length; i++) {
+      http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+        'postImages$i',
+        model.postImages![i],
+      );
+
+      request.files.add(multipartFile);
+    }
+
+    http.StreamedResponse streamResponse = await request.send();
+
+    final response = await http.Response.fromStream(streamResponse);
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
     }
   }
 }

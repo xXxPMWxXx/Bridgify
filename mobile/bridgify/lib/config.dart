@@ -14,7 +14,6 @@ class DataManagement {
 Future<void> copyToClipboard(text) async =>
     await Clipboard.setData(ClipboardData(text: text.toString()));
 
-
 class Config {
   static const String appName = "Bridgify";
   //during deployment
@@ -29,4 +28,5 @@ class Config {
 
   //post
   static const String getPostsAPI = "api/post/getAll";
+  static const String createPostAPI = "api/post/create";
 }

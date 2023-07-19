@@ -1,11 +1,19 @@
+import 'dart:io';
+
 import 'package:bridgify/accessories/avatar_builder.dart';
+import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
 import 'package:bridgify/accessories/post/build_post.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
+import 'package:bridgify/models/post_request_model.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:snippet_coder_utils/FormHelper.dart';
+import 'package:snippet_coder_utils/ProgressHUD.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:zego_zimkit/services/services.dart';
 
 class AdminHomePage extends StatefulWidget {
@@ -16,13 +24,34 @@ class AdminHomePage extends StatefulWidget {
 }
 
 class _AdminHomePageState extends State<AdminHomePage> {
+  bool isAPICallProcess = false;
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
+  GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   bool isApiCallProcess = false;
+  PostRequestModel? postRequestModel;
+  PostResponseModel? postResponseModel;
+  String? postAuthorEmail;
+  String? postDescription;
+  String? postActivityType;
+  List<String>? postImages;
+
+  //Chosen Image
+  final ImagePicker _picker = ImagePicker();
+  int imageCount = 0;
+  List<XFile> _imageList = [];
 
   @override
   void initState() {
     super.initState();
-    setState(() {});
+    postRequestModel = PostRequestModel();
+    postResponseModel = PostResponseModel();
+    Future.delayed(Duration.zero, () {
+      APIService.getUserProfile().then((response) {
+        Map userProfile = response as Map<String, dynamic>;
+        postAuthorEmail = userProfile["email"];
+      });
+      setState(() {});
+    });
   }
 
   @override
@@ -30,12 +59,15 @@ class _AdminHomePageState extends State<AdminHomePage> {
     return Scaffold(
       key: _globalKey,
       backgroundColor: Colors.white /*const Color(0xFF171717)*/,
-      body: loadAdminHomePage(),
+      body: ProgressHUD(
+          key: UniqueKey(),
+          child: Form(key: globalFormKey, child: loadAdminHomePage(context)),
+          inAsyncCall: isAPICallProcess),
       drawer: loadDrawer(),
     );
   }
 
-  Widget loadAdminHomePage() {
+  Widget loadAdminHomePage(BuildContext context) {
     return Stack(
       children: [
         Column(
@@ -94,7 +126,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                                     Config.apiURL +
                                                     '/images/user_profile/' +
                                                     imagePath)
-                                            .image))
+                                            .image),
+                                  )
                                 : GestureDetector(
                                     onTap: () {
                                       Navigator.pushNamed(
@@ -128,20 +161,274 @@ class _AdminHomePageState extends State<AdminHomePage> {
           right: 0,
           bottom: 0,
           child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                  topLeft: Radius.circular(40),
-                  topRight: Radius.circular(40),
-                ),
-                color: Color(0xFFEFFFFC),
+            // padding: const EdgeInsets.symmetric(vertical: 15),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(40),
+                topRight: Radius.circular(40),
               ),
-              child: Container()
-              //posts
+              color: Color(0xFFEFFFFC),
+            ),
+            //Post
+            child: ListView(padding: EdgeInsets.all(12.0), children: [
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: <Widget>[
+                  SizedBox(
+                    height: 350,
+                    child: Padding(
+                      padding: const EdgeInsets.only(bottom: 12.0),
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(8),
+                              border: _imageList.length > 0
+                                  ? Border.all(
+                                      color: Colors.grey.shade700,
+                                      width: 2.0,
+                                    )
+                                  : Border.all(
+                                      color: Colors.grey
+                                          .shade200, // Set the dynamic border color here
+                                      width: 2.0, // Set the border width
+                                    ),
+                            ),
+                            child: GridView.builder(
+                              padding: EdgeInsets.all(5.0),
+                              gridDelegate:
+                                  const SliverGridDelegateWithFixedCrossAxisCount(
+                                      crossAxisCount: 3),
+                              itemCount: _imageList.length,
+                              itemBuilder: (BuildContext context, int index) {
+                                return Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                    vertical: 5.0,
+                                    horizontal: 5.0,
+                                  ),
+                                  child: Stack(fit: StackFit.expand, children: [
+                                    Image.file(
+                                      File(_imageList[index].path),
+                                      fit: BoxFit.cover,
+                                    ),
+                                    Positioned(
+                                      right: -8,
+                                      top: -8,
+                                      child: IconButton(
+                                          padding: const EdgeInsets.all(2.0),
+                                          onPressed: () {
+                                            _imageList.removeAt(index);
+                                            imageCount = _imageList.length;
+                                            print(imageCount);
+                                            setState(() {});
+                                          },
+                                          icon: Icon(
+                                            Icons.delete,
+                                            size: 20,
+                                          ),
+                                          color: Colors.red[500]),
+                                    ),
+                                  ]),
+                                );
+                              },
+                            ),
+                          ),
+                          Positioned(
+                            right: 16,
+                            bottom: 16,
+                            child: ElevatedButton(
+                              style: OutlinedButton.styleFrom(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8),
+                                ),
+                              ),
+                              clipBehavior: Clip.antiAlias,
+                              onPressed: () {
+                                imageSelect();
+                              },
+                              child: const Text(
+                                "Select Image",
+                                style: TextStyle(color: Colors.black),
+                              ),
+                            ),
+                          )
+                        ],
+                      ),
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey.shade200),
+                      ),
+                    ),
+                    child: FormHelper.inputFieldWidget(
+                      context,
+                      "activity type",
+                      "Activity Type",
+                      (onValidateVal) {
+                        if (onValidateVal.isEmpty) {
+                          return 'Please input a valid post activity type.';
+                        }
+
+                        return null;
+                      },
+                      (onSavedVal) => {
+                        postActivityType = onSavedVal,
+                      },
+                      paddingRight: 0,
+                      paddingLeft: 0,
+                      // initialValue: updateUserRequestModel!.email == null ? "" : updateUserRequestModel!.email.toString(),
+                      initialValue: "",
+
+                      prefixIcon: const Icon(Icons.run_circle_outlined),
+                      showPrefixIcon: true,
+                      prefixIconColor: Colors.black.withOpacity(0.5),
+                      hintColor: Colors.grey.withOpacity(0.7),
+                      borderFocusColor: Colors.grey.shade700,
+                      borderColor: Colors.grey.shade200,
+                      borderWidth: 5,
+                      borderRadius: 5,
+                      borderErrorColor: Colors.white,
+                      errorBorderWidth: 0,
+                      focusedErrorBorderWidth: 0,
+                      borderFocusedErrorColor: Colors.white,
+                    ),
+                  ),
+                  Container(
+                    decoration: BoxDecoration(
+                      border: Border(
+                        bottom: BorderSide(color: Colors.grey.shade200),
+                      ),
+                    ),
+                    child: FormHelper.inputFieldWidget(
+                      context,
+                      "description",
+                      "Description",
+                      (onValidateVal) {
+                        if (onValidateVal.isEmpty) {
+                          return 'Please input a valid post description.';
+                        }
+
+                        return null;
+                      },
+                      (onSavedVal) => {
+                        postDescription = onSavedVal,
+                      },
+                      isMultiline: true,
+                      multilineRows: 7,
+                      maxLength: 280,
+                      paddingTop: 5,
+                      paddingRight: 0,
+                      paddingLeft: 0,
+                      initialValue: "",
+                      obscureText: false,
+                      prefixIcon: const Icon(Icons.description_rounded),
+                      showPrefixIcon: true,
+                      prefixIconPaddingBottom: 110,
+                      prefixIconColor: Colors.black.withOpacity(0.5),
+                      textColor: Colors.black.withOpacity(0.7),
+                      hintColor: Colors.grey.withOpacity(0.7),
+                      borderFocusColor: Colors.grey.shade700,
+                      borderColor: Colors.grey.shade200,
+                      borderWidth: 5,
+                      borderRadius: 5,
+                      borderErrorColor: Colors.white,
+                      errorBorderWidth: 0,
+                      focusedErrorBorderWidth: 0,
+                      borderFocusedErrorColor: Colors.white,
+                    ),
+                  ),
+                ],
               ),
+              SizedBox(
+                height: 35,
+              ),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  FormHelper.submitButton(
+                    height: 50,
+                    width: 250,
+                    "CLEAR",
+                    () {
+                      setState(() {
+                        postDescription = "";
+                        postActivityType = "";
+                      });
+                    },
+                    btnColor: HexColor("FFFFFF"),
+                    borderColor: HexColor("FFFFFF"),
+                    txtColor: Colors.black,
+                    borderRadius: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  FormHelper.submitButton(
+                    height: 50,
+                    width: 250,
+                    "PREVIEW",
+                    () {
+                      if (validateAndSave()) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              child: const InvalidCredentialsView(
+                                primaryText: 'Empty fields detected!',
+                                secondaryText:
+                                    'Please ensure that all fields are filled',
+                              ),
+                            );
+                          },
+                        );
+                      } else if (validateAndSave()) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              child: const InvalidCredentialsView(
+                                primaryText: 'Passwords input need to match',
+                                secondaryText:
+                                    'Please re-confirm your password',
+                              ),
+                            );
+                          },
+                        );
+                      }
+                    },
+                    btnColor: HexColor("207A35"),
+                    borderColor: HexColor("207A35"),
+                    txtColor: Colors.white,
+                    borderRadius: 20,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ],
+              )
+            ]),
+
+            //create_posts
+          ),
         ),
       ],
     );
+  }
+
+  bool validateAndSave() {
+    final form = globalFormKey.currentState;
+    if (form!.validate()) {
+      form.save();
+      return true;
+    }
+    return false;
   }
 
   Widget loadDrawer() {
@@ -335,5 +622,23 @@ class _AdminHomePageState extends State<AdminHomePage> {
         ),
       ),
     );
+  }
+
+  void imageSelect() async {
+    final List<XFile>? selectedImages = await _picker.pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      if (selectedImages.length + imageCount > 10) {
+        for (var i = 0; i < 10 - imageCount; i++) {
+          _imageList.add(selectedImages[i]);
+        }
+      } else {
+        _imageList.addAll(selectedImages);
+      }
+      imageCount = _imageList.length;
+    }
+    print(selectedImages);
+    print(imageCount);
+    setState(() {});
+    // print(selectedImage!.path.toString());
   }
 }
