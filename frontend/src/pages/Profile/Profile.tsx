@@ -34,7 +34,7 @@ export const Profile = () => {
         setMode(e.target.value);
     }
 
-    const handlerSubmit = (event: any) => {
+    const handleSubmit = (event: any) => {
         event.preventDefault();
         var APIMethod = 'linkElderly';
         if (mode != 'Add') {
@@ -119,7 +119,7 @@ export const Profile = () => {
                 <Typography variant="h3" align="center" component="h1" sx={{ m: 2 }} >
                     Add/Remove Linked Elderly
                 </Typography >
-                <form onSubmit={handlerSubmit}>
+                <form onSubmit={handleSubmit}>
                     <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                         <RadioGroup
                             row

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
-import {ResponsiveAppBar} from '../../Navbar';
+import { ResponsiveAppBar } from '../../Navbar';
 import { Box, Typography } from '@mui/material';
 import HealthTable from './HealthTable';
 
@@ -24,11 +24,11 @@ export const Health = () => {
     return (
         <div>
             {
-				token == null ?
-					<Navigate to="/Login" /> : <Navigate to="/Health" />
-			}
-            < ResponsiveAppBar/>
-            <Box 
+                token == null ?
+                    <Navigate to="/Login" /> : <Navigate to="/Health" />
+            }
+            < ResponsiveAppBar />
+            <Box
                 sx={{
                     display: 'flex',
                     justifyContent: 'center',
