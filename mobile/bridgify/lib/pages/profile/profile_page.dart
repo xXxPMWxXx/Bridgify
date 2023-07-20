@@ -397,12 +397,12 @@ class _ProfilePageState extends State<ProfilePage> {
             // buildTextField("Password", "*********", true),
             // buildTextField("Name", "John Doe"),
             const SizedBox(height: 35),
-            Column(
+            Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FormHelper.submitButton(
                   height: 50,
-                  width: 250,
+                  width: 150,
                   "CANCEL",
                   () {
                     setState(() {
@@ -434,7 +434,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 // ),
                 FormHelper.submitButton(
                   height: 50,
-                  width: 250,
+                  width: 150,
                   "SAVE",
                   () {
                     // passwordUpdate = passwordUpdate ?? "";

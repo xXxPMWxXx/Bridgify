@@ -69,7 +69,10 @@ export const create = async (req: any, res: any, next: NextFunction) => {
         var imagesCount = 0;
         var devImageURL: String[] = [];
         var imageURL: String[] = [];
-
+        // console.log(req);
+        console.log(req.files);
+        console.log("image: " + images.data);
+        console.log("image data: " + images.data);
         // for one image
         if (images.name != undefined) {
           let results = await faceService.getDescriptorsFromDB(images.data);

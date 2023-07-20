@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:bridgify/accessories/avatar_builder.dart';
 import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
+import 'package:bridgify/accessories/dialog/post_preview.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
 import 'package:bridgify/accessories/post/build_post.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
@@ -27,15 +28,15 @@ class _AdminHomePageState extends State<AdminHomePage> {
   bool isAPICallProcess = false;
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-  bool isApiCallProcess = false;
   PostRequestModel? postRequestModel;
   PostResponseModel? postResponseModel;
   String? postAuthorEmail;
   String? postDescription;
   String? postActivityType;
-  List<String>? postImages;
+  List<String>? postImages = [];
 
   //Chosen Image
+  bool imageOverflow = false;
   final ImagePicker _picker = ImagePicker();
   int imageCount = 0;
   List<XFile> _imageList = [];
@@ -246,9 +247,30 @@ class _AdminHomePageState extends State<AdminHomePage> {
                               clipBehavior: Clip.antiAlias,
                               onPressed: () {
                                 imageSelect();
+                                if (imageOverflow) {
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      imageOverflow = false;
+                                      return Dialog(
+                                        backgroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(24),
+                                        ),
+                                        child: const InvalidCredentialsView(
+                                          primaryText:
+                                              'Too many images uploaded',
+                                          secondaryText:
+                                              'Each post can only have a maximum of 10 images',
+                                        ),
+                                      );
+                                    },
+                                  );
+                                }
                               },
                               child: const Text(
-                                "Select Image",
+                                "Upload Image",
                                 style: TextStyle(color: Colors.black),
                               ),
                             ),
@@ -345,17 +367,18 @@ class _AdminHomePageState extends State<AdminHomePage> {
               SizedBox(
                 height: 35,
               ),
-              Column(
+              Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   FormHelper.submitButton(
                     height: 50,
-                    width: 250,
+                    width: 150,
                     "CLEAR",
                     () {
                       setState(() {
                         postDescription = "";
                         postActivityType = "";
+                        _imageList = [];
                       });
                     },
                     btnColor: HexColor("FFFFFF"),
@@ -366,43 +389,64 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   ),
                   FormHelper.submitButton(
                     height: 50,
-                    width: 250,
+                    width: 150,
                     "PREVIEW",
                     () {
                       if (validateAndSave()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                              child: const InvalidCredentialsView(
-                                primaryText: 'Empty fields detected!',
-                                secondaryText:
-                                    'Please ensure that all fields are filled',
-                              ),
-                            );
-                          },
-                        );
-                      } else if (validateAndSave()) {
-                        showDialog(
-                          context: context,
-                          builder: (context) {
-                            return Dialog(
-                              backgroundColor: Colors.white,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(24),
-                              ),
-                              child: const InvalidCredentialsView(
-                                primaryText: 'Passwords input need to match',
-                                secondaryText:
-                                    'Please re-confirm your password',
-                              ),
-                            );
-                          },
-                        );
+                        for (XFile image in _imageList) {
+                          String? imagePath = image.path;
+                          print(imagePath);
+                          postImages!.add(imagePath);
+                        }
+                        if (imageCount == 0) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: const InvalidCredentialsView(
+                                  primaryText: 'Posts require images!',
+                                  secondaryText:
+                                      'Please ensure that there images uploaded',
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          // late String? id;
+                          // late String? authorEmail;
+                          // late String? dateTime;
+                          // late String? description;
+                          // late String? activityType;
+                          // late List<String>? postImages;
+                          // late List<dynamic>? elderlyInvolved;
+                          // late int? imagesCount;
+                          postResponseModel!.id = '0';
+                          postResponseModel!.authorEmail = postAuthorEmail;
+                          postResponseModel!.dateTime =
+                              DateTime.now().toString();
+                          postResponseModel!.description = postDescription;
+                          postResponseModel!.activityType = postActivityType;
+                          postResponseModel!.elderlyInvolved = [];
+                          postResponseModel!.postImages = postImages;
+                          postResponseModel!.imagesCount = imageCount;
+
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: PostPreview(model: postResponseModel),
+                              );
+                            },
+                          );
+                        }
                       }
                     },
                     btnColor: HexColor("207A35"),
@@ -429,6 +473,25 @@ class _AdminHomePageState extends State<AdminHomePage> {
       return true;
     }
     return false;
+  }
+
+  void imageSelect() async {
+    final List<XFile>? selectedImages = await _picker.pickMultiImage();
+    if (selectedImages!.isNotEmpty) {
+      if (selectedImages.length + imageCount > 10) {
+        for (var i = 0; i < 10 - imageCount; i++) {
+          _imageList.add(selectedImages[i]);
+        }
+        imageOverflow = true;
+      } else {
+        _imageList.addAll(selectedImages);
+      }
+      imageCount = _imageList.length;
+    }
+    print(selectedImages);
+    print(imageCount);
+    setState(() {});
+    // print(selectedImage!.path.toString());
   }
 
   Widget loadDrawer() {
@@ -622,23 +685,5 @@ class _AdminHomePageState extends State<AdminHomePage> {
         ),
       ),
     );
-  }
-
-  void imageSelect() async {
-    final List<XFile>? selectedImages = await _picker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
-      if (selectedImages.length + imageCount > 10) {
-        for (var i = 0; i < 10 - imageCount; i++) {
-          _imageList.add(selectedImages[i]);
-        }
-      } else {
-        _imageList.addAll(selectedImages);
-      }
-      imageCount = _imageList.length;
-    }
-    print(selectedImages);
-    print(imageCount);
-    setState(() {});
-    // print(selectedImage!.path.toString());
   }
 }

@@ -110,7 +110,7 @@ class APIService {
       Config.updateAPI,
     );
     print(url);
-    var request = http.MultipartRequest("put", url);
+    var request = http.MultipartRequest("PUT", url);
     request.headers.addAll(requestHeaders);
     request.fields["email"] = model.email!;
     request.fields["name"] = model.name!;
@@ -177,26 +177,32 @@ class APIService {
   }
 
   static Future<bool> createPosts(PostRequestModel model) async {
-//updateeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeeee
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
     var url = Uri.http(
       Config.apiURL,
       Config.createPostAPI,
     );
 
-    var request = http.MultipartRequest("post", url);
-    request.fields["authorEmail"] = model.authorEmail!;
+    var request = http.MultipartRequest("POST", url);
+    request.headers.addAll(requestHeaders);
+    request.fields["author_email"] = model.authorEmail!;
     request.fields["description"] = model.description!;
-    request.fields["activityType"] = model.activityType!;
+    request.fields["activity_type"] = model.activityType!;
 
     for (var i = 0; i < model.postImages!.length; i++) {
       http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
-        'postImages$i',
+        'images',
         model.postImages![i],
       );
 
       request.files.add(multipartFile);
     }
-
+    print(request.files);
     http.StreamedResponse streamResponse = await request.send();
 
     final response = await http.Response.fromStream(streamResponse);
@@ -204,6 +210,7 @@ class APIService {
     if (response.statusCode == 200) {
       return true;
     } else {
+      print(response.statusCode);
       return false;
     }
   }
