@@ -9,12 +9,15 @@ import ModalDialog from '@mui/joy/ModalDialog';
 import ModalClose from '@mui/joy/ModalClose';
 import Select from '@mui/joy/Select';
 import Option from '@mui/joy/Option';
+import Tabs from '@mui/material/Tabs';
+import Tab from '@mui/material/Tab';
 import Table from '@mui/joy/Table';
-import {Sheet,Button} from '@mui/joy';
+import { Sheet, Button } from '@mui/joy';
 import Checkbox from '@mui/joy/Checkbox';
 import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import { Add } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
+
 import MUIDataTable from 'mui-datatables';
 
 
@@ -30,17 +33,62 @@ const delay = (ms: number) => new Promise(
   resolve => setTimeout(resolve, ms)
 );
 
+interface TabPanelProps {
+  children?: React.ReactNode;
+  index: number;
+  value: number;
+}
 
+function CustomTabPanel(props: TabPanelProps) {
+  const { children, value, index, ...other } = props;
 
+  return (
+    <div
+      role="tabpanel"
+      hidden={value !== index}
+      id={`simple-tabpanel-${index}`}
+      aria-labelledby={`simple-tab-${index}`}
+      {...other}
+    >
+      {value === index && (
+        <Box sx={{ p: 3 }}>
+          <Typography>{children}</Typography>
+        </Box>
+      )}
+    </div>
+  );
+}
 
 
 export default function HealthTable() {
+
+  const token = window.localStorage.getItem('accessToken');
+  // const columns = ["Date", "Document No", "Document Name", "Elderly"];
+  // const accRole = window.localStorage.getItem('accRole');
+
+  const [tableData, setTableData] = React.useState<any[]>([]);
   const [rows, setRows] = React.useState<any[]>([]);
   const [fetchAdditional, setFetchAdditional] = React.useState(false);
+  const [tabValue, setTabValue] = React.useState(0);
+
+  const [open, setOpen] = React.useState(false);
+  const [dataLoaded, setDataLoaded] = React.useState(false);
+
+
+  const isType = (obj: any) => {
+    if (tabValue === 0) {
+      return obj.type === "medical"
+    } else if (tabValue === 1) {
+      return obj.type === "medication"
+    } else if (tabValue === 2) {
+      return obj.type === "others"
+    }
+
+  };
 
   const columns = [{
     name: "dateTime",
-    label: "Date",
+    label: "Published Date",
   }, {
     name: "document_no",
     label: "Document No",
@@ -53,22 +101,20 @@ export default function HealthTable() {
     }
   }, {
     name: "elderlyPhoto",
-    label: "Elderly", 
+    label: "Elderly",
     options: {
-      customBodyRender: (value: any,tableMeta: any, updateValue: any) => {
+      customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
         return (
           <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
             <Avatar size="sm" alt={value} src={`${imageBASEURL}/${value}`} />
-           
+
           </Box>
         )
       }
     }
   }];
-  // const columns = ["Date", "Document No", "Document Name", "Elderly"];
-  const token = window.localStorage.getItem('accessToken');
-  // const accRole = window.localStorage.getItem('accRole');
 
+  //get from server, all the data
   const loadUserData = async () => {
     // //calling backend API
     fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/getAll`, {
@@ -84,7 +130,7 @@ export default function HealthTable() {
 
         } else {
           const data = await response.json();
-          setRows(data);
+          setTableData(data);
           setFetchAdditional(true);
           console.log("first useeffect called")
         }
@@ -95,36 +141,6 @@ export default function HealthTable() {
       });
 
   }
-
-
-  //fetch initial data
-  // React.useEffect(() => {
-
-  //   // //calling backend API
-  //   fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/getAll`, {
-  //     headers: {
-  //       'Authorization': `Bearer ${token}`,
-  //       'Content-Type': 'application/json',
-  //     },
-  //     method: 'GET'
-  //   })
-  //     .then(async (response) => {
-  //       if (response.status != 200) {
-  //         console.log(response.json())
-
-  //       } else {
-  //         const data = await response.json();
-  //         setRows(data);
-  //         setFetchAdditional(true);
-  //         console.log("first useeffect called")
-  //       }
-
-  //     })
-  //     .catch((err) => {
-  //       window.alert(err);
-  //     });
-
-  // }, []);
 
   //fetch additional data
   React.useEffect(() => {
@@ -147,7 +163,7 @@ export default function HealthTable() {
           } else {
             const data = await response.json();
 
-            const updatedRows = rows.map(row => {
+            const updatedRows = tableData.map(row => {
 
               const foundItem = data.find((item: { id: any; }) => item.id === row.elderlyID);
 
@@ -173,9 +189,11 @@ export default function HealthTable() {
             console.log("second useeffect end");
 
             // Set the updated rows in the state
-            setRows(updatedRows);
+            await setTableData(updatedRows);
             setFetchAdditional(false);
+            setRows(tableData.filter(isType));
             setDataLoaded(true)
+            setOpen(false)
 
           }
 
@@ -186,10 +204,6 @@ export default function HealthTable() {
 
 
     }
-
-
-
-
 
   }, [fetchAdditional]);
 
@@ -222,6 +236,24 @@ export default function HealthTable() {
 
   }
 
+  const handleChange = async (event: React.SyntheticEvent, newValue: number) => {
+    // console.log(newValue)
+    setTabValue(newValue);
+  }
+
+  React.useEffect(() => {
+    setRows(tableData.filter(isType));
+
+    // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
+  }, [tableData]);
+
+  React.useEffect(() => {
+    setRows(tableData.filter(isType));
+    setOpen(false)
+
+    // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
+  }, [tabValue]);
+
   //for modal
   const style = {
     position: 'absolute' as 'absolute',
@@ -233,6 +265,29 @@ export default function HealthTable() {
     border: '2px solid #000',
     boxShadow: 24,
     p: 4,
+  };
+
+  React.useEffect(() => {
+    async function loadData() {
+      setOpen(true);
+      await delay(1000);
+      loadUserData();
+    }
+
+    if (!dataLoaded) {
+      loadData();
+    }
+  }, []);
+
+  function a11yProps(index: number) {
+    return {
+      id: `simple-tab-${index}`,
+      'aria-controls': `simple-tabpanel-${index}`,
+    };
+  }
+
+  const options = {
+
   };
 
   // const testButton = (e: any) => {
@@ -269,26 +324,6 @@ export default function HealthTable() {
   //     return null;
   //   }
   // };
-
-  const [open, setOpen] = React.useState(false);
-  const [dataLoaded, setDataLoaded] = React.useState(false);
-
-
-  React.useEffect(() => {
-    async function loadData() {
-      setOpen(true);
-      await delay(1000);
-      loadUserData();
-    }
-
-    if (!dataLoaded) {
-      loadData();
-    }
-  }, []);
-
-  const options = {
-
-  };
 
   // return (
   //   <div>
@@ -344,22 +379,24 @@ export default function HealthTable() {
     <React.Fragment>
 
 
-      <Sheet
-        className="SearchAndFilters-tabletUp"
-        sx={{
-          width: '80%',
-          py: 2,
+
+      <Box sx={{ width: "80%", alignItems: 'center', margin: "auto" }}>
+        <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" sx={{ marginBottom: 2, borderBottom: 1 }}>
+          <Tab label="Medical Records" {...a11yProps(0)} />
+          <Tab label="Medication" {...a11yProps(1)} />
+          <Tab label="Others" {...a11yProps(2)} />
+        </Tabs>
+        <Sheet sx={{
+       
           display: {
             sm: 'flex',
           },
           flexWrap: 'wrap',
           gap: 1.5,
 
-          marginLeft: "auto",
-          marginRight: "auto"
+          // margin: "auto",   
 
-        }}
-      >
+        }}>
         {/* Search Bar */}
         <FormControl sx={{ width: "30%" }}>
           <Input placeholder="Search" />
@@ -373,70 +410,72 @@ export default function HealthTable() {
           disabled={false}
           size="sm"
           variant="outlined"
-        // onClick={() => { elderlyFetcher("327H")}}
-        // onClick={fetchDoc}
-        // onClick={elderlyFetcher}
+          // onClick={() => { elderlyFetcher("327H")}}
+          // onClick={fetchDoc}
+          onClick={() => console.log(tabValue)}
 
         > Add Document</Button>
-
-
-      </Sheet>
-
-      <Box
-        sx={{
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-        }}>
-        <Sheet
-          className="OrderTableContainer"
-          variant="outlined"
+        </Sheet>
+        <Box
           sx={{
-            width: '80%',
-            borderRadius: 'md',
-            flex: 1,
-            overflow: 'auto',
-            minHeight: 0,
-          }}
-        >
-          <Table
-            aria-labelledby="tableTitle"
-            stickyHeader
-            hoverRow
+            display: 'flex',
+            flexDirection: 'column',
+            alignItems: 'center',
+          }}>
+          <Sheet
+            className="HealthTableContainer"
+            variant="outlined"
             sx={{
-              '--TableCell-headBackground': (theme: { vars: { palette: { background: { level1: any; }; }; }; }) =>
-                theme.vars.palette.background.level1,
-              '--Table-headerUnderlineThickness': '1px',
-              '--TableRow-hoverBackground': (theme: { vars: { palette: { background: { level1: any; }; }; }; }) =>
-                theme.vars.palette.background.level1,
+              width: '100%%',
+              borderRadius: 'md',
+              flex: 1,
+              overflow: 'auto',
+              minHeight: 0,
+              marginTop:2
             }}
           >
-            <thead>
-              <tr>
 
-                <th style={{ padding: 12 }}>Date</th>
-                <th style={{ padding: 12 }}>Document No</th>
-                <th style={{ padding: 12 }}>Name</th>
-                <th style={{ padding: 12 }}>Elderly</th>
+            <Table
+              aria-labelledby="tableTitle"
+              stickyHeader
+              hoverRow
+              sx={{
+                '--TableCell-headBackground': (theme: { vars: { palette: { background: { level1: any; }; }; }; }) =>
+                  theme.vars.palette.background.level1,
+                '--Table-headerUnderlineThickness': '1px',
+                '--TableRow-hoverBackground': (theme: { vars: { palette: { background: { level1: any; }; }; }; }) =>
+                  theme.vars.palette.background.level1,
+              }}
+            >
+              <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
 
-              </tr>
-            </thead>
-            <tbody>
-              {rows.map((row) => (
+              </Box>
+              <thead >
+                <tr style={{}}>
 
-                <tr key={row._id} onClick={()=>fetchDoc(row.document_path)}>
-                  <td style={{ padding: 12 }}>{row.dateTime}</td>
-                  <td style={{ padding: 12 }}>{row.document_no}</td>
-                  <td style={{ padding: 12 }}>{row.name}</td>
-                  <td >
-                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                      <Avatar alt={row.elderlyName} src={`${imageBASEURL}/${row.elderlyPhoto}`} />
-                      <div>
-                        {row.elderlyName}
-                      </div>
-                    </Box>
-                  </td>
-                  {/* <td style={{
+                  <th style={{ padding: 12, backgroundColor: "white" }}>Published Date</th>
+                  <th style={{ padding: 12, backgroundColor: "white" }}>Document No</th>
+                  <th style={{ padding: 12, backgroundColor: "white" }}>Name</th>
+                  <th style={{ padding: 12, backgroundColor: "white" }}>Elderly</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                {rows.map((row) => (
+
+                  <tr key={row._id} onClick={() => fetchDoc(row.document_path)}>
+                    <td style={{ padding: 12 }}>{row.dateTime}</td>
+                    <td style={{ padding: 12 }}>{row.document_no}</td>
+                    <td style={{ padding: 12 }}>{row.name}</td>
+                    <td >
+                      <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                        <Avatar alt={row.elderlyName} src={`${imageBASEURL}/${row.elderlyPhoto}`} />
+                        <div>
+                          {row.elderlyName}
+                        </div>
+                      </Box>
+                    </td>
+                    {/* <td style={{
                     width: '20px',
 
 
@@ -444,13 +483,28 @@ export default function HealthTable() {
                     <IconButton aria-label="filter" onClick={()=>fetchDoc(row.document_path)}>
                       <TuneIcon /></IconButton>
                   </td> */}
-                </tr>
-              ))}
-            </tbody>
-          </Table>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+
+            <Modal
+              keepMounted
+              open={open}
+              aria-labelledby="loading"
+              aria-describedby="loading user data"
+            >
+              <Box sx={style}>
+                <Typography id="loading" variant="h6" component="h2">
+                  Loading user data, please wait.
+                </Typography>
+                <LinearProgress />
+              </Box>
+            </Modal>
 
 
-        </Sheet>
+          </Sheet>
+        </Box>
       </Box>
 
     </React.Fragment>
