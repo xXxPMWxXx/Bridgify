@@ -23,6 +23,9 @@ recordRouter.route('/display').get(controller.display);
 /** GET /api/record/getSelected */
 recordRouter.route('/get').get(controller.getSelected);
 
+/** GET /api/record/getSelected */
+recordRouter.route('/getLinked').post(controller.getLinked);
+
 /** GET /api/record/getAll for the admin*/
 recordRouter.route('/getAll').get(controller.getAll);
 
