@@ -1,15 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from 'react';
-import { ColorPaletteProp } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
-import { Navigate } from 'react-router-dom';
-import { ResponsiveAppBarAdmin } from '../../Navbar';
 import { Box, FormControl, Input, LinearProgress, Modal, Typography, Menu, MenuItem, FormGroup, FormControlLabel, Popover, TextField } from '@mui/material';
 import { List, ListItem, ListItemAvatar, ListItemIcon, ListItemText } from '@mui/material';
-import ModalDialog from '@mui/joy/ModalDialog';
-import ModalClose from '@mui/joy/ModalClose';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Table from '@mui/joy/Table';
@@ -19,13 +12,8 @@ import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import { Add } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
 
-
-import MUIDataTable from 'mui-datatables';
-
-
-
-// const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
-const imageBASEURL = 'http://localhost:8000/images/trained_face';
+const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
+// const imageBASEURL = 'http://localhost:8000/images/trained_face';
 
 
 const delay = (ms: number) => new Promise(
@@ -128,7 +116,7 @@ export default function HealthTable() {
   //get from server, all the data
   const loadUserData = async () => {
     // //calling backend API
-    fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/getLinked`, {
+    fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/getLinked`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -187,7 +175,7 @@ export default function HealthTable() {
 
     if (fetchAdditional) {
       //calling getall for elderly
-      fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/elderly/getAll`, {
+      fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/getAll`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -253,7 +241,7 @@ export default function HealthTable() {
     // const elderlyID = "327H";
 
     //calling backend API
-    window.open(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/display?fileName=${fileName}`, '_blank');
+    window.open(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/display?fileName=${fileName}`, '_blank');
     // window.open(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/display?fileName=327H_Insulin_765334.pdf`, '_blank');
 
     // fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/get?fileName=531H_Heart Report_#323145.pdf`, {
