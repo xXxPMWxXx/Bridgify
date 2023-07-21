@@ -40,19 +40,42 @@ class _ProfilePageState extends State<ProfilePage> {
         appBar: AppBar(
           elevation: 1,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-          leading: IconButton(
-            onPressed: () {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/home',
-                (route) => false,
-              );
-            },
-            icon: const Icon(
-              Icons.arrow_back_ios,
-              color: Color(0xFF27c1a9),
-            ),
-          ),
+          leading: FutureBuilder(
+              future: APIService.getUserProfile(),
+              builder: (BuildContext context, AsyncSnapshot<Object> model) {
+                var userProfileData = model.data as Map<String, dynamic>?;
+                if (model.hasData) {
+                  if (userProfileData?["accRole"] == "Admin") {
+                    return IconButton(
+                      onPressed: () async {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/adminHome',
+                          (route) => false,
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Color(0xFF27c1a9),
+                      ),
+                    );
+                  }
+                }
+                //public user
+                return IconButton(
+                  onPressed: () async {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/home',
+                      (route) => false,
+                    );
+                  },
+                  icon: const Icon(
+                    Icons.arrow_back_ios,
+                    color: Color(0xFF27c1a9),
+                  ),
+                );
+              }),
           actions: [
             IconButton(
               onPressed: () {
