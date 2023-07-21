@@ -11,7 +11,7 @@ export const Elderly_admin = () => {
     const token = window.localStorage.getItem('accessToken');
     const accRole = window.localStorage.getItem('accRole');
 
-    const [value, setValue] = React.useState('Elderly List');
+    const [value, setValue] = React.useState('Insert Elderly');
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);

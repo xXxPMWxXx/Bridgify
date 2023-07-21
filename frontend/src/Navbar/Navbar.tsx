@@ -239,7 +239,7 @@ export const ResponsiveAppBarAdmin = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userName');
         localStorage.removeItem('accRole');
-        localStorage.removeItem('linedElderly');
+        localStorage.removeItem('linkedElderly');
         localStorage.removeItem('profileImage');
         navigate('/login');
     };

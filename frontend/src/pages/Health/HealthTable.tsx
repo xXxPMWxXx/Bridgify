@@ -602,7 +602,7 @@ export default function HealthTable() {
               <tbody>
                 {rows.map((row) => (
 
-                  <tr key={row._id} onClick={() => displayPDF(row.document_path)}>
+                  <tr key={row._id} onClick={() => displayPDF(row.document_path)} style={{cursor:"pointer"}}>
                     <td style={{ padding: 12 }}>{row.dateTime}</td>
                     <td style={{ padding: 12 }}>{row.document_no}</td>
                     <td style={{ padding: 12 }}>{row.name}</td>
