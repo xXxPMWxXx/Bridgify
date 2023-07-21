@@ -336,7 +336,7 @@ export default function HealthTable() {
   React.useEffect(() => {
     async function loadData() {
       setLoadProgressOpen(true);
-      await delay(1000);
+      await delay(500);
       loadUserData();
       elderlyFetcher()
     }
@@ -647,7 +647,7 @@ export default function HealthTable() {
             >
               <Box sx={style}>
                 <Typography id="loading" variant="h6" component="h2">
-                  Loading user data, please wait.
+                  Loading records, please wait.
                 </Typography>
                 <LinearProgress />
               </Box>
