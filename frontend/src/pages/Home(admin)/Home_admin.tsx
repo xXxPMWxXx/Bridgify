@@ -79,7 +79,7 @@ export const Home_admin = () => {
     useEffect(() => {
         async function loadData() {
             setOpen(true);
-            await delay(1000);
+            await delay(500);
             loadUserData();
         }
 

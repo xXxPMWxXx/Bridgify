@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-
 import { Box, Typography, LinearProgress, Modal, Avatar, } from '@mui/material';
 import MUIDataTable from "mui-datatables";
 
@@ -81,7 +80,7 @@ export  function ElderlyTab() {
     useEffect(() => {
         async function loadData() {
             setOpen(true);
-            await delay(1000);
+            await delay(500);
             loadElderlyData();
         }
 
