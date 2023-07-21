@@ -25,6 +25,13 @@ const posts = [
         time: 2,
         images:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLP-Khig_cQdjFjvvyq73E4SZ6hqJBtcqjlEH-L9kUFg&s',
     },
+    {
+        elderlyInvolved: 'Amy',
+        profileImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLP-Khig_cQdjFjvvyq73E4SZ6hqJBtcqjlEH-L9kUFg&s',
+        caption: 'was captured in a picture during lunch',
+        time: 2,
+        images:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLP-Khig_cQdjFjvvyq73E4SZ6hqJBtcqjlEH-L9kUFg&s',
+    },
 ]
 
 
@@ -140,8 +147,8 @@ export const Home = () => {
             </div>
 
             <main>
-                <Box display='flex' justifyContent='left' alignItems='left' width='70%'>
-                    <Grid>
+                <Box width='70%'>
+                    <Grid container spacing={52.5} flexDirection='column'>
                         {posts.map((post:any) => (
                             <Grid item key={post.elderlyInvolved}>
                                 <Posts post={post} />

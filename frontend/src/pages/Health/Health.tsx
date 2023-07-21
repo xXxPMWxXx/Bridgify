@@ -4,6 +4,21 @@ import { ResponsiveAppBar } from '../../Navbar';
 import { Box, Typography } from '@mui/material';
 import HealthTable from './HealthTable';
 
+import { styled } from '@mui/system';
+import backgroundImage from '../../images/background.png';
+import ElderlyStatus from '../Home/elderlyStatus';
+
+const Background = styled("div") ({
+  position: 'absolute', 
+  width: '100%', 
+  height: '45%',
+  backgroundImage: `url(${backgroundImage})`,
+  backgroundPosition: 'center',
+  backgroundSize: 'cover', 
+  backgroundRepeat: 'no-repeat'
+})
+
+
 
 export const Health = () => {
 
@@ -28,6 +43,7 @@ export const Health = () => {
                     <Navigate to="/Login" /> : <Navigate to="/Health" />
             }
             < ResponsiveAppBar />
+            {/* <Background/> */}
             <Box
                 sx={{
                     display: 'flex',

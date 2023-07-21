@@ -1,14 +1,8 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from 'react';
-import { ColorPaletteProp } from '@mui/joy';
 import Avatar from '@mui/joy/Avatar';
-import { Navigate } from 'react-router-dom';
-import { ResponsiveAppBarAdmin } from '../../Navbar';
-import { Box, FormControl, Input, LinearProgress, Modal, Typography } from '@mui/material';
-import ModalDialog from '@mui/joy/ModalDialog';
-import ModalClose from '@mui/joy/ModalClose';
-import Select from '@mui/joy/Select';
-import Option from '@mui/joy/Option';
+import { Box, FormControl, Input, LinearProgress, Modal, Typography, Menu, MenuItem, FormGroup, FormControlLabel, Popover, TextField } from '@mui/material';
+import { List, ListItem, ListItemAvatar, ListItemIcon, ListItemText } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Table from '@mui/joy/Table';
@@ -18,15 +12,8 @@ import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import { Add } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
 
-import MUIDataTable from 'mui-datatables';
-
-
-import FormLabel from '@mui/joy/FormLabel';
-import Link from '@mui/joy/Link';
-
-
-// const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
-const imageBASEURL = 'http://localhost:8000/images/trained_face';
+const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
+// const imageBASEURL = 'http://localhost:8000/images/trained_face';
 
 
 const delay = (ms: number) => new Promise(
@@ -64,6 +51,8 @@ export default function HealthTable() {
 
   const token = window.localStorage.getItem('accessToken');
   const linkedElderly = window.localStorage.getItem('linkedElderly');
+  const email = window.localStorage.getItem('email');
+
   // const columns = ["Date", "Document No", "Document Name", "Elderly"];
   // const accRole = window.localStorage.getItem('accRole');
 
@@ -73,8 +62,11 @@ export default function HealthTable() {
   const [rows, setRows] = React.useState<any[]>([]); //depending on tabs
   const [tabValue, setTabValue] = React.useState(0);
 
-  const [open, setOpen] = React.useState(false);
+  const [loadProgressOpen, setLoadProgressOpen] = React.useState(false);
   const [dataLoaded, setDataLoaded] = React.useState(false);
+
+  const [elderly, setElderly] = React.useState<any[]>([]); //depending on tabs
+
 
   // const [filteredList, setFilteredList] = new useState(itemList);
 
@@ -124,7 +116,7 @@ export default function HealthTable() {
   //get from server, all the data
   const loadUserData = async () => {
     // //calling backend API
-    fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/getLinked`, {
+    fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/getLinked`, {
       headers: {
         'Authorization': `Bearer ${token}`,
         'Content-Type': 'application/json',
@@ -150,7 +142,7 @@ export default function HealthTable() {
       .catch((err) => {
         window.alert(err);
       });
-      //for admin side
+    //for admin side
     // fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/getAll`, {
     //   headers: {
     //     'Authorization': `Bearer ${token}`,
@@ -183,7 +175,7 @@ export default function HealthTable() {
 
     if (fetchAdditional) {
       //calling getall for elderly
-      fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/elderly/getAll`, {
+      fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/getAll`, {
         headers: {
           'Authorization': `Bearer ${token}`,
           'Content-Type': 'application/json',
@@ -227,7 +219,7 @@ export default function HealthTable() {
             setFetchAdditional(false);
             setRows(tableData.filter(isType));
             setDataLoaded(true)
-            setOpen(false)
+            setLoadProgressOpen(false)
 
           }
 
@@ -249,7 +241,7 @@ export default function HealthTable() {
     // const elderlyID = "327H";
 
     //calling backend API
-    window.open(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/display?fileName=${fileName}`, '_blank');
+    window.open(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/display?fileName=${fileName}`, '_blank');
     // window.open(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/display?fileName=327H_Insulin_765334.pdf`, '_blank');
 
     // fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/get?fileName=531H_Heart Report_#323145.pdf`, {
@@ -271,6 +263,34 @@ export default function HealthTable() {
 
   }
 
+  const elderlyFetcher = async () => {
+    console.log("elderlyFetcher called");
+
+    try {
+      const token = window.localStorage.getItem('accessToken');
+      const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/getByUser/?email=${email}`, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json',
+        },
+        method: 'GET'
+      });
+
+      if (response.status !== 200) {
+        console.log("error fetching data");
+        return null;
+      } else {
+        console.log("loaded");
+        const data = await response.json();
+        setElderly(data);
+
+      }
+    } catch (err) {
+      window.alert(err);
+      return null;
+    }
+  };
+
   const handleChange = async (event: React.SyntheticEvent, newValue: number) => {
     // console.log(newValue)
     setTabValue(newValue);
@@ -282,7 +302,7 @@ export default function HealthTable() {
 
   React.useEffect(() => {
     setRows(tableData.filter(isType));
-    setOpen(false)
+    setLoadProgressOpen(false)
 
     // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
   }, [tabValue]);
@@ -300,11 +320,13 @@ export default function HealthTable() {
     p: 4,
   };
 
+  //on start up
   React.useEffect(() => {
     async function loadData() {
-      setOpen(true);
-      await delay(1000);
+      setLoadProgressOpen(true);
+      await delay(500);
       loadUserData();
+      elderlyFetcher()
     }
 
     if (!dataLoaded) {
@@ -319,6 +341,19 @@ export default function HealthTable() {
     };
   }
 
+  //filter dropdown
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | null>(null);
+
+  const handleFilterClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const open = Boolean(anchorEl);
+  const id = open ? 'simple-popover' : undefined;
 
   // const testButton = (e: any) => {
   //   e.preventDefault();
@@ -404,11 +439,9 @@ export default function HealthTable() {
   //   </div>
   // )
 
-
   return (
     <React.Fragment>
-
-
+    
 
       <Box sx={{ width: "80%", alignItems: 'center', margin: "auto" }}>
         <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" sx={{ marginBottom: 2, borderBottom: 1 }}>
@@ -429,24 +462,99 @@ export default function HealthTable() {
 
         }}>
           {/* Search Bar */}
-          <FormControl sx={{ width: "30%" }}>
-            <Input placeholder="Search" />
-          </FormControl>
+          <Box
+            component="form"
+            sx={{
+              '& > :not(style)': { width: '30ch' },
+            }}
+            noValidate
+            autoComplete="off"
+          >
+            <TextField id="outlined-basic" label="Search" variant="outlined" size='small'
+              sx={{
+                ":enabled": {
+                  borderColor: "#224942",
+                  color: "white"
+                }
+              }} />
+
+          </Box>
           {/* Filter */}
-          <IconButton aria-label="filter">
+
+          <IconButton aria-label="filter"
+            aria-describedby={id}
+            onClick={handleFilterClick} sx={{
+              border: "2px solid #30685e",
+              backgroundColor: "white",
+              color: "#30685e",
+              ":hover": {
+                bgcolor: "#224942",
+                color: "white"
+              }
+            }}>
             <TuneIcon /></IconButton>
+          <div style={{ borderColor: "black", borderWidth: "3px" }}>
+            <Popover
+              id={id}
+              open={open}
+              anchorEl={anchorEl}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}
+              onClose={handleClose}
+              transformOrigin={{
+                vertical: 'top',
+                horizontal: 'left',
+              }} sx={{
+                border: "2px solid #3A5FCD"
+                // "&.MuiPopover-paper": {
+
+                // }, 
+                // "&.MuiPaper-root": {
+                //   boxShadow:"1px"
+                // }
+              }}
+            >
+              {elderly.map((e) => (
+                <FormGroup sx={{ p: 1.5, margin: "auto", borderWidth: 2, borderColor: "black", }}>
+                  <FormControl sx={{ padding: "auto" }}>
+                    <Box sx={{ display: 'flex', gap: 1.2, alignItems: 'center', textAlign: "right" }}>
+                      <Checkbox name="gilad" />
+                      <div style={{ marginLeft: 2 }}>
+                        <Avatar alt={e.name} src={`${imageBASEURL}/${e.photo}`} sx={{}} /></div>
+                      <Typography>
+                        {e.name}
+                      </Typography>
+                    </Box>
+                  </FormControl>
+
+                </FormGroup>))}
+            </Popover>
+          </div>
           {/* Add Document */}
           <Button
             startDecorator={<Add />}
             disabled={false}
             size="sm"
             variant="outlined"
+            sx={{
+              borderWidth: "2px",
+              borderColor: "#30685e",
+              backgroundColor: "white",
+              color: "#30685e",
+              ":hover": {
+                bgcolor: "#224942",
+                color: "white"
+              }
+            }}
             // onClick={() => { elderlyFetcher("327H")}}
             // onClick={displayPDF}
-            onClick={() => console.log(linkedElderly)}
+            onClick={() => console.log(elderly)}
 
           > Add Document</Button>
         </Sheet>
+
         <Box
           sx={{
             display: 'flex',
@@ -521,13 +629,13 @@ export default function HealthTable() {
 
             <Modal
               keepMounted
-              open={open}
+              open={loadProgressOpen}
               aria-labelledby="loading"
               aria-describedby="loading user data"
             >
               <Box sx={style}>
                 <Typography id="loading" variant="h6" component="h2">
-                  Loading user data, please wait.
+                  Loading records, please wait.
                 </Typography>
                 <LinearProgress />
               </Box>
