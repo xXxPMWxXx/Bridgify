@@ -229,5 +229,3 @@ export const getByUser = async (req: any, res: Response, next: NextFunction) => 
     res.status(400).json({ error, message: "Make sure your request body is correct" });
   }
 };
-
-

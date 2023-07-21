@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:bridgify/models/login_request_model.dart';
 import 'package:bridgify/models/login_response_model.dart';
 import 'package:bridgify/models/post_request_model.dart';
@@ -212,6 +213,33 @@ class APIService {
     } else {
       print(response.statusCode);
       return false;
+    }
+  }
+
+  static Future<List<ElderlyResponseModel>?> getElderly() async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url = Uri.http(
+      Config.apiURL,
+      Config.getElderlyAPI,
+
+    );
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return elderlyFromJson(data);
+    } else {
+      return null;
     }
   }
 }
