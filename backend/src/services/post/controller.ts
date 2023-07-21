@@ -1,50 +1,15 @@
-import { NextFunction, Request, Response, response } from "express";
+import { NextFunction, Response } from "express";
 import jwt from "jsonwebtoken";
-import cors from "cors";
 import "dotenv/config";
-import { image } from "@tensorflow/tfjs-core";
 
-const bcrypt = require("bcryptjs");
-const PostModel = require("../../models/post");
 const jwt_secret: any = process.env.JWT_SECRET;
 const faceService = require("../../services/utils/faceService");
 const getDateTime = require("../../services/utils/getDateTime");
 const path = require("path");
 const baseDir = path.resolve(__dirname, "../../..");
-
-// // 1. get token from req
-// const token =
-// req.headers.authorization && req.headers.authorization.split(" ")[1];
-
-// // 2. verify token with secret key
-// jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
-// // 3. allow elderly to update elderly details
-// const { id } = req.body;
-// if (decoded) {
-//code here
-
-// } else if (err) {
-//   res.status(401).json({ error: "You must have a valid token" });
-// }
-// });
-
-// for testing only
-export const test = async (req: any, res: any, next: NextFunction) => {
-  // 1. get token from req
-  const token =
-    req.headers.authorization && req.headers.authorization.split(" ")[1];
-
-  // 2. verify token with secret key
-  jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
-    // 3. allow elderly to update elderly details
-    const { id } = req.body;
-    if (decoded) {
-      res.status(200).json({ message: "test method from post controller" });
-    } else if (err) {
-      res.status(401).json({ error: "You must have a valid token" });
-    }
-  });
-};
+const PostModel = require("../../models/post");
+const UserModel = require("../../models/user");
+const ElderlyModel = require("../../models/elderly");
 
 // to create a new post
 //to access the image => http://13.228.86.148:8000/images/post/{imageName}
@@ -181,5 +146,76 @@ export const getAll = async (req: any, res: Response, next: NextFunction) => {
     res
       .status(400)
       .json({ error, message: "Make sure your request body is correct" });
+  }
+};
+
+// get a list of post by user email 
+export const getByUser = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    // 1. get token from req
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      // 3. allow elderly to update elderly details
+
+      if (decoded) {
+        const email = req.query.email;
+        // 4. check if the user email is existed
+        const user = await UserModel.findOne({ 'email': email });
+        if (user == null) {
+          return res
+            .status(400)
+            .json({ message: `User email: ${email} does not exit!` });
+        }
+        const linkedElderly = user.linkedElderly;
+        //if no linked elderly
+        if (linkedElderly.length == 0) {
+          return res
+            .status(200)
+            .json({ message: `User email: ${email} is not linked to any elderly yet!` });
+        }
+        let linkedElderlyNameList : any = [];
+        //map linked elderly ID to their name
+        for (const elderlyID of linkedElderly) {
+          const elderlyName = await ElderlyModel.findOne({ id: elderlyID }).select('name');
+          linkedElderlyNameList.push(elderlyName.name);
+        };
+        const post =  await PostModel.find({'elderlyInvolved' : {$in : linkedElderlyNameList}})
+        res.status(200).json(post);
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
+
+  } catch (error) {
+    res.status(400).json({ error, message: "Make sure your request body is correct" });
+  }
+};
+
+// get all the post with no elderly identified
+export const getNonElderlyInvolved = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    // 1. get token from req
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      // 3. allow elderly to update elderly details
+
+      if (decoded) {
+        const post =  await PostModel.find({'elderlyInvolved' : []})
+        res.status(200).json(post);
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
+
+  } catch (error) {
+    res.status(400).json({ error, message: "Make sure your request body is correct" });
   }
 };
