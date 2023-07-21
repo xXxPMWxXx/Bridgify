@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select, FormLabel, RadioGroup, Radio, Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, } from '@mui/material';
+import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select, FormLabel, RadioGroup, Radio, Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import dayjs from 'dayjs';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useNavigate } from 'react-router-dom';
+// import defaultPhoto from `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/001A.png`;
 
 
 
@@ -136,6 +137,7 @@ export function ElderlyTab() {
     )
 }
 
+//for medication dropdown checkbox
 const ITEM_HEIGHT = 48;
 const ITEM_PADDING_TOP = 8;
 const MenuProps = {
@@ -164,8 +166,11 @@ const medication = [
 
 export function CreateElderlyTab() {
     const [description, setDescription] = useState('');
-
     const [personName, setPersonName] = useState<string[]>([]);
+
+    //file upload
+    const [selectedPhoto, setSelectedPhoto] = useState(null);
+
 
     //error , warning , info , success
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -176,6 +181,19 @@ export function CreateElderlyTab() {
 
     let navigate = useNavigate();
 
+    const handleFileChange = (event: any) => {
+        // Get the selected files from the input
+        
+        if((event.target.files)[0]){
+            const file = (event.target.files)[0];
+
+            setSelectedPhoto(file);
+            console.log(file)
+        } else{
+            window.alert("No file selected")
+        }
+    
+    };
     const handleChange = (event: any) => {
         const {
             target: { value },
@@ -215,13 +233,57 @@ export function CreateElderlyTab() {
     };
     return (
         <React.Fragment>
-            <Box sx={{ p: 3, paddingTop: 1, width: "55%", margin: "auto", boxShadow: "2px", borderRadius: 10 }}>
+            <Box sx={{ p: 3, paddingTop: 1, paddingBottom: 10, width: "55%", margin: "auto", boxShadow: "2px", borderRadius: 10 }}>
                 <Typography variant="h5" gutterBottom sx={{ marginBottom: 2, textAlign: "center" }}>
-                    Insert Elderly
+                    New Elderly
                 </Typography>
+                <Button variant="outlined" onClick={() => console.log(selectedPhoto)}>Test</Button>
+                <Sheet sx={{ textAlign: "center" }}>
+
+                    <label htmlFor="contained-button-file">
+                        <IconButton>
+                        
+
+                            {selectedPhoto !== null ?
+
+                                <Avatar
+                                    src={ URL.createObjectURL(selectedPhoto)}
+                                    style={{
+                                        width: "100px",
+                                        height: "100px",
+                                    }}
+                                /> :
+                                <Avatar
+                                    src=''
+                                    style={{
+                                        width: "100px",
+                                        height: "100px",
+                                    }}
+                                />
+                            }
+                        </IconButton>
+                    </label>
+
+                    <br />
+                    <Button
+                        variant="outlined"
+                        component="label"
+                        sx={{ width: "20%", marginTop: 2 }}
+                        size='large'
+                    >
+                        Upload File
+                        <input
+                            type="file"
+                            hidden
+                            onChange={handleFileChange}
+                            accept="image/png, image/jpeg"
+                        // value={value} onChange={(newValue) => setValue(newValue)}
+                        />
+                    </Button>
+                </Sheet>
                 <Sheet>
                     <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
-                        Elderly Info
+                        Personal Information
                     </Typography>
                     <Grid container spacing={3}>
                         <Grid item xs={12} sm={6}>
@@ -248,16 +310,20 @@ export function CreateElderlyTab() {
                             <BasicDatePicker />
 
                         </Grid>
-                        {/*                         
-                        <Grid item xs={12} sm={5}>
-                            <TextField
-                                required
-                                id="city"
-                                name="city"
-                                label="City"
+
+                        {/* <Grid item xs={12} sm={3}>
+                            <Button
+                                variant="outlined"
+                                component="label"
                                 fullWidth
-                                autoComplete="shipping address-level2"
-                            />
+                                size='large'
+                            >
+                                Upload File
+                                <input
+                                    type="file"
+                                    hidden
+                                />
+                            </Button>
                         </Grid> */}
                     </Grid>
                 </Sheet>
@@ -283,6 +349,7 @@ export function CreateElderlyTab() {
                                         <MenuItem value={"lunch"}>Lunch</MenuItem>
                                         <MenuItem value={"dinner"}>Dinner</MenuItem>
                                         <MenuItem value={"sleep"}>Sleep</MenuItem>
+                                        <MenuItem value={"outdoor"}>Outdoor Activity</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Box>
@@ -360,7 +427,7 @@ export function CreateElderlyTab() {
                             </FormControl></Grid>
                         <Grid item xs={12} sm={3}>
                             <FormGroup sx={{ paddingTop: 1 }}>
-                                <FormControlLabel control={<Switch defaultChecked />} label="Med Taken" />
+                                <FormControlLabel control={<Switch />} label="Med Taken" />
 
                             </FormGroup>
                         </Grid></Grid>
@@ -393,9 +460,8 @@ export function CreateElderlyTab() {
                         </Grid> */}
                     </Grid>
                 </Sheet>
-
                 <Sheet sx={{ alignItems: "center" }}>
-                    <Button fullWidth variant="contained" onClick={handleSubmit} sx={{ p: 1.5, textTransform: "none", fontSize: "16px" }}>Insert Elderly</Button>
+                    <Button fullWidth variant="contained" onClick={handleSubmit} sx={{ p: 1.5, textTransform: "none", fontSize: "16px" }}>Add Elderly</Button>
                 </Sheet>
                 <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleSnackbarClose}>
                     <Alert onClose={handleSnackbarClose} severity={alertType} sx={{ width: '100%' }}>
