@@ -350,7 +350,7 @@ class _MainScreenState extends State<MainScreen> {
                                         if (userDetails["accRole"] == "Admin") {
                                           Navigator.pushNamed(
                                             context,
-                                            '/adminhome',
+                                            '/adminHome',
                                           );
                                         } else {
                                           Navigator.pushNamed(
@@ -798,7 +798,7 @@ class _MainScreenState extends State<MainScreen> {
                                                   "Admin") {
                                                 Navigator.pushNamed(
                                                   context,
-                                                  '/adminhome',
+                                                  '/adminHome',
                                                 );
                                               } else {
                                                 Navigator.pushNamed(

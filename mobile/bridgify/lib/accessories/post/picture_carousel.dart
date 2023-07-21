@@ -55,6 +55,7 @@ class _PictureCarouselState extends State<PictureCarousel> {
             height: MediaQuery.of(context).size.width - 70,
             width: double.infinity,
             child: PageView.builder(
+              itemCount: widget.images.length,
               controller: controller,
               onPageChanged: (index) {
                 setState(() {

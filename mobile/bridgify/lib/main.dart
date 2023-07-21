@@ -1,6 +1,7 @@
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/login_response_model.dart';
-import 'package:bridgify/pages/chat/chat_screen.dart';
+import 'package:bridgify/pages/chat/Admin/admin_chat_list_screen.dart';
+import 'package:bridgify/pages/chat/Child/chat_screen.dart';
 import 'package:bridgify/pages/home/Admin/admin_home_page.dart';
 import 'package:bridgify/pages/home/Child/home_page.dart';
 import 'package:bridgify/pages/login_signup/login_signup_page.dart';
@@ -87,7 +88,9 @@ class _FirstPageState extends State<FirstPage> {
             conversationID: 'admin_account',
             conversationType: ZIMConversationType.peer),
         //Admin user
-        '/adminhome': (context) => const AdminHomePage(),
+        '/adminHome': (context) => const AdminHomePage(),
+        '/adminChatList': (context) =>
+            const AdminChatListScreen(conversationID: 'admin_account'),
         //chat function for admins would house all users that message it
         //reassign elderlies page
       },

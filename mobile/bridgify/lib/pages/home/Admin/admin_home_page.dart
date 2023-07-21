@@ -301,9 +301,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       },
                       paddingRight: 0,
                       paddingLeft: 0,
-                      // initialValue: updateUserRequestModel!.email == null ? "" : updateUserRequestModel!.email.toString(),
                       initialValue: "",
-
                       prefixIcon: const Icon(Icons.run_circle_outlined),
                       showPrefixIcon: true,
                       prefixIconColor: Colors.black.withOpacity(0.5),
@@ -350,7 +348,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       showPrefixIcon: true,
                       prefixIconPaddingBottom: 110,
                       prefixIconColor: Colors.black.withOpacity(0.5),
-                      textColor: Colors.black.withOpacity(0.7),
                       hintColor: Colors.grey.withOpacity(0.7),
                       borderFocusColor: Colors.grey.shade700,
                       borderColor: Colors.grey.shade200,
@@ -628,7 +625,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       title: 'Home',
                       icon: Icons.home,
                       onTapPath: () {
-                        Navigator.pushNamed(context, "/AdminHome");
+                        Navigator.pushNamed(context, "/adminHome");
                       }),
                   DrawerItem(
                       title: 'Chats',
@@ -640,19 +637,19 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         );
 
                         if (!mounted) return;
-                        Navigator.pushNamed(context, "/adminchat");
+                        Navigator.pushNamed(context, "/adminChatList");
                       }),
                   DrawerItem(
                       title: 'Post History',
                       icon: Icons.notifications,
                       onTapPath: () {
-                        Navigator.pushNamed(context, "/home");
+                        Navigator.pushNamed(context, "/adminHome");
                       }),
                   DrawerItem(
                       title: 'Link elderly',
                       icon: Icons.notifications,
                       onTapPath: () {
-                        Navigator.pushNamed(context, "/home");
+                        Navigator.pushNamed(context, "/adminHome");
                       }),
                   DrawerItem(
                       title: 'Settings',
@@ -669,13 +666,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       title: 'Help',
                       icon: Icons.help,
                       onTapPath: () {
-                        Navigator.pushNamed(context, "/home");
+                        Navigator.pushNamed(context, "/adminHome");
                       }),
                   DrawerItem(
                       title: 'About App',
                       icon: Icons.phone_android_rounded,
                       onTapPath: () {
-                        Navigator.pushNamed(context, "/home");
+                        Navigator.pushNamed(context, "/adminHome");
                       }),
                 ],
               ),
