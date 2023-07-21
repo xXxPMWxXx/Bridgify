@@ -413,14 +413,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
                             },
                           );
                         } else {
-                          // late String? id;
-                          // late String? authorEmail;
-                          // late String? dateTime;
-                          // late String? description;
-                          // late String? activityType;
-                          // late List<String>? postImages;
-                          // late List<dynamic>? elderlyInvolved;
-                          // late int? imagesCount;
                           postResponseModel!.id = '0';
                           postResponseModel!.authorEmail = postAuthorEmail;
                           postResponseModel!.dateTime =
@@ -638,18 +630,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
                         if (!mounted) return;
                         Navigator.pushNamed(context, "/adminChatList");
-                      }),
-                  DrawerItem(
-                      title: 'Post History',
-                      icon: Icons.notifications,
-                      onTapPath: () {
-                        Navigator.pushNamed(context, "/adminHome");
-                      }),
-                  DrawerItem(
-                      title: 'Link elderly',
-                      icon: Icons.notifications,
-                      onTapPath: () {
-                        Navigator.pushNamed(context, "/adminHome");
                       }),
                   DrawerItem(
                       title: 'Settings',
