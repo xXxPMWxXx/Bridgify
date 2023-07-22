@@ -1,3 +1,4 @@
+import 'package:bridgify/accessories/elderly/elderly_avatar.dart';
 import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -25,81 +26,152 @@ class _CurrentStatusState extends State<CurrentStatus> {
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.4,
           width: MediaQuery.of(context).size.width * 0.7,
-          child: /*_causeOfError(),*/
-              Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [],
-          ),
+          child: Container(),
         ),
         Positioned(
           left: 20,
-          top: 50,
-          child: Text(
-            'Current Status',
-            style: TextStyle(
-              color: Colors.black.withOpacity(0.85),
-              fontSize: 25,
-              fontWeight: FontWeight.bold,
+          top: 55,
+          child: ElderlyAvatar(
+            filename: widget.model.photo!,
+            radius: 31,
+          ),
+        ),
+        Positioned(
+          right: 20,
+          top: 70,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            decoration: BoxDecoration(
+              color: Colors.grey[100], // Grayish-white background color
+              borderRadius: BorderRadius.circular(20),
+            ),
+            child: Row(
+              children: [
+                Container(
+                  width: 8.5,
+                  height: 8.5,
+                  margin: const EdgeInsets.only(right: 5),
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: widget.model.status!.awake == "True"
+                        ? HexColor("#4EA13D")
+                        : Colors.grey.shade400,
+                  ),
+                ),
+                Text(
+                  widget.model.status!.awake == "True" ? 'Awake' : 'Asleep',
+                  style: TextStyle(
+                    color: widget.model.status!.awake == "True"
+                        ? HexColor("#4EA13D")
+                        : Colors.grey.shade400,
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
             ),
           ),
         ),
         Positioned(
           left: 20,
-          top: 100,
-          child: Text(
-            "Current Acitivity: ${widget.model.status!.current_activity!}",
-            style: TextStyle(
-                fontSize: 15,
-                color: HexColor("#33A11D"),
-                fontWeight: FontWeight.w600),
-          ),
-        ),
-        Positioned(
-          left: 20,
           top: 125,
-          child: Text(
-            "Current Temp: ${widget.model.status!.current_temp!}",
-            style: TextStyle(
+          child: Text.rich(
+            TextSpan(
+              text: "Current Acitivity: ",
+              style: const TextStyle(
                 fontSize: 15,
-                color: HexColor("#33A11D"),
-                fontWeight: FontWeight.w600),
+                color: Colors.black54,
+                fontWeight: FontWeight.w600,
+              ),
+              children: <TextSpan>[
+                TextSpan(
+                  text: "${widget.model.status!.current_activity!}",
+                  style: const TextStyle(
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         Positioned(
           left: 20,
           top: 150,
-          child: Text(
-            "Current Condition: ${widget.model.status!.condition!}",
-            style: TextStyle(
+          child: Text.rich(
+            TextSpan(
+              text: "Current Temp: ",
+              style: const TextStyle(
                 fontSize: 15,
-                color: HexColor("#33A11D"),
-                fontWeight: FontWeight.w600),
+                color: Colors.black54,
+                fontWeight: FontWeight.w600,
+              ),
+              children: <TextSpan>[
+                TextSpan(
+                  text: "${widget.model.status!.current_temp!}\u00B0C",
+                  style: const TextStyle(
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         Positioned(
           left: 20,
           top: 175,
-          child: Text(
-            "Condition Description: ${widget.model.status!.condition_description!}",
-            style: TextStyle(
+          child: Text.rich(
+            TextSpan(
+              text: "Current Condition: ",
+              style: const TextStyle(
                 fontSize: 15,
-                color: HexColor("#33A11D"),
-                fontWeight: FontWeight.w600),
+                color: Colors.black54,
+                fontWeight: FontWeight.w600,
+              ),
+              children: <TextSpan>[
+                TextSpan(
+                  text: "${widget.model.status!.condition!}",
+                  style: const TextStyle(
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+        Positioned(
+          left: 20,
+          top: 200,
+          child: Text.rich(
+            TextSpan(
+              text: "Condition Description: ",
+              style: const TextStyle(
+                fontSize: 15,
+                color: Colors.black54,
+                fontWeight: FontWeight.w600,
+              ),
+              children: <TextSpan>[
+                TextSpan(
+                  text: "${widget.model.status!.condition_description!}",
+                  style: const TextStyle(
+                    color: Colors.black87,
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
         if (widget.model.status!.medication!.isNotEmpty)
           Positioned(
             left: 20,
-            top: 200,
+            top: 225,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
+                const Text(
                   "Medication:",
                   style: TextStyle(
                       fontSize: 15,
-                      color: HexColor("#33A11D"),
+                      color: Colors.black54,
                       fontWeight: FontWeight.w600),
                 ),
                 const SizedBox(height: 5),
@@ -109,22 +181,30 @@ class _CurrentStatusState extends State<CurrentStatus> {
                         i < widget.model.status!.medication!.length;
                         i++)
                       Row(
-                        // mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Icon(
+                          const Icon(
                             Icons.medication,
                             size: 25,
-                            color: HexColor("#33A11D"),
+                            color: Colors.black54,
                           ),
-                          const SizedBox(
-                              width:
-                                  8), // Add some spacing between the icon and text
-                          Text(
-                            "${widget.model.status!.medication![i]}: ${widget.model.status!.taken_med! == "True" ? "Taken" : "Not Taken"}",
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.w600,
-                              color: HexColor("#33A11D"),
+                          const SizedBox(width: 8),
+                          Text.rich(
+                            TextSpan(
+                              text: "${widget.model.status!.medication![i]}: ",
+                              style: const TextStyle(
+                                fontSize: 15,
+                                color: Colors.black54,
+                                fontWeight: FontWeight.w600,
+                              ),
+                              children: <TextSpan>[
+                                TextSpan(
+                                  text:
+                                      "${widget.model.status!.taken_med! == "True" ? "Taken" : "Not Taken"}",
+                                  style: const TextStyle(
+                                    color: Colors.black87,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                           const SizedBox(height: 30),
@@ -136,6 +216,24 @@ class _CurrentStatusState extends State<CurrentStatus> {
             ),
           ),
         Positioned(
+          left: 0,
+          right: 0,
+          top: 0,
+          child: Container(
+            height: 45, // Set the desired height of the bar
+            color: HexColor("#33A11D"),
+            alignment: Alignment.center,
+            child: const Text(
+              'Current Status',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 20,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+          ),
+        ),
+        Positioned(
           left: -10,
           top: 0,
           child: MaterialButton(
@@ -144,7 +242,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
             },
             child: const Icon(
               Icons.arrow_back_ios,
-              color: Colors.black,
+              color: Colors.white,
             ),
           ),
         ),

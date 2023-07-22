@@ -45,7 +45,7 @@ class SharedService {
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/login',
-      (route) => false,
+      (route) => true,
     );
   }
 }

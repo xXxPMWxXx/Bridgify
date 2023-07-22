@@ -94,21 +94,24 @@ class _SettingsPageState extends State<SettingsPage> {
               ),
               Center(
                 child: OutlinedButton(
-                    style: ButtonStyle(
-                        padding: MaterialStateProperty.all(
-                            const EdgeInsets.symmetric(horizontal: 60)),
-                        shape: MaterialStateProperty.all(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(20)))),
-                    onPressed: () {
-                      SharedService.logout(context);
-                    },
-                    child: const Text(
-                      "SIGN OUT",
-                      style: TextStyle(
-                          fontSize: 16,
-                          letterSpacing: 2.2,
-                          color: Colors.black),
-                    )),
+                  style: ButtonStyle(
+                    padding: MaterialStateProperty.all(
+                        const EdgeInsets.symmetric(horizontal: 60)),
+                    shape: MaterialStateProperty.all(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                    ),
+                  ),
+                  onPressed: () {
+                    SharedService.logout(context);
+                  },
+                  child: const Text(
+                    "SIGN OUT",
+                    style: TextStyle(
+                        fontSize: 16, letterSpacing: 2.2, color: Colors.black),
+                  ),
+                ),
               )
             ],
           )),

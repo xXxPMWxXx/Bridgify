@@ -39,7 +39,7 @@ class _BuildElderlyAvatarState extends State<BuildElderlyAvatar> {
           children: [
             ElderlyAvatar(
               filename: widget.model.photo!,
-              radius: 35,
+              radius: 31,
             ),
             const SizedBox(
               height: 5,

@@ -71,7 +71,9 @@ class APIService {
 
   static Future<Object> getUserProfile() async {
     var loginDetails = await SharedService.loginDetails();
-
+    // if (loginDetails == null) {
+    //   // return ;
+    // }
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${loginDetails!.data.accessToken}'

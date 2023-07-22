@@ -42,13 +42,16 @@ class _ProfilePageState extends State<ProfilePage> {
               builder: (BuildContext context, AsyncSnapshot<Object> model) {
                 var userProfileData = model.data as Map<String, dynamic>?;
                 if (model.hasData) {
+                  print("hi hi");
                   if (userProfileData?["accRole"] == "Admin") {
                     return IconButton(
                       onPressed: () async {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           '/adminHome',
-                          (route) => false,
+                          (Route<dynamic> route) {
+                            return route.settings.name == '/adminHome';
+                          },
                         );
                       },
                       icon: const Icon(
@@ -423,7 +426,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 FormHelper.submitButton(
                   height: 50,
                   width: 150,
-                  "CANCEL",
+                  "CLEAR",
                   () {
                     setState(() {
                       passwordUpdate = "";

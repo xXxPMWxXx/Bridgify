@@ -61,15 +61,20 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: HexColor("#225518"),
-        body: ProgressHUD(
-          inAsyncCall: isAPICallProcess,
-          opacity: 0.3,
-          key: UniqueKey(),
-          child: Form(
-            key: globalFormKey,
-            child: _loginUI(context),
+      child: WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: Scaffold(
+          backgroundColor: HexColor("#225518"),
+          body: ProgressHUD(
+            inAsyncCall: isAPICallProcess,
+            opacity: 0.3,
+            key: UniqueKey(),
+            child: Form(
+              key: globalFormKey,
+              child: _loginUI(context),
+            ),
           ),
         ),
       ),
@@ -786,7 +791,6 @@ class _MainScreenState extends State<MainScreen> {
                                           setState(() {
                                             isAPICallProcess = false;
                                           });
-
                                           if (response) {
                                             APIService.getUserProfile()
                                                 .then((loginDetails) {

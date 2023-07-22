@@ -18,6 +18,8 @@ class PostPreview extends StatefulWidget {
 }
 
 class _PostPreviewState extends State<PostPreview> {
+  final _postPrevieweController = PageController();
+  var _hasPosted = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -26,11 +28,23 @@ class _PostPreviewState extends State<PostPreview> {
       ),
       clipBehavior: Clip.antiAlias,
       child: Stack(children: [
-        SizedBox(
+        Container(
           height: MediaQuery.of(context).size.height * 0.7,
           width: MediaQuery.of(context).size.width,
-          child: buildPreview(widget.model),
+          child: PageView(
+            controller: _postPrevieweController,
+            children: [
+              _buildPreview(widget.model),
+              _successPostOutcome(),
+              _failurePostOutcome()
+            ],
+          ),
         ),
+        // SizedBox(
+        //   height: MediaQuery.of(context).size.height * 0.7,
+        //   width: MediaQuery.of(context).size.width,
+        //   child: buildPreview(widget.model),
+        // ),
         Positioned(
           left: 20,
           top: 20,
@@ -75,9 +89,14 @@ class _PostPreviewState extends State<PostPreview> {
                 APIService.createPosts(postRequestModel).then((response) {
                   if (response) {
                     print("success");
+                    _postPrevieweController.animateToPage(1,
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeIn);
                     //go to the next page for success
                   } else {
-                    print("failure");
+                    _postPrevieweController.animateToPage(1,
+                        duration: Duration(milliseconds: 300),
+                        curve: Curves.easeIn);
                     //go to the next page for failure
                   }
                   if (Navigator.canPop(context)) Navigator.pop(context);
@@ -92,7 +111,7 @@ class _PostPreviewState extends State<PostPreview> {
     );
   }
 
-  Widget buildPreview(model) {
+  Widget _buildPreview(model) {
     if (model!.imagesCount! > 1) {
       return DialogPictureCarousel(
           images: model!.postImages!,
@@ -104,5 +123,59 @@ class _PostPreviewState extends State<PostPreview> {
         image: model!.postImages![0],
         description: model!.description!,
         activity: model!.activityType!);
+  }
+
+  _successPostOutcome() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Visibility(
+          visible: !_hasPosted,
+          replacement: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Container(
+                height: 45, // Set the desired height of the bar
+                color: HexColor("#33A11D"),
+                alignment: Alignment.center,
+                child: const Text(
+                  'Current Status',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 20,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [],
+          ),
+        ),
+      ],
+    );
+  }
+
+  _failurePostOutcome() {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Visibility(
+          visible: !_hasPosted,
+          replacement: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [],
+          ),
+        ),
+      ],
+    );
   }
 }
