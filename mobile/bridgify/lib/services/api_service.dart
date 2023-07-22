@@ -212,7 +212,7 @@ class APIService {
     }
   }
 
-  static Future<List<ElderlyResponseModel>?> getElderly() async {
+  static Future<List<ElderlyResponseModel>?> getElderlyByUser() async {
     var currentLoginDetails = await SharedService.loginDetails();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
@@ -220,6 +220,30 @@ class APIService {
     };
 
     var url = Uri.http(Config.apiURL, Config.getElderlyAPI,
+        {"email": currentLoginDetails.data.email});
+    print(url);
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return elderlyFromJson(data);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<List<ElderlyResponseModel>?> getElderly() async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.getElderlyByUserAPI,
         {"email": currentLoginDetails.data.email});
     print(url);
     var response = await client.get(

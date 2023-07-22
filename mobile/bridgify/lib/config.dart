@@ -31,5 +31,6 @@ class Config {
   static const String createPostAPI = "api/post/create";
 
   //elderly
-  static const String getElderlyAPI = "api/elderly/getByUser";
+  static const String getElderlyByUserAPI = "api/elderly/getByUser";
+  static const String getElderlyAPI = "api/elderly/getAll";
 }
