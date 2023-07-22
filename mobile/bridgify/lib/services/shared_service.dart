@@ -4,7 +4,6 @@ import 'package:api_cache_manager/api_cache_manager.dart';
 import 'package:api_cache_manager/models/cache_db_model.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:bridgify/models/login_response_model.dart';
-import 'package:zego_zimkit/services/services.dart';
 
 class SharedService {
   static Future<bool> isLoggedIn() async {

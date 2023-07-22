@@ -5,7 +5,6 @@ import 'package:bridgify/pages/chat/Child/chat_screen.dart';
 import 'package:bridgify/pages/home/Admin/admin_home_page.dart';
 import 'package:bridgify/pages/home/Child/home_page.dart';
 import 'package:bridgify/pages/login_signup/login_signup_page.dart';
-import 'package:bridgify/pages/login_signup/otp_page.dart';
 import 'package:bridgify/pages/profile/profile_page.dart';
 import 'package:bridgify/pages/profile/settings_page.dart';
 import 'package:bridgify/services/shared_service.dart';

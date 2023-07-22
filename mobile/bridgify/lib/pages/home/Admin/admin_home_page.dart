@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:bridgify/accessories/elderly/build_elderly_avatar.dart';
 import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/accessories/dialog/post_preview.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
-import 'package:bridgify/accessories/post/build_post.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/post_request_model.dart';

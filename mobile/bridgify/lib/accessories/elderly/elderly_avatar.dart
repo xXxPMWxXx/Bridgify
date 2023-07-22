@@ -15,7 +15,7 @@ class ElderlyAvatar extends StatelessWidget {
     return CircleAvatar(
       radius: radius,
       backgroundImage: Image.network(
-        'http://' + Config.apiURL + '/images/trained_face/' + filename,
+        'http://${Config.apiURL}/images/trained_face/$filename',
         fit: BoxFit.contain,
       ).image,
       // ),

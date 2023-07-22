@@ -1,3 +1,4 @@
+import 'package:bridgify/accessories/dialog/current_status_view.dart';
 import 'package:bridgify/accessories/elderly/elderly_avatar.dart';
 import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:flutter/material.dart';
@@ -21,7 +22,19 @@ class _BuildElderlyAvatarState extends State<BuildElderlyAvatar> {
     return Padding(
       padding: const EdgeInsets.only(right: 20.0),
       child: GestureDetector(
-        onTap: () {},
+        onTap: () {
+          showDialog(
+              context: context,
+              builder: (context) {
+                return Dialog(
+                  backgroundColor: Colors.white,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
+                  ),
+                  child: CurrentStatus(model: widget.model),
+                );
+              });
+        },
         child: Column(
           children: [
             ElderlyAvatar(

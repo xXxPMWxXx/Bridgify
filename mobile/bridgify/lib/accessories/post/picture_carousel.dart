@@ -77,10 +77,7 @@ class _PictureCarouselState extends State<PictureCarousel> {
                     // ],
                     image: DecorationImage(
                       fit: BoxFit.contain,
-                      image: Image.network('http://' +
-                              Config.apiURL +
-                              '/images/post/' +
-                              widget.images[index % widget.images.length])
+                      image: Image.network('http://${Config.apiURL}/images/post/${widget.images[index % widget.images.length]}')
                           .image,
                     ),
                   ),
