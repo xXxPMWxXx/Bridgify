@@ -51,13 +51,13 @@ class Status {
     required this.awake,
   });
 
-  late final String current_activity;
-  late final String current_temp;
-  late final List<String> medication;
-  late final bool taken_med;
-  late final String condition;
-  late final String condition_description;
-  late final bool awake;
+  late String? current_activity;
+  late String? current_temp;
+  late List<dynamic>? medication;
+  late String? taken_med;
+  late String? condition;
+  late String? condition_description;
+  late String? awake;
 
   Status.fromJson(Map<String, dynamic> json) {
     current_activity = json['current_activity'];

@@ -63,10 +63,10 @@ class _PictureCarouselState extends State<PictureCarousel> {
                 });
               },
               itemBuilder: (context, index) {
-                widget.images[index % widget.images.length];
                 return Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
+                    color: Colors.black45,
                     // boxShadow: [
                     //   BoxShadow(
                     //     color: Colors.black.withOpacity(0.3),
@@ -76,7 +76,7 @@ class _PictureCarouselState extends State<PictureCarousel> {
                     //   ),
                     // ],
                     image: DecorationImage(
-                      fit: BoxFit.cover,
+                      fit: BoxFit.contain,
                       image: Image.network('http://' +
                               Config.apiURL +
                               '/images/post/' +

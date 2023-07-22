@@ -83,8 +83,6 @@ class APIService {
       url,
       headers: requestHeaders,
     );
-    // print(response);
-    // print(response.statusCode);
     if (response.statusCode == 401) {
       return {
         "imagePath": loginDetails.data.profileImage,
@@ -166,7 +164,6 @@ class APIService {
       url,
       headers: requestHeaders,
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       print(data);
@@ -211,7 +208,6 @@ class APIService {
     if (response.statusCode == 200) {
       return true;
     } else {
-      print(response.statusCode);
       return false;
     }
   }
@@ -223,12 +219,9 @@ class APIService {
       'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
     };
 
-    var url = Uri.http(
-      Config.apiURL,
-      Config.getElderlyAPI,
-
-    );
-
+    var url = Uri.http(Config.apiURL, Config.getElderlyAPI,
+        {"email": currentLoginDetails.data.email});
+    print(url);
     var response = await client.get(
       url,
       headers: requestHeaders,

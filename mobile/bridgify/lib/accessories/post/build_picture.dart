@@ -14,14 +14,20 @@ class BuildPicture extends StatelessWidget {
   Widget build(BuildContext context) {
     print(model!.imagesCount);
     if (model!.imagesCount! > 1) {
-      return PictureCarousel(
-          images: model!.postImages!,
-          description: model!.description!,
-          activity: model!.activityType!);
+      return Padding(
+        padding: const EdgeInsets.symmetric(vertical: 8.0),
+        child: PictureCarousel(
+            images: model!.postImages!,
+            description: model!.description!,
+            activity: model!.activityType!),
+      );
     }
-    return PictureSingle(
-        image: model!.postImages![0],
-        description: model!.description!,
-        activity: model!.activityType!);
+    return Padding(
+      padding: const EdgeInsets.symmetric(vertical: 8.0),
+      child: PictureSingle(
+          image: model!.postImages![0],
+          description: model!.description!,
+          activity: model!.activityType!),
+    );
   }
 }

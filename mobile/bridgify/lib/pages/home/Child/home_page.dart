@@ -1,8 +1,9 @@
-import 'package:bridgify/accessories/avatar_builder.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
+import 'package:bridgify/accessories/elderly/build_elderly_view.dart';
 import 'package:bridgify/accessories/post/build_post.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
+import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -148,18 +149,20 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
-                  height: 90,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: const [
-                      BuildContactAvatar(name: 'Alla', fileName: 'img1.jpeg'),
-                      BuildContactAvatar(name: 'July', fileName: 'img1.jpeg'),
-                      BuildContactAvatar(name: 'Mikle', fileName: 'img1.jpeg'),
-                      BuildContactAvatar(name: 'Kler', fileName: 'img1.jpeg'),
-                    ],
-                  ),
-                )
+                    height: 90,
+                    child: FutureBuilder(
+                        future: APIService.getElderly(),
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<List<ElderlyResponseModel>?> model,
+                        ) {
+                          if (model.hasData) {
+                            return BuildElderlyView(models: model.data);
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }))
               ],
             ),
           ),

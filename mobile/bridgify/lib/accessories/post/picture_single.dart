@@ -48,16 +48,17 @@ class PictureSingle extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
-                boxShadow: [
-                  // BoxShadow(
-                  //   color: Colors.black.withOpacity(0.3),
-                  //   spreadRadius: 2,
-                  //   blurRadius: 20,
-                  //   offset: Offset(0, 10),
-                  // ),
-                ],
+                color: Colors.black45,
+                // boxShadow: [
+                //   BoxShadow(
+                //     color: Colors.black.withOpacity(0.3),
+                //     spreadRadius: 0.5,
+                //     blurRadius: 20,
+                //     offset: Offset(0, 4),
+                //   ),
+                // ],
                 image: DecorationImage(
-                  fit: BoxFit.cover,
+                  fit: BoxFit.contain,
                   image: Image.network(
                           'http://' + Config.apiURL + '/images/post/' + image)
                       .image,
@@ -66,7 +67,7 @@ class PictureSingle extends StatelessWidget {
             ),
           ),
           SizedBox(
-            height: 5,
+            height: 15,
           ),
           PostText(
             text: description + " #${activity}",

@@ -1,6 +1,5 @@
 import 'package:bridgify/accessories/dialog/dialog_picture_carousel.dart';
 import 'package:bridgify/accessories/dialog/dialog_picture_single.dart';
-import 'package:bridgify/accessories/post/build_picture.dart';
 import 'package:bridgify/models/post_request_model.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
@@ -76,8 +75,10 @@ class _PostPreviewState extends State<PostPreview> {
                 APIService.createPosts(postRequestModel).then((response) {
                   if (response) {
                     print("success");
+                    //go to the next page for success
                   } else {
                     print("failure");
+                    //go to the next page for failure
                   }
                   if (Navigator.canPop(context)) Navigator.pop(context);
                 });

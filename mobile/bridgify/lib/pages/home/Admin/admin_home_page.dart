@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:bridgify/accessories/avatar_builder.dart';
+import 'package:bridgify/accessories/elderly/build_elderly_avatar.dart';
 import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/accessories/dialog/post_preview.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
@@ -477,8 +477,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
       }
       imageCount = _imageList.length;
     }
-    print(selectedImages);
-    print(imageCount);
     setState(() {});
     // print(selectedImage!.path.toString());
   }
