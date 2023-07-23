@@ -37,6 +37,7 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget loadHomePage() {
+    
     return Stack(
       children: [
         Column(
@@ -168,35 +169,36 @@ class _HomePageState extends State<HomePage> {
           ),
         ),
         Positioned(
-            top: 260,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40)),
-                color: Color(0xFFEFFFFC),
-              ),
-              child: FutureBuilder(
-                future: APIService.getPosts(),
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<List<PostResponseModel>?> model,
-                ) {
-                  if (model.hasData) {
-                    return BuildPost(models: model.data);
-                  }
+          top: 260,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Container(
+            // padding: const EdgeInsets.symmetric(vertical: 15),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+              color: Color(0xFFEFFFFC),
+            ),
+            //load posts
+            child: FutureBuilder(
+              future: APIService.getPosts(),
+              builder: (
+                BuildContext context,
+                AsyncSnapshot<List<PostResponseModel>?> model,
+              ) {
+                if (model.hasData) {
+                  return BuildPost(models: model.data);
+                }
 
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
-              //posts
-            ))
+                return const Center(
+                  child: CircularProgressIndicator(),
+                );
+              },
+            ),
+            //posts
+          ),
+        ),
       ],
     );
   }
