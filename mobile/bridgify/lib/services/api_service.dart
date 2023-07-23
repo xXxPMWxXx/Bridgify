@@ -221,7 +221,7 @@ class APIService {
       'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
     };
 
-    var url = Uri.http(Config.apiURL, Config.getElderlyAPI,
+    var url = Uri.http(Config.apiURL, Config.getElderlyByUserAPI,
         {"email": currentLoginDetails.data.email});
     print(url);
     var response = await client.get(
@@ -245,7 +245,7 @@ class APIService {
       'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
     };
 
-    var url = Uri.http(Config.apiURL, Config.getElderlyByUserAPI,
+    var url = Uri.http(Config.apiURL, Config.getElderlyAPI,
         {"email": currentLoginDetails.data.email});
     print(url);
     var response = await client.get(
