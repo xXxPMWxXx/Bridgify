@@ -12,3 +12,5 @@ postRouter.route('/getAll').get(controller.getAll);
 postRouter.route('/getByUser').get(controller.getByUser);
 /** GET /api/post/getByUser */
 postRouter.route('/getNonElderlyInvolved').get(controller.getNonElderlyInvolved);
+/** PUT /api/post/update */
+postRouter.route('/update').put(controller.update);

@@ -1,7 +1,7 @@
 import './Post_admin.css';
 import {
     Box, Typography, LinearProgress, Modal,
-    FormControl, InputLabel, Input, Grid, Button, Snackbar, Alert
+    Grid, Button, Snackbar, Alert, TextField
 } from '@mui/material';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -9,11 +9,22 @@ import './Post_admin.css';
 import React, { useEffect, useState } from 'react';
 import MUIDataTable from "mui-datatables";
 
-export  function PostTab() {
+export function PostTab() {
     const delay = (ms: number) => new Promise(
         resolve => setTimeout(resolve, ms)
     );
+    //for alert
+    //error , warning , info , success
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [alertType, setAlertType]: any = useState('info');
+    const [alertMsg, setAlertMsg] = useState('');
+    const handleSnackbarClose = () => {
+        setOpenSnackbar(false);
+    };
+
     //for datatable
+    const [delayTime, setDelayTIme] = useState(300);
+
     const token = window.localStorage.getItem('accessToken');
     const columns = ["Author Email", "Activity Type", "Description",
         {
@@ -44,7 +55,6 @@ export  function PostTab() {
         p: 4,
     };
     const [open, setOpen] = React.useState(false);
-
     const loadPostData = async () => {
         // //calling backend API
         fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/post/getAll`, {
@@ -75,14 +85,94 @@ export  function PostTab() {
                 window.alert(err);
             });
     }
+    //TODO: implement delete feature
+    const onRowsSelect = (curRowSelected: any, allRowsSelected: any) => {
+        console.log("---RowSelect")
+        try {
+            console.log("All Selected: ", allRowsSelected[0].index);
+            console.log(postData[0])
+        } catch (error) {
+
+        }
+    }
+    //For update post
+    const [updateOpen, setUpdateOpen] = React.useState(false);
+    const [authorEmail, setAuthorEmail] = useState('');
+    const [activityType, setActivityType] = useState('');
+    const [description, setDescription] = useState('');
+    const [createdDate, setCreatedDate] = useState('');
+    //for update the input
+    const handleActivity = (event: any) => {
+        setActivityType(event.target.value);
+    };
+
+    const handleDescription = (event: any) => {
+        setDescription(event.target.value);
+    };
+
+    const handleRowClick = (rowData: any, rowMeta: any) => {
+        console.log(rowData, rowMeta);
+        setAuthorEmail(rowData[0]);
+        setActivityType(rowData[1]);
+        setDescription(rowData[2]);
+        setCreatedDate(rowData[5]);
+        setUpdateOpen(true);
+    };
+    const handleUpdateClose = () => {
+        setUpdateOpen(false);
+    }
+
+    const handleUpdateSubmit = (event: any) => {
+        event.preventDefault();
+        // // Make a POST request to the server with the formData
+        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/post/update`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            method: 'PUT',
+            body: JSON.stringify({
+                "author_email": authorEmail,
+                "dateTime": createdDate,
+                "activity_type": activityType,
+                "description": description,
+            })
+        })
+            .then(async (response) => {
+                if (response.status != 200) {
+                    const apiResponse = await response.json();
+                    //show alert msg
+                    setOpenSnackbar(true);
+                    setAlertType('error');
+                    setAlertMsg(apiResponse['message']);
+                } else {
+                    const apiResponse = await response.json();
+                    //show alert msg
+                    setOpenSnackbar(true);
+                    setAlertType('success');
+                    setAlertMsg(apiResponse['message']);
+                    setUpdateOpen(false);
+                    // window.location.reload();
+                }
+            })
+            .catch((error) => {
+                // Handle any error that occurred during the update process
+                window.alert(`Error during update post:${error}`);
+            });
+    }
+
 
     const options = {
-
+        print: true,
+        download: true,
+        rowHover: true,
+        onRowsSelect: onRowsSelect,
+        onRowClick: handleRowClick,
     };
     useEffect(() => {
         async function loadData() {
             setOpen(true);
-            await delay(500);
+            await delay(delayTime);
             loadPostData();
         }
 
@@ -91,43 +181,99 @@ export  function PostTab() {
         }
     }, []);
 
-    return(
+    return (
         <Box
-        sx={{
-            display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-        }}
-    >
-        {dataLoaded ?
+            sx={{
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+            }}
+        >
+            {dataLoaded ?
 
-            <MUIDataTable
-                title={"Elderly Lists"}
-                data={postData}
-                columns={columns}
-                options={options}
-            /> :
+                <MUIDataTable
+                    title={"Elderly Lists"}
+                    data={postData}
+                    columns={columns}
+                    options={options}
+                /> :
 
+                <Modal
+                    keepMounted
+                    open={open}
+                    aria-labelledby="loading"
+                    aria-describedby="loading user data"
+                >
+                    <Box sx={style}>
+                        <Typography id="loading" variant="h6" component="h2">
+                            Loading post data, please wait.
+                        </Typography>
+                        <LinearProgress />
+                    </Box>
+                </Modal>
+            }
+            {/* For update post */}
             <Modal
-                keepMounted
-                open={open}
-                aria-labelledby="loading"
-                aria-describedby="loading user data"
+                open={updateOpen}
+                onClose={handleUpdateClose}
+                aria-labelledby="updatePost"
+                aria-describedby="updatePost"
             >
-                <Box sx={style}>
-                    <Typography id="loading" variant="h6" component="h2">
-                        Loading post data, please wait.
-                    </Typography>
-                    <LinearProgress />
-                </Box>
+
+                <form onSubmit={handleUpdateSubmit}>
+                    <Box sx={{ ...style, width: 800 }} textAlign='center'>
+                        <h2 id="updatePost">Update Post</h2>
+                        <TextField
+                            required
+                            id="authorEmail"
+                            name="authorEmail"
+                            label="Author Email"
+                            value={authorEmail}
+                            disabled
+                            sx={{ width: 500, m: 2 }}
+                        />
+                        <TextField
+                            required
+                            id="createdDate"
+                            name="createdDate"
+                            label="Created Date"
+                            value={createdDate}
+                            disabled
+                            sx={{ width: 500, m: 2 }}
+                        />
+                        <TextField
+                            required
+                            id="activityType"
+                            name="activityType"
+                            label="Activity Type"
+                            value={activityType}
+                            onChange={handleActivity}
+                            sx={{ width: 500, m: 2 }}
+                        />
+
+                        <TextareaAutosize onChange={handleDescription} style={{ width: 500 }} id='Description' className='StyledTextarea' value={description} placeholder="Description" />
+
+                        <Box textAlign='center'>
+                            <Button type="submit" variant="contained" sx={{ width: 300, m: 3 }}>
+                                Submit
+                            </Button>
+                        </Box>
+                    </Box>
+                </form>
             </Modal>
-        }
-    </Box>
+            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity={alertType} sx={{ width: '100%' }}>
+                    {alertMsg}
+                </Alert>
+            </Snackbar>
+        </Box >
     )
 
 }
 
-export  function CreatePostTab() {
+
+
+export function CreatePostTab() {
 
     const token = window.localStorage.getItem('accessToken');
 
@@ -142,7 +288,7 @@ export  function CreatePostTab() {
         boxShadow: 24,
         p: 4,
     };
-    
+
     //For create post tab
     const email: any = window.localStorage.getItem('email');
     const [activityType, setActivityType] = useState('');
@@ -167,12 +313,10 @@ export  function CreatePostTab() {
 
     const handleActivity = (event: any) => {
         setActivityType(event.target.value);
-        console.log(activityType)
     };
 
     const handleDescription = (event: any) => {
         setDescription(event.target.value);
-        console.log(description)
     };
 
 
@@ -237,51 +381,55 @@ export  function CreatePostTab() {
         >
             <Typography variant="h4" >Create New Post</Typography>
             <form onSubmit={handleSubmit} >
-                <FormControl sx={{ width: 500 }}>
-                    <InputLabel htmlFor="activityTypeInput" required>Activity Type</InputLabel>
-                    <Input onChange={handleActivity} id="activityTypeInput" value={activityType} aria-describedby="activityType" sx={{ m: 2 }} />
-                    <TextareaAutosize onChange={handleDescription} style={{ width: "100%" }} id='Description' className='StyledTextarea' value={description} placeholder="Description" />
-                </FormControl>
-                <br />
-                <br />
-                <Box sx={{ width: "100%" }} alignItems="center" justifyContent="center">
-                    <input
-                        type="file"
-                        accept="image/*"
-                        style={{ display: 'none' }}
-                        id="image-upload"
-                        onChange={handleFileChange}
-                        multiple
-                    />
-                    <label htmlFor="image-upload">
-                        <Button
-                            variant="contained"
-                            color="primary"
-                            component="span"
-                            startIcon={<CloudUploadIcon />}
-                        >
-                            Upload Images
-                        </Button>
-                    </label>
-                    {selectedFiles.length > 0 && (
-                        <div>
-                            <h2>Selected Images:</h2>
-                            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                                {selectedFiles.map((file, index) => (
-                                    <img
-                                        key={index}
-                                        src={URL.createObjectURL(file)}
-                                        alt={`Selected ${index + 1}`}
-                                        style={{ maxWidth: '200px', maxHeight: '200px', margin: '8px' }}
-                                    />
-                                ))}
-                            </div>
-                        </div>
-                    )}
-
-                </Box>
-
+                <TextField
+                    required
+                    id="activityType"
+                    name="activityType"
+                    label="Activity Type"
+                    value={activityType}
+                    onChange={handleActivity}
+                    sx={{ width: 500, m: 2 }}
+                />
                 <Box textAlign='center'>
+                    <TextareaAutosize onChange={handleDescription} style={{ width: 500 }} id='Description' className='StyledTextarea' value={description} placeholder="Description" />
+                    <Box sx={{ width: 500 }} alignItems="center" justifyContent="center">
+                        <input
+                            type="file"
+                            accept="image/*"
+                            style={{ display: 'none' }}
+                            id="image-upload"
+                            onChange={handleFileChange}
+                            multiple
+                        />
+                        <label htmlFor="image-upload">
+                            <Button
+                                variant="contained"
+                                color="primary"
+                                component="span"
+                                startIcon={<CloudUploadIcon />}
+                            >
+                                Upload Images
+                            </Button>
+                        </label>
+                        {selectedFiles.length > 0 && (
+                            <div>
+                                <h2>Selected Images:</h2>
+                                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                    {selectedFiles.map((file, index) => (
+                                        <img
+                                            key={index}
+                                            src={URL.createObjectURL(file)}
+                                            alt={`Selected ${index + 1}`}
+                                            style={{ maxWidth: '200px', maxHeight: '200px', margin: '8px' }}
+                                        />
+                                    ))}
+                                </div>
+                            </div>
+                        )}
+
+                    </Box>
+
+
                     <Button type="submit" variant="contained" sx={{ width: 300, m: 3 }}>
                         Submit
                     </Button>
