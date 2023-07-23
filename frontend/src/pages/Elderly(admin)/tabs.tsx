@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select, FormLabel, RadioGroup, Radio, Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, } from '@mui/material';
+import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select, FormLabel, RadioGroup, Radio, Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, InputAdornment, } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -7,9 +7,6 @@ import dayjs from 'dayjs';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useNavigate } from 'react-router-dom';
 // import defaultPhoto from `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/001A.png`;
-
-
-
 
 import BasicDatePicker from './dateElement';
 
@@ -149,6 +146,7 @@ const MenuProps = {
     },
 };
 
+//options for medication
 const medication = [
     'Acetaminophen',
     'Ibuprofen',
@@ -165,8 +163,19 @@ const medication = [
 ];
 
 export function CreateElderlyTab() {
-    const [description, setDescription] = useState('');
-    const [personName, setPersonName] = useState<string[]>([]);
+    const [name, setName] = useState('');
+    const [elderlyID, setElderlyID] = useState('');
+    const [dateOfBirth, setDateOfBirth] = useState('');
+
+    const [activity, setActivity] = useState('');
+    const [temp, setTemp] = useState('');
+    const [awakeBool, setAwakeBool] = useState("True");
+
+    const [medName, setMedName] = useState<string[]>([]);
+    const [medTakenBool, setMedTakenBool] = useState("False");
+
+    const [condition, setCondition] = useState('');
+    const [condDescription, setCondDescription] = useState('');
 
     //file upload
     const [selectedPhoto, setSelectedPhoto] = useState(null);
@@ -183,32 +192,68 @@ export function CreateElderlyTab() {
 
     const handleFileChange = (event: any) => {
         // Get the selected files from the input
-        
-        if((event.target.files)[0]){
-            const file = (event.target.files)[0];
 
+        if ((event.target.files)[0]) {
+            const file = (event.target.files)[0];
             setSelectedPhoto(file);
             console.log(file)
-        } else{
-            window.alert("No file selected")
+        } else {
+            // window.alert("No file selected")
         }
-    
+
     };
-    const handleChange = (event: any) => {
+    const handleName = (event: any) => {
+        setName(event.target.value);
+    };
+    const handleElderlyID = (event: any) => {
+        setElderlyID(event.target.value);
+    };
+    const handleTemp = (event: any) => {
+        setTemp(event.target.value);
+    };
+    const handleActivity = (event: any) => {
+        setActivity(event.target.value);
+    };
+    const handleAwakeBool = (event: any) => {
+
+        if (event.target.checked) {
+            setAwakeBool("True");
+        } else {
+            setAwakeBool("False")
+        }
+    };
+    const handleMedTakenBool = (event: any) => {
+
+        if (event.target.checked) {
+            setMedTakenBool("True");
+        } else {
+            setMedTakenBool("False")
+        }
+    };
+    const handleMedication = (event: any) => {
         const {
             target: { value },
         } = event;
-        setPersonName(
+        setMedName(
             // On autofill we get a stringified value.
             typeof value === 'string' ? value.split(',') : value,
         );
     };
-
-    const handleDescription = (event: any) => {
-
-        setDescription(event.target.value);
-        console.log(description)
+    const handleDate = (newDate: any) => {
+        // setDate(event.target.value);
+        if (newDate) {
+            setDateOfBirth(newDate.format('DD/MM/YYYY'))
+        }
+        // console.log(newDate)
     };
+
+    const handleCondition = (event: any) => {
+        setCondition(event.target.value);
+    };
+    const handleCondDescription = (event: any) => {
+        setCondDescription(event.target.value);
+    };
+
     const handleSnackbarClose = () => {
         setOpenSnackbar(false);
     };
@@ -226,28 +271,107 @@ export function CreateElderlyTab() {
         //     //   navigate('/login');
         //     // }, 2000);
         // }
-        setOpenSnackbar(true);
-        setAlertType('success');
-        setAlertMsg(`Elderly created successfully! `);
+
+
+        // setOpenSnackbar(true);
+        // setAlertType('success');
+        // setAlertMsg(`Elderly created successfully! `);
+
+        event.preventDefault();
+        // setOpenProcessingModal(true);
+        const token = window.localStorage.getItem('accessToken');
+
+
+        if (selectedPhoto !== null) {
+
+            // const formData = new FormData();
+            // for (let i = 0; i < selectedFiles.length; i++) {
+            //     formData.append('images', selectedFiles[i]);
+            // }
+            // formData.append('photo', selectedPhoto)
+            // formData.append('id', elderlyID);
+            // formData.append('name', name);
+            // formData.append('DOB', dateOfBirth);
+            const imageName = elderlyID + '.png';
+
+            // console.log(rawBody)
+            // // Make a POST request to the server with the formData
+            fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/elderly/insert`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                },
+                method: 'POST',
+                body: JSON.stringify(
+                    {
+                        "id": elderlyID,
+                        "name": name,
+                        "DOB": dateOfBirth,
+                        "photo": imageName,
+                        "status": {
+                            "current_activity": activity,
+                            "current_temp": temp,
+                            "medication": medName,
+                            "taken_med": medTakenBool,
+                            "condition": condition,
+                            "condition_description": condDescription,
+                            "awake": awakeBool
+                        }
+                    })
+            })
+                .then(async (response) => {
+                    if (response.status != 200) {
+                        const apiResponse = await response.json();
+                        //show alert msg
+                        setOpenSnackbar(true);
+                        setAlertType('error');
+                        setAlertMsg(apiResponse['message']);
+                    } else {
+                        const apiResponse = await response.json();
+                        // setOpenProcessingModal(false);
+
+                        //reset the input fields except switch buttons
+                        setName('');
+                        setElderlyID('');
+                        setDateOfBirth('');
+
+                        setActivity('');
+                        setTemp('');
+
+                        setMedName([]);
+                        setCondition('');
+                        setCondDescription('');
+
+                        //show alert msg
+                        setOpenSnackbar(true);
+                        setAlertType('success');
+                        setAlertMsg(apiResponse['message']);
+                    }
+                })
+                .catch((error) => {
+                    // Handle any error that occurred during the upload process
+                    // window.alert(`Error uploading the images:${error}`);
+                    window.alert(error);
+                });
+        }
 
     };
     return (
         <React.Fragment>
-            <Box sx={{ p: 3, paddingTop: 1, paddingBottom: 10, width: "55%", margin: "auto", boxShadow: "2px", borderRadius: 10 }}>
+            <Box sx={{ p: 3, paddingTop: 1, paddingBottom: 10, width: "60%", margin: "auto", boxShadow: "2px", borderRadius: 10 }}>
                 <Typography variant="h5" gutterBottom sx={{ marginBottom: 2, textAlign: "center" }}>
                     New Elderly
                 </Typography>
-                <Button variant="outlined" onClick={() => console.log(selectedPhoto)}>Test</Button>
+                <Button variant="outlined" onClick={() => console.log(condition)}>Test</Button>
+                {/* profile pic */}
                 <Sheet sx={{ textAlign: "center" }}>
 
                     <label htmlFor="contained-button-file">
                         <IconButton>
-                        
 
                             {selectedPhoto !== null ?
-
                                 <Avatar
-                                    src={ URL.createObjectURL(selectedPhoto)}
+                                    src={URL.createObjectURL(selectedPhoto)}
                                     style={{
                                         width: "100px",
                                         height: "100px",
@@ -281,12 +405,13 @@ export function CreateElderlyTab() {
                         />
                     </Button>
                 </Sheet>
+                {/* personal information */}
                 <Sheet>
                     <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
                         Personal Information
                     </Typography>
                     <Grid container spacing={3}>
-                        <Grid item xs={12} sm={6}>
+                        <Grid item xs={12} sm={5}>
                             <TextField
                                 required
                                 id="fullName"
@@ -294,6 +419,8 @@ export function CreateElderlyTab() {
                                 label="Full name"
                                 fullWidth
                                 autoComplete="given-name"
+                                value={name}
+                                onChange={handleName}
                             />
                         </Grid>
                         <Grid item xs={12} sm={3}>
@@ -303,32 +430,18 @@ export function CreateElderlyTab() {
                                 name="elderlyID"
                                 label="Last 4 Digit of IC"
                                 fullWidth
+                                value={elderlyID}
+                                onChange={handleElderlyID}
                             />
                         </Grid>
-                        <Grid item xs={12} sm={3} sx={{ alignSelf: "top" }} >
+                        <Grid item xs={12} sm={3} sx={{ marginTop: 0 }} >
 
-                            <BasicDatePicker />
+                            <BasicDatePicker onDateChange={handleDate} />
 
                         </Grid>
-
-                        {/* <Grid item xs={12} sm={3}>
-                            <Button
-                                variant="outlined"
-                                component="label"
-                                fullWidth
-                                size='large'
-                            >
-                                Upload File
-                                <input
-                                    type="file"
-                                    hidden
-                                />
-                            </Button>
-                        </Grid> */}
                     </Grid>
                 </Sheet>
-
-
+                {/* status */}
                 <Sheet sx={{ marginTop: 2 }}>
                     <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
                         Status
@@ -341,32 +454,36 @@ export function CreateElderlyTab() {
                                     <Select
                                         labelId="demo-simple-select-label"
                                         id="demo-simple-select"
-                                        // value={age}
+                                        value={activity}
                                         label="Current Activity"
-                                    // onChange={handleChange}
+                                        onChange={handleActivity}
                                     >
-                                        <MenuItem value={"breakfast"}>Breakfast</MenuItem>
-                                        <MenuItem value={"lunch"}>Lunch</MenuItem>
-                                        <MenuItem value={"dinner"}>Dinner</MenuItem>
-                                        <MenuItem value={"sleep"}>Sleep</MenuItem>
-                                        <MenuItem value={"outdoor"}>Outdoor Activity</MenuItem>
+                                        <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
+                                        <MenuItem value={"Lunch"}>Lunch</MenuItem>
+                                        <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                                        <MenuItem value={"Rest"}>Rest</MenuItem>
+                                        <MenuItem value={"Outdoor Activity"}>Outdoor Activity</MenuItem>
                                     </Select>
                                 </FormControl>
                             </Box>
                         </Grid>
-                        <Grid item xs={12} sm={3}>
+                        <Grid item xs={12} sm={2.5}>
                             <TextField
                                 required
                                 id="temperature"
                                 name="temperature"
                                 label="Current Temp"
-                                fullWidth
+                                value={temp}
+                                onChange={handleTemp}
+                                InputProps={{
+                                    endAdornment: <InputAdornment position="end">°C</InputAdornment>,
+                                }} fullWidth
                             />
                         </Grid>
 
                         <Grid item xs={12} sm={2}>
                             <FormGroup sx={{ paddingTop: 1 }}>
-                                <FormControlLabel control={<Switch defaultChecked />} label="Awake" />
+                                <FormControlLabel control={<Switch defaultChecked onChange={handleAwakeBool} />} label="Awake" />
 
                             </FormGroup>
                         </Grid>
@@ -397,6 +514,7 @@ export function CreateElderlyTab() {
                         </Grid> */}
                     </Grid>
                 </Sheet>
+                {/* medication */}
                 <Sheet sx={{ marginTop: 2 }}>
                     <Typography variant="h6" gutterBottom sx={{ marginBottom: 2 }}>
                         Medication
@@ -405,21 +523,21 @@ export function CreateElderlyTab() {
 
                         <Grid item xs={12} sm={9}>
                             <FormControl sx={{}} fullWidth>
-                                <InputLabel id="demo-multiple-checkbox-label">Tag</InputLabel>
+                                <InputLabel id="demo-multiple-checkbox-label">Meds</InputLabel>
                                 <Select
                                     labelId="demo-multiple-checkbox-label"
                                     id="demo-multiple-checkbox"
                                     multiple
-                                    value={personName}
-                                    onChange={handleChange}
-                                    input={<OutlinedInput label="Tag" />}
+                                    value={medName}
+                                    onChange={handleMedication}
+                                    input={<OutlinedInput label="Meds" />}
                                     renderValue={(selected) => selected.join(', ')}
                                     MenuProps={MenuProps}
                                 >
                                     {medication.map((med) => (
                                         <MenuItem key={med} value={med}>
-                                            <Checkbox checked={personName.indexOf(med) > -1} />
-                                            {/* <Checkbox checked={personName.indexOf(name) > -1} /> */}
+                                            <Checkbox checked={medName.indexOf(med) > -1} />
+                                            {/* <Checkbox checked={medName.indexOf(name) > -1} /> */}
                                             <ListItemText primary={med} />
                                         </MenuItem>
                                     ))}
@@ -427,12 +545,11 @@ export function CreateElderlyTab() {
                             </FormControl></Grid>
                         <Grid item xs={12} sm={3}>
                             <FormGroup sx={{ paddingTop: 1 }}>
-                                <FormControlLabel control={<Switch />} label="Med Taken" />
-
-                            </FormGroup>
+                                <FormControlLabel control={<Switch onChange={handleMedTakenBool} />} label="Med Taken" />                            </FormGroup>
                         </Grid></Grid>
 
                 </Sheet>
+                {/* condition */}
                 <Sheet sx={{ marginTop: 2, marginBottom: 3 }}>
                     <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
                         Condition
@@ -445,12 +562,16 @@ export function CreateElderlyTab() {
                                 id="condition"
                                 name="condition"
                                 label="Condition"
+                                value={condition}
+                                onChange={handleCondition}
                                 fullWidth
                             />
                         </Grid>
 
                         <Grid item xs={12} sm={12}>
-                            <TextareaAutosize minRows="7" onChange={handleDescription} style={{ width: "100%", fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4 }} id='Description' className='StyledTextarea' value={description} placeholder="Condition Description" />
+                            <TextareaAutosize minRows="7" onChange={handleCondDescription}
+                                style={{ width: "100%", fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4 }}
+                                id='Description' className='StyledTextarea' value={condDescription} placeholder="Condition Description" />
                         </Grid>
                         {/* <Grid item xs={12}>
                             <FormControlLabel
@@ -460,9 +581,11 @@ export function CreateElderlyTab() {
                         </Grid> */}
                     </Grid>
                 </Sheet>
+                {/* condition */}
                 <Sheet sx={{ alignItems: "center" }}>
                     <Button fullWidth variant="contained" onClick={handleSubmit} sx={{ p: 1.5, textTransform: "none", fontSize: "16px" }}>Add Elderly</Button>
                 </Sheet>
+                {/* success / error feedback */}
                 <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleSnackbarClose}>
                     <Alert onClose={handleSnackbarClose} severity={alertType} sx={{ width: '100%' }}>
                         {alertMsg}
