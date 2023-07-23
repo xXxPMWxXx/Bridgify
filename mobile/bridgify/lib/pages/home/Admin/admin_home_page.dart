@@ -388,6 +388,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     "PREVIEW",
                     () {
                       if (validateAndSave()) {
+                        postImages!.clear();
                         for (XFile image in _imageList) {
                           String? imagePath = image.path;
                           print(imagePath);
@@ -463,8 +464,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
   }
 
   void imageSelect() async {
-    final List<XFile>? selectedImages = await _picker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
+    List<XFile>? selectedImages = await _picker.pickMultiImage();
+    if (selectedImages.isNotEmpty) {
       if (selectedImages.length + imageCount > 10) {
         for (var i = 0; i < 10 - imageCount; i++) {
           _imageList.add(selectedImages[i]);
@@ -475,7 +476,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
       }
       imageCount = _imageList.length;
     }
-    setState(() {});
+    setState(() {
+      selectedImages = [];
+    });
     // print(selectedImage!.path.toString());
   }
 

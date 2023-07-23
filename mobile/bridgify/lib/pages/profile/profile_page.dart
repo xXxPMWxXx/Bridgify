@@ -42,7 +42,6 @@ class _ProfilePageState extends State<ProfilePage> {
               builder: (BuildContext context, AsyncSnapshot<Object> model) {
                 var userProfileData = model.data as Map<String, dynamic>?;
                 if (model.hasData) {
-                  print("hi hi");
                   if (userProfileData?["accRole"] == "Admin") {
                     return IconButton(
                       onPressed: () async {
@@ -67,7 +66,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.pushNamedAndRemoveUntil(
                       context,
                       '/home',
-                      (route) => false,
+                      (Route<dynamic> route) {
+                        return route.settings.name == '/home';
+                      },
                     );
                   },
                   icon: const Icon(

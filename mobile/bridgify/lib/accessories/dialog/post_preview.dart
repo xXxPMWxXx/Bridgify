@@ -20,6 +20,7 @@ class PostPreview extends StatefulWidget {
 class _PostPreviewState extends State<PostPreview> {
   final _postPrevieweController = PageController();
   var _hasPosted = false;
+  var _hasClicked = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -32,11 +33,11 @@ class _PostPreviewState extends State<PostPreview> {
           height: MediaQuery.of(context).size.height * 0.7,
           width: MediaQuery.of(context).size.width,
           child: PageView(
+            physics: NeverScrollableScrollPhysics(),
             controller: _postPrevieweController,
             children: [
               _buildPreview(widget.model),
-              _successPostOutcome(),
-              _failurePostOutcome()
+              _postOutcome(),
             ],
           ),
         ),
@@ -62,9 +63,7 @@ class _PostPreviewState extends State<PostPreview> {
           top: 0,
           child: MaterialButton(
             onPressed: () {
-              setState(() {
-                if (Navigator.canPop(context)) Navigator.pop(context);
-              });
+              if (Navigator.canPop(context)) Navigator.pop(context);
             },
             child: Icon(
               Icons.close_rounded,
@@ -80,30 +79,56 @@ class _PostPreviewState extends State<PostPreview> {
             color: HexColor("#33A11D"),
             child: MaterialButton(
               onPressed: () {
-                PostRequestModel postRequestModel = PostRequestModel();
-                postRequestModel.authorEmail = widget.model!.authorEmail;
-                postRequestModel.description = widget.model!.description;
-                postRequestModel.activityType = widget.model!.activityType;
-                postRequestModel.postImages = widget.model!.postImages;
-
-                APIService.createPosts(postRequestModel).then((response) {
-                  if (response) {
-                    print("success");
-                    _postPrevieweController.animateToPage(1,
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.easeIn);
-                    //go to the next page for success
-                  } else {
-                    _postPrevieweController.animateToPage(1,
-                        duration: Duration(milliseconds: 300),
-                        curve: Curves.easeIn);
-                    //go to the next page for failure
+                if (_hasClicked) {
+                  if (_hasPosted) {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/',
+                      (Route<dynamic> route) {
+                        return route.settings.name == '/adminHome';
+                      },
+                    );
                   }
-                  if (Navigator.canPop(context)) Navigator.pop(context);
-                });
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context);
+                  }
+                } else {
+                  PostRequestModel postRequestModel = PostRequestModel();
+                  postRequestModel.authorEmail = widget.model!.authorEmail;
+                  postRequestModel.description = widget.model!.description;
+                  postRequestModel.activityType = widget.model!.activityType;
+                  postRequestModel.postImages = widget.model!.postImages;
+
+                  APIService.createPosts(postRequestModel).then(
+                    (response) {
+                      if (response) {
+                        print("success");
+                        setState(() {
+                          _hasPosted = false;
+                          _hasClicked = true;
+                        });
+                        _postPrevieweController.animateToPage(1,
+                            duration: Duration(milliseconds: 200),
+                            curve: Curves.easeIn);
+                      } else {
+                        setState(() {
+                          _hasPosted = false;
+                          _hasClicked = true;
+                        });
+                        _postPrevieweController.animateToPage(1,
+                            duration: Duration(milliseconds: 100),
+                            curve: Curves.easeIn);
+                      }
+                    },
+                  );
+                }
               },
-              child: const Text('POST'),
               textColor: Colors.white,
+              child: Visibility(
+                  visible: !_hasClicked,
+                  replacement:
+                      _hasPosted ? const Text('DONE') : const Text('RE-TRY'),
+                  child: const Text('POST')),
             ),
           ),
         ),
@@ -125,56 +150,55 @@ class _PostPreviewState extends State<PostPreview> {
         activity: model!.activityType!);
   }
 
-  _successPostOutcome() {
+  _postOutcome() {
     return Stack(
       alignment: Alignment.center,
       children: [
         Visibility(
-          visible: !_hasPosted,
-          replacement: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Container(
-                height: 45, // Set the desired height of the bar
-                color: HexColor("#33A11D"),
-                alignment: Alignment.center,
-                child: const Text(
-                  'Current Status',
+            visible: _hasPosted,
+            replacement: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const Icon(
+                  Icons.close_rounded,
+                  size: 100,
+                  color: Colors.red,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Something went wrong!',
                   style: TextStyle(
-                    color: Colors.white,
                     fontSize: 20,
-                    fontWeight: FontWeight.w600,
+                    color: Colors.black.withOpacity(0.5),
                   ),
                 ),
-              ),
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [],
-          ),
-        ),
-      ],
-    );
-  }
-
-  _failurePostOutcome() {
-    return Stack(
-      alignment: Alignment.center,
-      children: [
-        Visibility(
-          visible: !_hasPosted,
-          replacement: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [],
-          ),
-        ),
+                Text(
+                  'Please try posting again later',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                ),
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Icon(
+                  Icons.check_circle_outline_rounded,
+                  size: 100,
+                  color: Colors.green,
+                ),
+                SizedBox(height: 16),
+                Text(
+                  'Post saved successfully!',
+                  style: TextStyle(
+                    fontSize: 20,
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                ),
+              ],
+            )),
       ],
     );
   }
