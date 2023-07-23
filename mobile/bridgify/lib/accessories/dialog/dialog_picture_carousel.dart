@@ -1,15 +1,14 @@
 import 'dart:io';
 
 import 'package:bridgify/accessories/post/post_text.dart';
-import 'package:bridgify/config.dart';
 import 'package:flutter/material.dart';
 
 class DialogPictureCarousel extends StatefulWidget {
-  List<String> images;
-  String description;
-  String activity;
-  int imagesCount;
-  DialogPictureCarousel({
+  final List<String> images;
+  final String description;
+  final String activity;
+  final int imagesCount;
+  const DialogPictureCarousel({
     Key? key,
     required this.images,
     required this.description,
@@ -29,8 +28,8 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(30),
@@ -52,10 +51,10 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
                   ),
                 ],
               ),
-              Icon(Icons.more_vert)
+              const Icon(Icons.more_vert)
             ],
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           SizedBox(
             height: MediaQuery.of(context).size.width - 70,
             width: double.infinity,
@@ -93,7 +92,7 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -105,14 +104,14 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
                 buildIndicator(currentIndex == indicatorCount)
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           PostText(
             text: widget.description + " #${widget.activity}",
             fontSize: 16,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           )
         ],

@@ -3,10 +3,10 @@ import 'package:bridgify/config.dart';
 import 'package:flutter/material.dart';
 
 class PictureCarousel extends StatefulWidget {
-  List<String> images;
-  String description;
-  String activity;
-  PictureCarousel(
+  final List<String> images;
+  final String description;
+  final String activity;
+  const PictureCarousel(
       {Key? key,
       required this.images,
       required this.description,
