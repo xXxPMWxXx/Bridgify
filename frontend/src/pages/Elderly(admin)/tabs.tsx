@@ -3,7 +3,7 @@ import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormCo
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
-import dayjs from 'dayjs';
+import dayjs, { Dayjs } from 'dayjs';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useNavigate } from 'react-router-dom';
 // import defaultPhoto from `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/001A.png`;
@@ -165,7 +165,7 @@ const medication = [
 export function CreateElderlyTab() {
     const [name, setName] = useState('');
     const [elderlyID, setElderlyID] = useState('');
-    const [dateOfBirth, setDateOfBirth] = useState('');
+    const [dateOfBirth, setDateOfBirth] = React.useState<Dayjs>(dayjs('1980-01-01'));
 
     const [activity, setActivity] = useState('');
     const [temp, setTemp] = useState('');
@@ -212,12 +212,15 @@ export function CreateElderlyTab() {
     const handleElderlyID = (event: any) => {
         setElderlyID(event.target.value);
     };
-    const handleDate = (newDate: any) => {
+    const handleDate = (newDate: Dayjs|null) => {
         // setDate(event.target.value);
-        if (newDate) {
-            setDateOfBirth(newDate.format('DD/MM/YYYY'))
-        }
-        // console.log(newDate)
+        // if (newDate) {
+        //     setDateOfBirth(newDate.format('DD/MM/YYYY'))
+        // }
+
+        setDateOfBirth(dayjs(newDate))
+
+        console.log(newDate)
     };
     const handleTemp = (event: any) => {
         setTemp(event.target.value);
@@ -260,16 +263,17 @@ export function CreateElderlyTab() {
         setOpenSnackbar(false);
     };
 
+ 
+
     const handleSubmit = (event: any) => {
 
         event.preventDefault();
         const token = window.localStorage.getItem('accessToken');
 
-
         if (selectedPhoto !== null &&
             name.trim() !== '' &&
-            elderlyID.trim() !== '' &&
-            dateOfBirth.trim() !== '') {
+            elderlyID.trim() !== '' ) {
+
 
             setOpenProcessingModal(true);
             const formData = new FormData();
@@ -277,7 +281,7 @@ export function CreateElderlyTab() {
             formData.append('file', selectedPhoto)
             formData.append('elderlyID', elderlyID);
             formData.append('label', name);
-
+            
             const imageName = elderlyID + '.png';
 
             // console.log(rawBody)
@@ -292,7 +296,7 @@ export function CreateElderlyTab() {
                     {
                         "id": elderlyID,
                         "name": name,
-                        "DOB": dateOfBirth,
+                        "DOB": dateOfBirth.format('DD/MM/YYYY'),
                         "photo": imageName,
                         "status": {
                             "current_activity": activity,
@@ -344,7 +348,7 @@ export function CreateElderlyTab() {
                                 setSelectedPhoto(null);
                                 setName('');
                                 setElderlyID('');
-                                setDateOfBirth('');
+                                setDateOfBirth(dayjs('1980-01-01'));
 
                                 setActivity('');
                                 setTemp('');
@@ -395,7 +399,8 @@ export function CreateElderlyTab() {
                 <Typography variant="h5" gutterBottom sx={{ marginBottom: 2, textAlign: "center" }}>
                     New Elderly
                 </Typography>
-                {/* <Button variant="outlined" onClick={() => console.log(condition)}>Test</Button> */}
+                {/* <Button variant="outlined" onClick={() => console.log(dateOfBirth)}>Test</Button>
+                <Button variant="outlined" onClick={()=>setDateOfBirth(dayjs('2001-05-13'))}>Reset</Button> */}
                 {/* profile pic */}
                 <Sheet sx={{ textAlign: "center" }}>
 
@@ -469,7 +474,7 @@ export function CreateElderlyTab() {
                         </Grid>
                         <Grid item xs={12} sm={3} sx={{ marginTop: 0 }} >
 
-                            <BasicDatePicker onDateChange={handleDate} />
+                            <BasicDatePicker onDateChange={handleDate} value={dateOfBirth} resetValue={dayjs('1980-01-01')} />
 
                         </Grid>
                     </Grid>
@@ -520,31 +525,7 @@ export function CreateElderlyTab() {
 
                             </FormGroup>
                         </Grid>
-                        {/* <Grid item xs={12} sm={5}>
-                            <Box>
-                                <FormControl>
-                                    <FormLabel id="demo-row-radio-buttons-group-label" sx={{ p: 0 }}>Gender</FormLabel>
-                                    <RadioGroup
-                                        row
-                                        aria-labelledby="demo-row-radio-buttons-group-label"
-                                        name="row-radio-buttons-group"
-                                        defaultValue="female"
-                                    >
-                                        <FormControlLabel value="female" control={<Radio />} label="Female" />
-                                        <FormControlLabel value="male" control={<Radio />} label="Male" />
-                                        <FormControlLabel value="other" control={<Radio />} label="Other" />
-                                    </RadioGroup>
-
-                                </FormControl>
-                            </Box>
-                        </Grid> */}
-
-                        {/* <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-                                label="Use this address for payment details"
-                            />
-                        </Grid> */}
+                        
                     </Grid>
                 </Sheet>
                 {/* medication */}

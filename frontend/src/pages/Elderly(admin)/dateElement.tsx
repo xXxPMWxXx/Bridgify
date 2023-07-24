@@ -10,18 +10,31 @@ type DateChangeCallback = (newDate: Dayjs | null) => void;
 
 interface BasicDatePickerProps {
   onDateChange: DateChangeCallback;
+  value: Dayjs | null; // Add a value prop to control the DatePicker value from the parent component
+  resetValue: Dayjs | null; // Add a resetValue prop to reset the DatePicker value from the parent component
 }
-export default function BasicDatePicker({onDateChange}: BasicDatePickerProps) {
-  const [dob, setDob] = React.useState<Dayjs | null>(dayjs('1980-01-01'));
-  React.useEffect(() => {
-    onDateChange(dob);
-  }, [dob]);
+
+export default function BasicDatePicker({ onDateChange, value, resetValue }: BasicDatePickerProps) {
+  // Remove the useEffect block that sets dob and the second useEffect for resetValue
+
+  const handleDatePickerChange = (newValue: Dayjs | null) => {
+    onDateChange(newValue); // Call the parent's onDateChange prop directly here
+  };
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker label="Date of Birth" format="DD/MM/YYYY" defaultValue={dayjs('1980-01-01')} disableFuture
-        onChange={(newValue) => { setDob(newValue) }}/>
+      <DatePicker
+        label="Date of Birth"
+        format="DD/MM/YYYY"
+        value={value} // Use the value prop directly here
+        disableFuture
+        onChange={handleDatePickerChange} // Use the local handler
+      />
     </LocalizationProvider>
   );
-
 }
+
+
+
+
+
