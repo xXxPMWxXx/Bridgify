@@ -395,13 +395,14 @@ export function CreateElderlyTab() {
     };
     return (
         <React.Fragment>
-            <Box sx={{ p: 3, paddingTop: 1, paddingBottom: 10, width: "60%", margin: "auto", boxShadow: "2px", borderRadius: 10 }}>
+            <Box sx={{ marginTop:2, paddingBottom: 10, width: "55%", margin: "auto", boxShadow: "2px", borderRadius: 10 }}>
                 <Typography variant="h5" gutterBottom sx={{ marginBottom: 2, textAlign: "center" }}>
                     New Elderly
                 </Typography>
                 {/* <Button variant="outlined" onClick={() => console.log(dateOfBirth)}>Test</Button>
                 <Button variant="outlined" onClick={()=>setDateOfBirth(dayjs('2001-05-13'))}>Reset</Button> */}
                 {/* profile pic */}
+                <form onSubmit={handleSubmit}>
                 <Sheet sx={{ textAlign: "center" }}>
 
                     <label htmlFor="contained-button-file">
@@ -438,7 +439,7 @@ export function CreateElderlyTab() {
                             type="file"
                             hidden
                             onChange={handleFileChange}
-                            accept="image/png, image/jpeg"
+                            accept="image/*"
                         // value={value} onChange={(newValue) => setValue(newValue)}
                         />
                     </Button>
@@ -587,18 +588,14 @@ export function CreateElderlyTab() {
                                 style={{ width: "100%", fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4 }}
                                 id='Description' className='StyledTextarea' value={condDescription} placeholder="Condition Description" />
                         </Grid>
-                        {/* <Grid item xs={12}>
-                            <FormControlLabel
-                                control={<Checkbox color="secondary" name="saveAddress" value="yes" />}
-                                label="Use this address for payment details"
-                            />
-                        </Grid> */}
+                  
                     </Grid>
                 </Sheet>
                 {/* condition */}
                 <Sheet sx={{ alignItems: "center" }}>
-                    <Button fullWidth variant="contained" onClick={handleSubmit} sx={{ p: 1.5, textTransform: "none", fontSize: "16px" }}>Add Elderly</Button>
+                    <Button type='submit'fullWidth variant="contained" sx={{ p: 1.5, textTransform: "none", fontSize: "16px" }}>Add Elderly</Button>
                 </Sheet>
+                </form>
                 {/* success / error feedback */}
                 <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleSnackbarClose}>
                     <Alert onClose={handleSnackbarClose} severity={alertType} sx={{ width: '100%' }}>

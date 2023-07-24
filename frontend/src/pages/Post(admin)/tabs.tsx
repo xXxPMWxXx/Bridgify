@@ -9,6 +9,9 @@ import './Post_admin.css';
 import React, { useEffect, useState } from 'react';
 import MUIDataTable from "mui-datatables";
 
+import ImageList from '@mui/material/ImageList';
+import ImageListItem from '@mui/material/ImageListItem';
+
 export function PostTab() {
     const delay = (ms: number) => new Promise(
         resolve => setTimeout(resolve, ms)
@@ -178,11 +181,11 @@ export function PostTab() {
             //data after del
             console.dir(newData);
             if (rowsDeleted && rowsDeleted.data && rowsDeleted.data[0] && rowsDeleted.data[0].dataIndex === 0) {
-              window.alert('Can\'t delete this!');
-              return false;
+                window.alert('Can\'t delete this!');
+                return false;
             };
-           
-          },
+
+        },
     };
     useEffect(() => {
         async function loadData() {
@@ -389,13 +392,13 @@ export function CreatePostTab() {
 
     return (
         <Grid container
-            spacing={0}
+            spacing={2}
             direction="column"
             alignItems="center"
             justifyContent="center"
         >
-            <Typography variant="h4" >Create New Post</Typography>
-            <form onSubmit={handleSubmit} >
+            <Typography variant="h5" sx={{ marginBottom: 2 }}>Create New Post</Typography>
+            <form onSubmit={handleSubmit} style={{ textAlign: "center", width: 500 }}>
                 <TextField
                     required
                     id="activityType"
@@ -403,12 +406,29 @@ export function CreatePostTab() {
                     label="Activity Type"
                     value={activityType}
                     onChange={handleActivity}
-                    sx={{ width: 500, m: 2 }}
+                    fullWidth
+                    sx={{ marginBottom: 2 }}
                 />
                 <Box textAlign='center'>
-                    <TextareaAutosize onChange={handleDescription} style={{ width: 500 }} id='Description' className='StyledTextarea' value={description} placeholder="Description" />
-                    <Box sx={{ width: 500 }} alignItems="center" justifyContent="center">
+                    <TextareaAutosize onChange={handleDescription} minRows={5} style={{ width: 500, fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4 }} id='Description' className='StyledTextarea' value={description} placeholder="Description" />
+                    {/* <Box sx={{ width: 500 }} alignItems="center" justifyContent="center"> */}
+
+                    <Button
+                        variant="outlined"
+                        component="label"
+                        sx={{ width: 500, marginTop: 2 }}
+                        size='large'
+                    >
+                        Upload File
                         <input
+                            type="file"
+                            hidden
+                            onChange={handleFileChange}
+                            accept="image/*"
+                            multiple
+                        />
+                    </Button><br /></Box>
+                {/* <input
                             type="file"
                             accept="image/*"
                             style={{ display: 'none' }}
@@ -425,24 +445,28 @@ export function CreatePostTab() {
                             >
                                 Upload Images
                             </Button>
-                        </label>
-                        {selectedFiles.length > 0 && (
-                            <div>
-                                <h2>Selected Images:</h2>
-                                <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                                    {selectedFiles.map((file, index) => (
-                                        <img
-                                            key={index}
-                                            src={URL.createObjectURL(file)}
-                                            alt={`Selected ${index + 1}`}
-                                            style={{ maxWidth: '200px', maxHeight: '200px', margin: '8px' }}
-                                        />
-                                    ))}
-                                </div>
-                            </div>
-                        )}
 
-                    </Box>
+                        </label> */}
+                <Box>
+
+
+                    {/* {selectedFiles.length > 0 && (
+                        <div>
+                            <h2>Selected Images:</h2>
+                            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
+                                {selectedFiles.map((file, index) => (
+                                    <img
+                                        key={index}
+                                        src={URL.createObjectURL(file)}
+                                        alt={`Selected ${index + 1}`}
+                                        style={{ maxWidth: '200px', maxHeight: '200px', margin: '8px' }}
+                                    />
+                                ))}
+                            </div>
+                        </div>
+                    )} */}
+
+                    {/* </Box> */}
 
 
                     <Button type="submit" variant="contained" sx={{ width: 300, m: 3 }}>
@@ -450,6 +474,22 @@ export function CreatePostTab() {
                     </Button>
                 </Box>
             </form>
+            {selectedFiles.length > 0 && (
+
+                <ImageList sx={{ width: 500, height: 500 }} cols={3} rowHeight={164}>
+                    {selectedFiles.map((file, index) => (
+                        <ImageListItem key={index}>
+                            <img
+                                src={`${URL.createObjectURL(file)}?w=164&h=164&fit=crop&auto=format`}
+                                srcSet={`${URL.createObjectURL(file)}`}
+                                alt={`Selected ${index + 1}`}
+                                loading="lazy"
+                            />
+                        </ImageListItem>
+                    ))}
+                </ImageList>
+
+            )}
             <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity={alertType} sx={{ width: '100%' }}>
                     {alertMsg}
@@ -468,6 +508,6 @@ export function CreatePostTab() {
                     <LinearProgress />
                 </Box>
             </Modal>
-        </Grid>
+        </Grid >
     )
 }
