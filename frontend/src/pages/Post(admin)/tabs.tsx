@@ -55,6 +55,7 @@ export function PostTab() {
         p: 4,
     };
     const [open, setOpen] = React.useState(false);
+
     const loadPostData = async () => {
         // //calling backend API
         fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/post/getAll`, {
@@ -85,12 +86,14 @@ export function PostTab() {
                 window.alert(err);
             });
     }
+
+    const [selectedRows, setSelectedRows] = useState([]);
     //TODO: implement delete feature
     const onRowsSelect = (curRowSelected: any, allRowsSelected: any) => {
-        console.log("---RowSelect")
         try {
-            console.log("All Selected: ", allRowsSelected[0].index);
-            console.log(postData[0])
+            console.log(allRowsSelected);
+            setSelectedRows(allRowsSelected);
+
         } catch (error) {
 
         }
@@ -168,6 +171,18 @@ export function PostTab() {
         rowHover: true,
         onRowsSelect: onRowsSelect,
         onRowClick: handleRowClick,
+        //haven't finished
+        onRowsDelete: (rowsDeleted: any, newData: any) => {
+            console.log('rowsDeleted');
+            console.dir(rowsDeleted);
+            //data after del
+            console.dir(newData);
+            if (rowsDeleted && rowsDeleted.data && rowsDeleted.data[0] && rowsDeleted.data[0].dataIndex === 0) {
+              window.alert('Can\'t delete this!');
+              return false;
+            };
+           
+          },
     };
     useEffect(() => {
         async function loadData() {
