@@ -37,7 +37,6 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget loadHomePage() {
-    
     return Stack(
       children: [
         Column(
@@ -181,21 +180,22 @@ class _HomePageState extends State<HomePage> {
               color: Color(0xFFEFFFFC),
             ),
             //load posts
-            child: FutureBuilder(
-              future: APIService.getPosts(),
-              builder: (
-                BuildContext context,
-                AsyncSnapshot<List<PostResponseModel>?> model,
-              ) {
-                if (model.hasData) {
-                  return BuildPost(models: model.data);
-                }
+            child: BuildPost(),
+            // FutureBuilder(
+            //   future: APIService.getPosts(),
+            //   builder: (
+            //     BuildContext context,
+            //     AsyncSnapshot<List<PostResponseModel>?> model,
+            //   ) {
+            //     if (model.hasData) {
+            //       return BuildPost(models: model.data);
+            //     }
 
-                return const Center(
-                  child: CircularProgressIndicator(),
-                );
-              },
-            ),
+            //     return const Center(
+            //       child: CircularProgressIndicator(),
+            //     );
+            //   },
+            // ),
             //posts
           ),
         ),

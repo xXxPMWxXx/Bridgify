@@ -104,7 +104,7 @@ class _PostPreviewState extends State<PostPreview> {
                       if (response) {
                         print("success");
                         setState(() {
-                          _hasPosted = false;
+                          _hasPosted = true;
                           _hasClicked = true;
                         });
                         _postPrevieweController.animateToPage(1,

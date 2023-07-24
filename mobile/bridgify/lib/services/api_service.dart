@@ -85,7 +85,7 @@ class APIService {
       url,
       headers: requestHeaders,
     );
-    
+
     if (response.statusCode == 401) {
       return {
         "imagePath": loginDetails.data.profileImage,
@@ -151,7 +151,30 @@ class APIService {
     }
   }
 
-  static Future<List<PostResponseModel>?> getPosts() async {
+  static Future<List<PostResponseModel>?> getPostsByUser() async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.getPostsByUserAPI,
+        {"email": currentLoginDetails.data.email});
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return postFromJson(data);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<List<PostResponseModel>?> getPostsByNoElderlyInvolved() async {
     var currentLoginDetails = await SharedService.loginDetails();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
@@ -160,7 +183,7 @@ class APIService {
 
     var url = Uri.http(
       Config.apiURL,
-      Config.getPostsAPI,
+      Config.getPostsWithNoElderlyAPI,
     );
 
     var response = await client.get(
@@ -169,9 +192,8 @@ class APIService {
     );
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      print(data);
-      print(postFromJson(data["data"]));
-      return postFromJson(data["data"]);
+
+      return postFromJson(data);
     } else {
       return null;
     }
