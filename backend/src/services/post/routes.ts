@@ -14,3 +14,5 @@ postRouter.route('/getByUser').get(controller.getByUser);
 postRouter.route('/getNonElderlyInvolved').get(controller.getNonElderlyInvolved);
 /** PUT /api/post/update */
 postRouter.route('/update').put(controller.update);
+/** PUT /api/post/update */
+postRouter.route('/delete').delete(controller.delete_post);
