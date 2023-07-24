@@ -4,7 +4,6 @@ import 'package:bridgify/accessories/post/build_post.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/elderly_response_model.dart';
-import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:zego_zimkit/services/services.dart';
@@ -181,22 +180,6 @@ class _HomePageState extends State<HomePage> {
             ),
             //load posts
             child: BuildPost(),
-            // FutureBuilder(
-            //   future: APIService.getPosts(),
-            //   builder: (
-            //     BuildContext context,
-            //     AsyncSnapshot<List<PostResponseModel>?> model,
-            //   ) {
-            //     if (model.hasData) {
-            //       return BuildPost(models: model.data);
-            //     }
-
-            //     return const Center(
-            //       child: CircularProgressIndicator(),
-            //     );
-            //   },
-            // ),
-            //posts
           ),
         ),
       ],

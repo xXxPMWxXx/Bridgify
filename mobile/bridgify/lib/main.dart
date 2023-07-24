@@ -2,6 +2,7 @@ import 'package:bridgify/config.dart';
 import 'package:bridgify/models/login_response_model.dart';
 import 'package:bridgify/pages/chat/Admin/admin_chat_list_screen.dart';
 import 'package:bridgify/pages/chat/Child/chat_screen.dart';
+import 'package:bridgify/pages/elderly/Admin/admin_elderly_records_page.dart';
 import 'package:bridgify/pages/home/Admin/admin_home_page.dart';
 import 'package:bridgify/pages/home/Child/home_page.dart';
 import 'package:bridgify/pages/login_signup/login_signup_page.dart';
@@ -49,7 +50,7 @@ class MyApp extends StatelessWidget {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
       ),
       // home: PictureCarousel(images: images),
       // home: PictureSingle(urlImage: images[0]),
@@ -73,7 +74,7 @@ class _FirstPageState extends State<FirstPage> {
       title: 'Flutter Demo',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primarySwatch: Colors.blueGrey,
       ),
       routes: {
         '/': (context) => _defaultHome,
@@ -90,8 +91,7 @@ class _FirstPageState extends State<FirstPage> {
         '/adminHome': (context) => const AdminHomePage(),
         '/adminChatList': (context) =>
             const AdminChatListScreen(conversationID: 'admin_account'),
-        //chat function for admins would house all users that message it
-        //reassign elderlies page
+        '/adminElderlyRecords': (context) => const AdminElderlyRecords(),
       },
     );
   }

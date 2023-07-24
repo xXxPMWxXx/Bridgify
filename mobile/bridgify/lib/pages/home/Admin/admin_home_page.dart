@@ -631,6 +631,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         Navigator.pushNamed(context, "/adminChatList");
                       }),
                   DrawerItem(
+                      title: 'Elderly Services',
+                      icon: Icons.elderly,
+                      onTapPath: () {
+                        Navigator.pushNamed(context, "/adminElderlyRecords");
+                      }),
+                  DrawerItem(
                       title: 'Settings',
                       icon: Icons.settings,
                       onTapPath: () {

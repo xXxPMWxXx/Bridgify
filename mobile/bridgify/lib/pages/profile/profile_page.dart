@@ -2,7 +2,7 @@ import 'dart:io';
 
 import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/config.dart';
-import 'package:bridgify/models/update_request_model.dart';
+import 'package:bridgify/models/user_update_request_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';

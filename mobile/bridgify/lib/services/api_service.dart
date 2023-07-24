@@ -7,7 +7,7 @@ import 'package:bridgify/models/post_request_model.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/models/register_request_model.dart';
 import 'package:bridgify/models/register_response_model.dart';
-import 'package:bridgify/models/update_request_model.dart';
+import 'package:bridgify/models/user_update_request_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../config.dart';
@@ -268,8 +268,7 @@ class APIService {
       'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
     };
 
-    var url = Uri.http(Config.apiURL, Config.getElderlyAPI,
-        {"email": currentLoginDetails.data.email});
+    var url = Uri.http(Config.apiURL, Config.getElderlyAPI);
     print(url);
     var response = await client.get(
       url,

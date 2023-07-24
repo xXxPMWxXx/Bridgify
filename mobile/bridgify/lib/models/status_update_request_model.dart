@@ -1,47 +1,5 @@
-List<ElderlyResponseModel> elderlyFromJson(dynamic str) =>
-    List<ElderlyResponseModel>.from(
-        (str).map((x) => ElderlyResponseModel.fromJson(x)));
-
-class ElderlyResponseModel {
-  late String? id;
-  late String? name;
-  late String? dob;
-  late String? photo;
-  late Status? status;
-  late String? created;
-
-  ElderlyResponseModel({
-    this.id,
-    this.name,
-    this.dob,
-    this.photo,
-    this.status,
-    this.created,
-  });
-
-  ElderlyResponseModel.fromJson(Map<String, dynamic> json) {
-    id = json['id'];
-    name = json['name'];
-    dob = json['DOB'];
-    photo = json['photo'];
-    status = Status.fromJson(json['status']);
-    created = json['created'];
-  }
-
-  Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['name'] = name;
-    _data['DOB'] = dob;
-    _data['photo'] = photo;
-    _data['status'] = status!.toJson();
-    _data['created'] = created;
-    return _data;
-  }
-}
-
-class Status {
-  Status({
+class StatusUpdateRequestModel {
+  StatusUpdateRequestModel({
     required this.current_activity,
     required this.current_temp,
     required this.medication,
@@ -59,7 +17,7 @@ class Status {
   late String? condition_description;
   late String? awake;
 
-  Status.fromJson(Map<String, dynamic> json) {
+  StatusUpdateRequestModel.fromJson(Map<String, dynamic> json) {
     current_activity = json['current_activity'];
     current_temp = json['current_temp'];
     medication = json['medication'];

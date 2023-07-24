@@ -77,7 +77,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
           top: 125,
           child: Text.rich(
             TextSpan(
-              text: "Current Acitivity: ",
+              text: "Current Activity: ",
               style: const TextStyle(
                 fontSize: 15,
                 color: Colors.black54,
@@ -85,7 +85,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: "${widget.model.status!.current_activity!}",
+                  text: widget.model.status!.current_activity!,
                   style: const TextStyle(
                     color: Colors.black87,
                   ),
@@ -151,7 +151,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: "${widget.model.status!.condition_description!}",
+                  text: widget.model.status!.condition_description!,
                   style: const TextStyle(
                     color: Colors.black87,
                   ),
@@ -221,7 +221,9 @@ class _CurrentStatusState extends State<CurrentStatus> {
           top: 0,
           child: Container(
             height: 45, // Set the desired height of the bar
-            color: HexColor("#33A11D"),
+            color: widget.model.status!.awake == "True"
+                ? HexColor("#33A11D")
+                : Colors.grey,
             alignment: Alignment.center,
             child: const Text(
               'Current Status',

@@ -44,10 +44,15 @@ class _BuildPostState extends State<BuildPost> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              const Text(
+              Text(
                 "My Posts",
-                style: TextStyle(color: Colors.black, fontSize: 16),
+                style: TextStyle(
+                  color: Colors.grey.shade800,
+                  fontFamily: "Sofia",
+                  fontSize: 20,
+                ),
               ),
+              const SizedBox(width: 35),
               Container(
                 width: 165,
                 decoration: BoxDecoration(
@@ -66,7 +71,7 @@ class _BuildPostState extends State<BuildPost> {
                       currentItem = value;
                     });
                     _scrollController.animateTo(0.0,
-                        duration: Duration(milliseconds: 1),
+                        duration: const Duration(milliseconds: 1),
                         curve: Curves.easeInOut);
                     print('Selected Value: $value');
                   },
@@ -88,23 +93,17 @@ class _BuildPostState extends State<BuildPost> {
                                   color: Colors.grey.shade600,
                                 )
                               : Icon(Icons.group, color: Colors.grey.shade600),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Text(
                             value,
-                            style: TextStyle(
+                            style: const TextStyle(
                               color: Colors.black,
                               fontSize: 16.0,
+                              fontFamily: 'Sofia',
                             ),
                           ),
                         ],
                       ),
-                      // Text(
-                      //   value,
-                      //   style: TextStyle(
-                      //     color: Colors.black,
-                      //     fontSize: 16.0,
-                      //   ),
-                      // ),
                     );
                   }).toList(),
                 ),
@@ -172,20 +171,6 @@ class _BuildPostState extends State<BuildPost> {
               );
             },
           ),
-        // Expanded(
-        //   flex: 2,
-        //   child: ListView.builder(
-        //     shrinkWrap: true,
-        //     physics: const ClampingScrollPhysics(),
-        //     scrollDirection: Axis.vertical,
-        //     padding: const EdgeInsets.all(0),
-        //     itemCount: widget.models!.length,
-        //     itemBuilder: (context, index) {
-        //       return BuildPicture(
-        //           model: widget.models![widget.models!.length - 1 - index]);
-        //     },
-        //   ),
-        // ),
       ],
     );
   }
