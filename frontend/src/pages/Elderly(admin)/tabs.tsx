@@ -180,6 +180,9 @@ export function CreateElderlyTab() {
     //file upload
     const [selectedPhoto, setSelectedPhoto] = useState(null);
 
+    const [openProcessingModal, setOpenProcessingModal] = React.useState(false);
+
+
 
     //error , warning , info , success
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -190,6 +193,7 @@ export function CreateElderlyTab() {
 
     let navigate = useNavigate();
 
+    //handle form inputs
     const handleFileChange = (event: any) => {
         // Get the selected files from the input
 
@@ -208,6 +212,13 @@ export function CreateElderlyTab() {
     const handleElderlyID = (event: any) => {
         setElderlyID(event.target.value);
     };
+    const handleDate = (newDate: any) => {
+        // setDate(event.target.value);
+        if (newDate) {
+            setDateOfBirth(newDate.format('DD/MM/YYYY'))
+        }
+        // console.log(newDate)
+    };
     const handleTemp = (event: any) => {
         setTemp(event.target.value);
     };
@@ -215,7 +226,6 @@ export function CreateElderlyTab() {
         setActivity(event.target.value);
     };
     const handleAwakeBool = (event: any) => {
-
         if (event.target.checked) {
             setAwakeBool("True");
         } else {
@@ -223,7 +233,6 @@ export function CreateElderlyTab() {
         }
     };
     const handleMedTakenBool = (event: any) => {
-
         if (event.target.checked) {
             setMedTakenBool("True");
         } else {
@@ -239,13 +248,6 @@ export function CreateElderlyTab() {
             typeof value === 'string' ? value.split(',') : value,
         );
     };
-    const handleDate = (newDate: any) => {
-        // setDate(event.target.value);
-        if (newDate) {
-            setDateOfBirth(newDate.format('DD/MM/YYYY'))
-        }
-        // console.log(newDate)
-    };
 
     const handleCondition = (event: any) => {
         setCondition(event.target.value);
@@ -257,45 +259,29 @@ export function CreateElderlyTab() {
     const handleSnackbarClose = () => {
         setOpenSnackbar(false);
     };
+
     const handleSubmit = (event: any) => {
-        // if (false) {
-        //     //show alert msg
-        //     // setOpenSnackbar(true);
-        //     setAlertType('error');
-        //     // setAlertMsg(signupResponse['message']);
-        // } else {
-        //     // setOpenSnackbar(true);
-        //     setAlertType('success');
-        //     setAlertMsg(`Elderly created successfully! `);
-        //     // setTimeout(() => {
-        //     //   navigate('/login');
-        //     // }, 2000);
-        // }
-
-
-        // setOpenSnackbar(true);
-        // setAlertType('success');
-        // setAlertMsg(`Elderly created successfully! `);
 
         event.preventDefault();
-        // setOpenProcessingModal(true);
         const token = window.localStorage.getItem('accessToken');
 
 
-        if (selectedPhoto !== null) {
+        if (selectedPhoto !== null &&
+            name.trim() !== '' &&
+            elderlyID.trim() !== '' &&
+            dateOfBirth.trim() !== '') {
 
-            // const formData = new FormData();
-            // for (let i = 0; i < selectedFiles.length; i++) {
-            //     formData.append('images', selectedFiles[i]);
-            // }
-            // formData.append('photo', selectedPhoto)
-            // formData.append('id', elderlyID);
-            // formData.append('name', name);
-            // formData.append('DOB', dateOfBirth);
+            setOpenProcessingModal(true);
+            const formData = new FormData();
+
+            formData.append('file', selectedPhoto)
+            formData.append('elderlyID', elderlyID);
+            formData.append('label', name);
+
             const imageName = elderlyID + '.png';
 
             // console.log(rawBody)
-            // // Make a POST request to the server with the formData
+            // Make a POST request to the server for elderly insert
             fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/elderly/insert`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
@@ -320,41 +306,88 @@ export function CreateElderlyTab() {
                     })
             })
                 .then(async (response) => {
+                    // Make a POST request to the server for post face
                     if (response.status != 200) {
                         const apiResponse = await response.json();
                         //show alert msg
                         setOpenSnackbar(true);
                         setAlertType('error');
-                        setAlertMsg(apiResponse['message']);
+                        setAlertMsg("Form submission failed. Please check your inputs and try again.");
+                        // setAlertMsg(apiResponse['message']);
                     } else {
                         const apiResponse = await response.json();
-                        // setOpenProcessingModal(false);
 
-                        //reset the input fields except switch buttons
-                        setName('');
-                        setElderlyID('');
-                        setDateOfBirth('');
+                        //
+                        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/face/post-face`, {
+                            headers: {
+                                'Authorization': `Bearer ${token}`,
+                            },
+                            method: 'POST',
+                            body: formData
+                        }).then(async (response) => {
 
-                        setActivity('');
-                        setTemp('');
+                            if (response.status != 200) {
+                                const apiResponse = await response.json();
+                                //show alert msg
+                                setOpenSnackbar(true);
+                                setAlertType('error');
+                                setAlertMsg("Form submission failed. Please check your inputs and try again.");
+                                // setAlertMsg(apiResponse['message']);
+                            } else {
+                                const apiResponse = await response.json();
+                                //show alert msg
+                                setOpenSnackbar(true);
+                                setAlertType('success');
+                                setAlertMsg(`Elderly: ${name} added successfully`);
 
-                        setMedName([]);
-                        setCondition('');
-                        setCondDescription('');
+                                //reset the input fields except switch buttons
+                                setSelectedPhoto(null);
+                                setName('');
+                                setElderlyID('');
+                                setDateOfBirth('');
 
-                        //show alert msg
-                        setOpenSnackbar(true);
-                        setAlertType('success');
-                        setAlertMsg(apiResponse['message']);
+                                setActivity('');
+                                setTemp('');
+
+                                setMedName([]);
+                                setCondition('');
+                                setCondDescription('');
+                                setOpenProcessingModal(false);
+
+                            }
+                        }
+                        )
+                        // .catch((error) => {
+                        //     // Handle any error that occurred during the upload process
+                        //     window.alert(`Error uploading the image:${error}`);
+                        // });
+
                     }
                 })
                 .catch((error) => {
                     // Handle any error that occurred during the upload process
-                    // window.alert(`Error uploading the images:${error}`);
-                    window.alert(error);
+                    setOpenProcessingModal(false);
                 });
+        } else {
+            // window.alert("Either photo or name or elderlyID or date of birth is missing")
+            setOpenSnackbar(true);
+            setAlertType('error');
+            setAlertMsg("Form submission failed. Please check your inputs and try again.");
         }
 
+    };
+
+    //for modal
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
     };
     return (
         <React.Fragment>
@@ -362,7 +395,7 @@ export function CreateElderlyTab() {
                 <Typography variant="h5" gutterBottom sx={{ marginBottom: 2, textAlign: "center" }}>
                     New Elderly
                 </Typography>
-                <Button variant="outlined" onClick={() => console.log(condition)}>Test</Button>
+                {/* <Button variant="outlined" onClick={() => console.log(condition)}>Test</Button> */}
                 {/* profile pic */}
                 <Sheet sx={{ textAlign: "center" }}>
 
@@ -469,7 +502,7 @@ export function CreateElderlyTab() {
                         </Grid>
                         <Grid item xs={12} sm={2.5}>
                             <TextField
-                                required
+                                // required
                                 id="temperature"
                                 name="temperature"
                                 label="Current Temp"
@@ -558,7 +591,7 @@ export function CreateElderlyTab() {
 
                         <Grid item xs={12} sm={4}>
                             <TextField
-                                required
+                                // required
                                 id="condition"
                                 name="condition"
                                 label="Condition"
@@ -591,6 +624,21 @@ export function CreateElderlyTab() {
                         {alertMsg}
                     </Alert>
                 </Snackbar>
+
+                {/* processing modal */}
+                <Modal
+                    keepMounted
+                    open={openProcessingModal}
+                    aria-labelledby="loading"
+                    aria-describedby="loading user data"
+                >
+                    <Box sx={style}>
+                        <Typography id="processing" variant="h6" component="h2">
+                            Processing data, please wait.
+                        </Typography>
+                        <LinearProgress />
+                    </Box>
+                </Modal>
 
             </Box>
 

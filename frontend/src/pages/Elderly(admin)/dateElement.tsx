@@ -12,14 +12,14 @@ interface BasicDatePickerProps {
   onDateChange: DateChangeCallback;
 }
 export default function BasicDatePicker({onDateChange}: BasicDatePickerProps) {
-  const [dob, setDob] = React.useState<Dayjs | null>(dayjs('2000-01-01'));
+  const [dob, setDob] = React.useState<Dayjs | null>(dayjs('1980-01-01'));
   React.useEffect(() => {
     onDateChange(dob);
   }, [dob]);
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <DatePicker label="Date of Birth" format="DD/MM/YYYY" defaultValue={dayjs('2000-01-01')} disableFuture
+        <DatePicker label="Date of Birth" format="DD/MM/YYYY" defaultValue={dayjs('1980-01-01')} disableFuture
         onChange={(newValue) => { setDob(newValue) }}/>
     </LocalizationProvider>
   );
