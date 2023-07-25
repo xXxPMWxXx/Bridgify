@@ -1,50 +1,45 @@
+import 'package:bridgify/accessories/elderly/elderly_avatar.dart';
+import 'package:bridgify/config.dart';
+import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:flutter/material.dart';
 
 class ElderlyRecordItem extends StatelessWidget {
-  final Color color;
-  const ElderlyRecordItem({Key? key, required this.color}) : super(key: key);
+  final ElderlyResponseModel? model;
+
+  const ElderlyRecordItem({Key? key, required this.model}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(10),
-          boxShadow: [
-            BoxShadow(
-                offset: const Offset(0, 5),
-                color: Theme.of(context).primaryColor.withOpacity(.2),
-                spreadRadius: 2,
-                blurRadius: 5)
-          ]),
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(10),
+        boxShadow: [
+          BoxShadow(
+              offset: const Offset(0, 5),
+              color: Theme.of(context).primaryColor.withOpacity(.2),
+              spreadRadius: 2,
+              blurRadius: 5)
+        ],
+      ),
       child: Row(
         children: [
           //Change container to include elderly image
-          Container(
-            padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(10), color: color),
-            child: Column(
-              children: [
-                Text('MAY',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: Colors.white)),
-                const SizedBox(height: 5),
-                Text('05',
-                    style: Theme.of(context)
-                        .textTheme
-                        .titleLarge
-                        ?.copyWith(color: Colors.white)),
-                const SizedBox(height: 5),
-                Text('2023',
-                    style: Theme.of(context)
-                        .textTheme
-                        .bodySmall
-                        ?.copyWith(color: Colors.white)),
-              ],
+          SizedBox(
+            height: 100,
+            width: 85,
+            child: Container(
+              // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(25)),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: Image.network(
+                  'http://${Config.apiURL}/images/trained_face/${model!.photo}',
+                  fit: BoxFit.cover,
+                ),
+              ),
             ),
           ),
           Expanded(
@@ -53,11 +48,24 @@ class ElderlyRecordItem extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('This is sample title',
-                      style: Theme.of(context).textTheme.titleMedium),
+                  Text(
+                    'Elderly ID: ${model!.id}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.grey),
+                  ),
                   const SizedBox(height: 5),
                   Text(
-                    'We have indeed in the Messenger of Allah, a good example for anyone...',
+                    'Name: ${model!.name}',
+                    style: Theme.of(context)
+                        .textTheme
+                        .bodyMedium
+                        ?.copyWith(color: Colors.grey),
+                  ),
+                  const SizedBox(height: 5),
+                  Text(
+                    'Date Of Birth: ${model!.dob}',
                     style: Theme.of(context)
                         .textTheme
                         .bodyMedium

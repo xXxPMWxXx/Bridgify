@@ -27,9 +27,12 @@ class Config {
   static const String updateAPI = "api/user/update";
 
   //post
-  static const String getPostsAPI = "api/post/getAll";
+  static const String getPostsByUserAPI = "api/post/getByUser";
+  static const String getPostsWithNoElderlyAPI =
+      "api/post/getNonElderlyInvolved";
   static const String createPostAPI = "api/post/create";
 
   //elderly
-  static const String getElderlyAPI = "api/elderly/getByUser";
+  static const String getElderlyByUserAPI = "api/elderly/getByUser";
+  static const String getElderlyAPI = "api/elderly/getAll";
 }

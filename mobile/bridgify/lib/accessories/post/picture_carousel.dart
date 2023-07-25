@@ -3,10 +3,10 @@ import 'package:bridgify/config.dart';
 import 'package:flutter/material.dart';
 
 class PictureCarousel extends StatefulWidget {
-  List<String> images;
-  String description;
-  String activity;
-  PictureCarousel(
+  final List<String> images;
+  final String description;
+  final String activity;
+  const PictureCarousel(
       {Key? key,
       required this.images,
       required this.description,
@@ -63,10 +63,10 @@ class _PictureCarouselState extends State<PictureCarousel> {
                 });
               },
               itemBuilder: (context, index) {
-                widget.images[index % widget.images.length];
                 return Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
+                    color: Colors.black45,
                     // boxShadow: [
                     //   BoxShadow(
                     //     color: Colors.black.withOpacity(0.3),
@@ -76,11 +76,8 @@ class _PictureCarouselState extends State<PictureCarousel> {
                     //   ),
                     // ],
                     image: DecorationImage(
-                      fit: BoxFit.cover,
-                      image: Image.network('http://' +
-                              Config.apiURL +
-                              '/images/post/' +
-                              widget.images[index % widget.images.length])
+                      fit: BoxFit.contain,
+                      image: Image.network('http://${Config.apiURL}/images/post/${widget.images[index % widget.images.length]}')
                           .image,
                     ),
                   ),

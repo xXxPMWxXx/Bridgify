@@ -17,8 +17,6 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
       duration: const Duration(milliseconds: 1000),
       decoration: const BoxDecoration(
           gradient: LinearGradient(begin: Alignment.topCenter, colors: [
-        // Color(0xFFF75C5C),
-        // Color(0xFFFFCE95),
         Color.fromRGBO(32, 122, 53, 0.725),
         Color.fromRGBO(35, 50, 38, 30),
       ])),

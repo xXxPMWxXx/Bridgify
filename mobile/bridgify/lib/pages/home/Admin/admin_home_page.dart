@@ -1,10 +1,8 @@
 import 'dart:io';
 
-import 'package:bridgify/accessories/avatar_builder.dart';
 import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/accessories/dialog/post_preview.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
-import 'package:bridgify/accessories/post/build_post.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/post_request_model.dart';
@@ -390,6 +388,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     "PREVIEW",
                     () {
                       if (validateAndSave()) {
+                        postImages!.clear();
                         for (XFile image in _imageList) {
                           String? imagePath = image.path;
                           print(imagePath);
@@ -465,8 +464,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
   }
 
   void imageSelect() async {
-    final List<XFile>? selectedImages = await _picker.pickMultiImage();
-    if (selectedImages!.isNotEmpty) {
+    List<XFile>? selectedImages = await _picker.pickMultiImage();
+    if (selectedImages.isNotEmpty) {
       if (selectedImages.length + imageCount > 10) {
         for (var i = 0; i < 10 - imageCount; i++) {
           _imageList.add(selectedImages[i]);
@@ -477,9 +476,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
       }
       imageCount = _imageList.length;
     }
-    print(selectedImages);
-    print(imageCount);
-    setState(() {});
+    setState(() {
+      selectedImages = [];
+    });
     // print(selectedImage!.path.toString());
   }
 
@@ -630,6 +629,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
                         if (!mounted) return;
                         Navigator.pushNamed(context, "/adminChatList");
+                      }),
+                  DrawerItem(
+                      title: 'Elderly Services',
+                      icon: Icons.elderly,
+                      onTapPath: () {
+                        Navigator.pushNamed(context, "/adminElderlyRecords");
                       }),
                   DrawerItem(
                       title: 'Settings',

@@ -11,13 +11,13 @@ class RatingView extends StatefulWidget {
 }
 
 class _RatingViewState extends State<RatingView> {
-  var _ratingPageController = PageController();
+  final _ratingPageController = PageController();
   var _starPosition = 200.0;
   var _rating = 0;
   var _hasSkipped = false;
   var _selectedChipIndex = -1;
   var _isMoreDetailActive = false;
-  var _moreDetailFocusNode = FocusNode();
+  final _moreDetailFocusNode = FocusNode();
 
   @override
   Widget build(BuildContext context) {
@@ -28,10 +28,10 @@ class _RatingViewState extends State<RatingView> {
         clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
-            //thanks note
             Container(
               height: max(300, MediaQuery.of(context).size.height * 0.3),
               child: PageView(
+                physics: NeverScrollableScrollPhysics(),
                 controller: _ratingPageController,
                 children: [
                   _buildThanksNote(),

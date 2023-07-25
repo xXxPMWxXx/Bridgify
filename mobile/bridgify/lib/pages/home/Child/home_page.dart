@@ -1,9 +1,9 @@
-import 'package:bridgify/accessories/avatar_builder.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
+import 'package:bridgify/accessories/elderly/build_elderly_view.dart';
 import 'package:bridgify/accessories/post/build_post.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
-import 'package:bridgify/models/post_response_model.dart';
+import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:zego_zimkit/services/services.dart';
@@ -148,52 +148,40 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
-                  height: 90,
-                  child: ListView(
-                    scrollDirection: Axis.horizontal,
-                    physics: const NeverScrollableScrollPhysics(),
-                    children: const [
-                      BuildContactAvatar(name: 'Alla', fileName: 'img1.jpeg'),
-                      BuildContactAvatar(name: 'July', fileName: 'img1.jpeg'),
-                      BuildContactAvatar(name: 'Mikle', fileName: 'img1.jpeg'),
-                      BuildContactAvatar(name: 'Kler', fileName: 'img1.jpeg'),
-                    ],
-                  ),
-                )
+                    height: 90,
+                    child: FutureBuilder(
+                        future: APIService.getElderlyByUser(),
+                        builder: (
+                          BuildContext context,
+                          AsyncSnapshot<List<ElderlyResponseModel>?> model,
+                        ) {
+                          if (model.hasData) {
+                            return BuildElderlyView(models: model.data);
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        }))
               ],
             ),
           ),
         ),
         Positioned(
-            top: 260,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              padding: const EdgeInsets.symmetric(vertical: 15),
-              decoration: const BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(40),
-                    topRight: Radius.circular(40)),
-                color: Color(0xFFEFFFFC),
-              ),
-              child: FutureBuilder(
-                future: APIService.getPosts(),
-                builder: (
-                  BuildContext context,
-                  AsyncSnapshot<List<PostResponseModel>?> model,
-                ) {
-                  if (model.hasData) {
-                    return BuildPost(models: model.data);
-                  }
-
-                  return const Center(
-                    child: CircularProgressIndicator(),
-                  );
-                },
-              ),
-              //posts
-            ))
+          top: 260,
+          left: 0,
+          right: 0,
+          bottom: 0,
+          child: Container(
+            // padding: const EdgeInsets.symmetric(vertical: 15),
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(30), topRight: Radius.circular(30)),
+              color: Color(0xFFEFFFFC),
+            ),
+            //load posts
+            child: BuildPost(),
+          ),
+        ),
       ],
     );
   }

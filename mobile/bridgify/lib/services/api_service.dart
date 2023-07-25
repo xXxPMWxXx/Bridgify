@@ -7,7 +7,7 @@ import 'package:bridgify/models/post_request_model.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/models/register_request_model.dart';
 import 'package:bridgify/models/register_response_model.dart';
-import 'package:bridgify/models/update_request_model.dart';
+import 'package:bridgify/models/user_update_request_model.dart';
 import 'package:http/http.dart' as http;
 
 import '../../config.dart';
@@ -71,7 +71,9 @@ class APIService {
 
   static Future<Object> getUserProfile() async {
     var loginDetails = await SharedService.loginDetails();
-
+    // if (loginDetails == null) {
+    //   // return ;
+    // }
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${loginDetails!.data.accessToken}'
@@ -83,8 +85,7 @@ class APIService {
       url,
       headers: requestHeaders,
     );
-    // print(response);
-    // print(response.statusCode);
+
     if (response.statusCode == 401) {
       return {
         "imagePath": loginDetails.data.profileImage,
@@ -150,7 +151,30 @@ class APIService {
     }
   }
 
-  static Future<List<PostResponseModel>?> getPosts() async {
+  static Future<List<PostResponseModel>?> getPostsByUser() async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.getPostsByUserAPI,
+        {"email": currentLoginDetails.data.email});
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return postFromJson(data);
+    } else {
+      return null;
+    }
+  }
+
+  static Future<List<PostResponseModel>?> getPostsByNoElderlyInvolved() async {
     var currentLoginDetails = await SharedService.loginDetails();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
@@ -159,19 +183,17 @@ class APIService {
 
     var url = Uri.http(
       Config.apiURL,
-      Config.getPostsAPI,
+      Config.getPostsWithNoElderlyAPI,
     );
 
     var response = await client.get(
       url,
       headers: requestHeaders,
     );
-    print(response.statusCode);
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-      print(data);
-      print(postFromJson(data["data"]));
-      return postFromJson(data["data"]);
+
+      return postFromJson(data);
     } else {
       return null;
     }
@@ -211,24 +233,20 @@ class APIService {
     if (response.statusCode == 200) {
       return true;
     } else {
-      print(response.statusCode);
       return false;
     }
   }
 
-  static Future<List<ElderlyResponseModel>?> getElderly() async {
+  static Future<List<ElderlyResponseModel>?> getElderlyByUser() async {
     var currentLoginDetails = await SharedService.loginDetails();
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
     };
 
-    var url = Uri.http(
-      Config.apiURL,
-      Config.getElderlyAPI,
-
-    );
-
+    var url = Uri.http(Config.apiURL, Config.getElderlyByUserAPI,
+        {"email": currentLoginDetails.data.email});
+    print(url);
     var response = await client.get(
       url,
       headers: requestHeaders,
@@ -242,4 +260,65 @@ class APIService {
       return null;
     }
   }
+
+  static Future<List<ElderlyResponseModel>?> getElderly() async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.getElderlyAPI);
+    print(url);
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    print(response.statusCode);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return elderlyFromJson(data);
+    } else {
+      return null;
+    }
+  }
+
+  // static Future<bool> createElderly(ElderlyRequestModel model) async {
+  //   var currentLoginDetails = await SharedService.loginDetails();
+  //   Map<String, String> requestHeaders = {
+  //     'Content-Type': 'application/json',
+  //     'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+  //   };
+
+  //   var url = Uri.http(
+  //     Config.apiURL,
+  //     Config.createElderlyAPI,
+  //   );
+
+  //   var request = http.MultipartRequest("POST", url);
+  //   request.headers.addAll(requestHeaders);
+  //   request.fields["author_email"] = model.authorEmail!;
+  //   request.fields["description"] = model.description!;
+  //   request.fields["activity_type"] = model.activityType!;
+
+  //   for (var i = 0; i < model.postImages!.length; i++) {
+  //     http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
+  //       'images',
+  //       model.postImages![i],
+  //     );
+
+  //     request.files.add(multipartFile);
+  //   }
+  //   print(request.files);
+  //   http.StreamedResponse streamResponse = await request.send();
+
+  //   final response = await http.Response.fromStream(streamResponse);
+
+  //   if (response.statusCode == 200) {
+  //     return true;
+  //   } else {
+  //     return false;
+  //   }
+  // }
 }

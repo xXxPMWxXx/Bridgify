@@ -1,11 +1,8 @@
 import 'dart:io';
 
 import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
-import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
-import 'package:bridgify/models/update_request_model.dart';
-import 'package:bridgify/pages/home/Child/home_page.dart';
-import 'package:bridgify/pages/profile/settings_page.dart';
+import 'package:bridgify/models/user_update_request_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -51,7 +48,9 @@ class _ProfilePageState extends State<ProfilePage> {
                         Navigator.pushNamedAndRemoveUntil(
                           context,
                           '/adminHome',
-                          (route) => false,
+                          (Route<dynamic> route) {
+                            return route.settings.name == '/adminHome';
+                          },
                         );
                       },
                       icon: const Icon(
@@ -67,7 +66,9 @@ class _ProfilePageState extends State<ProfilePage> {
                     Navigator.pushNamedAndRemoveUntil(
                       context,
                       '/home',
-                      (route) => false,
+                      (Route<dynamic> route) {
+                        return route.settings.name == '/home';
+                      },
                     );
                   },
                   icon: const Icon(
@@ -426,7 +427,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 FormHelper.submitButton(
                   height: 50,
                   width: 150,
-                  "CANCEL",
+                  "CLEAR",
                   () {
                     setState(() {
                       passwordUpdate = "";

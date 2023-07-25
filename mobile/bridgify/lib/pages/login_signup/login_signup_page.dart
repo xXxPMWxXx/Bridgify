@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'dart:math';
 
 import 'package:bridgify/accessories/background.dart';
 import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
@@ -11,7 +10,6 @@ import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
 import 'package:flutter/gestures.dart';
-import 'package:bridgify/config.dart';
 import 'package:bridgify/models/login_request_model.dart';
 import 'package:bridgify/models/register_request_model.dart';
 import 'package:bridgify/services/api_service.dart';
@@ -63,15 +61,20 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
-        backgroundColor: HexColor("#225518"),
-        body: ProgressHUD(
-          inAsyncCall: isAPICallProcess,
-          opacity: 0.3,
-          key: UniqueKey(),
-          child: Form(
-            key: globalFormKey,
-            child: _loginUI(context),
+      child: WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: Scaffold(
+          backgroundColor: HexColor("#225518"),
+          body: ProgressHUD(
+            inAsyncCall: isAPICallProcess,
+            opacity: 0.3,
+            key: UniqueKey(),
+            child: Form(
+              key: globalFormKey,
+              child: _loginUI(context),
+            ),
           ),
         ),
       ),
@@ -788,7 +791,6 @@ class _MainScreenState extends State<MainScreen> {
                                           setState(() {
                                             isAPICallProcess = false;
                                           });
-
                                           if (response) {
                                             APIService.getUserProfile()
                                                 .then((loginDetails) {
