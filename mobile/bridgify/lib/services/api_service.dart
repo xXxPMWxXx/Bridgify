@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bridgify/models/elderly_request_model.dart';
 import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:bridgify/models/login_request_model.dart';
 import 'package:bridgify/models/login_response_model.dart';
@@ -284,41 +285,19 @@ class APIService {
     }
   }
 
-  // static Future<bool> createElderly(ElderlyRequestModel model) async {
-  //   var currentLoginDetails = await SharedService.loginDetails();
-  //   Map<String, String> requestHeaders = {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
-  //   };
+  static Future<bool> createElderly(ElderlyRequestModel model) async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
 
-  //   var url = Uri.http(
-  //     Config.apiURL,
-  //     Config.createElderlyAPI,
-  //   );
+    var url = Uri.http(
+      Config.apiURL,
+      Config.createElderlyAPI,
+    );
 
-  //   var request = http.MultipartRequest("POST", url);
-  //   request.headers.addAll(requestHeaders);
-  //   request.fields["author_email"] = model.authorEmail!;
-  //   request.fields["description"] = model.description!;
-  //   request.fields["activity_type"] = model.activityType!;
 
-  //   for (var i = 0; i < model.postImages!.length; i++) {
-  //     http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
-  //       'images',
-  //       model.postImages![i],
-  //     );
-
-  //     request.files.add(multipartFile);
-  //   }
-  //   print(request.files);
-  //   http.StreamedResponse streamResponse = await request.send();
-
-  //   final response = await http.Response.fromStream(streamResponse);
-
-  //   if (response.statusCode == 200) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+      return false;
+  }
 }

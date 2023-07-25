@@ -20,6 +20,9 @@ class _UpdateStatusState extends State<UpdateStatus> {
 
   @override
   Widget build(BuildContext context) {
+    bool awakenStatus = false;
+    bool takenMedsStatus = false;
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Current Status Update',
@@ -31,6 +34,26 @@ class _UpdateStatusState extends State<UpdateStatus> {
       body: ListView(
         padding: const EdgeInsets.all(15),
         children: [
+          SwitchListTile(
+            title: const Text("Awake?"),
+            value: awakenStatus,
+            onChanged: (bool value) {
+              setState(() {
+                awakenStatus = value;
+              });
+            },
+            secondary: const Icon(Icons.alarm),
+          ),
+          SwitchListTile(
+            title: const Text("Taken Meds?"),
+            value: awakenStatus,
+            onChanged: (bool value) {
+              setState(() {
+                awakenStatus = value;
+              });
+            },
+            secondary: const Icon(Icons.medication_liquid_rounded),
+          ),
           FormHelper.inputFieldWidget(
             context,
             'current activity',

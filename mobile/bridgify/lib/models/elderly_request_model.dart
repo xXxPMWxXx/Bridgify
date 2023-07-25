@@ -1,7 +1,3 @@
-List<ElderlyRequestModel> elderlyFromJson(dynamic str) =>
-    List<ElderlyRequestModel>.from(
-        (str).map((x) => ElderlyRequestModel.fromJson(x)));
-
 class ElderlyRequestModel {
   late String? id;
   late String? name;
