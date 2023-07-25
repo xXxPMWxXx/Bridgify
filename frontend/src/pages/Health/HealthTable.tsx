@@ -1,17 +1,16 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from 'react';
 import Avatar from '@mui/joy/Avatar';
-import { Box, FormControl, Input, LinearProgress, Modal, Typography, Menu, MenuItem, FormGroup, FormControlLabel, Popover, TextField, InputLabel, Select } from '@mui/material';
-import { List, ListItem, ListItemAvatar, ListItemIcon, ListItemText } from '@mui/material';
+import { Box, FormControl, Input, LinearProgress, Modal, Typography, Menu, MenuItem, FormGroup, FormControlLabel, Popover, TextField, InputLabel, Select, InputAdornment } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Table from '@mui/joy/Table';
 import { Sheet, Button } from '@mui/joy';
 import Checkbox from '@mui/joy/Checkbox';
 import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
-import { Add, WidthFull } from '@mui/icons-material';
+import { Add } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
-import { yellow } from '@mui/material/colors';
+import SearchIcon from '@mui/icons-material/Search';
 
 const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
 // const imageBASEURL = 'http://localhost:8000/images/trained_face';
@@ -71,8 +70,7 @@ export default function HealthTable() {
   const [elderly, setElderly] = React.useState<any[]>([]); //depending on tabs
 
   const [selectedElderly, setSelectedElderly] = React.useState<string[]>([]);
-
-
+  const [searchQuery, setSearchQuery] = React.useState('');
 
   // const [filteredList, setFilteredList] = new useState(itemList);
 
@@ -92,18 +90,12 @@ export default function HealthTable() {
   };
 
   const isSelectedElderly = (obj: any) => {
-    // if (tabValue === 0) {
-    //   return true;
-    // } else if (tabValue === 1) {
-    //   return obj.type === "medical"
-    // } else if (tabValue === 2) {
-    //   return obj.type === "medication"
-    // } else if (tabValue === 3) {
-    //   return obj.type === "others"
-    // }
-
     return selectedElderly.includes(obj.elderlyID)
+  };
 
+
+  const isQuery = (obj: any) => {
+    return obj.name.toLowerCase().includes(searchQuery);
   };
 
   const columns = [{
@@ -163,7 +155,7 @@ export default function HealthTable() {
       .catch((err) => {
         window.alert(err);
       });
-    
+
 
   }
 
@@ -232,13 +224,26 @@ export default function HealthTable() {
 
   }, [fetchAdditional]);
 
+  //on start up
   React.useEffect(() => {
-      elderly.forEach((e)=>
-      selectedElderly.push(e.id)
-      )
-      console.log("useefffect")
-  }, [elderly]);
+    async function loadData() {
+      setLoadProgressOpen(true);
+      await delay(500);
+      loadUserData();
+      elderlyFetcher()
+    }
 
+    if (!dataLoaded) {
+      loadData();
+    }
+  }, []);
+
+  //set default checked boxes
+  React.useEffect(() => {
+    elderly.forEach((e) =>
+      selectedElderly.push(e.id)
+    )
+  }, [elderly]);
 
   const elderlyFetcher = async () => {
     console.log("elderlyFetcher called");
@@ -274,7 +279,7 @@ export default function HealthTable() {
   }
   const handleCheck = (event: any) => {
     const checkedElderlyId = event.target.name;
-  
+
     // Check if the elderly is already selected
     if (selectedElderly.includes(checkedElderlyId)) {
       // If it's already selected, remove it from the selectedElderly array
@@ -286,18 +291,24 @@ export default function HealthTable() {
       setSelectedElderly((prevSelectedElderly) => [...prevSelectedElderly, checkedElderlyId]);
     }
   };
-  React.useEffect(() => {
-    setRows(tableData.filter(isType));
-  }, [tableData]);
+  
+  const handleSearch = (event: any) => {
+    setSearchQuery(event.target.value.toLowerCase());
+  };
+  
 
-  //based on tab
+  // React.useEffect(() => {
+  //   setRows(tableData.filter(isType));
+  // }, [tableData]);
+
+  //filter
   React.useEffect(() => {
-    setRows(tableData.filter(isType).filter(isSelectedElderly));
+    setRows(tableData.filter(isType).filter(isSelectedElderly).filter(isQuery));
     setLoadProgressOpen(false)
-    console.log("this is called")
+    // console.log("filter is called")
 
     // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
-  }, [tabValue,selectedElderly]);
+  }, [tableData, tabValue, selectedElderly, searchQuery]);
 
 
 
@@ -314,19 +325,7 @@ export default function HealthTable() {
     p: 4,
   };
 
-  //on start up
-  React.useEffect(() => {
-    async function loadData() {
-      setLoadProgressOpen(true);
-      await delay(500);
-      loadUserData();
-      elderlyFetcher()
-    }
 
-    if (!dataLoaded) {
-      loadData();
-    }
-  }, []);
 
   function a11yProps(index: number) {
     return {
@@ -464,13 +463,24 @@ export default function HealthTable() {
             noValidate
             autoComplete="off"
           >
-            <TextField id="outlined-basic" label="Search" variant="outlined" size='small'
-              sx={{
-                ":enabled": {
-                  borderColor: "#224942",
-                  color: "white"
-                }
-              }} />
+        
+            <TextField
+              id="input-with-icon-textfield"
+              size="small"
+              label="Search By Report Name"
+              variant="outlined"
+              fullWidth
+              onChange={handleSearch}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+
+                ), style: { borderRadius: 5 }
+
+              }}
+            />
 
           </Box>
           {/* Filter */}
@@ -487,7 +497,7 @@ export default function HealthTable() {
               }
             }}>
             <TuneIcon /></IconButton>
-          <div style={{ borderColor: "black", borderWidth: "3px" }}>
+          <Box style={{ borderColor: "black", borderWidth: "3px" }}>
             <Popover
               id={id}
               open={open}
@@ -509,11 +519,11 @@ export default function HealthTable() {
                 <FormGroup sx={{ p: 1.5, margin: "auto", borderWidth: 2, borderColor: "black", }}>
                   <FormControl sx={{ padding: "auto" }}>
                     <Box sx={{ display: 'flex', gap: 1.2, alignItems: 'center', textAlign: "right" }}>
-                      
-                      <Checkbox name={e.id} onClick={handleCheck} checked={selectedElderly.indexOf(e.id)>-1}
+
+                      <Checkbox key={e.id} name={e.id} onClick={handleCheck} checked={selectedElderly.indexOf(e.id) > -1}
                       />
-                      <div style={{ marginLeft: 2 }}>
-                        <Avatar alt={e.name} src={`${imageBASEURL}/${e.photo}`} sx={{}} /></div>
+                      <Sheet style={{ marginLeft: 2 }}>
+                        <Avatar alt={e.name} src={`${imageBASEURL}/${e.photo}`} sx={{}} /></Sheet>
                       <Typography>
                         {e.name}
                       </Typography>
@@ -521,18 +531,11 @@ export default function HealthTable() {
                   </FormControl>
 
                 </FormGroup>))}
-                  {/* <FormControl sx={{}} fullWidth>
-                              
-                                    {elderly.map((e) => (
-                                        <MenuItem key={e.id} value={e.id}>
-                                            <Checkbox name={e.id} checked={selectedElderly.indexOf(name)>-1}/>
-                                            <ListItemText primary={e.name} />
-                                        </MenuItem>))}
-                            </FormControl> */}
+       
             </Popover>
-          </div>
+          </Box>
           {/* Add Document */}
-          <Button
+          {/* <Button
             startDecorator={<Add />}
             disabled={false}
             size="sm"
@@ -547,10 +550,9 @@ export default function HealthTable() {
                 color: "white"
               }
             }}
-            // onClick={() => { elderlyFetcher("327H")}}
-            onClick={() => console.log(selectedElderly)}
+            onClick={() => console.log(searchQuery)}
 
-          > Add Document</Button>
+          > Add Document</Button> */}
         </Sheet>
 
         <Box
@@ -600,16 +602,16 @@ export default function HealthTable() {
               <tbody>
                 {rows.map((row) => (
 
-                  <tr key={row._id} onClick={() => { window.open(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/display?fileName=${row.document_path}`, '_blank') }} style={{ cursor: "pointer" }}>
+                  <tr key={row.document_no} onClick={() => { window.open(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/display?fileName=${row.document_path}`, '_blank') }} style={{ cursor: "pointer" }}>
                     <td style={{ padding: 12 }}>{row.dateTime}</td>
                     <td style={{ padding: 12 }}>{row.document_no}</td>
                     <td style={{ padding: 12 }}>{row.name}</td>
                     <td >
                       <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                         <Avatar alt={row.elderlyName} src={`${imageBASEURL}/${row.elderlyPhoto}`} />
-                        <div>
+                        <Typography sx={{font:"inherit"}}>
                           {row.elderlyName}
-                        </div>
+                        </Typography>
                       </Box>
                     </td>
                     {/* <td style={{
