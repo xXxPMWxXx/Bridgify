@@ -46,7 +46,7 @@ export const ResponsiveAppBar = () => {
         localStorage.removeItem('accessToken');
         localStorage.removeItem('userName');
         localStorage.removeItem('accRole');
-        localStorage.removeItem('linedElderly');
+        localStorage.removeItem('linkedElderly');
         localStorage.removeItem('profileImage');
         navigate('/login');
     };
@@ -256,6 +256,11 @@ export const ResponsiveAppBarAdmin = () => {
         navigate('/Post-admin');
     }
 
+    const handleRecordAdmin = () => {
+        navigate('/Record-admin');
+    }
+
+
 
 
     return (
@@ -317,6 +322,8 @@ export const ResponsiveAppBarAdmin = () => {
                             <Button key='Home' onClick={handleHomeAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Home</Button>
                             <Button key='Elderly' onClick={handleElderlyAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Elderly</Button>
                             <Button key='Post' onClick={handlePostAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Post</Button>
+                            <Button key='Record' onClick={handleRecordAdmin} sx={{ my: 0, color: 'black', display: 'block' }} >Records</Button>
+
                         </Menu>
                     </Box>
                     <Typography
@@ -342,6 +349,7 @@ export const ResponsiveAppBarAdmin = () => {
                         <Button key='Home' onClick={handleHomeAdmin} sx={{ my: 2, color: 'white', display: 'block' }} >Home</Button>
                         <Button key='Elderly' onClick={handleElderlyAdmin} sx={{ my: 2, color: 'white', display: 'block' }} >Elderly</Button>
                         <Button key='Post' onClick={handlePostAdmin} sx={{ my: 2, color: 'white', display: 'block' }} >Post</Button>
+                        <Button key='Record' onClick={handleRecordAdmin} sx={{ my: 2, color: 'white', display: 'block' }} >Record</Button>
                     </Box>
 
                     <Box sx={{ flexGrow: 0 }}>

@@ -21,6 +21,7 @@ import { Forbidden } from './pages/Forbidden';
 import { Elderly_admin } from './pages/Elderly(admin)';
 import { Home_admin } from './pages/Home(admin)';
 import { Post_admin } from './pages/Post(admin)';
+import { Record_admin } from './pages/Record(admin)';
 
 
 
@@ -44,6 +45,8 @@ root.render(
 			<Route path="/Home-admin" element={<Home_admin />} />
 			<Route path="/Elderly-admin" element={<Elderly_admin />} />
 			<Route path="/Post-admin" element={<Post_admin />} />
+			<Route path="/Record-admin" element={<Record_admin/>} />
+
 		</Routes>
 	</BrowserRouter>);
 

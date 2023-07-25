@@ -233,35 +233,6 @@ export default function HealthTable() {
 
   }, [fetchAdditional]);
 
-  //display pdf
-  const displayPDF = async (fileName: any) => {
-    console.log("displayPDF called");
-    // event.preventDefault();
-    const token = window.localStorage.getItem('accessToken');
-    // const elderlyID = "327H";
-
-    //calling backend API
-    window.open(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/display?fileName=${fileName}`, '_blank');
-    // window.open(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/display?fileName=327H_Insulin_765334.pdf`, '_blank');
-
-    // fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/get?fileName=531H_Heart Report_#323145.pdf`, {
-    //   headers: {
-    //     'Authorization': `Bearer ${token}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   method: 'GET'
-
-    // })
-    //   .then((response) => response.blob())
-    //   .then((myBlob) => {
-    //     const pdfUrl = URL.createObjectURL(myBlob);
-    //     setPdfUrl(pdfUrl);
-    //     window.open(pdfUrl, '_blank');
-
-    //   });
-
-
-  }
 
   const elderlyFetcher = async () => {
     console.log("elderlyFetcher called");
@@ -602,7 +573,7 @@ export default function HealthTable() {
               <tbody>
                 {rows.map((row) => (
 
-                  <tr key={row._id} onClick={() => displayPDF(row.document_path)} style={{cursor:"pointer"}}>
+                  <tr key={row._id} onClick={()=>{window.open(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/display?fileName=${row.document_path}`, '_blank')}} style={{cursor:"pointer"}}>
                     <td style={{ padding: 12 }}>{row.dateTime}</td>
                     <td style={{ padding: 12 }}>{row.document_no}</td>
                     <td style={{ padding: 12 }}>{row.name}</td>
