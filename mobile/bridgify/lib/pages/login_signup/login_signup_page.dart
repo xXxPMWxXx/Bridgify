@@ -206,8 +206,8 @@ class _MainScreenState extends State<MainScreen> {
 
                                       return null;
                                     },
-                                    (onSavedVal) => {
-                                      emailLogin = onSavedVal,
+                                    (onSavedVal) {
+                                      emailLogin = onSavedVal;
                                     },
                                     paddingRight: 0,
                                     paddingLeft: 0,
@@ -249,8 +249,8 @@ class _MainScreenState extends State<MainScreen> {
 
                                       return null;
                                     },
-                                    (onSavedVal) => {
-                                      passwordLogin = onSavedVal,
+                                    (onSavedVal) {
+                                      passwordLogin = onSavedVal;
                                     },
                                     paddingRight: 0,
                                     paddingLeft: 0,
@@ -636,8 +636,8 @@ class _MainScreenState extends State<MainScreen> {
                                     }
                                     return null;
                                   },
-                                  (onSavedVal) => {
-                                    passwordSignUp = onSavedVal,
+                                  (onSavedVal) {
+                                    passwordSignUp = onSavedVal;
                                   },
                                   paddingRight: 0,
                                   paddingLeft: 0,
@@ -691,8 +691,8 @@ class _MainScreenState extends State<MainScreen> {
                                     }
                                     return null;
                                   },
-                                  (onSavedVal) => {
-                                    confirmPasswordSignUp = onSavedVal,
+                                  (onSavedVal) {
+                                    confirmPasswordSignUp = onSavedVal;
                                   },
                                   paddingRight: 0,
                                   paddingLeft: 0,

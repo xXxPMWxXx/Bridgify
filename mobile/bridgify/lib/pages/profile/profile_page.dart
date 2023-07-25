@@ -264,8 +264,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     "email",
                     "Email",
                     (onValidateVal) {},
-                    (onSavedVal) => {
-                      updateUserRequestModel!.email = onSavedVal,
+                    (onSavedVal) {
+                      updateUserRequestModel!.email = onSavedVal;
                     },
                     isReadonly: true,
                     paddingRight: 0,
@@ -304,8 +304,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
                       return null;
                     },
-                    (onSavedVal) => {
-                      updateUserRequestModel!.name = onSavedVal,
+                    (onSavedVal) {
+                      updateUserRequestModel!.name = onSavedVal;
                     },
                     paddingRight: 0,
                     paddingLeft: 0,
@@ -334,8 +334,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     "password",
                     "Password",
                     (onValidateVal) {},
-                    (onSavedVal) => {
-                      passwordUpdate = onSavedVal,
+                    (onSavedVal) {
+                      passwordUpdate = onSavedVal;
                     },
                     paddingRight: 0,
                     paddingLeft: 0,
@@ -377,8 +377,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     "confirm password",
                     "Confirm Password",
                     (onValidateVal) {},
-                    (onSavedVal) => {
-                      confirmPasswordUpdate = onSavedVal,
+                    (onSavedVal) {
+                      confirmPasswordUpdate = onSavedVal;
                     },
                     paddingRight: 0,
                     paddingLeft: 0,
