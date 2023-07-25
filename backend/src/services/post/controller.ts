@@ -10,6 +10,7 @@ const baseDir = path.resolve(__dirname, "../../..");
 const PostModel = require("../../models/post");
 const UserModel = require("../../models/user");
 const ElderlyModel = require("../../models/elderly");
+var fs = require('fs');
 
 // to create a new post
 //to access the image => http://13.228.86.148:8000/images/post/{imageName}
@@ -176,13 +177,13 @@ export const getByUser = async (req: any, res: Response, next: NextFunction) => 
             .status(200)
             .json({ message: `User email: ${email} is not linked to any elderly yet!` });
         }
-        let linkedElderlyNameList : any = [];
+        let linkedElderlyNameList: any = [];
         //map linked elderly ID to their name
         for (const elderlyID of linkedElderly) {
           const elderlyName = await ElderlyModel.findOne({ id: elderlyID }).select('name');
           linkedElderlyNameList.push(elderlyName.name);
         };
-        const post =  await PostModel.find({'elderlyInvolved' : {$in : linkedElderlyNameList}})
+        const post = await PostModel.find({ 'elderlyInvolved': { $in: linkedElderlyNameList } })
         res.status(200).json(post);
 
       } else if (err) {
@@ -207,7 +208,7 @@ export const getNonElderlyInvolved = async (req: any, res: Response, next: NextF
       // 3. allow elderly to update elderly details
 
       if (decoded) {
-        const post =  await PostModel.find({'elderlyInvolved' : []})
+        const post = await PostModel.find({ 'elderlyInvolved': [] })
         res.status(200).json(post);
 
       } else if (err) {
@@ -218,4 +219,94 @@ export const getNonElderlyInvolved = async (req: any, res: Response, next: NextF
   } catch (error) {
     res.status(400).json({ error, message: "Make sure your request body is correct" });
   }
+};
+
+// get update post, find by author email and date created
+export const update = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    // 1. get token from req
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      // 3. allow admin to update post details
+      if (decoded) {
+        const { author_email, dateTime } = req.body;
+        // 4. check if the post is existed
+        const post = await PostModel.findOne({ 'author_email': author_email, 'dateTime': dateTime });
+        if (post == null) {
+          return res
+            .status(400)
+            .json({ message: `Post does not exit!` });
+        }
+        try {
+          await PostModel.updateOne({ 'author_email': author_email, 'dateTime': dateTime }, req.body);
+          res.status(200).send({ message: `Post updated successfully` });
+        } catch (error) {
+          res.status(400).json({ error: "Update fail, please try again later" });
+        }
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
+
+  } catch (error) {
+    res.status(400).json({ error, message: "Make sure your request body is correct" });
+  }
+
+};
+
+// get update post, find by author email and date created
+export const delete_post = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    // 1. get token from req
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      // 3. allow admin to update post details
+      if (decoded) {
+        const { author_email, dateTime } = req.body;
+        // 4. check if the post is existed
+        const post = await PostModel.findOne({ 'author_email': author_email, 'dateTime': dateTime });
+        const images = post.postImages;
+
+        images.forEach((img: any) => {
+          const image = `${baseDir}/images/post/${img}`;
+          if (fs.existsSync(image)) {
+            fs.unlink(image, (err: any) => {
+              if (err) {
+                console.log(err);
+              }
+              console.log(`${img} deleted`);
+            })
+          }else {
+            console.log(`${img} does not exist!`);
+          }
+        });
+
+        if (post == null) {
+          return res
+            .status(400)
+            .json({ message: `Post does not exit!` });
+        }
+        try {
+          await PostModel.deleteOne({ 'author_email':  author_email, 'dateTime': dateTime});
+          res.status(200).send({ message: `Post delete successfully` });
+        } catch (error) {
+          res.status(400).json({ error: "Delete fail, please try again later" });
+        }
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
+
+  } catch (error) {
+    res.status(400).json({ error, message: "Make sure your request body is correct" });
+  }
+
 };

@@ -16,7 +16,7 @@ export const Post_admin = () => {
 
     const token = window.localStorage.getItem('accessToken');
     const accRole = window.localStorage.getItem('accRole');
-    const [value, setValue] = React.useState('Post');
+    const [value, setValue] = React.useState('Create New Post');
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
     };
