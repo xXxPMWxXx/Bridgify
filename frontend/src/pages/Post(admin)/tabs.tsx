@@ -131,7 +131,7 @@ export function PostTab() {
     const handleUpdateSubmit = (event: any) => {
         event.preventDefault();
         // // Make a POST request to the server with the formData
-        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/post/update`, {
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/post/update`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -174,16 +174,48 @@ export function PostTab() {
         rowHover: true,
         onRowsSelect: onRowsSelect,
         onRowClick: handleRowClick,
-        //haven't finished
         onRowsDelete: (rowsDeleted: any, newData: any) => {
-            console.log('rowsDeleted');
-            console.dir(rowsDeleted);
-            //data after del
-            console.dir(newData);
-            if (rowsDeleted && rowsDeleted.data && rowsDeleted.data[0] && rowsDeleted.data[0].dataIndex === 0) {
-                window.alert('Can\'t delete this!');
-                return false;
-            };
+            const delData = rowsDeleted.data;
+            delData.forEach((element: any) => {
+                const dataIndex = element.dataIndex;
+                const author_email = postData[dataIndex][0];
+                const dateTime = postData[dataIndex][5];
+                //call backend to del from database
+                fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/post/delete`, {
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${token}`,
+                    },
+                    method: 'DELETE',
+                    body: JSON.stringify({
+                        "author_email": author_email,
+                        "dateTime": dateTime,
+                    })
+                })
+                    .then(async (response) => {
+                        if (response.status != 200) {
+                            const apiResponse = await response.json();
+                            //show alert msg
+                            setOpenSnackbar(true);
+                            setAlertType('error');
+                            setAlertMsg(apiResponse['message']);
+                        } else {
+                            const apiResponse = await response.json();
+                            //show alert msg
+                            setOpenSnackbar(true);
+                            setAlertType('success');
+                            setAlertMsg(apiResponse['message']);
+                           
+                        }
+                    })
+                    .catch((error) => {
+                        // Handle any error that occurred during the update process
+                        window.alert(`Error during update post:${error}`);
+                    });
+
+            });
+            //update table
+            setPostData(newData);
 
         },
     };
@@ -340,10 +372,9 @@ export function CreatePostTab() {
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        setOpenProcessingModal(true);
-
+        
         if (selectedFiles.length > 0) {
-
+            setOpenProcessingModal(true);
             const formData = new FormData();
             for (let i = 0; i < selectedFiles.length; i++) {
                 formData.append('images', selectedFiles[i]);
@@ -354,7 +385,7 @@ export function CreatePostTab() {
             formData.append('activity_type', activityType);
 
             // // Make a POST request to the server with the formData
-            fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/post/create`, {
+            fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/post/create`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -387,6 +418,12 @@ export function CreatePostTab() {
                     // Handle any error that occurred during the upload process
                     window.alert(`Error uploading the images:${error}`);
                 });
+        }else {
+
+              //show alert msg
+              setOpenSnackbar(true);
+              setAlertType('error');
+              setAlertMsg("Please upload as least one image!");
         }
     }
 
