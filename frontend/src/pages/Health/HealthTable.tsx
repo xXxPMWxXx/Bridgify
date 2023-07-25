@@ -1,7 +1,7 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from 'react';
 import Avatar from '@mui/joy/Avatar';
-import { Box, FormControl, Input, LinearProgress, Modal, Typography, Menu, MenuItem, FormGroup, FormControlLabel, Popover, TextField } from '@mui/material';
+import { Box, FormControl, Input, LinearProgress, Modal, Typography, Menu, MenuItem, FormGroup, FormControlLabel, Popover, TextField, InputLabel, Select } from '@mui/material';
 import { List, ListItem, ListItemAvatar, ListItemIcon, ListItemText } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
@@ -9,8 +9,9 @@ import Table from '@mui/joy/Table';
 import { Sheet, Button } from '@mui/joy';
 import Checkbox from '@mui/joy/Checkbox';
 import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
-import { Add } from '@mui/icons-material';
+import { Add, WidthFull } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
+import { yellow } from '@mui/material/colors';
 
 const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
 // const imageBASEURL = 'http://localhost:8000/images/trained_face';
@@ -47,6 +48,8 @@ function CustomTabPanel(props: TabPanelProps) {
 }
 
 
+
+
 export default function HealthTable() {
 
   const token = window.localStorage.getItem('accessToken');
@@ -67,6 +70,9 @@ export default function HealthTable() {
 
   const [elderly, setElderly] = React.useState<any[]>([]); //depending on tabs
 
+  const [selectedElderly, setSelectedElderly] = React.useState<string[]>([]);
+
+
 
   // const [filteredList, setFilteredList] = new useState(itemList);
 
@@ -82,6 +88,21 @@ export default function HealthTable() {
     } else if (tabValue === 3) {
       return obj.type === "others"
     }
+
+  };
+
+  const isSelectedElderly = (obj: any) => {
+    // if (tabValue === 0) {
+    //   return true;
+    // } else if (tabValue === 1) {
+    //   return obj.type === "medical"
+    // } else if (tabValue === 2) {
+    //   return obj.type === "medication"
+    // } else if (tabValue === 3) {
+    //   return obj.type === "others"
+    // }
+
+    return selectedElderly.includes(obj.elderlyID)
 
   };
 
@@ -142,29 +163,7 @@ export default function HealthTable() {
       .catch((err) => {
         window.alert(err);
       });
-    //for admin side
-    // fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/getAll`, {
-    //   headers: {
-    //     'Authorization': `Bearer ${token}`,
-    //     'Content-Type': 'application/json',
-    //   },
-    //   method: 'GET'
-    // })
-    //   .then(async (response) => {
-    //     if (response.status != 200) {
-    //       console.log(response.json())
-
-    //     } else {
-    //       const data = await response.json();
-    //       setTableData(data);
-    //       setFetchAdditional(true);
-    //       console.log("first useeffect called")
-    //     }
-
-    //   })
-    //   .catch((err) => {
-    //     window.alert(err);
-    //   });
+    
 
   }
 
@@ -233,6 +232,13 @@ export default function HealthTable() {
 
   }, [fetchAdditional]);
 
+  React.useEffect(() => {
+      elderly.forEach((e)=>
+      selectedElderly.push(e.id)
+      )
+      console.log("useefffect")
+  }, [elderly]);
+
 
   const elderlyFetcher = async () => {
     console.log("elderlyFetcher called");
@@ -266,17 +272,34 @@ export default function HealthTable() {
     // console.log(newValue)
     setTabValue(newValue);
   }
-
+  const handleCheck = (event: any) => {
+    const checkedElderlyId = event.target.name;
+  
+    // Check if the elderly is already selected
+    if (selectedElderly.includes(checkedElderlyId)) {
+      // If it's already selected, remove it from the selectedElderly array
+      setSelectedElderly((prevSelectedElderly) =>
+        prevSelectedElderly.filter((elderlyId) => elderlyId !== checkedElderlyId)
+      );
+    } else {
+      // If it's not selected, add it to the selectedElderly array
+      setSelectedElderly((prevSelectedElderly) => [...prevSelectedElderly, checkedElderlyId]);
+    }
+  };
   React.useEffect(() => {
     setRows(tableData.filter(isType));
   }, [tableData]);
 
+  //based on tab
   React.useEffect(() => {
-    setRows(tableData.filter(isType));
+    setRows(tableData.filter(isType).filter(isSelectedElderly));
     setLoadProgressOpen(false)
+    console.log("this is called")
 
     // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
-  }, [tabValue]);
+  }, [tabValue,selectedElderly]);
+
+
 
   //for modal
   const style = {
@@ -412,7 +435,7 @@ export default function HealthTable() {
 
   return (
     <React.Fragment>
-    
+
 
       <Box sx={{ width: "80%", alignItems: 'center', margin: "auto" }}>
         <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" sx={{ marginBottom: 2, borderBottom: 1 }}>
@@ -456,8 +479,8 @@ export default function HealthTable() {
             aria-describedby={id}
             onClick={handleFilterClick} sx={{
               border: "2px solid #30685e",
-              backgroundColor: "white",
-              color: "#30685e",
+              backgroundColor: open ? "#30685e" : "white",
+              color: open ? "white" : "#30685e",
               ":hover": {
                 bgcolor: "#224942",
                 color: "white"
@@ -473,25 +496,22 @@ export default function HealthTable() {
                 vertical: 'bottom',
                 horizontal: 'left',
               }}
+              slotProps={{ paper: { sx: { p: 1, marginTop: 1, borderRadius: 3, border: "1px solid #30685e" } } }}
               onClose={handleClose}
               transformOrigin={{
                 vertical: 'top',
                 horizontal: 'left',
               }} sx={{
                 border: "2px solid #3A5FCD"
-                // "&.MuiPopover-paper": {
-
-                // }, 
-                // "&.MuiPaper-root": {
-                //   boxShadow:"1px"
-                // }
               }}
             >
               {elderly.map((e) => (
                 <FormGroup sx={{ p: 1.5, margin: "auto", borderWidth: 2, borderColor: "black", }}>
                   <FormControl sx={{ padding: "auto" }}>
                     <Box sx={{ display: 'flex', gap: 1.2, alignItems: 'center', textAlign: "right" }}>
-                      <Checkbox name="gilad" />
+                      
+                      <Checkbox name={e.id} onClick={handleCheck} checked={selectedElderly.indexOf(e.id)>-1}
+                      />
                       <div style={{ marginLeft: 2 }}>
                         <Avatar alt={e.name} src={`${imageBASEURL}/${e.photo}`} sx={{}} /></div>
                       <Typography>
@@ -501,6 +521,14 @@ export default function HealthTable() {
                   </FormControl>
 
                 </FormGroup>))}
+                  {/* <FormControl sx={{}} fullWidth>
+                              
+                                    {elderly.map((e) => (
+                                        <MenuItem key={e.id} value={e.id}>
+                                            <Checkbox name={e.id} checked={selectedElderly.indexOf(name)>-1}/>
+                                            <ListItemText primary={e.name} />
+                                        </MenuItem>))}
+                            </FormControl> */}
             </Popover>
           </div>
           {/* Add Document */}
@@ -520,8 +548,7 @@ export default function HealthTable() {
               }
             }}
             // onClick={() => { elderlyFetcher("327H")}}
-            // onClick={displayPDF}
-            onClick={() => console.log(elderly)}
+            onClick={() => console.log(selectedElderly)}
 
           > Add Document</Button>
         </Sheet>
@@ -573,7 +600,7 @@ export default function HealthTable() {
               <tbody>
                 {rows.map((row) => (
 
-                  <tr key={row._id} onClick={()=>{window.open(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/display?fileName=${row.document_path}`, '_blank')}} style={{cursor:"pointer"}}>
+                  <tr key={row._id} onClick={() => { window.open(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/display?fileName=${row.document_path}`, '_blank') }} style={{ cursor: "pointer" }}>
                     <td style={{ padding: 12 }}>{row.dateTime}</td>
                     <td style={{ padding: 12 }}>{row.document_no}</td>
                     <td style={{ padding: 12 }}>{row.name}</td>
