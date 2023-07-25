@@ -205,7 +205,7 @@ export function PostTab() {
                             setOpenSnackbar(true);
                             setAlertType('success');
                             setAlertMsg(apiResponse['message']);
-                           
+
                         }
                     })
                     .catch((error) => {
@@ -372,7 +372,7 @@ export function CreatePostTab() {
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        
+
         if (selectedFiles.length > 0) {
             setOpenProcessingModal(true);
             const formData = new FormData();
@@ -418,12 +418,12 @@ export function CreatePostTab() {
                     // Handle any error that occurred during the upload process
                     window.alert(`Error uploading the images:${error}`);
                 });
-        }else {
+        } else {
 
-              //show alert msg
-              setOpenSnackbar(true);
-              setAlertType('error');
-              setAlertMsg("Please upload as least one image!");
+            //show alert msg
+            setOpenSnackbar(true);
+            setAlertType('error');
+            setAlertMsg("Please upload as least one image!");
         }
     }
 
@@ -433,9 +433,41 @@ export function CreatePostTab() {
             direction="column"
             alignItems="center"
             justifyContent="center"
-        >
-            <Typography variant="h5" sx={{ marginBottom: 2 }}>Create New Post</Typography>
+        >            <Typography variant="h5" sx={{ margin: 2, marginBottom: 3 }}>Create New Post</Typography>
+
+            {selectedFiles.length > 0 && (
+
+                <ImageList sx={{ width: 500, height: 180 }} cols={3} rowHeight={164} gap={2}>
+                    {selectedFiles.map((file, index) => (
+                        <ImageListItem key={index}>
+                            <img
+                                src={`${URL.createObjectURL(file)}?w=164&h=164&fit=crop&auto=format`}
+                                srcSet={`${URL.createObjectURL(file)}`}
+                                alt={`Selected ${index + 1}`}
+                                loading="lazy"
+                            />
+                        </ImageListItem>
+                    ))}
+                </ImageList>
+
+            )}
             <form onSubmit={handleSubmit} style={{ textAlign: "center", width: 500 }}>
+                <Button
+                    variant="outlined"
+                    component="label"
+                    sx={{ width: 500, marginBottom: 2 }}
+                    size='large'
+                    startIcon={<CloudUploadIcon />}
+                >
+                    Upload Photos
+                    <input
+                        type="file"
+                        hidden
+                        onChange={handleFileChange}
+                        accept="image/*"
+                        multiple
+                    />
+                </Button>
                 <TextField
                     required
                     id="activityType"
@@ -450,21 +482,7 @@ export function CreatePostTab() {
                     <TextareaAutosize onChange={handleDescription} minRows={5} style={{ width: 500, fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4 }} id='Description' className='StyledTextarea' value={description} placeholder="Description" />
                     {/* <Box sx={{ width: 500 }} alignItems="center" justifyContent="center"> */}
 
-                    <Button
-                        variant="outlined"
-                        component="label"
-                        sx={{ width: 500, marginTop: 2 }}
-                        size='large'
-                    >
-                        Upload File
-                        <input
-                            type="file"
-                            hidden
-                            onChange={handleFileChange}
-                            accept="image/*"
-                            multiple
-                        />
-                    </Button><br /></Box>
+                    <br /></Box>
                 {/* <input
                             type="file"
                             accept="image/*"
@@ -506,27 +524,12 @@ export function CreatePostTab() {
                     {/* </Box> */}
 
 
-                    <Button type="submit" variant="contained" sx={{ width: 300, m: 3 }}>
+                    <Button type="submit" variant="contained" sx={{ fontSize:"inherit", height: "inherit",width:"50%", m: 2 }}>
                         Submit
                     </Button>
                 </Box>
             </form>
-            {selectedFiles.length > 0 && (
 
-                <ImageList sx={{ width: 500, height: 500 }} cols={3} rowHeight={164}>
-                    {selectedFiles.map((file, index) => (
-                        <ImageListItem key={index}>
-                            <img
-                                src={`${URL.createObjectURL(file)}?w=164&h=164&fit=crop&auto=format`}
-                                srcSet={`${URL.createObjectURL(file)}`}
-                                alt={`Selected ${index + 1}`}
-                                loading="lazy"
-                            />
-                        </ImageListItem>
-                    ))}
-                </ImageList>
-
-            )}
             <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity={alertType} sx={{ width: '100%' }}>
                     {alertMsg}
