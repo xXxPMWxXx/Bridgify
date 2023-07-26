@@ -1,7 +1,7 @@
 import './Post_admin.css';
 import {
     Box, Typography, LinearProgress, Modal,
-    Grid, Button, Snackbar, Alert, TextField
+    Grid, Button, Snackbar, Alert, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
 } from '@mui/material';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -91,14 +91,12 @@ export function PostTab() {
     }
 
     const [selectedRows, setSelectedRows] = useState([]);
-    //TODO: implement delete feature
+
     const onRowsSelect = (curRowSelected: any, allRowsSelected: any) => {
         try {
-            console.log(allRowsSelected);
             setSelectedRows(allRowsSelected);
-
         } catch (error) {
-
+            window.alert(`Error during selecting post:${error}`);
         }
     }
     //For update post
@@ -167,6 +165,66 @@ export function PostTab() {
             });
     }
 
+    //for deletion
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+
+    const handleClickDeleteIcon = () => {
+        setOpenConfirmDialog(true);
+    };
+
+    const handleCloseConfirmDialog = () => {
+        setOpenConfirmDialog(false);
+    };
+
+    const handleDelete = () => {
+        // Implement  delete logic
+        console.log(selectedRows);
+        var newData = postData;
+        console.log(newData);
+        selectedRows.forEach((element: any) => {
+            const dataIndex = element.dataIndex;
+            const author_email = postData[dataIndex][0];
+            const dateTime = postData[dataIndex][5];
+            // //call backend to del from database
+            fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/post/delete`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                method: 'DELETE',
+                body: JSON.stringify({
+                    "author_email": author_email,
+                    "dateTime": dateTime,
+                })
+            })
+                .then(async (response) => {
+                    if (response.status != 200) {
+                        const apiResponse = await response.json();
+                        //show alert msg
+                        setOpenSnackbar(true);
+                        setAlertType('error');
+                        setAlertMsg(apiResponse['message']);
+                    } else {
+                        const apiResponse = await response.json();
+                        //show alert msg
+                        //remove from datatable
+                        newData.splice(dataIndex, 1);
+                        setOpenSnackbar(true);
+                        setAlertType('success');
+                        setAlertMsg(apiResponse['message']);
+
+                    }
+                })
+                .catch((error) => {
+                    // Handle any error that occurred during the update process
+                    window.alert(`Error during update post:${error}`);
+                });
+
+        });
+        setPostData(newData);
+        // After the deletion is successful, close the dialog
+        handleCloseConfirmDialog();
+    };
 
     const options = {
         print: true,
@@ -174,50 +232,7 @@ export function PostTab() {
         rowHover: true,
         onRowsSelect: onRowsSelect,
         onRowClick: handleRowClick,
-        onRowsDelete: (rowsDeleted: any, newData: any) => {
-            const delData = rowsDeleted.data;
-            delData.forEach((element: any) => {
-                const dataIndex = element.dataIndex;
-                const author_email = postData[dataIndex][0];
-                const dateTime = postData[dataIndex][5];
-                //call backend to del from database
-                fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/post/delete`, {
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${token}`,
-                    },
-                    method: 'DELETE',
-                    body: JSON.stringify({
-                        "author_email": author_email,
-                        "dateTime": dateTime,
-                    })
-                })
-                    .then(async (response) => {
-                        if (response.status != 200) {
-                            const apiResponse = await response.json();
-                            //show alert msg
-                            setOpenSnackbar(true);
-                            setAlertType('error');
-                            setAlertMsg(apiResponse['message']);
-                        } else {
-                            const apiResponse = await response.json();
-                            //show alert msg
-                            setOpenSnackbar(true);
-                            setAlertType('success');
-                            setAlertMsg(apiResponse['message']);
-
-                        }
-                    })
-                    .catch((error) => {
-                        // Handle any error that occurred during the update process
-                        window.alert(`Error during update post:${error}`);
-                    });
-
-            });
-            //update table
-            setPostData(newData);
-
-        },
+        onRowsDelete: handleClickDeleteIcon,
     };
     useEffect(() => {
         async function loadData() {
@@ -316,6 +331,20 @@ export function PostTab() {
                     {alertMsg}
                 </Alert>
             </Snackbar>
+            <Dialog open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
+                <DialogTitle>Confirm Delete</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete this item?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseConfirmDialog}>Cancel</Button>
+                    <Button onClick={handleDelete} color="secondary" autoFocus>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
         </Box >
     )
 
@@ -524,7 +553,7 @@ export function CreatePostTab() {
                     {/* </Box> */}
 
 
-                    <Button type="submit" variant="contained" sx={{ fontSize:"inherit", height: "inherit",width:"50%", m: 2 }}>
+                    <Button type="submit" variant="contained" sx={{ fontSize: "inherit", height: "inherit", width: "50%", m: 2 }}>
                         Submit
                     </Button>
                 </Box>
