@@ -8,7 +8,6 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import './Post_admin.css';
 import React, { useEffect, useState } from 'react';
 import MUIDataTable from "mui-datatables";
-
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
 
@@ -122,6 +121,7 @@ export function PostTab() {
         setCreatedDate(rowData[5]);
         setUpdateOpen(true);
     };
+
     const handleUpdateClose = () => {
         setUpdateOpen(false);
     }
@@ -335,7 +335,7 @@ export function PostTab() {
                 <DialogTitle>Confirm Delete</DialogTitle>
                 <DialogContent>
                     <DialogContentText>
-                        Are you sure you want to delete this item?
+                        Are you sure you want to delete?
                     </DialogContentText>
                 </DialogContent>
                 <DialogActions>

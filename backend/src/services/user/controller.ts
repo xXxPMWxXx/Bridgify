@@ -9,6 +9,7 @@ const ElderlyModel = require("../../models/elderly");
 const baseDir = path.resolve(__dirname, "../../..");
 const otpGenerator = require("otp-generator");
 const nodemailer = require("nodemailer");
+var fs = require('fs');
 
 const transporter = nodemailer.createTransport({
   service: "hotmail",
@@ -198,10 +199,10 @@ export const updateUser = async (
             profileImage.name;
           profileImage.mv(
             baseDir +
-              "/images/user_profile/" +
-              Date.now() +
-              "--" +
-              profileImage.name
+            "/images/user_profile/" +
+            Date.now() +
+            "--" +
+            profileImage.name
           );
           console.log(imagePath);
         }
@@ -355,8 +356,8 @@ export const linkElderly = async (
             .status(400)
             .json({ message: `Elderly ID: ${elderlyID} does not exist!` });
         }
-       
-        if(linkedElderly.length >= 4) {
+
+        if (linkedElderly.length >= 4) {
           return res
             .status(400)
             .json({
@@ -439,4 +440,61 @@ export const removeLinkElderly = async (
   } catch (error) {
     res.status(400).send({ error });
   }
+};
+
+// get user post, find by author email and date created
+export const delete_user = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    // 1. get token from req
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      // 3. allow admin to update post details
+      if (decoded) {
+        const { email } = req.body;
+        // 4. check if the user is existed
+        const user = await UserModel.findOne({ 'email': email });
+
+        if(user.accRole == 'Admin') {
+          return res
+          .status(400)
+          .json({ message: `You cannot delete admin account!` });
+        }
+
+        const imageName = user.profileImage;
+        const image = `${baseDir}/images/user_profile/${imageName}`;
+        if (imageName!='default.png' && fs.existsSync(image)) {
+          fs.unlink(image, (err: any) => {
+            if (err) {
+              console.log(err);
+            }
+            console.log(`${imageName} deleted`);
+          })
+        } else {
+          console.log(`${imageName} does not exist/cannot be deleted!`);
+        }
+
+        if (user == null) {
+          return res
+            .status(400)
+            .json({ message: `User does not exit!` });
+        }
+        try {
+          await UserModel.deleteOne({ 'email': email });
+          res.status(200).send({ message: `User delete successfully` });
+        } catch (error) {
+          res.status(400).json({ error: "Delete fail, please try again later" });
+        }
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
+
+  } catch (error) {
+    res.status(400).json({ error, message: "Make sure your request body is correct" });
+  }
+
 };

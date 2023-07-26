@@ -40,3 +40,6 @@ userRouter.route('/verifyOTP').get(controller.verifyOTP);
 
 /** POST /api/user/reset */
 userRouter.route('/reset').post(controller.reset);
+
+/** DELETE /api/user/reset */
+userRouter.route('/delete').delete(controller.delete_user);
