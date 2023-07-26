@@ -4,7 +4,6 @@ class ElderlyRequestModel {
   late String? dob;
   late String? photo;
   late Status? status;
-  late String? created;
 
   ElderlyRequestModel({
     this.id,
@@ -12,7 +11,6 @@ class ElderlyRequestModel {
     this.dob,
     this.photo,
     this.status,
-    this.created,
   });
 
   ElderlyRequestModel.fromJson(Map<String, dynamic> json) {
@@ -21,7 +19,6 @@ class ElderlyRequestModel {
     dob = json['DOB'];
     photo = json['photo'];
     status = Status.fromJson(json['status']);
-    created = json['created'];
   }
 
   Map<String, dynamic> toJson() {
@@ -31,7 +28,6 @@ class ElderlyRequestModel {
     _data['DOB'] = dob;
     _data['photo'] = photo;
     _data['status'] = status!.toJson();
-    _data['created'] = created;
     return _data;
   }
 }

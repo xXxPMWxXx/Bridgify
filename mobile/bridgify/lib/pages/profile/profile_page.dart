@@ -35,6 +35,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title:
+              const Text('Edit Profile', style: TextStyle(color: Colors.black)),
+          iconTheme: const IconThemeData(color: Color(0xFF27c1a9)),
           elevation: 1,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leading: FutureBuilder(
@@ -55,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                       icon: const Icon(
                         Icons.arrow_back_ios,
-                        color: Color(0xFF27c1a9),
+                        // color: Color(0xFF27c1a9),
                       ),
                     );
                   }
@@ -139,10 +142,10 @@ class _ProfilePageState extends State<ProfilePage> {
         },
         child: ListView(
           children: [
-            const Text(
-              "Edit profile",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            ),
+            // const Text(
+            //   "Edit profile",
+            //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+            // ),
             picPicker(
               context,
               imagePathUpdate ?? "",
@@ -160,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 )
               },
             ),
-
+            SizedBox(height: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -322,10 +325,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     borderFocusedErrorColor: Colors.white,
                   ),
                 ),
-
               ],
             ),
-
             const SizedBox(height: 35),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -466,7 +467,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       BoxShadow(
                           spreadRadius: 2,
                           blurRadius: 10,
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withOpacity(0.15),
                           offset: const Offset(0, 10))
                     ],
                     shape: BoxShape.circle),
