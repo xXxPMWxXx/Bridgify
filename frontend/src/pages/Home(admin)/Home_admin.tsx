@@ -127,7 +127,7 @@ export const Home_admin = () => {
             const email = userData[dataIndex][1];
             
             // //call backend to del from database
-            fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/user/delete`, {
+            fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/delete`, {
                 headers: {
                     'Content-Type': 'application/json',
                     'Authorization': `Bearer ${token}`,
