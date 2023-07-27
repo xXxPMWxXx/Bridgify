@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/elderly_request_model.dart';
+import 'package:bridgify/pages/elderly/Admin/update_status.dart';
 import 'package:bridgify/services/api_service.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
@@ -28,6 +30,9 @@ class _CreateElderlyState extends State<CreateElderly> {
   String? nameElderly;
   DateTime? dobElderly;
 
+  bool awakenStatus = false;
+  bool takenMedsStatus = false;
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -38,6 +43,21 @@ class _CreateElderlyState extends State<CreateElderly> {
           backgroundColor: Colors.white,
           iconTheme: const IconThemeData(color: Colors.black),
           elevation: 1,
+          leading: IconButton(
+            onPressed: () async {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/adminElderlyRecords',
+                (Route<dynamic> route) {
+                  return route.settings.name == '/adminElderlyRecords';
+                },
+              );
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xFF27c1a9),
+            ),
+          ),
         ),
         body: ProgressHUD(
           inAsyncCall: isAPICallProcess,
@@ -93,6 +113,8 @@ class _CreateElderlyState extends State<CreateElderly> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
+                  // width: MediaQuery.of(context).size.width * 0.35,
+                  padding: EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(color: Colors.grey.shade200),
@@ -115,9 +137,9 @@ class _CreateElderlyState extends State<CreateElderly> {
                     maxLength: 4,
                     paddingRight: 0,
                     paddingLeft: 0,
-                    initialValue: "",
+                    initialValue: elderlyRequestModel!.id ?? "",
                     obscureText: false,
-                    prefixIcon: const Icon(Icons.person),
+                    prefixIcon: const Icon(Icons.key),
                     showPrefixIcon: true,
                     prefixIconColor: Colors.black.withOpacity(0.5),
                     textColor: Colors.black.withOpacity(0.7),
@@ -132,6 +154,8 @@ class _CreateElderlyState extends State<CreateElderly> {
                   ),
                 ),
                 Container(
+                  // width: MediaQuery.of(context).size.width * 0.35,
+                  padding: EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(color: Colors.grey.shade200),
@@ -153,7 +177,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                     },
                     paddingRight: 0,
                     paddingLeft: 0,
-                    initialValue: "",
+                    initialValue: elderlyRequestModel!.name ?? "",
                     obscureText: false,
                     prefixIcon: const Icon(Icons.person),
                     showPrefixIcon: true,
@@ -169,38 +193,244 @@ class _CreateElderlyState extends State<CreateElderly> {
                     borderFocusedErrorColor: Colors.white,
                   ),
                 ),
-                Row(
-                  children: [
-                    IconButton(
+                Container(
+                  // width: MediaQuery.of(context).size.width * 0.55,
+                  padding: EdgeInsets.only(bottom: 10),
+                  decoration: BoxDecoration(
+                    border: Border(
+                      bottom: BorderSide(color: Colors.grey.shade200),
+                    ),
+                  ),
+                  child: FormHelper.inputFieldWidget(
+                    context,
+                    "dob",
+                    "01/01/1920",
+                    (onValidateVal) {
+                      if (onValidateVal.isEmpty) {
+                        return 'Please input a valid date of birth';
+                      }
+
+                      return null;
+                    },
+                    (onSavedVal) {
+                      elderlyRequestModel!.dob = onSavedVal;
+                    },
+                    paddingRight: 0,
+                    paddingLeft: 0,
+                    initialValue: dobElderly != null
+                        ? '${dobElderly!.day}/${dobElderly!.month}/${dobElderly!.year}'
+                        : "",
+                    obscureText: false,
+                    suffixIcon: IconButton(
                       onPressed: () async {
                         dobElderly = await showDatePicker(
-                            context: context,
-                            initialDate: DateTime(
-                              DateTime.now().year,
-                              DateTime.now().month,
-                              DateTime.now().day,
-                            ),
-                            firstDate: DateTime(1920),
-                            lastDate: DateTime(
-                              DateTime.now().year,
-                              DateTime.now().month,
-                              DateTime.now().day,
-                            ));
+                          context: context,
+                          initialDate: DateTime(
+                            DateTime.now().year,
+                            DateTime.now().month,
+                            DateTime.now().day,
+                          ),
+                          firstDate: DateTime(1920),
+                          lastDate: DateTime(
+                            DateTime.now().year,
+                            DateTime.now().month,
+                            DateTime.now().day,
+                          ),
+                        );
                         if (dobElderly != null) {
-                          setState(() {});
+                          setState(() {
+                            elderlyRequestModel!.dob =
+                                '${dobElderly!.day}/${dobElderly!.month}/${dobElderly!.year}';
+                          });
                           print(
-                              'Date selected:  ${dobElderly!.day}-${dobElderly!.month}-${dobElderly!.year}');
+                              'Date selected:  ${dobElderly!.day}/${dobElderly!.month}/${dobElderly!.year}');
                         }
                       },
+                      color: Colors.black.withOpacity(0.5),
                       icon: Icon(Icons.calendar_month_outlined),
                     ),
-                    if (dobElderly != null)
-                      Text(
-                          'Select Date: ${dobElderly!.day}-${dobElderly!.month}-${dobElderly!.year}')
+                    prefixIcon: const Icon(Icons.cake_rounded),
+                    showPrefixIcon: true,
+                    prefixIconColor: Colors.black.withOpacity(0.5),
+                    textColor: Colors.black.withOpacity(0.7),
+                    hintColor: Colors.grey.withOpacity(0.7),
+                    borderFocusColor: Colors.white,
+                    borderColor: Colors.white,
+                    borderRadius: 0,
+                    borderErrorColor: Colors.white,
+                    errorBorderWidth: 0,
+                    focusedErrorBorderWidth: 0,
+                    borderFocusedErrorColor: Colors.white,
+                  ),
+                ),
+                const Padding(
+                  padding: EdgeInsets.all(10),
+                  child: Text(
+                    "Current Status",
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    buildSwitch(
+                      child: CupertinoSwitch(
+                        value: awakenStatus,
+                        onChanged: (value) => setState(() {
+                          awakenStatus = value;
+                          print(awakenStatus);
+                        }),
+                      ),
+                      text: 'Awake?',
+                    ),
+                    buildSwitch(
+                      child: CupertinoSwitch(
+                        value: takenMedsStatus,
+                        onChanged: (value) => setState(() {
+                          takenMedsStatus = value;
+                          print(takenMedsStatus);
+                        }),
+                      ),
+                      text: 'Taken Medicine?',
+                    ),
                   ],
-                )
+                ),
               ],
             ),
+
+            // Row(
+            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            //   children: [
+            //     Container(
+            //       width: 100,
+            //       decoration: BoxDecoration(
+            //         border: Border(
+            //           bottom: BorderSide(color: Colors.grey.shade200),
+            //         ),
+            //       ),
+            //       child: FormHelper.inputFieldWidget(
+            //         context,
+            //         "name",
+            //         "Name",
+            //         (onValidateVal) {
+            //           if (onValidateVal.isEmpty) {
+            //             return 'Please input a valid name';
+            //           }
+
+            //           return null;
+            //         },
+            //         (onSavedVal) {
+            //           elderlyRequestModel!.name = onSavedVal;
+            //         },
+            //         paddingRight: 0,
+            //         paddingLeft: 0,
+            //         initialValue: "",
+            //         obscureText: false,
+            //         prefixIcon: const Icon(Icons.person),
+            //         showPrefixIcon: true,
+            //         prefixIconColor: Colors.black.withOpacity(0.5),
+            //         textColor: Colors.black.withOpacity(0.7),
+            //         hintColor: Colors.grey.withOpacity(0.7),
+            //         borderFocusColor: Colors.white,
+            //         borderColor: Colors.white,
+            //         borderRadius: 0,
+            //         borderErrorColor: Colors.white,
+            //         errorBorderWidth: 0,
+            //         focusedErrorBorderWidth: 0,
+            //         borderFocusedErrorColor: Colors.white,
+            //       ),
+            //     ),
+            //     Container(
+            //       decoration: BoxDecoration(
+            //         border: Border(
+            //           bottom: BorderSide(color: Colors.grey.shade200),
+            //         ),
+            //       ),
+            //       child: FormHelper.inputFieldWidget(
+            //         context,
+            //         "name",
+            //         "Name",
+            //         (onValidateVal) {
+            //           if (onValidateVal.isEmpty) {
+            //             return 'Please input a valid name';
+            //           }
+
+            //           return null;
+            //         },
+            //         (onSavedVal) {
+            //           elderlyRequestModel!.name = onSavedVal;
+            //         },
+            //         paddingRight: 0,
+            //         paddingLeft: 0,
+            //         initialValue: "",
+            //         obscureText: false,
+            //         prefixIcon: const Icon(Icons.person),
+            //         showPrefixIcon: true,
+            //         prefixIconColor: Colors.black.withOpacity(0.5),
+            //         textColor: Colors.black.withOpacity(0.7),
+            //         hintColor: Colors.grey.withOpacity(0.7),
+            //         borderFocusColor: Colors.white,
+            //         borderColor: Colors.white,
+            //         borderRadius: 0,
+            //         borderErrorColor: Colors.white,
+            //         errorBorderWidth: 0,
+            //         focusedErrorBorderWidth: 0,
+            //         borderFocusedErrorColor: Colors.white,
+            //       ),
+            //     ),
+            //   ],
+            // ),
+            // FormHelper.submitButton(
+            //   height: 50,
+            //   width: 150,
+            //   "INPUT STATUS",
+            //   () {
+            //     // passwordUpdate = passwordUpdate ?? "";
+            //     // confirmPasswordUpdate = confirmPasswordUpdate ?? "";
+            //     if (validateAndSave()) {
+            //       setState(() {
+            //         isAPICallProcess = true;
+            //       });
+
+            //       // APIService.update(
+            //       //         updateUserRequestModel!, isImageSelected)
+            //       //     .then(
+            //       //   (response) {
+            //       //     setState(() {
+            //       //       isAPICallProcess = false;
+            //       //     });
+
+            //       //     if (response) {
+            //       //       setState(() {
+            //       //         passwordUpdate = "";
+            //       //         confirmPasswordUpdate = "";
+            //       //       });
+            //       //     } else {
+            //       //       showDialog(
+            //       //         context: context,
+            //       //         builder: (context) {
+            //       //           return Dialog(
+            //       //             backgroundColor: Colors.white,
+            //       //             shape: RoundedRectangleBorder(
+            //       //               borderRadius: BorderRadius.circular(24),
+            //       //             ),
+            //       //             child: const InvalidCredentialsView(
+            //       //               primaryText: 'Invalid field change !!',
+            //       //             ),
+            //       //           );
+            //       //         },
+            //       //       );
+            //       //     }
+            //       //   },
+            //       // );
+            //     }
+            //   },
+            //   btnColor: HexColor("207A35"),
+            //   borderColor: HexColor("207A35"),
+            //   txtColor: Colors.white,
+            //   borderRadius: 20,
+            //   fontWeight: FontWeight.bold,
+            // ),
             const SizedBox(height: 35),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -210,7 +440,11 @@ class _CreateElderlyState extends State<CreateElderly> {
                   width: 150,
                   "CLEAR",
                   () {
-                    setState(() {});
+                    setState(() {
+                      elderlyRequestModel!.id = "";
+                      elderlyRequestModel!.name = "";
+                      dobElderly = null;
+                    });
                   },
                   btnColor: HexColor("FFFFFF"),
                   borderColor: HexColor("FFFFFF"),
@@ -220,15 +454,19 @@ class _CreateElderlyState extends State<CreateElderly> {
                 ),
                 FormHelper.submitButton(
                   height: 50,
-                  width: 150,
-                  "SAVE",
+                  width: 165,
+                  "INPUT STATUS",
                   () {
                     // passwordUpdate = passwordUpdate ?? "";
                     // confirmPasswordUpdate = confirmPasswordUpdate ?? "";
                     if (validateAndSave()) {
-                      setState(() {
-                        isAPICallProcess = true;
-                      });
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) =>
+                              UpdateStatus(model: elderlyRequestModel!),
+                        ),
+                      );
 
                       // APIService.update(
                       //         updateUserRequestModel!, isImageSelected)
@@ -355,6 +593,19 @@ class _CreateElderlyState extends State<CreateElderly> {
           ],
         ),
       ),
+    );
+  }
+
+  Widget buildSwitch({required Widget child, required String text}) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Text(
+          text,
+          style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
+        ),
+        child,
+      ],
     );
   }
 }

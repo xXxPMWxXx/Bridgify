@@ -3,6 +3,8 @@ import 'package:bridgify/models/login_response_model.dart';
 import 'package:bridgify/pages/chat/Admin/admin_chat_list_screen.dart';
 import 'package:bridgify/pages/chat/Child/chat_screen.dart';
 import 'package:bridgify/pages/elderly/Admin/admin_elderly_records_page.dart';
+import 'package:bridgify/pages/elderly/Admin/create_elderly.dart';
+import 'package:bridgify/pages/elderly/Admin/update_status.dart';
 import 'package:bridgify/pages/home/Admin/admin_home_page.dart';
 import 'package:bridgify/pages/home/Child/home_page.dart';
 import 'package:bridgify/pages/login_signup/login_signup_page.dart';
@@ -34,8 +36,9 @@ void main() async {
     LoginResponseModel? loginDetails = await SharedService.loginDetails();
     if (loginDetails!.data.accRole == 'Child') {
       _defaultHome = const HomePage();
-    } else
+    } else {
       _defaultHome = const AdminHomePage();
+    }
   }
   runApp(const MyApp());
 }
@@ -92,6 +95,7 @@ class _FirstPageState extends State<FirstPage> {
         '/adminChatList': (context) =>
             const AdminChatListScreen(conversationID: 'admin_account'),
         '/adminElderlyRecords': (context) => const AdminElderlyRecords(),
+        '/adminCreateElderly' : (context) => const CreateElderly(),
       },
     );
   }

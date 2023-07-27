@@ -1,4 +1,3 @@
-import 'package:bridgify/accessories/elderly/elderly_avatar.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:flutter/material.dart';

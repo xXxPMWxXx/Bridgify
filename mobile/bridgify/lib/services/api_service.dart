@@ -291,13 +291,51 @@ class APIService {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
     };
+    // static const String createElderlyAPI = "api/elderly/insert";
+    // static const String postFaceAPI = "api/face/post-face";
 
-    var url = Uri.http(
+    var trainingUrl = Uri.http(
       Config.apiURL,
-      Config.createElderlyAPI,
+      Config.postFaceAPI,
     );
 
+    var trainingRequest = http.MultipartRequest("POST", trainingUrl);
+    trainingRequest.headers.addAll(requestHeaders);
+    trainingRequest.fields["label"] = model.name!;
+    trainingRequest.fields["elderlyID"] = model.id!;
+    http.MultipartFile trainingMultipartFile =
+        await http.MultipartFile.fromPath(
+      'file',
+      model.photo!,
+    );
 
+    trainingRequest.files.add(trainingMultipartFile);
+
+    http.StreamedResponse trainingStreamResponse = await trainingRequest.send();
+
+    final trainingResponse =
+        await http.Response.fromStream(trainingStreamResponse);
+
+    if (trainingResponse.statusCode == 200) {
+      print("face posted failed");
+      var postingUrl = Uri.http(
+        Config.apiURL,
+        Config.createElderlyAPI,
+      );
+
+      var postingResponse = await client.post(
+        postingUrl,
+        headers: requestHeaders,
+        body: jsonEncode(model.toJson()),
+      );
+      if (postingResponse.statusCode == 200) {
+        print("elderly successfully created");
+        return true;
+      }
+      print("elderly failed to be created");
       return false;
+    }
+    print("face posted failed");
+    return false;
   }
 }
