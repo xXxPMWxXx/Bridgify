@@ -219,7 +219,6 @@ export function PostTab() {
                     // Handle any error that occurred during the update process
                     window.alert(`Error during update post:${error}`);
                 });
-
         });
         setPostData(newData);
         // After the deletion is successful, close the dialog

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select, FormLabel, RadioGroup, Radio, Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, InputAdornment, } from '@mui/material';
+import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select, FormLabel, RadioGroup, Radio, Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, InputAdornment, Dialog, DialogActions, DialogTitle, DialogContentText, DialogContent, } from '@mui/material';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 // import { DatePicker } from '@mui/x-date-pickers/DatePicker';
@@ -7,11 +7,10 @@ import dayjs, { Dayjs } from 'dayjs';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useNavigate } from 'react-router-dom';
 // import defaultPhoto from `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/001A.png`;
-
 import BasicDatePicker from './dateElement';
-
 import MUIDataTable from "mui-datatables";
 import { Sheet } from '@mui/joy';
+import UpdateElderly from './updateElderly';
 
 export function ElderlyTab() {
     const delay = (ms: number) => new Promise(
@@ -83,9 +82,59 @@ export function ElderlyTab() {
             });
     }
 
+    //for alert
+    //error , warning , info , success
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [alertType, setAlertType]: any = useState('info');
+    const [alertMsg, setAlertMsg] = useState('');
+    const handleSnackbarClose = () => {
+        setOpenSnackbar(false);
+    };
+    //For update elderly
+    const [updateOpen, setUpdateOpen] = React.useState(false);
+    const [elderly, Setelderly] = React.useState();
+    const handleRowClick = (rowData: any, rowMeta: any) => {
+        console.log(rowData);
+        Setelderly(rowData);
+        setUpdateOpen(true);
+    };
+
+    //for deletion
+    const [openConfirmDialog, setOpenConfirmDialog] = useState(false);
+    const [selectedRows, setSelectedRows] = useState([]);
+
+    const onRowsSelect = (curRowSelected: any, allRowsSelected: any) => {
+        try {
+            setSelectedRows(allRowsSelected);
+        } catch (error) {
+            window.alert(`Error during selecting post:${error}`);
+        }
+    }
+
+    const handleClickDeleteIcon = () => {
+        setOpenConfirmDialog(true);
+    };
+
+    const handleCloseConfirmDialog = () => {
+        setOpenConfirmDialog(false);
+    };
+
+    const handleDelete = () => {
+        // Implement  delete logic
+        var newData = elderlyData;
+
+        // After the deletion is successful, close the dialog
+        handleCloseConfirmDialog();
+    };
+
     //to customise mui datatable
     const options = {
-
+        print: true,
+        download: true,
+        rowHover: true,
+        onRowsSelect: onRowsSelect,
+        onRowClick: handleRowClick,
+        onRowsDelete: handleClickDeleteIcon,
     };
 
     useEffect(() => {
@@ -120,7 +169,7 @@ export function ElderlyTab() {
                     keepMounted
                     open={open}
                     aria-labelledby="loading"
-                    aria-describedby="loading user data"
+                    aria-describedby="loading elderly data"
                 >
                     <Box sx={style}>
                         <Typography id="loading" variant="h6" component="h2">
@@ -130,6 +179,29 @@ export function ElderlyTab() {
                     </Box>
                 </Modal>
             }
+            {updateOpen ?
+                <UpdateElderly open={setUpdateOpen} setOpenSnackbar={setOpenSnackbar} setAlertType={setAlertType} setAlertMsg={setAlertMsg}  elderly={elderly} />
+                : null}
+
+            <Dialog open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
+                <DialogTitle>Confirm Delete</DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleCloseConfirmDialog}>Cancel</Button>
+                    <Button onClick={handleDelete} color="secondary" autoFocus>
+                        Delete
+                    </Button>
+                </DialogActions>
+            </Dialog>
+            <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
+                <Alert onClose={handleSnackbarClose} severity={alertType} sx={{ width: '100%' }}>
+                    {alertMsg}
+                </Alert>
+            </Snackbar>
         </Box>
     )
 }
@@ -212,7 +284,7 @@ export function CreateElderlyTab() {
     const handleElderlyID = (event: any) => {
         setElderlyID(event.target.value);
     };
-    const handleDate = (newDate: Dayjs|null) => {
+    const handleDate = (newDate: Dayjs | null) => {
         // setDate(event.target.value);
         // if (newDate) {
         //     setDateOfBirth(newDate.format('DD/MM/YYYY'))
@@ -263,7 +335,7 @@ export function CreateElderlyTab() {
         setOpenSnackbar(false);
     };
 
- 
+
 
     const handleSubmit = (event: any) => {
 
@@ -272,7 +344,7 @@ export function CreateElderlyTab() {
 
         if (selectedPhoto !== null &&
             name.trim() !== '' &&
-            elderlyID.trim() !== '' ) {
+            elderlyID.trim() !== '') {
 
 
             setOpenProcessingModal(true);
@@ -281,7 +353,7 @@ export function CreateElderlyTab() {
             formData.append('file', selectedPhoto)
             formData.append('elderlyID', elderlyID);
             formData.append('label', name);
-            
+
             const imageName = elderlyID + '.png';
 
             // console.log(rawBody)
@@ -395,7 +467,7 @@ export function CreateElderlyTab() {
     };
     return (
         <React.Fragment>
-            <Box sx={{ marginTop:2, paddingBottom: 10, width: "55%", margin: "auto", boxShadow: "2px", borderRadius: 10 }}>
+            <Box sx={{ marginTop: 2, paddingBottom: 10, width: "55%", margin: "auto", boxShadow: "2px", borderRadius: 10 }}>
                 <Typography variant="h5" gutterBottom sx={{ marginBottom: 2, textAlign: "center" }}>
                     New Elderly
                 </Typography>
@@ -403,198 +475,198 @@ export function CreateElderlyTab() {
                 <Button variant="outlined" onClick={()=>setDateOfBirth(dayjs('2001-05-13'))}>Reset</Button> */}
                 {/* profile pic */}
                 <form onSubmit={handleSubmit}>
-                <Sheet sx={{ textAlign: "center" }}>
+                    <Sheet sx={{ textAlign: "center" }}>
 
-                    <label htmlFor="contained-button-file">
-                        <IconButton>
+                        <label htmlFor="contained-button-file">
+                            <IconButton>
 
-                            {selectedPhoto !== null ?
-                                <Avatar
-                                    src={URL.createObjectURL(selectedPhoto)}
-                                    style={{
-                                        width: "100px",
-                                        height: "100px",
-                                    }}
-                                /> :
-                                <Avatar
-                                    src=''
-                                    style={{
-                                        width: "100px",
-                                        height: "100px",
-                                    }}
+                                {selectedPhoto !== null ?
+                                    <Avatar
+                                        src={URL.createObjectURL(selectedPhoto)}
+                                        style={{
+                                            width: "100px",
+                                            height: "100px",
+                                        }}
+                                    /> :
+                                    <Avatar
+                                        src=''
+                                        style={{
+                                            width: "100px",
+                                            height: "100px",
+                                        }}
+                                    />
+                                }
+                            </IconButton>
+                        </label>
+
+                        <br />
+                        <Button
+                            variant="outlined"
+                            component="label"
+                            sx={{ width: "20%", marginTop: 2 }}
+                            size='large'
+                        >
+                            Upload File
+                            <input
+                                type="file"
+                                hidden
+                                onChange={handleFileChange}
+                                accept="image/*"
+                            // value={value} onChange={(newValue) => setValue(newValue)}
+                            />
+                        </Button>
+                    </Sheet>
+                    {/* personal information */}
+                    <Sheet>
+                        <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
+                            Personal Information
+                        </Typography>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} sm={5}>
+                                <TextField
+                                    required
+                                    id="fullName"
+                                    name="fullName"
+                                    label="Full name"
+                                    fullWidth
+                                    autoComplete="given-name"
+                                    value={name}
+                                    onChange={handleName}
                                 />
-                            }
-                        </IconButton>
-                    </label>
+                            </Grid>
+                            <Grid item xs={12} sm={3}>
+                                <TextField
+                                    required
+                                    id="elderlyID"
+                                    name="elderlyID"
+                                    label="Last 4 Digit of IC"
+                                    fullWidth
+                                    value={elderlyID}
+                                    onChange={handleElderlyID}
+                                />
+                            </Grid>
+                            <Grid item xs={12} sm={3} sx={{ marginTop: 0 }} >
 
-                    <br />
-                    <Button
-                        variant="outlined"
-                        component="label"
-                        sx={{ width: "20%", marginTop: 2 }}
-                        size='large'
-                    >
-                        Upload File
-                        <input
-                            type="file"
-                            hidden
-                            onChange={handleFileChange}
-                            accept="image/*"
-                        // value={value} onChange={(newValue) => setValue(newValue)}
-                        />
-                    </Button>
-                </Sheet>
-                {/* personal information */}
-                <Sheet>
-                    <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
-                        Personal Information
-                    </Typography>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} sm={5}>
-                            <TextField
-                                required
-                                id="fullName"
-                                name="fullName"
-                                label="Full name"
-                                fullWidth
-                                autoComplete="given-name"
-                                value={name}
-                                onChange={handleName}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={3}>
-                            <TextField
-                                required
-                                id="elderlyID"
-                                name="elderlyID"
-                                label="Last 4 Digit of IC"
-                                fullWidth
-                                value={elderlyID}
-                                onChange={handleElderlyID}
-                            />
-                        </Grid>
-                        <Grid item xs={12} sm={3} sx={{ marginTop: 0 }} >
+                                <BasicDatePicker onDateChange={handleDate} value={dateOfBirth} resetValue={dayjs('1980-01-01')} />
 
-                            <BasicDatePicker onDateChange={handleDate} value={dateOfBirth} resetValue={dayjs('1980-01-01')} />
+                            </Grid>
+                        </Grid>
+                    </Sheet>
+                    {/* status */}
+                    <Sheet sx={{ marginTop: 2 }}>
+                        <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
+                            Status
+                        </Typography>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12} sm={4}>
+                                <Box sx={{ minWidth: 120 }}>
+                                    <FormControl fullWidth>
+                                        <InputLabel id="demo-simple-select-label">Current Activity</InputLabel>
+                                        <Select
+                                            labelId="demo-simple-select-label"
+                                            id="demo-simple-select"
+                                            value={activity}
+                                            label="Current Activity"
+                                            onChange={handleActivity}
+                                        >
+                                            <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
+                                            <MenuItem value={"Lunch"}>Lunch</MenuItem>
+                                            <MenuItem value={"Dinner"}>Dinner</MenuItem>
+                                            <MenuItem value={"Rest"}>Rest</MenuItem>
+                                            <MenuItem value={"Outdoor Activity"}>Outdoor Activity</MenuItem>
+                                        </Select>
+                                    </FormControl>
+                                </Box>
+                            </Grid>
+                            <Grid item xs={12} sm={2.5}>
+                                <TextField
+                                    // required
+                                    id="temperature"
+                                    name="temperature"
+                                    label="Current Temp"
+                                    value={temp}
+                                    onChange={handleTemp}
+                                    InputProps={{
+                                        endAdornment: <InputAdornment position="end">°C</InputAdornment>,
+                                    }} fullWidth
+                                />
+                            </Grid>
+
+                            <Grid item xs={12} sm={2}>
+                                <FormGroup sx={{ paddingTop: 1 }}>
+                                    <FormControlLabel control={<Switch defaultChecked onChange={handleAwakeBool} />} label="Awake" />
+
+                                </FormGroup>
+                            </Grid>
 
                         </Grid>
-                    </Grid>
-                </Sheet>
-                {/* status */}
-                <Sheet sx={{ marginTop: 2 }}>
-                    <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
-                        Status
-                    </Typography>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12} sm={4}>
-                            <Box sx={{ minWidth: 120 }}>
-                                <FormControl fullWidth>
-                                    <InputLabel id="demo-simple-select-label">Current Activity</InputLabel>
+                    </Sheet>
+                    {/* medication */}
+                    <Sheet sx={{ marginTop: 2 }}>
+                        <Typography variant="h6" gutterBottom sx={{ marginBottom: 2 }}>
+                            Medication
+                        </Typography>
+                        <Grid container spacing={3}>
+
+                            <Grid item xs={12} sm={9}>
+                                <FormControl sx={{}} fullWidth>
+                                    <InputLabel id="demo-multiple-checkbox-label">Meds</InputLabel>
                                     <Select
-                                        labelId="demo-simple-select-label"
-                                        id="demo-simple-select"
-                                        value={activity}
-                                        label="Current Activity"
-                                        onChange={handleActivity}
+                                        labelId="demo-multiple-checkbox-label"
+                                        id="demo-multiple-checkbox"
+                                        multiple
+                                        value={medName}
+                                        onChange={handleMedication}
+                                        input={<OutlinedInput label="Meds" />}
+                                        renderValue={(selected) => selected.join(', ')}
+                                        MenuProps={MenuProps}
                                     >
-                                        <MenuItem value={"Breakfast"}>Breakfast</MenuItem>
-                                        <MenuItem value={"Lunch"}>Lunch</MenuItem>
-                                        <MenuItem value={"Dinner"}>Dinner</MenuItem>
-                                        <MenuItem value={"Rest"}>Rest</MenuItem>
-                                        <MenuItem value={"Outdoor Activity"}>Outdoor Activity</MenuItem>
+                                        {medication.map((med) => (
+                                            <MenuItem key={med} value={med}>
+                                                <Checkbox checked={medName.indexOf(med) > -1} />
+                                                {/* <Checkbox checked={medName.indexOf(name) > -1} /> */}
+                                                <ListItemText primary={med} />
+                                            </MenuItem>
+                                        ))}
                                     </Select>
-                                </FormControl>
-                            </Box>
+                                </FormControl></Grid>
+                            <Grid item xs={12} sm={3}>
+                                <FormGroup sx={{ paddingTop: 1 }}>
+                                    <FormControlLabel control={<Switch onChange={handleMedTakenBool} />} label="Med Taken" />                            </FormGroup>
+                            </Grid></Grid>
+
+                    </Sheet>
+                    {/* condition */}
+                    <Sheet sx={{ marginTop: 2, marginBottom: 3 }}>
+                        <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
+                            Condition
+                        </Typography>
+                        <Grid container spacing={3}>
+
+                            <Grid item xs={12} sm={4}>
+                                <TextField
+                                    // required
+                                    id="condition"
+                                    name="condition"
+                                    label="Condition"
+                                    value={condition}
+                                    onChange={handleCondition}
+                                    fullWidth
+                                />
+                            </Grid>
+
+                            <Grid item xs={12} sm={12}>
+                                <TextareaAutosize minRows="7" onChange={handleCondDescription}
+                                    style={{ width: "100%", fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4 }}
+                                    id='Description' className='StyledTextarea' value={condDescription} placeholder="Condition Description" />
+                            </Grid>
+
                         </Grid>
-                        <Grid item xs={12} sm={2.5}>
-                            <TextField
-                                // required
-                                id="temperature"
-                                name="temperature"
-                                label="Current Temp"
-                                value={temp}
-                                onChange={handleTemp}
-                                InputProps={{
-                                    endAdornment: <InputAdornment position="end">°C</InputAdornment>,
-                                }} fullWidth
-                            />
-                        </Grid>
-
-                        <Grid item xs={12} sm={2}>
-                            <FormGroup sx={{ paddingTop: 1 }}>
-                                <FormControlLabel control={<Switch defaultChecked onChange={handleAwakeBool} />} label="Awake" />
-
-                            </FormGroup>
-                        </Grid>
-                        
-                    </Grid>
-                </Sheet>
-                {/* medication */}
-                <Sheet sx={{ marginTop: 2 }}>
-                    <Typography variant="h6" gutterBottom sx={{ marginBottom: 2 }}>
-                        Medication
-                    </Typography>
-                    <Grid container spacing={3}>
-
-                        <Grid item xs={12} sm={9}>
-                            <FormControl sx={{}} fullWidth>
-                                <InputLabel id="demo-multiple-checkbox-label">Meds</InputLabel>
-                                <Select
-                                    labelId="demo-multiple-checkbox-label"
-                                    id="demo-multiple-checkbox"
-                                    multiple
-                                    value={medName}
-                                    onChange={handleMedication}
-                                    input={<OutlinedInput label="Meds" />}
-                                    renderValue={(selected) => selected.join(', ')}
-                                    MenuProps={MenuProps}
-                                >
-                                    {medication.map((med) => (
-                                        <MenuItem key={med} value={med}>
-                                            <Checkbox checked={medName.indexOf(med) > -1} />
-                                            {/* <Checkbox checked={medName.indexOf(name) > -1} /> */}
-                                            <ListItemText primary={med} />
-                                        </MenuItem>
-                                    ))}
-                                </Select>
-                            </FormControl></Grid>
-                        <Grid item xs={12} sm={3}>
-                            <FormGroup sx={{ paddingTop: 1 }}>
-                                <FormControlLabel control={<Switch onChange={handleMedTakenBool} />} label="Med Taken" />                            </FormGroup>
-                        </Grid></Grid>
-
-                </Sheet>
-                {/* condition */}
-                <Sheet sx={{ marginTop: 2, marginBottom: 3 }}>
-                    <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
-                        Condition
-                    </Typography>
-                    <Grid container spacing={3}>
-
-                        <Grid item xs={12} sm={4}>
-                            <TextField
-                                // required
-                                id="condition"
-                                name="condition"
-                                label="Condition"
-                                value={condition}
-                                onChange={handleCondition}
-                                fullWidth
-                            />
-                        </Grid>
-
-                        <Grid item xs={12} sm={12}>
-                            <TextareaAutosize minRows="7" onChange={handleCondDescription}
-                                style={{ width: "100%", fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4 }}
-                                id='Description' className='StyledTextarea' value={condDescription} placeholder="Condition Description" />
-                        </Grid>
-                  
-                    </Grid>
-                </Sheet>
-                {/* condition */}
-                <Sheet sx={{ alignItems: "center" }}>
-                    <Button type='submit'fullWidth variant="contained" sx={{ p: 1.5, textTransform: "none", fontSize: "16px" }}>Add Elderly</Button>
-                </Sheet>
+                    </Sheet>
+                    {/* condition */}
+                    <Sheet sx={{ alignItems: "center" }}>
+                        <Button type='submit' fullWidth variant="contained" sx={{ p: 1.5, textTransform: "none", fontSize: "16px" }}>Add Elderly</Button>
+                    </Sheet>
                 </form>
                 {/* success / error feedback */}
                 <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleSnackbarClose}>
@@ -608,7 +680,7 @@ export function CreateElderlyTab() {
                     keepMounted
                     open={openProcessingModal}
                     aria-labelledby="loading"
-                    aria-describedby="loading user data"
+                    aria-describedby="loading elderly data"
                 >
                     <Box sx={style}>
                         <Typography id="processing" variant="h6" component="h2">

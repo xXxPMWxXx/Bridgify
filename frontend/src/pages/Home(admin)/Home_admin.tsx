@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { ResponsiveAppBarAdmin } from '../../Navbar';
-import { Alert, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress, Modal, Snackbar, Typography } from '@mui/material';
+import { Alert, Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress, Modal, Snackbar, Typography } from '@mui/material';
 import MUIDataTable from "mui-datatables";
 import UpdateUser from './updateUser';
 
@@ -45,7 +45,20 @@ export const Home_admin = () => {
                 }
             }
         }
-        , "Date Created"];
+        , "Date Created",
+        {
+            name: "profileImage",
+            label: "profileImage",
+            options: {
+                customBodyRender: (value: any) => {
+                    return (
+                        <Avatar variant="rounded" src={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/user_profile/${value}`} >
+                        </Avatar>
+                    )
+                }
+            }
+        },
+    ];
     const [userData, setUserData]: any[] = useState([]);
     const [dataLoaded, setDataLoaded] = useState(false);
 
@@ -78,7 +91,8 @@ export const Home_admin = () => {
                 } else {
                     const data = await response.json();
                     data.forEach((user: any) => {
-                        const row = [user.name, user.email, user.accRole, user.linkedElderly.toString(), user.dateCreated]
+                        const row = [user.name, user.email, user.accRole, user.linkedElderly.toString(),
+                        user.dateCreated, user.profileImage]
                         userData.push(row)
                     });
                     setDataLoaded(true);
@@ -125,7 +139,7 @@ export const Home_admin = () => {
         selectedRows.forEach((element: any) => {
             const dataIndex = element.dataIndex;
             const email = userData[dataIndex][1];
-            
+
             // //call backend to del from database
             fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/delete`, {
                 headers: {
