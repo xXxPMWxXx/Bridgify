@@ -21,6 +21,40 @@ interface postInfo {
 export default function posts (props:postInfo) {
     const { post } = props;
 
+    const token = window.localStorage.getItem('accessToken');
+    const elderlyInvolved = window.localStorage.getItem('elderlyInvolved');
+    // profileImage has to be the image of the elderly involved and not the users profile
+    // const profileImage = window.localStorage.getItem('profileImage');
+    const email = window.localStorage.getItem('email');
+    const linkedElderly = window.localStorage.getItem('linkedElderly');
+    // console.log(email);
+
+    const getPosts = async () => {
+        try {
+            const APImethod = 'getByUser';
+
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/post/${APImethod}?email=${email}`, {
+                headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                },
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                const apiResponse = await response.json();
+            }
+
+            const postResponse = await response.json();
+            console.log('---------Post--------');
+            console.log(postResponse);
+
+        } catch (error) {
+            console.error('Error fetching', error);
+            window.alert('Error: Failed to fetch');
+        }
+    }
+
     return (
         <Grid item xs={8} md={6}>
             <CardActionArea component="a">

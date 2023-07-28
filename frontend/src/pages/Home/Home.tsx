@@ -6,6 +6,7 @@ import { styled } from '@mui/system';
 import backgroundImage from '../../images/background.png';
 import ElderlyStatus from './elderlyStatus';
 import Posts from './posts';
+import Notifications from './notifications';
 
 const Background = styled("div") ({
     position: 'absolute', 
@@ -31,6 +32,15 @@ const posts = [
         caption: 'was captured in a picture during lunch',
         time: 2,
         images:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLP-Khig_cQdjFjvvyq73E4SZ6hqJBtcqjlEH-L9kUFg&s',
+    },
+]
+
+const notifs =[
+    {
+        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
+        sender: 'Ruby B.',
+        message: 'condition has been updated to a little sick',
+        time: 2
     },
 ]
 
@@ -93,6 +103,7 @@ export const Home = () => {
           const elderlyResponse = await response.json();
         //   console.log(elderlyResponse);
           const elderlyArray = elderlyResponse.map((elderly: any) => ({
+            id: elderly.id,
             name: elderly.name,
             image: `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/${elderly.photo}`,
             status: elderly.status.awake === 'True' ? 'Awake' : 'Asleep',
@@ -132,7 +143,7 @@ export const Home = () => {
                 <Box display='flex' justifyContent='center' alignItems='center' height='60vh' width='100%'>
                     <Grid container spacing={-5} justifyContent="center">
                         {elderly.map((post:any) => ( // Add index as the second parameter
-                        <Grid item key={post.name} xs={12} sm={6} md={4} lg={3} xl={2}>
+                        <Grid item key={post.id} xs={12} sm={6} md={4} lg={3} xl={2}>
                             <ElderlyStatus post={post} />
                         </Grid>
                         ))}
@@ -156,6 +167,10 @@ export const Home = () => {
                         ))}
                     </Grid>
                 </Box>
+            </main>
+
+            <main>
+                
             </main>
 
         </div>

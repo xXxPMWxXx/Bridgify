@@ -1,30 +1,37 @@
 import * as React from 'react';
+import Paper from '@mui/material/Paper';
+import Typography from '@mui/material/Typography';
+import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import { stringify } from 'querystring';
+import Box from '@mui/material/Box';
+import { CardActionArea, CardContent, CardMedia } from '@mui/material';
+import { Card } from 'react-bootstrap';
+import { BorderAllRounded, SportsRugbySharp } from '@mui/icons-material';
 
-function createNotification(
-    image: String,
-    sender: String,
-    message: String,
-    time: number
-) {
-    return { image, sender, message, time}
+
+interface notificationInfo{
+    notifs: {
+        image: string;
+        sender: String;
+        message: String;
+        time: number;
+    }
 }
-
-const rows =[
-    createNotification(
-        'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
-        'Ruby B.',
-        'condition has been updated to a little sick',
-        2
-    )
-]
 
 function preventDefault(event: React.MouseEvent) {
     event.preventDefault();
 }
 
-export default function notifications() {
-    
+export default function notifications(props:notificationInfo) {
+    const { notifs } = props;
+
+    return (
+        <Grid item xs={8} md={6}>
+            <CardActionArea>
+                <Card style={{display:'flex', width:'400px', height:'400px', position:'absolute', backgroundColor:'rgba(236.94, 236.94, 236.94, 0.80)', borderRadius:'10px'}}>
+
+                </Card>
+            </CardActionArea>
+        </Grid>
+    )
 }
