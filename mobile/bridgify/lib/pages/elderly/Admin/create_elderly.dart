@@ -100,9 +100,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                   () {
                     //model.productPic = file.path;
                     imagePathUpdate = file.path;
-                    print(imagePathUpdate);
                     elderlyRequestModel!.photo = imagePathUpdate;
-                    print(elderlyRequestModel!.photo);
                     isImageSelected = true;
                   },
                 )
@@ -262,38 +260,6 @@ class _CreateElderlyState extends State<CreateElderly> {
                     focusedErrorBorderWidth: 0,
                     borderFocusedErrorColor: Colors.white,
                   ),
-                ),
-                const Padding(
-                  padding: EdgeInsets.all(10),
-                  child: Text(
-                    "Current Status",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
-                  ),
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    buildSwitch(
-                      child: CupertinoSwitch(
-                        value: awakenStatus,
-                        onChanged: (value) => setState(() {
-                          awakenStatus = value;
-                          print(awakenStatus);
-                        }),
-                      ),
-                      text: 'Awake?',
-                    ),
-                    buildSwitch(
-                      child: CupertinoSwitch(
-                        value: takenMedsStatus,
-                        onChanged: (value) => setState(() {
-                          takenMedsStatus = value;
-                          print(takenMedsStatus);
-                        }),
-                      ),
-                      text: 'Taken Medicine?',
-                    ),
-                  ],
                 ),
               ],
             ),
@@ -463,8 +429,9 @@ class _CreateElderlyState extends State<CreateElderly> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (_) =>
-                              UpdateStatus(model: elderlyRequestModel!),
+                          builder: (_) => UpdateStatus(
+                              model: elderlyRequestModel!,
+                              transactionType: 'creation'),
                         ),
                       );
 

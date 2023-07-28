@@ -51,11 +51,15 @@ class _MainScreenState extends State<MainScreen> {
   double windowWidth = 0;
   double windowHeight = 0;
 
-  bool _keyboardVisible = false;
-
   @override
   void initState() {
     super.initState();
+  }
+
+  bool _isValidEmail(String value) {
+    // Use a regular expression to check the email format
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(value);
   }
 
   @override
@@ -99,7 +103,7 @@ class _MainScreenState extends State<MainScreen> {
         _loginOpacity = 1;
 
         _loginYOffset = windowHeight;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
+        _loginHeight = windowHeight - 270;
 
         _loginXOffset = 0;
         _registerYOffset = windowHeight;
@@ -113,8 +117,8 @@ class _MainScreenState extends State<MainScreen> {
         _loginWidth = windowWidth;
         _loginOpacity = 1;
 
-        _loginYOffset = _keyboardVisible ? 40 : 270;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
+        _loginYOffset = 270;
+        _loginHeight = windowHeight - 270;
 
         _loginXOffset = 0;
         _registerYOffset = windowHeight;
@@ -128,12 +132,12 @@ class _MainScreenState extends State<MainScreen> {
         _loginWidth = windowWidth - 40;
         _loginOpacity = 0.7;
 
-        _loginYOffset = _keyboardVisible ? 30 : 240;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 240;
+        _loginYOffset = 240;
+        _loginHeight = windowHeight - 240;
 
         _loginXOffset = 20;
-        _registerYOffset = _keyboardVisible ? 55 : 170;
-        _registerHeight = _keyboardVisible ? windowHeight : windowHeight - 190;
+        _registerYOffset = 170;
+        _registerHeight = windowHeight - 190;
         break;
     }
 
@@ -334,56 +338,81 @@ class _MainScreenState extends State<MainScreen> {
                                   isAPICallProcess = true;
                                 });
 
-                                LoginRequestModel model = LoginRequestModel(
-                                  email: emailLogin,
-                                  password: passwordLogin,
-                                );
-
-                                APIService.login(model).then(
-                                  (response) {
-                                    setState(() {
-                                      isAPICallProcess = false;
-                                    });
-
-                                    if (response) {
-                                      APIService.getUserProfile()
-                                          .then((loginDetails) {
-                                        Map userDetails = loginDetails
-                                            as Map<String, dynamic>;
-                                        if (userDetails["accRole"] == "Admin") {
-                                          Navigator.pushNamed(
-                                            context,
-                                            '/adminHome',
-                                          );
-                                        } else {
-                                          Navigator.pushNamed(
-                                            context,
-                                            '/home',
-                                          );
-                                        }
-                                      });
-                                    } else {
-                                      showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return Dialog(
-                                            backgroundColor: Colors.white,
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(24),
-                                            ),
-                                            child: const InvalidCredentialsView(
-                                              primaryText:
-                                                  'Invalid email/password detected!',
-                                              secondaryText:
-                                                  'Please re-enter login credentials',
-                                            ),
-                                          );
-                                        },
+                                if (!_isValidEmail(emailLogin!)) {
+                                  setState(() {
+                                    isAPICallProcess = false;
+                                  });
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        backgroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(24),
+                                        ),
+                                        child: const InvalidCredentialsView(
+                                          primaryText: 'Invalid email address',
+                                          secondaryText:
+                                              'Please give a valid email address',
+                                        ),
                                       );
-                                    }
-                                  },
-                                );
+                                    },
+                                  );
+                                } else {
+                                  LoginRequestModel model = LoginRequestModel(
+                                    email: emailLogin,
+                                    password: passwordLogin,
+                                  );
+
+                                  APIService.login(model).then(
+                                    (response) {
+                                      setState(() {
+                                        isAPICallProcess = false;
+                                      });
+
+                                      if (response) {
+                                        APIService.getUserProfile()
+                                            .then((loginDetails) {
+                                          Map userDetails = loginDetails
+                                              as Map<String, dynamic>;
+                                          if (userDetails["accRole"] ==
+                                              "Admin") {
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/adminHome',
+                                            );
+                                          } else {
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/home',
+                                            );
+                                          }
+                                        });
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return Dialog(
+                                              backgroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(24),
+                                              ),
+                                              child:
+                                                  const InvalidCredentialsView(
+                                                primaryText:
+                                                    'Invalid email/password detected!',
+                                                secondaryText:
+                                                    'Please re-enter login credentials',
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                  );
+                                }
                               }
                             },
                             btnColor: HexColor("207A35"),
@@ -763,77 +792,100 @@ class _MainScreenState extends State<MainScreen> {
                                 setState(() {
                                   isAPICallProcess = true;
                                 });
-
-                                RegisterRequestModel model =
-                                    RegisterRequestModel(
-                                        name: nameSignUp!,
-                                        email: emailSignUp!,
-                                        password: passwordSignUp!);
-                                APIService.register(model).then((response) {
+                                if (!_isValidEmail(emailSignUp!)) {
                                   setState(() {
                                     isAPICallProcess = false;
                                   });
-
-                                  if (response.data != null) {
-                                    if (validateAndSave()) {
-                                      setState(() {
-                                        isAPICallProcess = true;
-                                      });
-
-                                      LoginRequestModel model =
-                                          LoginRequestModel(
-                                        email: emailSignUp,
-                                        password: passwordSignUp,
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        backgroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(24),
+                                        ),
+                                        child: const InvalidCredentialsView(
+                                          primaryText: 'Invalid email address',
+                                          secondaryText:
+                                              'Please give a valid email address',
+                                        ),
                                       );
+                                    },
+                                  );
+                                } else {
+                                  RegisterRequestModel model =
+                                      RegisterRequestModel(
+                                          name: nameSignUp!,
+                                          email: emailSignUp!,
+                                          password: passwordSignUp!);
+                                  APIService.register(model).then((response) {
+                                    setState(() {
+                                      isAPICallProcess = false;
+                                    });
 
-                                      APIService.login(model).then(
-                                        (response) {
-                                          setState(() {
-                                            isAPICallProcess = false;
-                                          });
-                                          if (response) {
-                                            APIService.getUserProfile()
-                                                .then((loginDetails) {
-                                              Map userDetails = loginDetails
-                                                  as Map<String, dynamic>;
-                                              if (userDetails["accRole"] ==
-                                                  "Admin") {
-                                                Navigator.pushNamed(
-                                                  context,
-                                                  '/adminHome',
-                                                );
-                                              } else {
-                                                Navigator.pushNamed(
-                                                  context,
-                                                  '/home',
-                                                );
-                                              }
+                                    if (response.data != null) {
+                                      if (validateAndSave()) {
+                                        setState(() {
+                                          isAPICallProcess = true;
+                                        });
+
+                                        LoginRequestModel model =
+                                            LoginRequestModel(
+                                          email: emailSignUp,
+                                          password: passwordSignUp,
+                                        );
+
+                                        APIService.login(model).then(
+                                          (response) {
+                                            setState(() {
+                                              isAPICallProcess = false;
                                             });
-                                          } else {
-                                            showDialog(
-                                              context: context,
-                                              builder: (context) {
-                                                return Dialog(
-                                                  backgroundColor: Colors.white,
-                                                  shape: RoundedRectangleBorder(
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            24),
-                                                  ),
-                                                  child:
-                                                      const InvalidCredentialsView(
-                                                    primaryText:
-                                                        'Invalid name/Password',
-                                                  ),
-                                                );
-                                              },
-                                            );
-                                          }
-                                        },
-                                      );
-                                    }
-                                  } else {
-                                    /*() {
+                                            if (response) {
+                                              APIService.getUserProfile()
+                                                  .then((loginDetails) {
+                                                Map userDetails = loginDetails
+                                                    as Map<String, dynamic>;
+                                                if (userDetails["accRole"] ==
+                                                    "Admin") {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    '/adminHome',
+                                                  );
+                                                } else {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    '/home',
+                                                  );
+                                                }
+                                              });
+                                            } else {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Dialog(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    child:
+                                                        const InvalidCredentialsView(
+                                                      primaryText:
+                                                          'Invalid name/Password',
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                        );
+                                      }
+                                    } else {
+                                      /*() {
                                       if (validateAndSave()) {
                                         setState(() {
                                           isAPICallProcess = true;
@@ -857,31 +909,32 @@ class _MainScreenState extends State<MainScreen> {
                                                 '/home',
                                               );
                                             } else {*/
-                                    print('hello2');
-                                    showDialog(
-                                      context: context,
-                                      builder: (context) {
-                                        return Dialog(
-                                          backgroundColor: Colors.white,
-                                          shape: RoundedRectangleBorder(
-                                            borderRadius:
-                                                BorderRadius.circular(24),
-                                          ),
-                                          child: const InvalidCredentialsView(
-                                            primaryText: 'User already exists!',
-                                            secondaryText:
-                                                'Please re-enter login credentials',
-                                          ),
-                                        );
-                                      },
-                                    );
-                                    // }
-                                    // },
-                                    // );
-                                    // }
-                                    // };
-                                  }
-                                });
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Dialog(
+                                            backgroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(24),
+                                            ),
+                                            child: const InvalidCredentialsView(
+                                              primaryText:
+                                                  'User already exists!',
+                                              secondaryText:
+                                                  'Please re-enter login credentials',
+                                            ),
+                                          );
+                                        },
+                                      );
+                                      // }
+                                      // },
+                                      // );
+                                      // }
+                                      // };
+                                    }
+                                  });
+                                }
                               }
                             },
                             btnColor: HexColor("207A35"),

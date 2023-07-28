@@ -1,5 +1,8 @@
+import 'package:bridgify/accessories/dialog/delete_confirmation_view.dart';
 import 'package:bridgify/config.dart';
+import 'package:bridgify/models/elderly_request_model.dart' as req;
 import 'package:bridgify/models/elderly_response_model.dart';
+import 'package:bridgify/pages/elderly/Admin/update_status.dart';
 import 'package:flutter/material.dart';
 
 class ElderlyRecordItem extends StatelessWidget {
@@ -73,7 +76,71 @@ class ElderlyRecordItem extends StatelessWidget {
                 ],
               ),
             ),
-          )
+          ),
+          Row(
+            // mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              IconButton(
+                onPressed: () {
+                  req.ElderlyRequestModel elderlyRequestModel =
+                      req.ElderlyRequestModel();
+                  elderlyRequestModel.id = model!.id;
+                  elderlyRequestModel.name = model!.name;
+                  elderlyRequestModel.dob = model!.dob;
+                  elderlyRequestModel.photo = model!.photo;
+
+                  //set status
+                  elderlyRequestModel.status = req.Status();
+                  elderlyRequestModel.status!.current_activity =
+                      model!.status!.current_activity;
+                  elderlyRequestModel.status!.current_temp =
+                      model!.status!.current_temp;
+                  elderlyRequestModel.status!.medication =
+                      model!.status!.medication;
+                  // elderlyRequestModel.status!.medication = model!
+                  //     .status!.medication!
+                  //     .map((el) => el.toString())
+                  //     .toList();
+                  elderlyRequestModel.status!.taken_med =
+                      model!.status!.taken_med;
+                  elderlyRequestModel.status!.condition =
+                      model!.status!.condition;
+                  elderlyRequestModel.status!.condition_description =
+                      model!.status!.condition_description;
+                  elderlyRequestModel.status!.awake = model!.status!.awake;
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => UpdateStatus(
+                          model: elderlyRequestModel,
+                          transactionType: 'update'),
+                    ),
+                  );
+                },
+                icon: Icon(Icons.update),
+              ),
+              IconButton(
+                onPressed: () {
+                  showDialog(
+                      context: context,
+                      builder: (context) {
+                        return Dialog(
+                          backgroundColor: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(24),
+                          ),
+                          child: DeleteConfirmationView(
+                            secondaryText: "You are currently deleting ${model!.id}'s account",
+                            id: model!.id!,
+                          ),
+                        );
+                      });
+                },
+                icon: Icon(Icons.delete),
+              ),
+            ],
+          ),
         ],
       ),
     );

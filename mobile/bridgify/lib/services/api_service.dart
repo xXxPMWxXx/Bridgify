@@ -317,6 +317,7 @@ class APIService {
         await http.Response.fromStream(trainingStreamResponse);
 
     if (trainingResponse.statusCode == 200) {
+      model.photo = "${model.id}.png";
       print("face posted failed");
       var postingUrl = Uri.http(
         Config.apiURL,
@@ -337,5 +338,56 @@ class APIService {
     }
     print("face posted failed");
     return false;
+  }
+
+  static Future<bool> updateElderly(ElderlyRequestModel model) async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url = Uri.http(
+      Config.apiURL,
+      Config.updateElderlyAPI,
+    );
+    print(url);
+
+    var response = await client.put(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+
+    print(model.toJson());
+
+    if (response.statusCode == 200) {
+      print("elderly successfully updated");
+      return true;
+    }
+    print("elderly failed to updated");
+    print(response.body);
+    return false;
+  }
+
+  static Future<bool> deleteElderly(String elderlyID) async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url =
+        Uri.http(Config.apiURL, Config.deleteElderlyAPI, {"id": elderlyID});
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
   }
 }

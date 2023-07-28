@@ -34,22 +34,22 @@ class ElderlyRequestModel {
 
 class Status {
   Status({
-    required this.current_activity,
-    required this.current_temp,
-    required this.medication,
-    required this.taken_med,
-    required this.condition,
-    required this.condition_description,
-    required this.awake,
+    this.current_activity,
+    this.current_temp,
+    this.medication,
+    this.taken_med,
+    this.condition,
+    this.condition_description,
+    this.awake,
   });
 
-  late String? current_activity;
-  late String? current_temp;
-  late List<dynamic>? medication;
-  late String? taken_med;
-  late String? condition;
-  late String? condition_description;
-  late String? awake;
+  String? current_activity;
+  String? current_temp;
+  List<dynamic>? medication;
+  String? taken_med;
+  String? condition;
+  String? condition_description;
+  String? awake;
 
   Status.fromJson(Map<String, dynamic> json) {
     current_activity = json['current_activity'];
