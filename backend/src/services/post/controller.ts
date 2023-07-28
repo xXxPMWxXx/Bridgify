@@ -35,7 +35,7 @@ export const create = async (req: any, res: any, next: NextFunction) => {
         var imagesCount = 0;
         var devImageURL: String[] = [];
         var imageURL: String[] = [];
-
+        const timestamp = Math.floor(Date.now() / 1000) + 1000;
         // for one image
         if (images.name != undefined) {
           let results = await faceService.getDescriptorsFromDB(images.data);
@@ -49,8 +49,8 @@ export const create = async (req: any, res: any, next: NextFunction) => {
           });
           imagesCount++;
           //store each of the image to images/post folder name format => email_date_imageCount.png
-          //Notes : FE pass in the date as the datetime, not only the date
-          const imageName = `${author_email}_${dateTime}_${imagesCount}.png`;
+          
+          const imageName = `${author_email}_${timestamp}_${imagesCount}.png`;
           images.mv(baseDir + `/images/post/${imageName}`);
           postImages.push(imageName);
           imageURL.push(`http://13.228.86.148:8000/images/post/${imageName}`);
@@ -76,8 +76,9 @@ export const create = async (req: any, res: any, next: NextFunction) => {
             }
           });
           //store each of the image to images/post folder name format => email_date_imageCount.png
-          //Notes : FE pass in the date as the datetime, not only the date
-          const imageName = `${author_email}_${dateTime.replace(':','-')}_${imagesCount}.png`;
+          
+      
+          const imageName = `${author_email}_${timestamp}_${imagesCount}.png`;
           images[i].mv(baseDir + `/images/post/${imageName}`);
           postImages.push(imageName);
           imageURL.push(`http://13.228.86.148:8000/images/post/${imageName}`);
