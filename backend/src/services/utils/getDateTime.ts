@@ -22,7 +22,7 @@ export function now() {
     // current seconds
     let seconds = date_ob.getSeconds();
     
-    const dateTime : String = year + "-" + month + "-" + date + "T" + hours + "-" + minutes + "-" + seconds;
+    const dateTime : String = year + "-" + month + "-" + date + "T" + hours + ":" + minutes + ":" + seconds;
     console.log(dateTime)
     // return date & time in YYYY-MM-DD HH:MM:SS format
     return dateTime;

@@ -65,7 +65,7 @@ export function ElderlyTab() {
                     window.alert("Something is wrong!");
                 } else {
                     const data = await response.json();
-                    const fetchData : any = [];
+                    const fetchData: any = [];
                     data.forEach((elderly: any) => {
                         const status = elderly.status;
                         const row = [elderly.id, elderly.name, elderly.DOB, elderly.created,
@@ -180,7 +180,7 @@ export function ElderlyTab() {
             loadData();
         }
         //trigger whenever reload value changed
-        if(reload) {
+        if (reload) {
             //reload whenever openSnackbar was changed
             loadData();
             //need set this, if not cannot click open again
@@ -220,7 +220,7 @@ export function ElderlyTab() {
                 </Modal>
             }
             {updateOpen ?
-                <UpdateElderly open={setUpdateOpen} setReload={setReload} setOpenSnackbar={setOpenSnackbar} setAlertType={setAlertType} setAlertMsg={setAlertMsg}  elderly={elderly} />
+                <UpdateElderly open={setUpdateOpen} setReload={setReload} setOpenSnackbar={setOpenSnackbar} setAlertType={setAlertType} setAlertMsg={setAlertMsg} elderly={elderly} />
                 : null}
 
             <Dialog open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
