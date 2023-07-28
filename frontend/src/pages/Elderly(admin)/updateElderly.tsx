@@ -43,18 +43,18 @@ export default function UpdateElderly(props: any) {
     const [elderly, Setelderly] = React.useState({ ...props.elderly });
     //to load the data
     const [elderlyID, setElderlyID] = useState(elderly[0]);
-    console.log(elderly);
     const [elderlyName, setElderlyName] = useState(elderly[1]);
     const DOBArr = elderly[2].split('/');
-    const [DOB, setDOB] = React.useState<Dayjs>(dayjs(`${DOBArr[2]}-${DOBArr[1]}-${DOBArr[0]}`));
+    const [DOB, setDOB] = React.useState(dayjs(`${DOBArr[2]}-${DOBArr[1]}-${DOBArr[0]}`));
     const [dateCreated, setDateCreated] = useState(elderly[3]);
     const [currentActivity, setCurrentActivity] = useState(elderly[4]);
     const [medicationSelected, setMedication] = useState(elderly[5].split(','));
     const [temp, setTemp] = useState(elderly[6]);
     const [condition, setCondition] = useState(elderly[7]);
-    const [awake, setAwake] = useState(elderly[8]);
-    const [takenMed, setTakenMed] = useState(elderly[9]);
-    const [elderlyPhoto, setElderlyPhoto] = useState(elderly[10].props.src);
+    const [conditionDescription, setConditionDescription] = useState(elderly[8]);
+    const [awake, setAwake] = useState((String(elderly[9]).toLowerCase() === 'true'));
+    const [takenMed, setTakenMed] = useState((String(elderly[10]).toLowerCase() === 'true'));
+    const [elderlyPhoto, setElderlyPhoto] = useState(elderly[11].props.src);
 
     useEffect(() => {
     }, []);
@@ -84,13 +84,17 @@ export default function UpdateElderly(props: any) {
         setElderlyName(event.target.value);
     };
     const handleDOB = (newDate: Dayjs | null) => {
-        setDOB(dayjs(newDate))
+        setDOB(dayjs(newDate));
     };
     const handleCurrentActivity = (event: any) => {
         setCurrentActivity(event.target.value);
     };
     const handleAwake = (event: any) => {
-        setAwake(event.target.value);
+        if(awake === true) {
+            setAwake(false);
+        }else {
+            setAwake(true);
+        }
     };
     const handleTemp = (event: any) => {
         setTemp(event.target.value);
@@ -98,14 +102,21 @@ export default function UpdateElderly(props: any) {
     const handleCondition = (event: any) => {
         setCondition(event.target.value);
     };
+    const handleConditionDescription = (event: any) => {
+        setConditionDescription(event.target.value);
+    };
     const handleElderlyID = (event: any) => {
         setElderlyID(event.target.value);
     };
     const handleMedication = (event: any) => {
         setMedication(event.target.value);
     };
-    const handleMedTakenBool = (event: any) => {
-        setTakenMed(event.target.value);
+    const handleMedTakenBool = (event: React.ChangeEvent<HTMLInputElement>) => {
+        if(takenMed === true) {
+            setTakenMed(false);
+        }else {
+            setTakenMed(true);
+        }
     };
 
     const handleUpdateSubmit = (event: any) => {
@@ -121,16 +132,15 @@ export default function UpdateElderly(props: any) {
             body: JSON.stringify({
                 "id": elderlyID,
                 "name": elderlyName,
-                "DOB": DOB,
-                // "photo": "photo",
+                "DOB": DOB.format('DD/MM/YYYY'),
                 "status": {
                     "current_activity": currentActivity,
                     "current_temp": temp,
                     "medication": medicationSelected,
-                    "taken_med": takenMed,
+                    "taken_med": String(takenMed).toUpperCase(),
                     "condition": condition,
-                    "condition_description": condition,
-                    "awake": awake,
+                    "condition_description": conditionDescription,
+                    "awake": String(awake).toUpperCase(),
                 }
             })
         })
@@ -147,6 +157,7 @@ export default function UpdateElderly(props: any) {
                     props.setOpenSnackbar(true);
                     props.setAlertType('success');
                     props.setAlertMsg(apiResponse['message']);
+                    props.setReload(true);
                     setUpdateOpen(false);
                     // window.location.reload();
                 }
@@ -266,7 +277,7 @@ export default function UpdateElderly(props: any) {
 
                             <Grid item xs={12} sm={2}>
                                 <FormGroup sx={{ paddingTop: 1 }}>
-                                    <FormControlLabel control={<Switch value={awake} onChange={handleAwake} />} label="Awake" />
+                                    <FormControlLabel control={<Switch checked={awake} onClick={handleAwake}/>} label="Awake" />
                                 </FormGroup>
                             </Grid>
 
@@ -295,7 +306,6 @@ export default function UpdateElderly(props: any) {
                                         {medication.map((med: any) => (
                                             <MenuItem key={med} value={med}>
                                                 <Checkbox checked={medicationSelected.indexOf(med) > -1} />
-                                                {/* <Checkbox checked={medName.indexOf(name) > -1} /> */}
                                                 <ListItemText primary={med} />
                                             </MenuItem>
                                         ))}
@@ -304,7 +314,7 @@ export default function UpdateElderly(props: any) {
                             </Grid>
                             <Grid item xs={12} sm={3}>
                                 <FormGroup sx={{ paddingTop: 1 }}>
-                                    <FormControlLabel control={<Switch onChange={handleMedTakenBool} />} label="Med Taken" />                            </FormGroup>
+                                    <FormControlLabel control={<Switch checked={takenMed} onChange={handleMedTakenBool} />} label="Med Taken" />                            </FormGroup>
                             </Grid></Grid>
 
                     </Sheet>
@@ -328,9 +338,9 @@ export default function UpdateElderly(props: any) {
                             </Grid>
 
                             <Grid item xs={12} sm={12}>
-                                <TextareaAutosize minRows="7" onChange={handleCondition}
+                                <TextareaAutosize minRows="7" onChange={handleConditionDescription}
                                     style={{ width: "100%", fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4 }}
-                                    id='Description' className='StyledTextarea' value={condition} placeholder="Condition Description" />
+                                    id='Description' className='StyledTextarea' value={conditionDescription} placeholder="Condition Description" />
                             </Grid>
 
                         </Grid>

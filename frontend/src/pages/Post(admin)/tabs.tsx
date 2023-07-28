@@ -72,13 +72,13 @@ export function PostTab() {
                     window.alert("Something is wrong!");
                 } else {
                     const res = await response.json();
-                    const data = res.data;
-                    data.forEach((post: any) => {
+                    const fetchData : any = [];
+                    res.data.forEach((post: any) => {
                         const row = [post.author_email, post.activity_type, post.description,
                         post.elderlyInvolved.toString(), post.imagesCount, post.dateTime]
-
-                        postData.push(row)
+                        fetchData.push(row)
                     });
+                    setPostData(fetchData);
                     setDataLoaded(true);
                     //close the modal
                     setOpen(false);
@@ -98,6 +98,9 @@ export function PostTab() {
             window.alert(`Error during selecting post:${error}`);
         }
     }
+    //reload datatable
+    const [reload, setReload] = useState(false);
+
     //For update post
     const [updateOpen, setUpdateOpen] = React.useState(false);
     const [authorEmail, setAuthorEmail] = useState('');
@@ -156,7 +159,7 @@ export function PostTab() {
                     setAlertType('success');
                     setAlertMsg(apiResponse['message']);
                     setUpdateOpen(false);
-                    // window.location.reload();
+                    setReload(true);
                 }
             })
             .catch((error) => {
@@ -178,9 +181,6 @@ export function PostTab() {
 
     const handleDelete = () => {
         // Implement  delete logic
-        console.log(selectedRows);
-        var newData = postData;
-        console.log(newData);
         selectedRows.forEach((element: any) => {
             const dataIndex = element.dataIndex;
             const author_email = postData[dataIndex][0];
@@ -207,12 +207,10 @@ export function PostTab() {
                     } else {
                         const apiResponse = await response.json();
                         //show alert msg
-                        //remove from datatable
-                        newData.splice(dataIndex, 1);
                         setOpenSnackbar(true);
                         setAlertType('success');
                         setAlertMsg(apiResponse['message']);
-
+                        setReload(true);
                     }
                 })
                 .catch((error) => {
@@ -220,7 +218,6 @@ export function PostTab() {
                     window.alert(`Error during update post:${error}`);
                 });
         });
-        setPostData(newData);
         // After the deletion is successful, close the dialog
         handleCloseConfirmDialog();
     };
@@ -243,7 +240,12 @@ export function PostTab() {
         if (!dataLoaded) {
             loadData();
         }
-    }, []);
+
+        if(reload) {
+            loadPostData();
+            setReload(false);
+        }
+    }, [reload]);
 
     return (
         <Box

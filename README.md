@@ -26,7 +26,7 @@ SMU .HEAP 2023 G14
 
 ###### Managing a signle session
 - `tmux` => to start a session
-- `tmux attach` => to reconnect to the seesion, after login to new ssh
+- `tmux attach` => to reconnect to the session, after login to new ssh
 
 ###### Managing a multiple session
 - `tmux new-session -s session_name` => Start(and connect to) a new named session

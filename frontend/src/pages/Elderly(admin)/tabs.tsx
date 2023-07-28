@@ -20,7 +20,7 @@ export function ElderlyTab() {
 
     //for datatable
     const columns = ["ID", "Name", "DOB", "Date Created", "Current Activity",
-        "Medication", "Temperature", "Condition", "Awake", "Taken Med",
+        "Medication", "Temperature", "Condition", "Condition Description", "Awake", "Taken Med",
         {
             name: "elderlyPhoto",
             label: "Photo",
@@ -65,13 +65,15 @@ export function ElderlyTab() {
                     window.alert("Something is wrong!");
                 } else {
                     const data = await response.json();
+                    const fetchData : any = [];
                     data.forEach((elderly: any) => {
                         const status = elderly.status;
                         const row = [elderly.id, elderly.name, elderly.DOB, elderly.created,
-                        status.current_activity, status.medication.toString(), status.current_temp, status.condition,
+                        status.current_activity, status.medication.toString(), status.current_temp, status.condition, status.condition_description,
                         status.awake, status.taken_med, elderly.photo]
-                        elderlyData.push(row)
+                        fetchData.push(row)
                     });
+                    setElderlyData(fetchData);
                     setDataLoaded(true);
                     //close the modal
                     setOpen(false);
@@ -81,7 +83,8 @@ export function ElderlyTab() {
                 window.alert(err);
             });
     }
-
+    //for reload
+    const [reload, setReload] = useState(false);
     //for alert
     //error , warning , info , success
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -94,7 +97,6 @@ export function ElderlyTab() {
     const [updateOpen, setUpdateOpen] = React.useState(false);
     const [elderly, Setelderly] = React.useState();
     const handleRowClick = (rowData: any, rowMeta: any) => {
-        console.log(rowData);
         Setelderly(rowData);
         setUpdateOpen(true);
     };
@@ -121,8 +123,39 @@ export function ElderlyTab() {
 
     const handleDelete = () => {
         // Implement  delete logic
-        var newData = elderlyData;
-
+        selectedRows.forEach((element: any) => {
+            const dataIndex = element.dataIndex;
+            const elderlyID = elderlyData[dataIndex][0];
+            console.log(elderlyID)
+            // call backend to del from database
+            fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/delete/?id=${elderlyID}`, {
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}`,
+                },
+                method: 'DELETE'
+            })
+                .then(async (response) => {
+                    if (response.status != 200) {
+                        const apiResponse = await response.json();
+                        //show alert msg
+                        setOpenSnackbar(true);
+                        setAlertType('error');
+                        setAlertMsg(apiResponse['message']);
+                    } else {
+                        const apiResponse = await response.json();
+                        //show alert msg
+                        setOpenSnackbar(true);
+                        setAlertType('success');
+                        setAlertMsg(apiResponse['message']);
+                        setReload(true);
+                    }
+                })
+                .catch((error) => {
+                    // Handle any error that occurred during the update process
+                    window.alert(`Error during deleting elderly:${error}`);
+                });
+        });
         // After the deletion is successful, close the dialog
         handleCloseConfirmDialog();
     };
@@ -143,11 +176,18 @@ export function ElderlyTab() {
             await delay(500);
             loadElderlyData();
         }
-
         if (!dataLoaded) {
             loadData();
         }
-    }, []);
+        //trigger whenever reload value changed
+        if(reload) {
+            //reload whenever openSnackbar was changed
+            loadData();
+            //need set this, if not cannot click open again
+            setUpdateOpen(false);
+            setReload(false);
+        }
+    }, [reload]);
     return (
         <Box
             sx={{
@@ -180,7 +220,7 @@ export function ElderlyTab() {
                 </Modal>
             }
             {updateOpen ?
-                <UpdateElderly open={setUpdateOpen} setOpenSnackbar={setOpenSnackbar} setAlertType={setAlertType} setAlertMsg={setAlertMsg}  elderly={elderly} />
+                <UpdateElderly open={setUpdateOpen} setReload={setReload} setOpenSnackbar={setOpenSnackbar} setAlertType={setAlertType} setAlertMsg={setAlertMsg}  elderly={elderly} />
                 : null}
 
             <Dialog open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
