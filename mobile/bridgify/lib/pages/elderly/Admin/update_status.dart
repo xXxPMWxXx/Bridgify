@@ -30,6 +30,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
   bool awakenStatus = false;
   bool takenMedsStatus = false;
   List<TextEditingController>? listController = [];
+  bool postStatus = false;
 
   @override
   void initState() {
@@ -89,50 +90,55 @@ class _UpdateStatusState extends State<UpdateStatus> {
                 _statusPageController.nextPage(
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeIn);
-              } else {
+              } else if (pageIndex == 1) {
                 if (validateAndSave()) {
                   setState(() {
                     isAPICallProcess = true;
                   });
+                  print(listController);
                   currentStatus!.medication =
                       listController!.map((e) => e.text).toList();
                   elderlyRequestModel!.status = currentStatus;
                   if (transactionType == "creation") {
                     APIService.createElderly(elderlyRequestModel!)
                         .then((response) {
-                      if (response) {
-                        //showDialog success dialog
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/adminElderlyRecords',
-                          (Route<dynamic> route) {
-                            return route.settings.name ==
-                                '/adminElderlyRecords';
-                          },
-                        );
-                      }
-                      print('failed');
+                      setState(() {
+                        postStatus = response;
+                      });
+
+                      print(response);
                       //showDialog error dialog
                     });
                   } else {
                     APIService.updateElderly(elderlyRequestModel!)
                         .then((response) {
                       if (response) {
-                        //showDialog success dialog
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/adminElderlyRecords',
-                          (Route<dynamic> route) {
-                            return route.settings.name ==
-                                '/adminElderlyRecords';
-                          },
-                        );
+                        //showDialog error dialog
+                        setState(() {
+                          postStatus = response;
+                        });
+
+                        print(response);
                       }
-                      print('failed');
-                      //showDialog error dialog
                     });
                   }
+                  setState(() {
+                    pageIndex++;
+                    isAPICallProcess = false;
+                  });
+                  _statusPageController.nextPage(
+                      duration: Duration(milliseconds: 300),
+                      curve: Curves.easeIn);
                 }
+              } else {
+                //showDialog success dialog
+                Navigator.pushNamedAndRemoveUntil(
+                  context,
+                  '/adminElderlyRecords',
+                  (Route<dynamic> route) {
+                    return route.settings.name == '/adminElderlyRecords';
+                  },
+                );
               }
             },
             style: ElevatedButton.styleFrom(
@@ -145,7 +151,9 @@ class _UpdateStatusState extends State<UpdateStatus> {
                     borderRadius: BorderRadius.circular(10))),
             child: pageIndex == 0
                 ? const Text('Update Status')
-                : const Text('Save'),
+                : pageIndex == 1
+                    ? const Text('Save')
+                    : const Text('Done'),
           ),
         ),
       ),
@@ -168,6 +176,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
         children: [
           medicationRequirements(context),
           buildStatusPage(context),
+          postStatusOutcome(context),
         ],
       ),
     );
@@ -254,6 +263,62 @@ class _UpdateStatusState extends State<UpdateStatus> {
           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w500),
         ),
         child,
+      ],
+    );
+  }
+
+  Widget postStatusOutcome(BuildContext context) {
+    return Stack(
+      alignment: Alignment.center,
+      children: [
+        Visibility(
+          visible: postStatus,
+          replacement: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.close_rounded,
+                size: 100,
+                color: Colors.red,
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Something went wrong!',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+              Text(
+                'Please try again later',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.check_circle_outline_rounded,
+                size: 100,
+                color: Colors.green,
+              ),
+              SizedBox(height: 16),
+              Text(
+                transactionType == 'creation'
+                    ? 'Elderly registered successfully!'
+                    : 'Status updated successfully!',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black.withOpacity(0.5),
+                ),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }
@@ -468,11 +533,6 @@ class _UpdateStatusState extends State<UpdateStatus> {
     );
   }
 
-  List<TextEditingController> tempList = [
-    TextEditingController(text: 'hello1'),
-    TextEditingController(text: 'hello2'),
-    TextEditingController(text: 'hello3')
-  ];
   Widget medicationRequirements(BuildContext context) {
     return ListView(
       physics: const NeverScrollableScrollPhysics(),
@@ -491,8 +551,6 @@ class _UpdateStatusState extends State<UpdateStatus> {
                 onTap: () {
                   setState(() {
                     listController!.add(TextEditingController());
-                    print('hello1');
-                    print(listController);
                   });
                 },
                 child: Center(
@@ -540,7 +598,9 @@ class _UpdateStatusState extends State<UpdateStatus> {
                         "medication",
                         "Medication",
                         (onValidateVal) {},
-                        (onSavedVal) {},
+                        (onSavedVal) {
+                          listController![index].text = onSavedVal;
+                        },
                         paddingRight: 0,
                         paddingLeft: 0,
                         initialValue: listController![index].text,
