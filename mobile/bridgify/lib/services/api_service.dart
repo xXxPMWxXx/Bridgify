@@ -329,12 +329,7 @@ class APIService {
         headers: requestHeaders,
         body: jsonEncode(model.toJson()),
       );
-      if (postingResponse.statusCode == 200) {
-        print("elderly successfully created");
-        return true;
-      }
-      print("elderly failed to be created");
-      return false;
+      return postingResponse.statusCode == 200;
     }
     print("face posted failed");
     return false;
@@ -361,13 +356,7 @@ class APIService {
 
     print(model.toJson());
 
-    if (response.statusCode == 200) {
-      print("elderly successfully updated");
-      return true;
-    }
-    print("elderly failed to updated");
-    print(response.body);
-    return false;
+    return response.statusCode == 200;
   }
 
   static Future<bool> deleteElderly(String elderlyID) async {
@@ -380,14 +369,10 @@ class APIService {
     var url =
         Uri.http(Config.apiURL, Config.deleteElderlyAPI, {"id": elderlyID});
 
-    var response = await client.get(
+    var response = await client.delete(
       url,
       headers: requestHeaders,
     );
-    if (response.statusCode == 200) {
-      return true;
-    } else {
-      return false;
-    }
+    return response.statusCode == 200;
   }
 }

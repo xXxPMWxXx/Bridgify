@@ -30,9 +30,9 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
             onPressed: () async {
               Navigator.pushNamedAndRemoveUntil(
                 context,
-                '/adminHome',
+                '/',
                 (Route<dynamic> route) {
-                  return route.settings.name == '/home';
+                  return route.settings.name == '/adminHome';
                 },
               );
             },
@@ -65,18 +65,6 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
           },
         ),
 
-        // body: ListView(
-        //   padding: const EdgeInsets.symmetric(horizontal: 15),
-        //   children: const [
-        //     ElderlyRecordItem(color: Colors.green),
-        //     ElderlyRecordItem(color: Colors.red),
-        //     ElderlyRecordItem(color: Colors.blue),
-        //     ElderlyRecordItem(color: Colors.teal),
-        //     ElderlyRecordItem(color: Colors.orange),
-        //     ElderlyRecordItem(color: Colors.deepOrange),
-        //     ElderlyRecordItem(color: Colors.indigo),
-        //   ],
-        // ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
             Navigator.pushNamed(

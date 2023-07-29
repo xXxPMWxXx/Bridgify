@@ -1,10 +1,9 @@
 import 'dart:io';
 
+import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/elderly_request_model.dart';
 import 'package:bridgify/pages/elderly/Admin/update_status.dart';
-import 'package:bridgify/services/api_service.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
@@ -215,9 +214,8 @@ class _CreateElderlyState extends State<CreateElderly> {
                     },
                     paddingRight: 0,
                     paddingLeft: 0,
-                    initialValue: dobElderly != null
-                        ? '${dobElderly!.day}/${dobElderly!.month}/${dobElderly!.year}'
-                        : "",
+                    initialValue:
+                        dobElderly != null ? elderlyRequestModel!.dob! : "",
                     obscureText: false,
                     suffixIcon: IconButton(
                       onPressed: () async {
@@ -238,7 +236,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                         if (dobElderly != null) {
                           setState(() {
                             elderlyRequestModel!.dob =
-                                '${dobElderly!.day}/${dobElderly!.month}/${dobElderly!.year}';
+                                '${dobElderly!.day.toString().padLeft(2, '0')}/${dobElderly!.month.toString().padLeft(2, '0')}/${dobElderly!.year.toString().padLeft(2, '0')}';
                           });
                           print(
                               'Date selected:  ${dobElderly!.day}/${dobElderly!.month}/${dobElderly!.year}');
@@ -426,14 +424,72 @@ class _CreateElderlyState extends State<CreateElderly> {
                     // passwordUpdate = passwordUpdate ?? "";
                     // confirmPasswordUpdate = confirmPasswordUpdate ?? "";
                     if (validateAndSave()) {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => UpdateStatus(
-                              model: elderlyRequestModel!,
-                              transactionType: 'creation'),
-                        ),
-                      );
+                      if (elderlyRequestModel!.photo == null &&
+                          !isValidDateFormat(elderlyRequestModel!.dob!)) {
+                      } else if (elderlyRequestModel!.photo == null) {
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              child: const InvalidCredentialsView(
+                                primaryText: 'Photo Required to register',
+                                secondaryText: 'Please provide a valid photo',
+                              ),
+                            );
+                          },
+                        );
+                      } else if (!isValidDateFormat(
+                          elderlyRequestModel!.dob!)) {
+                        print(elderlyRequestModel!.dob!);
+                        showDialog(
+                          context: context,
+                          builder: (context) {
+                            return Dialog(
+                              backgroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(24),
+                              ),
+                              child: const InvalidCredentialsView(
+                                primaryText: 'Invalid date format given',
+                                secondaryText:
+                                    'Please give a valid date in the proper format',
+                              ),
+                            );
+                          },
+                        );
+                      } else {
+                        if (!isValidDate(elderlyRequestModel!.dob!)) {
+                          showDialog(
+                            context: context,
+                            builder: (context) {
+                              return Dialog(
+                                backgroundColor: Colors.white,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(24),
+                                ),
+                                child: const InvalidCredentialsView(
+                                  primaryText: 'Invalid date given',
+                                  secondaryText:
+                                      'Please give a valid date for your birthday',
+                                ),
+                              );
+                            },
+                          );
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => UpdateStatus(
+                                  model: elderlyRequestModel!,
+                                  transactionType: 'creation'),
+                            ),
+                          );
+                        }
+                      }
 
                       // APIService.update(
                       //         updateUserRequestModel!, isImageSelected)
@@ -489,6 +545,40 @@ class _CreateElderlyState extends State<CreateElderly> {
       return true;
     }
     return false;
+  }
+
+  bool isValidDateFormat(String input) {
+    final RegExp dateRegex = RegExp(r'^\d{2}/\d{2}/\d{4}$');
+    print(dateRegex.hasMatch("28/7/2023"));
+    print(input);
+    print(dateRegex.hasMatch(input));
+    return dateRegex.hasMatch(input);
+  }
+
+  bool isValidDate(String input) {
+    try {
+      List<String> parts = input.split('/');
+      if (parts.length != 3) {
+        return false;
+      }
+
+      int day = int.parse(parts[0]);
+      int month = int.parse(parts[1]);
+      int year = int.parse(parts[2]);
+
+      DateTime date = DateTime(year, month, day);
+      DateTime currentDate = DateTime.now();
+      print(date);
+      print(currentDate);
+
+      if (date.isAfter(currentDate)) {
+        return false;
+      }
+      // Additional check to ensure the correct format and validity
+      return (date.day == day && date.month == month && date.year == year);
+    } catch (e) {
+      return false; // Failed to parse as a valid date
+    }
   }
 
   static Widget picPicker(BuildContext context, String fileName,

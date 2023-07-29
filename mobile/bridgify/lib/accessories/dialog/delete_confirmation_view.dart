@@ -1,3 +1,4 @@
+import 'package:bridgify/pages/elderly/Admin/admin_elderly_records_page.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +17,7 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
   final _pageConfirmationController = PageController();
   var _hasPosted = false;
   var _hasClicked = false;
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -25,8 +27,10 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
       clipBehavior: Clip.antiAlias,
       child: Stack(children: [
         SizedBox(
-            height: MediaQuery.of(context).size.height * 0.2,
-            width: MediaQuery.of(context).size.width * 0.75,
+            height: _hasClicked
+                ? MediaQuery.of(context).size.height * 0.3
+                : MediaQuery.of(context).size.height * 0.2,
+            width: MediaQuery.of(context).size.width * 0.8,
             child: PageView(
               physics: NeverScrollableScrollPhysics(),
               controller: _pageConfirmationController,
@@ -44,18 +48,12 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
             child: MaterialButton(
               onPressed: () {
                 if (_hasClicked) {
-                  if (_hasPosted) {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/adminElderlyRecords',
-                      (Route<dynamic> route) {
-                        return route.settings.name == '/adminElderlyRecords';
-                      },
-                    );
-                  }
-                  if (Navigator.canPop(context)) {
-                    Navigator.pop(context);
-                  }
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (_) => const AdminElderlyRecords(),
+                    ),
+                  );
                 } else {
                   APIService.deleteElderly(widget.id).then(
                     (response) {
@@ -81,7 +79,7 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
                   );
                 }
               },
-              child: const Text("Yes, I'm sure"),
+              child: _hasClicked ? Text("Done") : Text("Yes, I'm sure"),
               textColor: Colors.white,
             ),
           ),
@@ -131,14 +129,14 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
               Text(
                 'Something went wrong!',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   color: Colors.black.withOpacity(0.5),
                 ),
               ),
               Text(
                 'Please try again later',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   color: Colors.black.withOpacity(0.5),
                 ),
               ),
@@ -156,7 +154,7 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
               Text(
                 'Elderly account deleted successfully!',
                 style: TextStyle(
-                  fontSize: 20,
+                  fontSize: 18,
                   color: Colors.black.withOpacity(0.5),
                 ),
               ),
