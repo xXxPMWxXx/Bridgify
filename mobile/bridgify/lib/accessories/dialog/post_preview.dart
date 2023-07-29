@@ -18,7 +18,7 @@ class PostPreview extends StatefulWidget {
 }
 
 class _PostPreviewState extends State<PostPreview> {
-  final _postPrevieweController = PageController();
+  final _postPreviewController = PageController();
   var _hasPosted = false;
   var _hasClicked = false;
   @override
@@ -34,7 +34,7 @@ class _PostPreviewState extends State<PostPreview> {
           width: MediaQuery.of(context).size.width,
           child: PageView(
             physics: NeverScrollableScrollPhysics(),
-            controller: _postPrevieweController,
+            controller: _postPreviewController,
             children: [
               _buildPreview(widget.model),
               _postOutcome(),
@@ -107,7 +107,7 @@ class _PostPreviewState extends State<PostPreview> {
                           _hasPosted = true;
                           _hasClicked = true;
                         });
-                        _postPrevieweController.animateToPage(1,
+                        _postPreviewController.animateToPage(1,
                             duration: Duration(milliseconds: 200),
                             curve: Curves.easeIn);
                       } else {
@@ -115,7 +115,7 @@ class _PostPreviewState extends State<PostPreview> {
                           _hasPosted = false;
                           _hasClicked = true;
                         });
-                        _postPrevieweController.animateToPage(1,
+                        _postPreviewController.animateToPage(1,
                             duration: Duration(milliseconds: 100),
                             curve: Curves.easeIn);
                       }
@@ -150,55 +150,56 @@ class _PostPreviewState extends State<PostPreview> {
         activity: model!.activityType!);
   }
 
-  _postOutcome() {
+  Widget _postOutcome() {
     return Stack(
       alignment: Alignment.center,
       children: [
         Visibility(
-            visible: _hasPosted,
-            replacement: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(
-                  Icons.close_rounded,
-                  size: 100,
-                  color: Colors.red,
+          visible: _hasPosted,
+          replacement: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(
+                Icons.close_rounded,
+                size: 100,
+                color: Colors.red,
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Something went wrong!',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black.withOpacity(0.5),
                 ),
-                SizedBox(height: 16),
-                Text(
-                  'Something went wrong!',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black.withOpacity(0.5),
-                  ),
+              ),
+              Text(
+                'Please try posting again later',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black.withOpacity(0.5),
                 ),
-                Text(
-                  'Please try posting again later',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black.withOpacity(0.5),
-                  ),
+              ),
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.check_circle_outline_rounded,
+                size: 100,
+                color: Colors.green,
+              ),
+              SizedBox(height: 16),
+              Text(
+                'Post saved successfully!',
+                style: TextStyle(
+                  fontSize: 20,
+                  color: Colors.black.withOpacity(0.5),
                 ),
-              ],
-            ),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Icon(
-                  Icons.check_circle_outline_rounded,
-                  size: 100,
-                  color: Colors.green,
-                ),
-                SizedBox(height: 16),
-                Text(
-                  'Post saved successfully!',
-                  style: TextStyle(
-                    fontSize: 20,
-                    color: Colors.black.withOpacity(0.5),
-                  ),
-                ),
-              ],
-            )),
+              ),
+            ],
+          ),
+        ),
       ],
     );
   }

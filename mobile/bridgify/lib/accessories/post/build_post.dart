@@ -149,6 +149,11 @@ class _BuildPostState extends State<BuildPost> {
               AsyncSnapshot<List<PostResponseModel>?> model,
             ) {
               if (model.hasData) {
+                if (model.data!.isEmpty) {
+                  return const Center(
+                    child: CircularProgressIndicator(),
+                  );
+                }
                 return Expanded(
                   flex: 2,
                   child: ListView.builder(

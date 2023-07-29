@@ -1,6 +1,5 @@
 import 'package:bridgify/accessories/elderly/elderly_record_item.dart';
 import 'package:bridgify/models/elderly_response_model.dart';
-import 'package:bridgify/pages/elderly/Admin/create_elderly.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
 
@@ -27,6 +26,21 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
           backgroundColor: Colors.white,
           centerTitle: true,
           elevation: 1,
+          leading: IconButton(
+            onPressed: () async {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/adminHome',
+                (Route<dynamic> route) {
+                  return route.settings.name == '/home';
+                },
+              );
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Color(0xFF27c1a9),
+            ),
+          ),
         ),
         body: FutureBuilder(
           future: APIService.getElderly(),
@@ -65,8 +79,10 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
         // ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (_) => const CreateElderly()));
+            Navigator.pushNamed(
+              context,
+              '/adminCreateElderly',
+            );
           },
           child: const Icon(Icons.add),
         ),

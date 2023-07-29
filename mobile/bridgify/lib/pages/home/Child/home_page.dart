@@ -179,7 +179,7 @@ class _HomePageState extends State<HomePage> {
               color: Color(0xFFEFFFFC),
             ),
             //load posts
-            child: BuildPost(),
+            child: const BuildPost(),
           ),
         ),
       ],

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:bridgify/models/elderly_request_model.dart';
 import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:bridgify/models/login_request_model.dart';
 import 'package:bridgify/models/login_response_model.dart';
@@ -284,41 +285,109 @@ class APIService {
     }
   }
 
-  // static Future<bool> createElderly(ElderlyRequestModel model) async {
-  //   var currentLoginDetails = await SharedService.loginDetails();
-  //   Map<String, String> requestHeaders = {
-  //     'Content-Type': 'application/json',
-  //     'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
-  //   };
+  static Future<bool> createElderly(ElderlyRequestModel model) async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+    // static const String createElderlyAPI = "api/elderly/insert";
+    // static const String postFaceAPI = "api/face/post-face";
 
-  //   var url = Uri.http(
-  //     Config.apiURL,
-  //     Config.createElderlyAPI,
-  //   );
+    var trainingUrl = Uri.http(
+      Config.apiURL,
+      Config.postFaceAPI,
+    );
 
-  //   var request = http.MultipartRequest("POST", url);
-  //   request.headers.addAll(requestHeaders);
-  //   request.fields["author_email"] = model.authorEmail!;
-  //   request.fields["description"] = model.description!;
-  //   request.fields["activity_type"] = model.activityType!;
+    var trainingRequest = http.MultipartRequest("POST", trainingUrl);
+    trainingRequest.headers.addAll(requestHeaders);
+    trainingRequest.fields["label"] = model.name!;
+    trainingRequest.fields["elderlyID"] = model.id!;
+    http.MultipartFile trainingMultipartFile =
+        await http.MultipartFile.fromPath(
+      'file',
+      model.photo!,
+    );
 
-  //   for (var i = 0; i < model.postImages!.length; i++) {
-  //     http.MultipartFile multipartFile = await http.MultipartFile.fromPath(
-  //       'images',
-  //       model.postImages![i],
-  //     );
+    trainingRequest.files.add(trainingMultipartFile);
 
-  //     request.files.add(multipartFile);
-  //   }
-  //   print(request.files);
-  //   http.StreamedResponse streamResponse = await request.send();
+    http.StreamedResponse trainingStreamResponse = await trainingRequest.send();
 
-  //   final response = await http.Response.fromStream(streamResponse);
+    final trainingResponse =
+        await http.Response.fromStream(trainingStreamResponse);
 
-  //   if (response.statusCode == 200) {
-  //     return true;
-  //   } else {
-  //     return false;
-  //   }
-  // }
+    if (trainingResponse.statusCode == 200) {
+      model.photo = "${model.id}.png";
+      print("face posted failed");
+      var postingUrl = Uri.http(
+        Config.apiURL,
+        Config.createElderlyAPI,
+      );
+
+      var postingResponse = await client.post(
+        postingUrl,
+        headers: requestHeaders,
+        body: jsonEncode(model.toJson()),
+      );
+      if (postingResponse.statusCode == 200) {
+        print("elderly successfully created");
+        return true;
+      }
+      print("elderly failed to be created");
+      return false;
+    }
+    print("face posted failed");
+    return false;
+  }
+
+  static Future<bool> updateElderly(ElderlyRequestModel model) async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url = Uri.http(
+      Config.apiURL,
+      Config.updateElderlyAPI,
+    );
+    print(url);
+
+    var response = await client.put(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+
+    print(model.toJson());
+
+    if (response.statusCode == 200) {
+      print("elderly successfully updated");
+      return true;
+    }
+    print("elderly failed to updated");
+    print(response.body);
+    return false;
+  }
+
+  static Future<bool> deleteElderly(String elderlyID) async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url =
+        Uri.http(Config.apiURL, Config.deleteElderlyAPI, {"id": elderlyID});
+
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }

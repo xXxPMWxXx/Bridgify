@@ -35,6 +35,9 @@ class _ProfilePageState extends State<ProfilePage> {
     return SafeArea(
       child: Scaffold(
         appBar: AppBar(
+          title:
+              const Text('Edit Profile', style: TextStyle(color: Colors.black)),
+          iconTheme: const IconThemeData(color: Color(0xFF27c1a9)),
           elevation: 1,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leading: FutureBuilder(
@@ -55,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                       icon: const Icon(
                         Icons.arrow_back_ios,
-                        color: Color(0xFF27c1a9),
+                        // color: Color(0xFF27c1a9),
                       ),
                     );
                   }
@@ -139,10 +142,10 @@ class _ProfilePageState extends State<ProfilePage> {
         },
         child: ListView(
           children: [
-            const Text(
-              "Edit profile",
-              style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            ),
+            // const Text(
+            //   "Edit profile",
+            //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
+            // ),
             picPicker(
               context,
               imagePathUpdate ?? "",
@@ -160,96 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 )
               },
             ),
-            // Center(
-            //   child: Stack(
-            //     children: [
-            //       Container(
-            //         width: 130,
-            //         height: 130,
-            //         decoration: BoxDecoration(
-            //             border: Border.all(
-            //               width: 4,
-            //               color: Theme.of(context).scaffoldBackgroundColor,
-            //             ),
-            //             boxShadow: [
-            //               BoxShadow(
-            //                   spreadRadius: 2,
-            //                   blurRadius: 10,
-            //                   color: Colors.black.withOpacity(0.1),
-            //                   offset: const Offset(0, 10))
-            //             ],
-            //             shape: BoxShape.circle),
-            //         child: FutureBuilder(
-            //           future: APIService.getUserProfile(),
-            //           builder:
-            //               (BuildContext context, AsyncSnapshot<Object> model) {
-            //             var userProfileData =
-            //                 model.data as Map<String, dynamic>?;
-
-            //             if (model.hasData) {
-            //               var imagePath = userProfileData?["imagePath"];
-
-            //               return imagePath != "" && imagePath != null
-            //                   ? CircleAvatar(
-            //                       radius: 32,
-            //                       backgroundImage:
-            //                           Image.network(imagePath).image)
-            //                   : const UserAvatar(
-            //                       filename: 'img1.jpeg', radius: 32);
-            //             }
-            //             return const Center(
-            //               child: CircularProgressIndicator(),
-            //             );
-            //           },
-            //         ),
-            //       ),
-            //       Positioned(
-            //         bottom: 0,
-            //         right: 0,
-            //         child: Container(
-            //           height: 40,
-            //           width: 40,
-            //           decoration: BoxDecoration(
-            //             color: Color(0xFF27c1a9),
-            //             shape: BoxShape.circle,
-            //             border: Border.all(
-            //                 color: Theme.of(context).scaffoldBackgroundColor),
-            //           ),
-            //           child: IconButton(
-            //             onPressed: () {
-            //               Future<XFile?> _imageFile;
-            //               ImagePicker _picker = ImagePicker();
-            //               try {
-            //                 _imageFile =
-            //                     _picker.pickImage(source: ImageSource.gallery);
-            //                 _imageFile.then((file) async {
-            //                   (file) => {
-            //                         setState(() {
-            //                           imagePathUpdate = file?.path;
-            //                         })
-            //                       };
-            //                   Navigator.of(context).pop();
-            //                 });
-            //               } catch (e) {
-            //                 FormHelper.showSimpleAlertDialog(
-            //                   context,
-            //                   Config.appName,
-            //                   "Invalid field change !!",
-            //                   "OK",
-            //                   () {
-            //                     Navigator.of(context).pop();
-            //                   },
-            //                 );
-            //               }
-            //             },
-            //             icon: const Icon(Icons.edit, color: Colors.white),
-            //           ),
-            //         ),
-            //       ),
-            //     ],
-            //   ),
-            // ),
-
+            SizedBox(height: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -264,8 +178,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     "email",
                     "Email",
                     (onValidateVal) {},
-                    (onSavedVal) => {
-                      updateUserRequestModel!.email = onSavedVal,
+                    (onSavedVal) {
+                      updateUserRequestModel!.email = onSavedVal;
                     },
                     isReadonly: true,
                     paddingRight: 0,
@@ -304,8 +218,8 @@ class _ProfilePageState extends State<ProfilePage> {
 
                       return null;
                     },
-                    (onSavedVal) => {
-                      updateUserRequestModel!.name = onSavedVal,
+                    (onSavedVal) {
+                      updateUserRequestModel!.name = onSavedVal;
                     },
                     paddingRight: 0,
                     paddingLeft: 0,
@@ -334,8 +248,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     "password",
                     "Password",
                     (onValidateVal) {},
-                    (onSavedVal) => {
-                      passwordUpdate = onSavedVal,
+                    (onSavedVal) {
+                      passwordUpdate = onSavedVal;
                     },
                     paddingRight: 0,
                     paddingLeft: 0,
@@ -377,8 +291,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     "confirm password",
                     "Confirm Password",
                     (onValidateVal) {},
-                    (onSavedVal) => {
-                      confirmPasswordUpdate = onSavedVal,
+                    (onSavedVal) {
+                      confirmPasswordUpdate = onSavedVal;
                     },
                     paddingRight: 0,
                     paddingLeft: 0,
@@ -411,15 +325,8 @@ class _ProfilePageState extends State<ProfilePage> {
                     borderFocusedErrorColor: Colors.white,
                   ),
                 ),
-                // buildTextField("Name", userName, false),
-                // buildTextField("Email", userEmail, false),
-                // buildTextField("Password", "*********", false)
               ],
             ),
-            // buildTextField("Name", "John Doe", false),
-            // buildTextField("Email", "JohnDoe@email.com", false),
-            // buildTextField("Password", "*********", true),
-            // buildTextField("Name", "John Doe"),
             const SizedBox(height: 35),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -440,22 +347,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: 20,
                   fontWeight: FontWeight.bold,
                 ),
-                // OutlinedButton(
-                //   onPressed: () {},
-                //   style: ButtonStyle(
-                //     padding: MaterialStateProperty.all(
-                //         const EdgeInsets.symmetric(horizontal: 50)),
-                //     shape: MaterialStateProperty.all(
-                //       RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(20)),
-                //     ),
-                //   ),
-                //   child: const Text(
-                //     "CANCEL",
-                //     style: TextStyle(
-                //         fontSize: 14, letterSpacing: 2.2, color: Colors.black),
-                //   ),
-                // ),
                 FormHelper.submitButton(
                   height: 50,
                   width: 150,
@@ -527,60 +418,10 @@ class _ProfilePageState extends State<ProfilePage> {
                   borderRadius: 20,
                   fontWeight: FontWeight.bold,
                 ),
-                // OutlinedButton(
-                //   onPressed: () {},
-                //   style: ButtonStyle(
-                //     backgroundColor:
-                //         MaterialStateProperty.all(Color(0xFF27c1a9)),
-                //     padding: MaterialStateProperty.all(
-                //         const EdgeInsets.symmetric(horizontal: 50)),
-                //     shape: MaterialStateProperty.all(
-                //       RoundedRectangleBorder(
-                //           borderRadius: BorderRadius.circular(20)),
-                //     ),
-                //   ),
-                //   child: const Text(
-                //     "SAVE",
-                //     style: TextStyle(
-                //         fontSize: 14, letterSpacing: 2.2, color: Colors.white),
-                //   ),
-                // ),
               ],
             )
           ],
         ),
-      ),
-    );
-  }
-
-  Widget buildTextField(
-      String labelText, String placeHolder, bool isPasswordTextField) {
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 35),
-      child: TextField(
-        obscureText: isPasswordTextField,
-        decoration: InputDecoration(
-            suffixIcon: isPasswordTextField
-                ? IconButton(
-                    onPressed: () {
-                      setState(() {
-                        hidePassword = !hidePassword;
-                      });
-                    },
-                    color: Colors.black.withOpacity(0.5),
-                    icon: Icon(
-                      hidePassword ? Icons.visibility_off : Icons.visibility,
-                    ),
-                  )
-                : null,
-            contentPadding: const EdgeInsets.only(bottom: 3),
-            labelText: labelText,
-            floatingLabelBehavior: FloatingLabelBehavior.always,
-            hintText: placeHolder /*actual name*/,
-            hintStyle: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: Colors.black)),
       ),
     );
   }
@@ -626,7 +467,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       BoxShadow(
                           spreadRadius: 2,
                           blurRadius: 10,
-                          color: Colors.black.withOpacity(0.1),
+                          color: Colors.black.withOpacity(0.15),
                           offset: const Offset(0, 10))
                     ],
                     shape: BoxShape.circle),

@@ -5,7 +5,6 @@ import 'package:bridgify/accessories/dialog/post_preview.dart';
 import 'package:bridgify/accessories/drawer/drawer_item.dart';
 import 'package:bridgify/accessories/profile/user_avatar.dart';
 import 'package:bridgify/config.dart';
-import 'package:bridgify/models/post_request_model.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
@@ -26,7 +25,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
   bool isAPICallProcess = false;
   final GlobalKey<ScaffoldState> _globalKey = GlobalKey();
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
-  PostRequestModel? postRequestModel;
   PostResponseModel? postResponseModel;
   String? postAuthorEmail;
   String? postDescription;
@@ -42,7 +40,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
   @override
   void initState() {
     super.initState();
-    postRequestModel = PostRequestModel();
     postResponseModel = PostResponseModel();
     Future.delayed(Duration.zero, () {
       APIService.getUserProfile().then((response) {
@@ -294,8 +291,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
                         return null;
                       },
-                      (onSavedVal) => {
-                        postActivityType = onSavedVal,
+                      (onSavedVal) {
+                        postActivityType = onSavedVal;
                       },
                       paddingRight: 0,
                       paddingLeft: 0,
@@ -331,8 +328,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
 
                         return null;
                       },
-                      (onSavedVal) => {
-                        postDescription = onSavedVal,
+                      (onSavedVal) {
+                        postDescription = onSavedVal;
                       },
                       isMultiline: true,
                       multilineRows: 7,

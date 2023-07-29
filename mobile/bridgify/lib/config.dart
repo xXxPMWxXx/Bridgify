@@ -17,10 +17,11 @@ Future<void> copyToClipboard(text) async =>
 class Config {
   static const String appName = "Bridgify";
   //during deployment
-  //static const String apiURL = "13.228.86.148:8000";
+  // static const String apiURL = "13.228.86.148:8000";
 
   //user
   static const String apiURL = "172.31.208.1:8000";
+
   static const String loginAPI = "api/user/login";
   static const String registerAPI = "api/user/signup";
   static const String userProfileAPI = "api/user/user-profile";
@@ -35,4 +36,10 @@ class Config {
   //elderly
   static const String getElderlyByUserAPI = "api/elderly/getByUser";
   static const String getElderlyAPI = "api/elderly/getAll";
+  static const String createElderlyAPI = "api/elderly/insert";
+  static const String updateElderlyAPI = "api/elderly/update";
+  static const String deleteElderlyAPI = "api/elderly/delete";
+
+  //faces
+  static const String postFaceAPI = "api/face/post-face";
 }
