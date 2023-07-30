@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select, FormLabel, RadioGroup, Radio, Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, InputAdornment, } from '@mui/material';
+import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select, FormLabel, RadioGroup, Radio, Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, InputAdornment, Pagination, } from '@mui/material';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useNavigate } from 'react-router-dom';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { Document, Page } from 'react-pdf';
 
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -156,14 +157,12 @@ export function CreateRecordTab() {
     const [documentNo, setDocumentNo] = useState('');
     const [elderlyID, setElderlyID] = useState('');
 
-    const [fileURL, setFileURL] = useState('');
     const [pageNo, setPageNo] = useState(1);
-    const [numPages, setNumPages] = useState(null);
 
 
     const [elderlyList, setElderlyList] = useState<any[]>([]);
     const [selectedFile, setSelectedFile] = useState(null);
-    const [selectedFileName, setSelectedFileName] = useState('');
+    const [selectedFileName, setSelectedFileName] = useState('No File Selected');
 
     const [openProcessingModal, setOpenProcessingModal] = React.useState(false);
 
@@ -223,6 +222,10 @@ export function CreateRecordTab() {
 
     function nextPage() {
         changePage(1);
+    }
+    function handlePage(event: any, page: number) {
+        console.log(page)
+        setPageNo(page)
     }
 
     // //handle form inputs
@@ -299,7 +302,7 @@ export function CreateRecordTab() {
                         setDocumentType('');
                         setElderlyID('');
                         setSelectedFile(null);
-                        setSelectedFileName('');
+                        setSelectedFileName('No File Selected');
                         setDocumentNo('');
 
                         setOpenProcessingModal(false);
@@ -329,6 +332,11 @@ export function CreateRecordTab() {
         fetchElderly();
     }, []);
 
+    const [numPages, setNumPages] = useState(null);
+
+    function onDocumentLoadSuccess({numPages}:any) {
+        setNumPages(numPages);
+    }
 
 
     //for modal
@@ -351,10 +359,10 @@ export function CreateRecordTab() {
                 <Typography variant="h5" gutterBottom sx={{ marginBottom: 2, textAlign: "center" }}>
                     New Record
                 </Typography>
-                <Button variant="outlined"
+                {/* <Button variant="outlined"
                     component="label" size="large" sx={{ height: "inherit" }} onClick={() => console.log(documentNo)}>
                     Test Button
-                </Button>
+                </Button> */}
                 <form onSubmit={handleSubmit}>
                     <Grid container spacing={3} sx={{ p: 2 }}>
 
@@ -433,7 +441,7 @@ export function CreateRecordTab() {
                                     </Grid>
 
 
-                                    <Grid item xs={5} sx={{ border: "" }}>
+                                    <Grid item xs={6} sx={{ border: "" }}>
 
                                         <Button variant="outlined"
                                             component="label" size="large" fullWidth sx={{ height: "inherit" }}>
@@ -455,11 +463,33 @@ export function CreateRecordTab() {
                             </Sheet>
 
                         </Grid>
-                        <Grid item xs={6} sx={{ border: "", overflow: "none" }}>
-                            <Sheet sx={{ marginLeft: 3 }}>
-                                {selectedFile ? <Document file={URL.createObjectURL(selectedFile)}>  <Page pageNumber={pageNo} height={700} /></Document> : <Typography>TEST</Typography>}
+                        <Grid item xs={6} sx={{ margin:"auto", display:"flex" }}>
+                            <Sheet sx={{ marginLeft: 3}}>
+                                {selectedFile ? <Document file={URL.createObjectURL(selectedFile)} onLoadSuccess={onDocumentLoadSuccess}>  <Page pageNumber={pageNo} height={500} /></Document> : <Typography></Typography>}
+                                {numPages?<Pagination sx={{alignItems:"center"}} size="medium"count={numPages} onChange={handlePage}/>:<Typography></Typography>}
+                                
 
-                                {/* <Button onClick={nextPage}>next page</Button> */}</Sheet>
+                                {/* <Sheet sx={{ display: "flex" }}>
+                                    <IconButton aria-label="back" size="small">
+                                        <ArrowBackIosIcon fontSize="inherit" />
+                                    </IconButton><Typography sx={{font:"inherit"}}>{pageNo}</Typography>     <IconButton aria-label="back" size="small">
+                                        <ArrowForwardIosIcon fontSize="inherit" />
+                                    </IconButton></Sheet> */}
+
+
+                                {/* <Button onClick={nextPage}>next page</Button> */}
+                                {/* <Document
+                                    file={selectedFile}
+                                    onLoadSuccess={onDocumentLoadSuccess}
+
+                                >
+                                    {Array.from(new Array(selectedFile), (el, index) => (
+                                        <Page key={`page_${index + 1}`} pageNumber={index + 1} />
+                                    ))}
+
+                                    <Typography>{numPages}</Typography>
+                                </Document> */}
+                            </Sheet>
 
                         </Grid>
                     </Grid>

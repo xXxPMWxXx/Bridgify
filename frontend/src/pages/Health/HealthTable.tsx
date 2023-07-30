@@ -6,7 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Table from '@mui/joy/Table';
 import { Sheet, Button } from '@mui/joy';
-import Checkbox from '@mui/joy/Checkbox';
+import Checkbox from '@mui/material/Checkbox';
 import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import { Add } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -95,7 +95,9 @@ export default function HealthTable() {
 
 
   const isQuery = (obj: any) => {
-    return obj.name.toLowerCase().includes(searchQuery);
+    const wordArray = obj.name.toLowerCase().split(' ');
+    return wordArray.some((word: string) => word.startsWith(searchQuery));
+
   };
 
   const columns = [{
@@ -148,7 +150,6 @@ export default function HealthTable() {
           console.log(data)
           setTableData(data);
           setFetchAdditional(true);
-          console.log("first useeffect called")
         }
 
       })
@@ -186,7 +187,7 @@ export default function HealthTable() {
 
               // Check if 'foundItem' exists (it will be undefined if no match is found)
               if (foundItem) {
-                console.log("found " + foundItem.id)
+                // console.log("found " + foundItem.id)
                 // Create a new object with all properties from 'row' along with the elderly name and photo
                 return {
                   ...row,
@@ -227,6 +228,7 @@ export default function HealthTable() {
   //on start up
   React.useEffect(() => {
     async function loadData() {
+      console.log("first useeffect called")
       setLoadProgressOpen(true);
       await delay(500);
       loadUserData();
@@ -296,15 +298,10 @@ export default function HealthTable() {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
-
-  // React.useEffect(() => {
-  //   setRows(tableData.filter(isType));
-  // }, [tableData]);
-
   //filter
   React.useEffect(() => {
-    setRows(tableData.filter(isType).filter(isSelectedElderly).filter(isQuery));
-    setLoadProgressOpen(false)
+   setRows(tableData.filter(isType).filter(isSelectedElderly).filter(isQuery));
+  
     // console.log("filter is called")
 
     // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
@@ -355,7 +352,13 @@ export default function HealthTable() {
 
 
       <Box sx={{ width: "80%", alignItems: 'center', margin: "auto" }}>
-        <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" sx={{ marginBottom: 2, borderBottom: 1 }}>
+        <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" 
+        sx={{ marginBottom: 2, borderBottom: 1 ,
+          ".Mui-selected":{color:"#30685e !important" }
+        }} TabIndicatorProps={{
+          style: {
+            backgroundColor: "#30685e"          }
+        }}>
           <Tab label="All" {...a11yProps(0)} />
           <Tab label="Medical Records" {...a11yProps(1)} />
           <Tab label="Medication" {...a11yProps(2)} />
@@ -424,7 +427,7 @@ export default function HealthTable() {
                 vertical: 'bottom',
                 horizontal: 'left',
               }}
-              slotProps={{ paper: { sx: { p: 1, marginTop: 1, borderRadius: 3, border: "1px solid #30685e" } } }}
+              slotProps={{ paper: { sx: { p: 1, marginTop: 1, borderRadius: 3, border: "1px solid #30685e" ,boxShadow:"none"} } }}
               onClose={handleClose}
               transformOrigin={{
                 vertical: 'top',
@@ -439,9 +442,9 @@ export default function HealthTable() {
                     <Box sx={{ display: 'flex', gap: 1.2, alignItems: 'center', textAlign: "right" }}>
 
                       <Checkbox key={e.id} name={e.id} onClick={handleCheck} checked={selectedElderly.indexOf(e.id) > -1} sx={{
-                        color: "black",
+                        accentColor:  "#30685e",
                         '&.Mui-checked': {
-                          color: "#30685e",
+                          color: "#30685e !important"
                         },
                       }}
                       />
