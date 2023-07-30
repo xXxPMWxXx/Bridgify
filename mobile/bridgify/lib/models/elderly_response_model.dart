@@ -29,14 +29,14 @@ class ElderlyResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['id'] = id;
-    _data['name'] = name;
-    _data['DOB'] = dob;
-    _data['photo'] = photo;
-    _data['status'] = status!.toJson();
-    _data['created'] = created;
-    return _data;
+    final data = <String, dynamic>{};
+    data['id'] = id;
+    data['name'] = name;
+    data['DOB'] = dob;
+    data['photo'] = photo;
+    data['status'] = status!.toJson();
+    data['created'] = created;
+    return data;
   }
 }
 
@@ -70,14 +70,14 @@ class Status {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['current_activity'] = current_activity;
-    _data['current_temp'] = current_temp;
-    _data['medication'] = medication;
-    _data['taken_med'] = taken_med;
-    _data['condition'] = condition;
-    _data['condition_description'] = condition_description;
-    _data['awake'] = awake;
-    return _data;
+    final data = <String, dynamic>{};
+    data['current_activity'] = current_activity;
+    data['current_temp'] = current_temp;
+    data['medication'] = medication;
+    data['taken_med'] = taken_med;
+    data['condition'] = condition;
+    data['condition_description'] = condition_description;
+    data['awake'] = awake;
+    return data;
   }
 }

@@ -7,7 +7,7 @@ class OTPInputField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Padding(
+    return const Padding(
       padding: EdgeInsets.symmetric(vertical: 50.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -72,7 +72,7 @@ class CustomField extends StatelessWidget {
           if (value.length == 1) {
             FocusScope.of(context).nextFocus();
           }
-          if (value.length == 0) {
+          if (value.isEmpty) {
             FocusScope.of(context).previousFocus();
           }
         },

@@ -20,7 +20,7 @@ class Config {
   // static const String apiURL = "13.228.86.148:8000";
 
   //user
-  static const String apiURL = "172.31.208.1:8000";
+  static const String apiURL = "172.19.112.1:8000";
 
   static const String loginAPI = "api/user/login";
   static const String registerAPI = "api/user/signup";

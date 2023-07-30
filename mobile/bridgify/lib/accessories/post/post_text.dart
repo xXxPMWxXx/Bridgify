@@ -5,7 +5,7 @@ class PostText extends StatelessWidget {
   final double fontSize;
   final Color hashTagColor;
 
-  PostText({
+  const PostText({super.key, 
     required this.text,
     required this.fontSize,
     this.hashTagColor = Colors.blue,

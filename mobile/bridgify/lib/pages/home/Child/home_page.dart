@@ -90,9 +90,7 @@ class _HomePageState extends State<HomePage> {
                                     child: CircleAvatar(
                                         radius: 22,
                                         backgroundImage: Image.network(
-                                                'http://' +
-                                                    Config.apiURL +
-                                                    '/images/user_profile/' +
+                                                'http://${Config.apiURL}/images/user_profile/' +
                                                     imagePath)
                                             .image))
                                 : GestureDetector(
@@ -245,10 +243,9 @@ class _HomePageState extends State<HomePage> {
                               return imagePath != "" && imagePath != null
                                   ? CircleAvatar(
                                       radius: 32,
-                                      backgroundImage: Image.network('http://' +
-                                              Config.apiURL +
-                                              '/images/user_profile/' +
-                                              imagePath)
+                                      backgroundImage: Image.network(
+                                              'http://${Config.apiURL}/images/user_profile/' +
+                                                  imagePath)
                                           .image)
                                   : const UserAvatar(
                                       filename: 'img1.jpeg', radius: 32);
@@ -348,17 +345,11 @@ class _HomePageState extends State<HomePage> {
                               Navigator.pushNamed(context, "/chat");
                             });
                       }
-                      return SizedBox(
+                      return const SizedBox(
                         height: 0,
                       );
                     },
                   ),
-                  DrawerItem(
-                      title: 'Heatlh Records',
-                      icon: Icons.notifications,
-                      onTapPath: () {
-                        Navigator.pushNamed(context, "/home");
-                      }),
                   DrawerItem(
                       title: 'Settings',
                       icon: Icons.settings,

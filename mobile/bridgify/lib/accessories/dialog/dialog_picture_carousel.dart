@@ -38,7 +38,7 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
@@ -51,7 +51,7 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
                   ),
                 ],
               ),
-              const Icon(Icons.more_vert)
+              Icon(Icons.more_vert)
             ],
           ),
           const SizedBox(height: 15),
@@ -108,7 +108,7 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
             height: 5,
           ),
           PostText(
-            text: widget.description + " #${widget.activity}",
+            text: "${widget.description} #${widget.activity}",
             fontSize: 16,
           ),
           const SizedBox(

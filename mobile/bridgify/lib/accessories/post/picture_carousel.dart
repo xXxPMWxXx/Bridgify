@@ -24,8 +24,8 @@ class _PictureCarouselState extends State<PictureCarousel> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(bottom: 8),
-      padding: EdgeInsets.symmetric(horizontal: 18, vertical: 10),
+      margin: const EdgeInsets.only(bottom: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 10),
       decoration: BoxDecoration(
         color: Colors.grey.withOpacity(0.1),
         borderRadius: BorderRadius.circular(30),
@@ -34,7 +34,7 @@ class _PictureCarouselState extends State<PictureCarousel> {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
@@ -50,7 +50,7 @@ class _PictureCarouselState extends State<PictureCarousel> {
               Icon(Icons.more_vert)
             ],
           ),
-          SizedBox(height: 15),
+          const SizedBox(height: 15),
           SizedBox(
             height: MediaQuery.of(context).size.width - 70,
             width: double.infinity,
@@ -85,7 +85,7 @@ class _PictureCarouselState extends State<PictureCarousel> {
               },
             ),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Row(
@@ -95,14 +95,14 @@ class _PictureCarouselState extends State<PictureCarousel> {
                 buildIndicator(currentIndex == i)
             ],
           ),
-          SizedBox(
+          const SizedBox(
             height: 5,
           ),
           PostText(
-            text: widget.description + " #${widget.activity}",
+            text: "${widget.description} #${widget.activity}",
             fontSize: 16,
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           )
         ],

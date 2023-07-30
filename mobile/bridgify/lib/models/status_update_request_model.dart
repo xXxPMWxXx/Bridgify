@@ -28,14 +28,14 @@ class StatusUpdateRequestModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['current_activity'] = current_activity;
-    _data['current_temp'] = current_temp;
-    _data['medication'] = medication;
-    _data['taken_med'] = taken_med;
-    _data['condition'] = condition;
-    _data['condition_description'] = condition_description;
-    _data['awake'] = awake;
-    return _data;
+    final data = <String, dynamic>{};
+    data['current_activity'] = current_activity;
+    data['current_temp'] = current_temp;
+    data['medication'] = medication;
+    data['taken_med'] = taken_med;
+    data['condition'] = condition;
+    data['condition_description'] = condition_description;
+    data['awake'] = awake;
+    return data;
   }
 }

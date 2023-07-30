@@ -184,7 +184,7 @@ export const updateUser = async (
         }
         var imagePath = "";
         // try {
-        if (profileImage != null) {
+        if (profileImage != null && imageChange == "true") {
           var extension_type = path.extname(profileImage.name);
           const acceptableExtensions = [".png", ".jpg", ".jpeg"];
           if (!acceptableExtensions.includes(extension_type)) {
@@ -209,17 +209,32 @@ export const updateUser = async (
 
         //handle instance where password isnt changed
         if (password == "" || password == null) {
-          await UserModel.updateOne(
-            { email: email },
-            { profileImage: imagePath, name: name }
-          );
+          if (profileImage != null && imageChange == "true"){
+            await UserModel.updateOne(
+              { email: email },
+              { profileImage: imagePath, name: name }
+            );
+          } else {
+            await UserModel.updateOne(
+              { email: email },
+              { name: name }
+            );
+          }
+          
         } else {
           // 5. hash password if user exists
           const hashedPassword = await bcrypt.hash(password, 10);
-          await UserModel.updateOne(
-            { email: email },
-            { profileImage: imagePath, name: name, password: hashedPassword }
-          );
+          if (profileImage != null && imageChange == "true"){
+            await UserModel.updateOne(
+              { email: email },
+              { profileImage: imagePath, name: name, password: hashedPassword }
+            );
+          } else {
+            await UserModel.updateOne(
+              { email: email },
+              { name: name, password: hashedPassword }
+            );
+          }
         }
 
         // get current user details with new access token

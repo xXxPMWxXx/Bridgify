@@ -43,14 +43,8 @@ class _CreateElderlyState extends State<CreateElderly> {
           iconTheme: const IconThemeData(color: Colors.black),
           elevation: 1,
           leading: IconButton(
-            onPressed: () async {
-              Navigator.pushNamedAndRemoveUntil(
-                context,
-                '/adminElderlyRecords',
-                (Route<dynamic> route) {
-                  return route.settings.name == '/adminElderlyRecords';
-                },
-              );
+            onPressed: () {
+              if (Navigator.canPop(context)) Navigator.pop(context);
             },
             icon: const Icon(
               Icons.arrow_back_ios,
@@ -105,13 +99,13 @@ class _CreateElderlyState extends State<CreateElderly> {
                 )
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
                   // width: MediaQuery.of(context).size.width * 0.35,
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(color: Colors.grey.shade200),
@@ -152,7 +146,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                 ),
                 Container(
                   // width: MediaQuery.of(context).size.width * 0.35,
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(color: Colors.grey.shade200),
@@ -192,7 +186,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                 ),
                 Container(
                   // width: MediaQuery.of(context).size.width * 0.55,
-                  padding: EdgeInsets.only(bottom: 10),
+                  padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     border: Border(
                       bottom: BorderSide(color: Colors.grey.shade200),
@@ -243,7 +237,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                         }
                       },
                       color: Colors.black.withOpacity(0.5),
-                      icon: Icon(Icons.calendar_month_outlined),
+                      icon: const Icon(Icons.calendar_month_outlined),
                     ),
                     prefixIcon: const Icon(Icons.cake_rounded),
                     showPrefixIcon: true,
@@ -583,16 +577,17 @@ class _CreateElderlyState extends State<CreateElderly> {
 
   static Widget picPicker(BuildContext context, String fileName,
       bool isImageSelected, Function onFilePicked) {
-    Future<XFile?> _imageFile;
-    ImagePicker _picker = ImagePicker();
+    Future<XFile?> imageFile;
+    ImagePicker picker = ImagePicker();
 
     return GestureDetector(
       onTap: () {
         try {
-          _imageFile = _picker.pickImage(source: ImageSource.gallery);
-          _imageFile.then((file) async {
+          imageFile = picker.pickImage(source: ImageSource.gallery);
+          imageFile.then((file) async {
             onFilePicked(file);
-            // Navigator.of(context).pop();
+          }).catchError((e) {
+            Navigator.of(context).pop();
           });
         } catch (e) {
           Navigator.of(context).pop();
@@ -639,7 +634,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                 height: 40,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: Color(0xFF27c1a9),
+                  color: const Color(0xFF27c1a9),
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: Theme.of(context).scaffoldBackgroundColor),

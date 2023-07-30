@@ -33,8 +33,8 @@ class ChatScreen extends StatelessWidget {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Administrator',
-                      style: const TextStyle(fontSize: 16),
+                  const Text('Administrator',
+                      style: TextStyle(fontSize: 16),
                       overflow: TextOverflow.clip),
                   Text(conversationID,
                       style: const TextStyle(fontSize: 12),
@@ -55,7 +55,7 @@ class ChatScreen extends StatelessWidget {
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(24),
                         ),
-                        child: RatingView(),
+                        child: const RatingView(),
                       );
                     },
                   );
@@ -69,7 +69,7 @@ class ChatScreen extends StatelessWidget {
         return Theme(
           data: ThemeData(
             primaryColor: HexColor("#33A11D"),
-            iconTheme: IconThemeData(color: Colors.white),
+            iconTheme: const IconThemeData(color: Colors.white),
           ),
           child: defaultWidget,
         );

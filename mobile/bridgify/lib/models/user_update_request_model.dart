@@ -22,11 +22,11 @@ class UpdateUserRequestModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['name'] = name;
-    _data['password'] = password;
-    _data['email'] = email;
-    _data['profileImage'] = profileImage;
-    return _data;
+    final data = <String, dynamic>{};
+    data['name'] = name;
+    data['password'] = password;
+    data['email'] = email;
+    data['profileImage'] = profileImage;
+    return data;
   }
 }

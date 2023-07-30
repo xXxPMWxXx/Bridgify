@@ -57,8 +57,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
       backgroundColor: Colors.white /*const Color(0xFF171717)*/,
       body: ProgressHUD(
           key: UniqueKey(),
-          child: Form(key: globalFormKey, child: loadAdminHomePage(context)),
-          inAsyncCall: isAPICallProcess),
+          inAsyncCall: isAPICallProcess,
+          child: Form(key: globalFormKey, child: loadAdminHomePage(context))),
       drawer: loadDrawer(),
     );
   }
@@ -97,7 +97,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
                             AsyncSnapshot<Object> model) {
                           var userProfileData =
                               model.data as Map<String, dynamic>?;
-
                           if (model.hasData) {
                             var imagePath = userProfileData?["imagePath"];
                             var name = userProfileData?["name"];
@@ -118,9 +117,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                     child: CircleAvatar(
                                         radius: 22,
                                         backgroundImage: Image.network(
-                                                'http://' +
-                                                    Config.apiURL +
-                                                    '/images/user_profile/' +
+                                                'http://${Config.apiURL}/images/user_profile/' +
                                                     imagePath)
                                             .image),
                                   )
@@ -166,7 +163,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
               color: Color(0xFFEFFFFC),
             ),
             //Post
-            child: ListView(padding: EdgeInsets.all(12.0), children: [
+            child: ListView(padding: const EdgeInsets.all(12.0), children: [
               Column(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: <Widget>[
@@ -179,7 +176,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(8),
-                              border: _imageList.length > 0
+                              border: _imageList.isNotEmpty
                                   ? Border.all(
                                       color: Colors.grey.shade700,
                                       width: 2.0,
@@ -191,7 +188,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                     ),
                             ),
                             child: GridView.builder(
-                              padding: EdgeInsets.all(5.0),
+                              padding: const EdgeInsets.all(5.0),
                               gridDelegate:
                                   const SliverGridDelegateWithFixedCrossAxisCount(
                                       crossAxisCount: 3),
@@ -218,7 +215,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                             print(imageCount);
                                             setState(() {});
                                           },
-                                          icon: Icon(
+                                          icon: const Icon(
                                             Icons.delete,
                                             size: 20,
                                           ),
@@ -356,7 +353,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                   ),
                 ],
               ),
-              SizedBox(
+              const SizedBox(
                 height: 35,
               ),
               Row(
@@ -538,9 +535,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                               return imagePath != "" && imagePath != null
                                   ? CircleAvatar(
                                       radius: 32,
-                                      backgroundImage: Image.network('http://' +
-                                              Config.apiURL +
-                                              '/images/user_profile/' +
+                                      backgroundImage: Image.network('http://${Config.apiURL}/images/user_profile/' +
                                               imagePath)
                                           .image)
                                   : const UserAvatar(

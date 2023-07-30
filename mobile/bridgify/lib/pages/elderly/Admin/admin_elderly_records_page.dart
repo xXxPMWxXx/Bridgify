@@ -14,6 +14,7 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
   @override
   void initState() {
     super.initState();
+    setState(() {});
   }
 
   @override
@@ -27,10 +28,10 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
           centerTitle: true,
           elevation: 1,
           leading: IconButton(
-            onPressed: () async {
+            onPressed: () {
               Navigator.pushNamedAndRemoveUntil(
                 context,
-                '/',
+                '/adminHome',
                 (Route<dynamic> route) {
                   return route.settings.name == '/adminHome';
                 },
@@ -42,30 +43,38 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
             ),
           ),
         ),
-        body: FutureBuilder(
-          future: APIService.getElderly(),
-          builder: (BuildContext context,
-              AsyncSnapshot<List<ElderlyResponseModel>?> model) {
-            if (model.hasData) {
-              return ListView.builder(
-                shrinkWrap: true,
-                physics: const ClampingScrollPhysics(),
-                scrollDirection: Axis.vertical,
-                padding: const EdgeInsets.all(0),
-                itemCount: model.data!.length,
-                itemBuilder: (context, index) {
-                  print(model.data!.length);
-                  return ElderlyRecordItem(model: model.data![index]);
-                },
+        body: Container(
+          padding: const EdgeInsets.only(bottom: 25),
+          child: FutureBuilder(
+            future: APIService.getElderly(),
+            builder: (BuildContext context,
+                AsyncSnapshot<List<ElderlyResponseModel>?> model) {
+              if (model.hasData) {
+                return ListView.builder(
+                  shrinkWrap: true,
+                  physics: const ClampingScrollPhysics(),
+                  scrollDirection: Axis.vertical,
+                  padding: const EdgeInsets.all(0),
+                  itemCount: model.data!.length,
+                  itemBuilder: (context, index) {
+                    print(model.data!.length);
+                    return ElderlyRecordItem(
+                        context: context, model: model.data![index]);
+                  },
+                );
+              }
+              return const Center(
+                child: CircularProgressIndicator(),
               );
-            }
-            return const Center(
-              child: CircularProgressIndicator(),
-            );
-          },
+            },
+          ),
         ),
-
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
+          shape: RoundedRectangleBorder(
+            borderRadius:
+                BorderRadius.circular(20.0), // Adjust the radius as needed
+          ),
           onPressed: () {
             Navigator.pushNamed(
               context,

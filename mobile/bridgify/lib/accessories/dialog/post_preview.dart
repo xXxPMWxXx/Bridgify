@@ -29,11 +29,11 @@ class _PostPreviewState extends State<PostPreview> {
       ),
       clipBehavior: Clip.antiAlias,
       child: Stack(children: [
-        Container(
+        SizedBox(
           height: MediaQuery.of(context).size.height * 0.7,
           width: MediaQuery.of(context).size.width,
           child: PageView(
-            physics: NeverScrollableScrollPhysics(),
+            physics: const NeverScrollableScrollPhysics(),
             controller: _postPreviewController,
             children: [
               _buildPreview(widget.model),
@@ -65,7 +65,7 @@ class _PostPreviewState extends State<PostPreview> {
             onPressed: () {
               if (Navigator.canPop(context)) Navigator.pop(context);
             },
-            child: Icon(
+            child: const Icon(
               Icons.close_rounded,
               color: Colors.black,
             ),
@@ -107,18 +107,15 @@ class _PostPreviewState extends State<PostPreview> {
                           _hasPosted = true;
                           _hasClicked = true;
                         });
-                        _postPreviewController.animateToPage(1,
-                            duration: Duration(milliseconds: 200),
-                            curve: Curves.easeIn);
                       } else {
                         setState(() {
                           _hasPosted = false;
                           _hasClicked = true;
                         });
-                        _postPreviewController.animateToPage(1,
-                            duration: Duration(milliseconds: 100),
-                            curve: Curves.easeIn);
                       }
+                      _postPreviewController.animateToPage(1,
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeIn);
                     },
                   );
                 }
@@ -164,7 +161,7 @@ class _PostPreviewState extends State<PostPreview> {
                 size: 100,
                 color: Colors.red,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'Something went wrong!',
                 style: TextStyle(
@@ -184,12 +181,12 @@ class _PostPreviewState extends State<PostPreview> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
+              const Icon(
                 Icons.check_circle_outline_rounded,
                 size: 100,
                 color: Colors.green,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'Post saved successfully!',
                 style: TextStyle(

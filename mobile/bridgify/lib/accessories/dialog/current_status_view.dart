@@ -24,7 +24,10 @@ class _CurrentStatusState extends State<CurrentStatus> {
       clipBehavior: Clip.antiAlias,
       child: Stack(children: [
         SizedBox(
-          height: MediaQuery.of(context).size.height * 0.4,
+          height: MediaQuery.of(context).size.height * 0.3 +
+              (MediaQuery.of(context).size.height *
+                  0.05 *
+                  widget.model.status!.medication!.length),
           width: MediaQuery.of(context).size.width * 0.7,
           child: Container(),
         ),
@@ -53,15 +56,17 @@ class _CurrentStatusState extends State<CurrentStatus> {
                   margin: const EdgeInsets.only(right: 5),
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
-                    color: widget.model.status!.awake == "True"
+                    color: widget.model.status!.awake!.toLowerCase() == "true"
                         ? HexColor("#4EA13D")
                         : Colors.grey.shade400,
                   ),
                 ),
                 Text(
-                  widget.model.status!.awake == "True" ? 'Awake' : 'Asleep',
+                  widget.model.status!.awake!.toLowerCase() == "true"
+                      ? 'Awake'
+                      : 'Asleep',
                   style: TextStyle(
-                    color: widget.model.status!.awake == "True"
+                    color: widget.model.status!.awake!.toLowerCase() == "true"
                         ? HexColor("#4EA13D")
                         : Colors.grey.shade400,
                     fontSize: 16,
@@ -129,7 +134,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
               ),
               children: <TextSpan>[
                 TextSpan(
-                  text: "${widget.model.status!.condition!}",
+                  text: widget.model.status!.condition!,
                   style: const TextStyle(
                     color: Colors.black87,
                   ),
@@ -176,6 +181,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
                 ),
                 const SizedBox(height: 5),
                 Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     for (int i = 0;
                         i < widget.model.status!.medication!.length;
@@ -199,7 +205,9 @@ class _CurrentStatusState extends State<CurrentStatus> {
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
-                                      "${widget.model.status!.taken_med! == "True" ? "Taken" : "Not Taken"}",
+                                      widget.model.status!.taken_med! == "True"
+                                          ? "Taken"
+                                          : "Not Taken",
                                   style: const TextStyle(
                                     color: Colors.black87,
                                   ),
@@ -221,7 +229,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
           top: 0,
           child: Container(
             height: 45, // Set the desired height of the bar
-            color: widget.model.status!.awake == "True"
+            color: widget.model.status!.awake!.toLowerCase() == "true"
                 ? HexColor("#33A11D")
                 : Colors.grey,
             alignment: Alignment.center,

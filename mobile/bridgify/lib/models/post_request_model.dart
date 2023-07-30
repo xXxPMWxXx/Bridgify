@@ -20,11 +20,11 @@ class PostRequestModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['author_email'] = authorEmail;
-    _data['description'] = description;
-    _data['activity_type'] = activityType;
-    _data['postImages'] = postImages;
-    return _data;
+    final data = <String, dynamic>{};
+    data['author_email'] = authorEmail;
+    data['description'] = description;
+    data['activity_type'] = activityType;
+    data['postImages'] = postImages;
+    return data;
   }
 }

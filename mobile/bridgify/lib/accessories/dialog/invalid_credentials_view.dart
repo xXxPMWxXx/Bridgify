@@ -35,11 +35,11 @@ class _InvalidCredentialsViewState extends State<InvalidCredentialsView> {
                     color: HexColor("#33A11D"),
                     fontWeight: FontWeight.w600),
               ),
-              SizedBox(
+              const SizedBox(
                 height: 10,
               ),
               if (widget.secondaryText != null) Text(widget.secondaryText!),
-              SizedBox(
+              const SizedBox(
                 height: 40,
               ),
             ],
@@ -55,8 +55,8 @@ class _InvalidCredentialsViewState extends State<InvalidCredentialsView> {
               onPressed: () {
                 if (Navigator.canPop(context)) Navigator.pop(context);
               },
-              child: const Text('OK'),
               textColor: Colors.white,
+              child: const Text('OK'),
             ),
           ),
         ),

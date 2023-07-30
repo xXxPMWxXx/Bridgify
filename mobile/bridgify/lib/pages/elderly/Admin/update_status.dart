@@ -42,19 +42,16 @@ class _UpdateStatusState extends State<UpdateStatus> {
     if (elderlyRequestModel!.status != null) {
       awakenStatus = stringToBool(currentStatus!.awake!.toLowerCase());
       takenMedsStatus = stringToBool(currentStatus!.taken_med!.toLowerCase());
-      if (elderlyRequestModel!.status!.medication!.isNotEmpty) {
+      if (currentStatus!.medication!.isNotEmpty) {
         for (var meds in elderlyRequestModel!.status!.medication!) {
           listController!.add(TextEditingController(text: meds));
         }
       }
     } else {
-      listController = [TextEditingController()];
+      currentStatus!.awake = awakenStatus.toString().toLowerCase();
+      currentStatus!.taken_med = takenMedsStatus.toString().toLowerCase();
+      listController!.add(TextEditingController(text: ""));
     }
-
-    // currentStatus = Status();
-
-    print(currentStatus!.awake);
-    print(currentStatus!.taken_med);
   }
 
   @override
@@ -68,13 +65,9 @@ class _UpdateStatusState extends State<UpdateStatus> {
         elevation: 1,
       ),
       body: ProgressHUD(
-        inAsyncCall: isAPICallProcess,
-        opacity: 0.3,
         key: UniqueKey(),
-        child: Form(
-          key: globalFormKey,
-          child: pageManager(context),
-        ),
+        inAsyncCall: isAPICallProcess,
+        child: Form(key: globalFormKey, child: pageManager(context)),
       ),
       bottomSheet: Visibility(
         visible: MediaQuery.of(context).viewInsets.bottom == 0,
@@ -91,53 +84,61 @@ class _UpdateStatusState extends State<UpdateStatus> {
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeIn);
               } else if (pageIndex == 1) {
+                validateAndSave();
                 if (validateAndSave()) {
                   setState(() {
                     isAPICallProcess = true;
                   });
                   print(listController);
-                  currentStatus!.medication =
-                      listController!.map((e) => e.text).toList();
+                  currentStatus!.medication = [];
+                  for (var i = 0; i < listController!.length; i++) {
+                    String temp = listController![i].text;
+                    if (temp.trim() != "") {
+                      currentStatus!.medication!.add(temp.trim());
+                    }
+                  }
                   elderlyRequestModel!.status = currentStatus;
                   if (transactionType == "creation") {
                     APIService.createElderly(elderlyRequestModel!)
                         .then((response) {
                       setState(() {
-                        postStatus = response;
+                        pageIndex++;
+                        isAPICallProcess = false;
                       });
-
-                      print(response);
-                      //showDialog error dialog
+                      if (response) {
+                        _statusPageController.animateToPage(2,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.elasticIn);
+                      } else {
+                        _statusPageController.animateToPage(3,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.elasticIn);
+                      }
                     });
                   } else {
                     APIService.updateElderly(elderlyRequestModel!)
                         .then((response) {
+                      setState(() {
+                        pageIndex++;
+                        isAPICallProcess = false;
+                      });
                       if (response) {
-                        //showDialog error dialog
-                        setState(() {
-                          postStatus = response;
-                        });
-
-                        print(response);
+                        _statusPageController.animateToPage(2,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.elasticIn);
+                      } else {
+                        _statusPageController.animateToPage(3,
+                            duration: const Duration(milliseconds: 300),
+                            curve: Curves.elasticIn);
                       }
                     });
                   }
-                  setState(() {
-                    pageIndex++;
-                    isAPICallProcess = false;
-                  });
-                  _statusPageController.nextPage(
-                      duration: Duration(milliseconds: 300),
-                      curve: Curves.easeIn);
                 }
               } else {
-                //showDialog success dialog
-                Navigator.pushNamedAndRemoveUntil(
+                // if (Navigator.canPop(context)) Navigator.pop(context);
+                Navigator.pushNamed(
                   context,
                   '/adminElderlyRecords',
-                  (Route<dynamic> route) {
-                    return route.settings.name == '/adminElderlyRecords';
-                  },
                 );
               }
             },
@@ -150,9 +151,9 @@ class _UpdateStatusState extends State<UpdateStatus> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10))),
             child: pageIndex == 0
-                ? const Text('Update Status')
+                ? const Text('Update Medication')
                 : pageIndex == 1
-                    ? const Text('Save')
+                    ? const Text('Save Status')
                     : const Text('Done'),
           ),
         ),
@@ -176,7 +177,8 @@ class _UpdateStatusState extends State<UpdateStatus> {
         children: [
           medicationRequirements(context),
           buildStatusPage(context),
-          postStatusOutcome(context),
+          successStatusOutcome(),
+          failureStatusOutcome(),
         ],
       ),
     );
@@ -207,10 +209,10 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   BoxDecoration(borderRadius: BorderRadius.circular(25)),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
-                child: transactionType == "creation"
+                child: transactionType == "creation" && pageIndex <= 1
                     ? Image.file(File(model.photo!))
                     : Image.network(
-                        'http://${Config.apiURL}/images/trained_face/${model!.photo}',
+                        'http://${Config.apiURL}/images/trained_face/${model.photo}',
                         fit: BoxFit.cover,
                       ),
               ),
@@ -267,56 +269,53 @@ class _UpdateStatusState extends State<UpdateStatus> {
     );
   }
 
-  Widget postStatusOutcome(BuildContext context) {
-    return Stack(
-      alignment: Alignment.center,
+  Widget failureStatusOutcome() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Visibility(
-          visible: postStatus,
-          replacement: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              const Icon(
-                Icons.close_rounded,
-                size: 100,
-                color: Colors.red,
-              ),
-              SizedBox(height: 16),
-              Text(
-                'Something went wrong!',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-              Text(
-                'Please try again later',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ],
+        const Icon(
+          Icons.close_rounded,
+          size: 100,
+          color: Colors.red,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          'Something went wrong!',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black.withOpacity(0.5),
           ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              Icon(
-                Icons.check_circle_outline_rounded,
-                size: 100,
-                color: Colors.green,
-              ),
-              SizedBox(height: 16),
-              Text(
-                transactionType == 'creation'
-                    ? 'Elderly registered successfully!'
-                    : 'Status updated successfully!',
-                style: TextStyle(
-                  fontSize: 20,
-                  color: Colors.black.withOpacity(0.5),
-                ),
-              ),
-            ],
+        ),
+        Text(
+          'Please try again later',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black.withOpacity(0.5),
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget successStatusOutcome() {
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        const Icon(
+          Icons.check_circle_outline_rounded,
+          size: 100,
+          color: Colors.green,
+        ),
+        const SizedBox(height: 16),
+        Text(
+          transactionType == 'creation'
+              ? 'Elderly registered successfully!'
+              : 'Status updated successfully!',
+          style: TextStyle(
+            fontSize: 20,
+            color: Colors.black.withOpacity(0.5),
           ),
         ),
       ],
@@ -338,10 +337,10 @@ class _UpdateStatusState extends State<UpdateStatus> {
                     duration: const Duration(milliseconds: 300),
                     curve: Curves.easeIn);
               },
-              icon: Icon(Icons.arrow_back_ios,
+              icon: const Icon(Icons.arrow_back_ios,
                   color: Color(0xFF27c1a9), size: 20),
             ),
-            Text(
+            const Text(
               "Current Status",
               style: TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
             ),
@@ -362,7 +361,6 @@ class _UpdateStatusState extends State<UpdateStatus> {
                           setState(() {
                             awakenStatus = value;
                             currentStatus!.awake = awakenStatus.toString();
-                            print(awakenStatus);
                           });
                         }),
                     text: 'Awake?',
@@ -375,7 +373,6 @@ class _UpdateStatusState extends State<UpdateStatus> {
                             takenMedsStatus = value;
                             currentStatus!.taken_med =
                                 takenMedsStatus.toString();
-                            print(takenMedsStatus);
                           });
                         }),
                     text: 'Taken Medicine?',
@@ -393,7 +390,13 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   context,
                   'current activity',
                   'Current Activity',
-                  (onValidateVal) {},
+                  (onValidateVal) {
+                    if (onValidateVal.isEmpty) {
+                      return 'Please input a valid activity.';
+                    }
+
+                    return null;
+                  },
                   (onSavedVal) {
                     if (onSavedVal != "") {
                       currentStatus!.current_activity = onSavedVal;
@@ -429,7 +432,13 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   context,
                   'current temp',
                   'Current Temp',
-                  (onValidateVal) {},
+                  (onValidateVal) {
+                    if (onValidateVal.isEmpty) {
+                      return 'Please input a valid temperature.';
+                    }
+
+                    return null;
+                  },
                   (onSavedVal) {
                     if (onSavedVal != "") {
                       currentStatus!.current_temp = onSavedVal;
@@ -466,7 +475,13 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   context,
                   'condition',
                   'Condition',
-                  (onValidateVal) {},
+                  (onValidateVal) {
+                    if (onValidateVal.isEmpty) {
+                      return 'Please input a valid condition.';
+                    }
+
+                    return null;
+                  },
                   (onSavedVal) {
                     if (onSavedVal != "") {
                       currentStatus!.condition = onSavedVal;
@@ -502,7 +517,13 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   context,
                   'condition description',
                   'Condition Description',
-                  (onValidateVal) {},
+                  (onValidateVal) {
+                    if (onValidateVal.isEmpty) {
+                      return 'Please input a valid description.';
+                    }
+
+                    return null;
+                  },
                   (onSavedVal) {
                     if (onSavedVal != "") {
                       currentStatus!.condition_description = onSavedVal;
@@ -515,7 +536,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   prefixIcon: const Icon(Icons.description_rounded),
                   showPrefixIcon: true,
                   prefixIconColor: Colors.black.withOpacity(0.5),
-                  textColor: Colors.grey,
+                  textColor: Colors.black.withOpacity(0.5),
                   hintColor: Colors.grey.withOpacity(0.7),
                   borderFocusColor: Colors.white,
                   borderColor: Colors.white,
@@ -550,6 +571,8 @@ class _UpdateStatusState extends State<UpdateStatus> {
               GestureDetector(
                 onTap: () {
                   setState(() {
+                    print("added");
+                    print(listController);
                     listController!.add(TextEditingController());
                   });
                 },
@@ -580,12 +603,12 @@ class _UpdateStatusState extends State<UpdateStatus> {
             ],
           ),
         ),
-        Container(
+        SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
           child: ListView.builder(
             // physics: const NeverScrollableScrollPhysics(),
             padding: const EdgeInsets.symmetric(horizontal: 15),
-            shrinkWrap: false,
+            shrinkWrap: true,
             itemCount: listController!.length,
             itemBuilder: (context, index) {
               return Padding(
@@ -593,29 +616,27 @@ class _UpdateStatusState extends State<UpdateStatus> {
                 child: Row(
                   children: [
                     Expanded(
-                      child: FormHelper.inputFieldWidget(
-                        context,
-                        "medication",
-                        "Medication",
-                        (onValidateVal) {},
-                        (onSavedVal) {
-                          listController![index].text = onSavedVal;
-                        },
-                        paddingRight: 0,
-                        paddingLeft: 0,
-                        initialValue: listController![index].text,
-                        prefixIcon: const Icon(Icons.medication),
-                        showPrefixIcon: true,
-                        prefixIconColor: Colors.black.withOpacity(0.5),
-                        hintColor: Colors.grey.withOpacity(0.7),
-                        borderFocusColor: Colors.grey.shade700,
-                        borderColor: Colors.grey.shade200,
-                        borderWidth: 5,
-                        borderRadius: 5,
-                        borderErrorColor: Colors.white,
-                        errorBorderWidth: 0,
-                        focusedErrorBorderWidth: 0,
-                        borderFocusedErrorColor: Colors.white,
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 5),
+                        height: 60,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                          border:
+                              Border.all(width: 5, color: Colors.grey.shade200),
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        child: TextFormField(
+                          controller: listController![index],
+                          autofocus: false,
+                          style:
+                              TextStyle(color: Colors.black.withOpacity(0.5)),
+                          decoration: InputDecoration(
+                            border: InputBorder.none,
+                            hintText: "Medication",
+                            hintStyle:
+                                TextStyle(color: Colors.grey.withOpacity(0.7)),
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(

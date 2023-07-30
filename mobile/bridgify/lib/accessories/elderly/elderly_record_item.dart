@@ -1,4 +1,4 @@
-import 'package:bridgify/accessories/dialog/delete_confirmation_view.dart';
+// import 'package:bridgify/accessories/dialog/delete_confirmation_view.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/elderly_request_model.dart' as req;
 import 'package:bridgify/models/elderly_response_model.dart';
@@ -7,11 +7,13 @@ import 'package:flutter/material.dart';
 
 class ElderlyRecordItem extends StatelessWidget {
   final ElderlyResponseModel? model;
-
-  const ElderlyRecordItem({Key? key, required this.model}) : super(key: key);
+  final BuildContext context;
+  const ElderlyRecordItem(
+      {Key? key, required this.context, required this.model})
+      : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(context) {
     return Container(
       margin: const EdgeInsets.symmetric(vertical: 10),
       decoration: BoxDecoration(
@@ -118,27 +120,30 @@ class ElderlyRecordItem extends StatelessWidget {
                     ),
                   );
                 },
-                icon: Icon(Icons.update),
+                icon: const Icon(Icons.update),
               ),
-              IconButton(
-                onPressed: () {
-                  showDialog(
-                      context: context,
-                      builder: (context) {
-                        return Dialog(
-                          backgroundColor: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(24),
-                          ),
-                          child: DeleteConfirmationView(
-                            secondaryText: "You are currently deleting ${model!.id}'s account",
-                            id: model!.id!,
-                          ),
-                        );
-                      });
-                },
-                icon: Icon(Icons.delete),
-              ),
+              // IconButton(
+              //   onPressed: () async {
+              //     var result = showDialog(
+              //         context: context,
+              //         builder: (context) {
+              //           return Dialog(
+              //             backgroundColor: Colors.white,
+              //             shape: RoundedRectangleBorder(
+              //               borderRadius: BorderRadius.circular(24),
+              //             ),
+              //             child: DeleteConfirmationView(
+              //               secondaryText:
+              //                   "You are currently deleting ${model!.id}'s account",
+              //               id: model!.id!,
+              //             ),
+              //           );
+              //         });
+              //     if (result == "refresh") {}
+              //   },
+              //   icon: Icon(Icons.delete),
+              // ),
+              const SizedBox(width: 15),
             ],
           ),
         ],

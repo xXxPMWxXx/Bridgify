@@ -35,15 +35,15 @@ class PostResponseModel {
   }
 
   Map<String, dynamic> toJson() {
-    final _data = <String, dynamic>{};
-    _data['_id'] = id;
-    _data['author_email'] = authorEmail;
-    _data['dateTime'] = dateTime;
-    _data['description'] = description;
-    _data['activity_type'] = activityType;
-    _data['postImages'] = postImages;
-    _data['elderlyInvolved'] = elderlyInvolved;
-    _data['imagesCount'] = imagesCount;
-    return _data;
+    final data = <String, dynamic>{};
+    data['_id'] = id;
+    data['author_email'] = authorEmail;
+    data['dateTime'] = dateTime;
+    data['description'] = description;
+    data['activity_type'] = activityType;
+    data['postImages'] = postImages;
+    data['elderlyInvolved'] = elderlyInvolved;
+    data['imagesCount'] = imagesCount;
+    return data;
   }
 }

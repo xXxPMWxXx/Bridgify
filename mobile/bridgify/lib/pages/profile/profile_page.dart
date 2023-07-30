@@ -163,7 +163,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 )
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
@@ -378,7 +378,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       if (passwordUpdate != null) {
                         updateUserRequestModel!.password = passwordUpdate;
                       }
-
+                      print(isImageSelected);
                       APIService.update(
                               updateUserRequestModel!, isImageSelected)
                           .then(
@@ -437,16 +437,23 @@ class _ProfilePageState extends State<ProfilePage> {
 
   static Widget picPicker(BuildContext context, String fileName,
       bool isImageSelected, Function onFilePicked) {
-    Future<XFile?> _imageFile;
-    ImagePicker _picker = ImagePicker();
+    Future<XFile?> imageFile;
+    ImagePicker picker = ImagePicker();
 
     return GestureDetector(
       onTap: () {
         try {
-          _imageFile = _picker.pickImage(source: ImageSource.gallery);
-          _imageFile.then((file) async {
+          imageFile = picker.pickImage(source: ImageSource.gallery);
+          imageFile.then((file) async {
             onFilePicked(file);
+            print("1");
+            print(isImageSelected);
             // Navigator.of(context).pop();
+          }).catchError((e) {
+            print(e);
+            print("2");
+            print(isImageSelected);
+            Navigator.of(context).pop();
           });
         } catch (e) {
           Navigator.of(context).pop();
@@ -478,16 +485,11 @@ class _ProfilePageState extends State<ProfilePage> {
                             backgroundImage: Image.file(File(fileName)).image)
                         : CircleAvatar(
                             radius: 32,
-                            backgroundImage: Image.network('http://' +
-                                    Config.apiURL +
-                                    '/images/user_profile/' +
-                                    fileName)
+                            backgroundImage: Image.network('http://${Config.apiURL}/images/user_profile/$fileName')
                                 .image)
                     : CircleAvatar(
                         radius: 32,
-                        backgroundImage: Image.network('http://' +
-                                Config.apiURL +
-                                '/images/user_profile/default.png')
+                        backgroundImage: Image.network('http://${Config.apiURL}/images/user_profile/default.png')
                             .image)),
             Positioned(
               bottom: 0,
@@ -496,7 +498,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 40,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: Color(0xFF27c1a9),
+                  color: const Color(0xFF27c1a9),
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: Theme.of(context).scaffoldBackgroundColor),

@@ -15,7 +15,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Bridgify'),
+        title: const Text('Bridgify'),
         elevation: 0,
         actions: [
           IconButton(

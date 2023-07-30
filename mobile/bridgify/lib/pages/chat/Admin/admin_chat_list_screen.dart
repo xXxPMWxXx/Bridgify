@@ -39,7 +39,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
           content: Text("Successfully copied to clipboard"),
         ));
       },
-      child: SizedBox(height: 0),
+      child: const SizedBox(height: 0),
     );
   }
 
@@ -99,7 +99,7 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(24),
                                 ),
-                                child: RatingView(),
+                                child: const RatingView(),
                               );
                             },
                           );

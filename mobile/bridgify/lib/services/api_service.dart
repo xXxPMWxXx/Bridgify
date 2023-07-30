@@ -119,6 +119,7 @@ class APIService {
     request.fields["name"] = model.name!;
     request.fields["password"] = model.password!;
     if (!isFileSelected) {
+      print(isFileSelected);
       request.fields["imageChange"] = "false";
     } else if (model.profileImage != null) {
       request.fields["imageChange"] = "true";
@@ -129,6 +130,7 @@ class APIService {
 
       request.files.add(multipartFile);
     }
+
     http.StreamedResponse streamResponse = await request.send();
 
     final response = await http.Response.fromStream(streamResponse);
@@ -318,7 +320,7 @@ class APIService {
 
     if (trainingResponse.statusCode == 200) {
       model.photo = "${model.id}.png";
-      print("face posted failed");
+
       var postingUrl = Uri.http(
         Config.apiURL,
         Config.createElderlyAPI,
@@ -329,6 +331,8 @@ class APIService {
         headers: requestHeaders,
         body: jsonEncode(model.toJson()),
       );
+      print(postingResponse);
+      print(model.toJson());
       return postingResponse.statusCode == 200;
     }
     print("face posted failed");
@@ -355,7 +359,7 @@ class APIService {
     );
 
     print(model.toJson());
-
+    print(response.body);
     return response.statusCode == 200;
   }
 

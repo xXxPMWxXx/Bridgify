@@ -26,7 +26,7 @@ class DialogPictureSingle extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Row(
+          const Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Column(
@@ -39,7 +39,7 @@ class DialogPictureSingle extends StatelessWidget {
                   ),
                 ],
               ),
-              const Icon(Icons.more_vert)
+              Icon(Icons.more_vert)
             ],
           ),
           const SizedBox(height: 15),
@@ -68,7 +68,7 @@ class DialogPictureSingle extends StatelessWidget {
             height: 5,
           ),
           PostText(
-            text: description + " #${activity}",
+            text: "$description #$activity",
             fontSize: 16,
           ),
           const SizedBox(

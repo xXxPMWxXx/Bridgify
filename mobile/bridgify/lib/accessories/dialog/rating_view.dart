@@ -28,10 +28,10 @@ class _RatingViewState extends State<RatingView> {
         clipBehavior: Clip.antiAlias,
         child: Stack(
           children: [
-            Container(
+            SizedBox(
               height: max(300, MediaQuery.of(context).size.height * 0.3),
               child: PageView(
-                physics: NeverScrollableScrollPhysics(),
+                physics: const NeverScrollableScrollPhysics(),
                 controller: _ratingPageController,
                 children: [
                   _buildThanksNote(),
@@ -48,8 +48,8 @@ class _RatingViewState extends State<RatingView> {
                 color: HexColor("#33A11D"),
                 child: MaterialButton(
                   onPressed: _hideDialog,
-                  child: Text('Done'),
                   textColor: Colors.white,
+                  child: const Text('Done'),
                 ),
               ),
             ),
@@ -61,7 +61,7 @@ class _RatingViewState extends State<RatingView> {
                   onPressed: /*_hideDialog*/
                       () {
                     _ratingPageController.nextPage(
-                        duration: Duration(milliseconds: 300),
+                        duration: const Duration(milliseconds: 300),
                         curve: Curves.easeIn);
                     setState(() {
                       _starPosition = 30.0;
@@ -69,7 +69,7 @@ class _RatingViewState extends State<RatingView> {
                       _hasSkipped = true;
                     });
                   },
-                  child: Text('Skip'),
+                  child: const Text('Skip'),
                 ),
               ),
             //star rating
@@ -77,22 +77,22 @@ class _RatingViewState extends State<RatingView> {
               top: _starPosition,
               left: 0,
               right: 0,
-              duration: Duration(milliseconds: 300),
+              duration: const Duration(milliseconds: 300),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: List.generate(
                   5,
                   (index) => IconButton(
                     icon: index < _rating
-                        ? Icon(
+                        ? const Icon(
                             Icons.star,
                             size: 32,
                           )
-                        : Icon(Icons.star_border, size: 32),
+                        : const Icon(Icons.star_border, size: 32),
                     color: HexColor("#33A11D"),
                     onPressed: () {
                       _ratingPageController.nextPage(
-                          duration: Duration(milliseconds: 300),
+                          duration: const Duration(milliseconds: 300),
                           curve: Curves.easeIn);
                       setState(() {
                         _starPosition = 30.0;
@@ -116,7 +116,7 @@ class _RatingViewState extends State<RatingView> {
                       _isMoreDetailActive = false;
                     });
                   },
-                  child: Icon(
+                  child: const Icon(
                     Icons.arrow_back_ios,
                     color: Colors.black,
                   ),
@@ -140,9 +140,9 @@ class _RatingViewState extends State<RatingView> {
           ),
           textAlign: TextAlign.center,
         ),
-        Text('We\'d love to get your feedback.'),
-        Text('How has your experience been?'),
-        SizedBox(height: 30)
+        const Text('We\'d love to get your feedback.'),
+        const Text('How has your experience been?'),
+        const SizedBox(height: 30)
       ],
     );
   }
@@ -158,8 +158,8 @@ class _RatingViewState extends State<RatingView> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               _selectedChipIndex != -1
-                  ? Text('Tell us more')
-                  : Text('Please share your experience'),
+                  ? const Text('Tell us more')
+                  : const Text('Please share your experience'),
               if (_selectedChipIndex != -1)
                 Chip(
                   label: Text('Text ${_selectedChipIndex + 1}'),
@@ -182,7 +182,7 @@ class _RatingViewState extends State<RatingView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Text('What could be better'),
+              const Text('What could be better'),
               //Cause selection
               Wrap(
                 alignment: WrapAlignment.center,
@@ -204,7 +204,7 @@ class _RatingViewState extends State<RatingView> {
                   ),
                 ),
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               //More button
               InkWell(
                 onTap: () {
@@ -214,7 +214,7 @@ class _RatingViewState extends State<RatingView> {
                     _isMoreDetailActive = true;
                   });
                 },
-                child: Text(
+                child: const Text(
                   'Want to tell us more?',
                   style: TextStyle(decoration: TextDecoration.underline),
                 ),

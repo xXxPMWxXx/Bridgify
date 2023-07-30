@@ -1,4 +1,3 @@
-import 'package:bridgify/pages/elderly/Admin/admin_elderly_records_page.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +27,11 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
       child: Stack(children: [
         SizedBox(
             height: _hasClicked
-                ? MediaQuery.of(context).size.height * 0.3
+                ? MediaQuery.of(context).size.height * 0.4
                 : MediaQuery.of(context).size.height * 0.2,
             width: MediaQuery.of(context).size.width * 0.8,
             child: PageView(
-              physics: NeverScrollableScrollPhysics(),
+              physics: const NeverScrollableScrollPhysics(),
               controller: _pageConfirmationController,
               children: [
                 _confirmationPage(),
@@ -48,12 +47,14 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
             child: MaterialButton(
               onPressed: () {
                 if (_hasClicked) {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => const AdminElderlyRecords(),
-                    ),
-                  );
+                  if (Navigator.canPop(context)) {
+                    Navigator.pop(context, "refresh");
+                  }
+                  // Navigator.pushNamedAndRemoveUntil(
+                  //   context,
+                  //   '/adminHome',
+                  //   (route) => false,
+                  // );
                 } else {
                   APIService.deleteElderly(widget.id).then(
                     (response) {
@@ -63,24 +64,24 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
                           _hasPosted = true;
                           _hasClicked = true;
                         });
-                        _pageConfirmationController.animateToPage(1,
-                            duration: Duration(milliseconds: 200),
+                        _pageConfirmationController.nextPage(
+                            duration: const Duration(milliseconds: 200),
                             curve: Curves.easeIn);
                       } else {
                         setState(() {
                           _hasPosted = false;
                           _hasClicked = true;
                         });
-                        _pageConfirmationController.animateToPage(1,
-                            duration: Duration(milliseconds: 100),
+                        _pageConfirmationController.nextPage(
+                            duration: const Duration(milliseconds: 100),
                             curve: Curves.easeIn);
                       }
                     },
                   );
                 }
               },
-              child: _hasClicked ? Text("Done") : Text("Yes, I'm sure"),
               textColor: Colors.white,
+              child: _hasClicked ? const Text("Done") : const Text("Yes, I'm sure"),
             ),
           ),
         ),
@@ -100,11 +101,11 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
               color: HexColor("#33A11D"),
               fontWeight: FontWeight.w600),
         ),
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Text(widget.secondaryText),
-        SizedBox(
+        const SizedBox(
           height: 40,
         ),
       ],
@@ -125,7 +126,7 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
                 size: 100,
                 color: Colors.red,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'Something went wrong!',
                 style: TextStyle(
@@ -145,12 +146,12 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              Icon(
+              const Icon(
                 Icons.check_circle_outline_rounded,
                 size: 100,
                 color: Colors.green,
               ),
-              SizedBox(height: 16),
+              const SizedBox(height: 16),
               Text(
                 'Elderly account deleted successfully!',
                 style: TextStyle(

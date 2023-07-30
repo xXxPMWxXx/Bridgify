@@ -58,10 +58,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                BuildAccountOptionRow(title: "Content Settings"),
-                BuildAccountOptionRow(title: "Social"),
-                BuildAccountOptionRow(title: "Language"),
-                BuildAccountOptionRow(title: "Privacy and Security"),
+                const BuildAccountOptionRow(title: "Content Settings"),
+                const BuildAccountOptionRow(title: "Social"),
+                const BuildAccountOptionRow(title: "Language"),
+                const BuildAccountOptionRow(title: "Privacy and Security"),
                 const SizedBox(
                   height: 20,
                 ),
@@ -87,9 +87,9 @@ class _SettingsPageState extends State<SettingsPage> {
                 const SizedBox(
                   height: 10,
                 ),
-                BuildNotificationOptionRow(title: "New for you"),
-                BuildNotificationOptionRow(title: "Account acitivity"),
-                BuildNotificationOptionRow(title: "Upcoming events"),
+                const BuildNotificationOptionRow(title: "New for you"),
+                const BuildNotificationOptionRow(title: "Account acitivity"),
+                const BuildNotificationOptionRow(title: "Upcoming events"),
                 const SizedBox(
                   height: 20,
                 ),

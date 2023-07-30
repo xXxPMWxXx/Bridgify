@@ -32,7 +32,7 @@ class _BuildNotificationOptionRowState
         scale: 0.7,
         child: CupertinoSwitch(
             value: currentState,
-            activeColor: Color(0xFF27c1a9),
+            activeColor: const Color(0xFF27c1a9),
             onChanged: (bool? value) {
               setState(() {
                 currentState = value ?? false;
