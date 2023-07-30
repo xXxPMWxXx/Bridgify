@@ -6,6 +6,7 @@ import 'package:bridgify/config.dart';
 import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:zego_zimkit/services/services.dart';
 
 class HomePage extends StatefulWidget {
@@ -29,7 +30,7 @@ class _HomePageState extends State<HomePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       key: _globalKey,
-      backgroundColor: Colors.white /*const Color(0xFF171717)*/,
+      backgroundColor: HexColor('#EDFDF9') /*const Color(0xFF171717)*/,
       body: loadHomePage(),
       drawer: loadDrawer(),
     );
@@ -50,17 +51,17 @@ class _HomePageState extends State<HomePage> {
                         setState(() {});
                         _globalKey.currentState!.openDrawer();
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.menu,
-                        color: Color(0xFF171717),
+                        color: Colors.grey.shade800,
                       )),
                   Row(
                     children: [
                       IconButton(
                         onPressed: () {},
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.notifications_none_rounded,
-                          color: Color(0xFF171717),
+                          color: Colors.grey.shade800,
                         ),
                       ),
                       FutureBuilder(
@@ -128,7 +129,13 @@ class _HomePageState extends State<HomePage> {
             padding: const EdgeInsets.only(top: 15, left: 25, right: 25),
             height: 210,
             decoration: const BoxDecoration(
-                color: Color(0xFF27c1a9),
+                gradient: LinearGradient(
+                  begin: Alignment.bottomCenter,
+                  colors: [
+                    Color.fromRGBO(48, 132, 67, 0.722),
+                    Color.fromRGBO(48, 132, 67, 0.6),
+                  ],
+                ),
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(40),
                     topRight: Radius.circular(40))),
@@ -171,10 +178,10 @@ class _HomePageState extends State<HomePage> {
           bottom: 0,
           child: Container(
             // padding: const EdgeInsets.symmetric(vertical: 15),
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30)),
-              color: Color(0xFFEFFFFC),
+              color: HexColor('#EDFDF9'),
             ),
             //load posts
             child: const BuildPost(),
@@ -186,6 +193,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget loadDrawer() {
     return Drawer(
+      backgroundColor: HexColor('#476E40'),
       width: 275,
       elevation: 30,
       // backgroundColor: const Color(0xF3393838),
@@ -193,6 +201,13 @@ class _HomePageState extends State<HomePage> {
           borderRadius: BorderRadius.horizontal(right: Radius.circular(40))),
       child: Container(
         decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [
+                Color.fromRGBO(81, 145, 70, 0.427),
+                Color.fromRGBO(33, 51, 30, 0.51),
+              ],
+            ),
             borderRadius: BorderRadius.horizontal(right: Radius.circular(40)),
             boxShadow: [
               BoxShadow(

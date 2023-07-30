@@ -78,17 +78,17 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         setState(() {});
                         _globalKey.currentState!.openDrawer();
                       },
-                      icon: const Icon(
+                      icon: Icon(
                         Icons.menu,
-                        color: Color(0xFF171717),
+                        color: Colors.grey.shade800,
                       )),
                   Row(
                     children: [
                       IconButton(
                         onPressed: () {},
-                        icon: const Icon(
+                        icon: Icon(
                           Icons.notifications_none_rounded,
-                          color: Color(0xFF171717),
+                          color: Colors.grey.shade800,
                         ),
                       ),
                       FutureBuilder(
@@ -154,13 +154,20 @@ class _AdminHomePageState extends State<AdminHomePage> {
           right: 0,
           bottom: 0,
           child: Container(
-            // padding: const EdgeInsets.symmetric(vertical: 15),
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(40),
-                topRight: Radius.circular(40),
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                colors: [
+                  Color.fromRGBO(48, 132, 67, 0.722),
+                  Color.fromRGBO(48, 132, 67, 0.6),
+                ],
               ),
-              color: Color(0xFFEFFFFC),
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(30),
+                topRight: Radius.circular(30),
+              ),
+              color: HexColor('#EDFDF9'),
             ),
             //Post
             child: ListView(padding: const EdgeInsets.all(12.0), children: [
@@ -175,7 +182,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         children: [
                           Container(
                             decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(8),
+                              borderRadius: BorderRadius.circular(30),
                               border: _imageList.isNotEmpty
                                   ? Border.all(
                                       color: Colors.grey.shade700,
@@ -261,9 +268,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                   );
                                 }
                               },
-                              child: const Text(
+                              child: Text(
                                 "Upload Image",
-                                style: TextStyle(color: Colors.black),
+                                style: TextStyle(
+                                    color: Colors.black.withOpacity(0.7)),
                               ),
                             ),
                           )
@@ -297,8 +305,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       prefixIcon: const Icon(Icons.run_circle_outlined),
                       showPrefixIcon: true,
                       prefixIconColor: Colors.black.withOpacity(0.5),
-                      hintColor: Colors.grey.withOpacity(0.7),
-                      borderFocusColor: Colors.grey.shade700,
+                      hintColor: Colors.black.withOpacity(0.5),
+                      textColor: Colors.black.withOpacity(0.5),
+                      borderFocusColor: Colors.white,
                       borderColor: Colors.grey.shade200,
                       borderWidth: 5,
                       borderRadius: 5,
@@ -340,7 +349,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       showPrefixIcon: true,
                       prefixIconPaddingBottom: 110,
                       prefixIconColor: Colors.black.withOpacity(0.5),
-                      hintColor: Colors.grey.withOpacity(0.7),
+                      hintColor: Colors.black.withOpacity(0.5),
+                      textColor: Colors.black.withOpacity(0.5),
                       borderFocusColor: Colors.grey.shade700,
                       borderColor: Colors.grey.shade200,
                       borderWidth: 5,
@@ -372,7 +382,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     },
                     btnColor: HexColor("FFFFFF"),
                     borderColor: HexColor("FFFFFF"),
-                    txtColor: Colors.black,
+                    txtColor: Colors.black.withOpacity(0.7),
                     borderRadius: 20,
                     fontWeight: FontWeight.bold,
                   ),
@@ -431,8 +441,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         }
                       }
                     },
-                    btnColor: HexColor("207A35"),
-                    borderColor: HexColor("207A35"),
+                    btnColor: HexColor("#207A35"),
+                    borderColor: HexColor("#207A35"),
                     txtColor: Colors.white,
                     borderRadius: 20,
                     fontWeight: FontWeight.bold,
@@ -485,6 +495,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
           borderRadius: BorderRadius.horizontal(right: Radius.circular(40))),
       child: Container(
         decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topCenter,
+              colors: [
+                Color.fromRGBO(81, 145, 70, 0.427),
+                Color.fromRGBO(33, 51, 30, 0.51),
+              ],
+            ),
             borderRadius: BorderRadius.horizontal(right: Radius.circular(40)),
             boxShadow: [
               BoxShadow(
@@ -535,8 +552,9 @@ class _AdminHomePageState extends State<AdminHomePage> {
                               return imagePath != "" && imagePath != null
                                   ? CircleAvatar(
                                       radius: 32,
-                                      backgroundImage: Image.network('http://${Config.apiURL}/images/user_profile/' +
-                                              imagePath)
+                                      backgroundImage: Image.network(
+                                              'http://${Config.apiURL}/images/user_profile/' +
+                                                  imagePath)
                                           .image)
                                   : const UserAvatar(
                                       filename: 'img1.jpeg', radius: 32);

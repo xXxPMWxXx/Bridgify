@@ -37,7 +37,7 @@ class _ProfilePageState extends State<ProfilePage> {
         appBar: AppBar(
           title:
               const Text('Edit Profile', style: TextStyle(color: Colors.black)),
-          iconTheme: const IconThemeData(color: Color(0xFF27c1a9)),
+          iconTheme: IconThemeData(color: HexColor('#207A35')),
           elevation: 1,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leading: FutureBuilder(
@@ -74,9 +74,9 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                     );
                   },
-                  icon: const Icon(
+                  icon: Icon(
                     Icons.arrow_back_ios,
-                    color: Color(0xFF27c1a9),
+                    color: HexColor('#207A35'),
                   ),
                 );
               }),
@@ -94,9 +94,9 @@ class _ProfilePageState extends State<ProfilePage> {
                 //   ),
                 // );
               },
-              icon: const Icon(
+              icon: Icon(
                 Icons.settings,
-                color: Color(0xFF27c1a9),
+                color: HexColor('#207A35'),
               ),
             ),
           ],
@@ -412,8 +412,8 @@ class _ProfilePageState extends State<ProfilePage> {
                       );
                     }
                   },
-                  btnColor: HexColor("207A35"),
-                  borderColor: HexColor("207A35"),
+                  btnColor: HexColor("#207A35"),
+                  borderColor: HexColor("#207A35"),
                   txtColor: Colors.white,
                   borderRadius: 20,
                   fontWeight: FontWeight.bold,
@@ -485,11 +485,13 @@ class _ProfilePageState extends State<ProfilePage> {
                             backgroundImage: Image.file(File(fileName)).image)
                         : CircleAvatar(
                             radius: 32,
-                            backgroundImage: Image.network('http://${Config.apiURL}/images/user_profile/$fileName')
+                            backgroundImage: Image.network(
+                                    'http://${Config.apiURL}/images/user_profile/$fileName')
                                 .image)
                     : CircleAvatar(
                         radius: 32,
-                        backgroundImage: Image.network('http://${Config.apiURL}/images/user_profile/default.png')
+                        backgroundImage: Image.network(
+                                'http://${Config.apiURL}/images/user_profile/default.png')
                             .image)),
             Positioned(
               bottom: 0,
@@ -498,7 +500,7 @@ class _ProfilePageState extends State<ProfilePage> {
                 height: 40,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF27c1a9),
+                  color: HexColor('#207A35'),
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: Theme.of(context).scaffoldBackgroundColor),

@@ -4,6 +4,7 @@ import 'package:bridgify/models/elderly_request_model.dart' as req;
 import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:bridgify/pages/elderly/Admin/update_status.dart';
 import 'package:flutter/material.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
 
 class ElderlyRecordItem extends StatelessWidget {
   final ElderlyResponseModel? model;
@@ -32,11 +33,11 @@ class ElderlyRecordItem extends StatelessWidget {
           //Change container to include elderly image
           SizedBox(
             height: 100,
-            width: 85,
+            width: 75,
             child: Container(
               // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration:
-                  BoxDecoration(borderRadius: BorderRadius.circular(25)),
+                  BoxDecoration(borderRadius: BorderRadius.circular(20)),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: Image.network(
@@ -80,47 +81,61 @@ class ElderlyRecordItem extends StatelessWidget {
             ),
           ),
           Row(
-            // mainAxisSize: MainAxisSize.min,
+            mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              IconButton(
-                onPressed: () {
-                  req.ElderlyRequestModel elderlyRequestModel =
-                      req.ElderlyRequestModel();
-                  elderlyRequestModel.id = model!.id;
-                  elderlyRequestModel.name = model!.name;
-                  elderlyRequestModel.dob = model!.dob;
-                  elderlyRequestModel.photo = model!.photo;
+              Container(
+                padding: EdgeInsets.symmetric(
+                  vertical: 25,
+                ),
+                decoration: BoxDecoration(
+                  color: HexColor("#207A35"),
+                  borderRadius: BorderRadius.only(
+                      topRight: Radius.circular(8.0),
+                      bottomRight: Radius.circular(8.0)),
+                ),
+                child: IconButton(
+                  onPressed: () {
+                    req.ElderlyRequestModel elderlyRequestModel =
+                        req.ElderlyRequestModel();
+                    elderlyRequestModel.id = model!.id;
+                    elderlyRequestModel.name = model!.name;
+                    elderlyRequestModel.dob = model!.dob;
+                    elderlyRequestModel.photo = model!.photo;
 
-                  //set status
-                  elderlyRequestModel.status = req.Status();
-                  elderlyRequestModel.status!.current_activity =
-                      model!.status!.current_activity;
-                  elderlyRequestModel.status!.current_temp =
-                      model!.status!.current_temp;
-                  elderlyRequestModel.status!.medication =
-                      model!.status!.medication;
-                  // elderlyRequestModel.status!.medication = model!
-                  //     .status!.medication!
-                  //     .map((el) => el.toString())
-                  //     .toList();
-                  elderlyRequestModel.status!.taken_med =
-                      model!.status!.taken_med;
-                  elderlyRequestModel.status!.condition =
-                      model!.status!.condition;
-                  elderlyRequestModel.status!.condition_description =
-                      model!.status!.condition_description;
-                  elderlyRequestModel.status!.awake = model!.status!.awake;
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (_) => UpdateStatus(
-                          model: elderlyRequestModel,
-                          transactionType: 'update'),
-                    ),
-                  );
-                },
-                icon: const Icon(Icons.update),
+                    //set status
+                    elderlyRequestModel.status = req.Status();
+                    elderlyRequestModel.status!.current_activity =
+                        model!.status!.current_activity;
+                    elderlyRequestModel.status!.current_temp =
+                        model!.status!.current_temp;
+                    elderlyRequestModel.status!.medication =
+                        model!.status!.medication;
+                    // elderlyRequestModel.status!.medication = model!
+                    //     .status!.medication!
+                    //     .map((el) => el.toString())
+                    //     .toList();
+                    elderlyRequestModel.status!.taken_med =
+                        model!.status!.taken_med;
+                    elderlyRequestModel.status!.condition =
+                        model!.status!.condition;
+                    elderlyRequestModel.status!.condition_description =
+                        model!.status!.condition_description;
+                    elderlyRequestModel.status!.awake = model!.status!.awake;
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => UpdateStatus(
+                            model: elderlyRequestModel,
+                            transactionType: 'update'),
+                      ),
+                    );
+                  },
+                  icon: Icon(
+                    Icons.update,
+                    color: Colors.white,
+                  ),
+                ),
               ),
               // IconButton(
               //   onPressed: () async {
@@ -143,7 +158,6 @@ class ElderlyRecordItem extends StatelessWidget {
               //   },
               //   icon: Icon(Icons.delete),
               // ),
-              const SizedBox(width: 15),
             ],
           ),
         ],

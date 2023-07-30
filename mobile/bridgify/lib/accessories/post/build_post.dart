@@ -22,16 +22,6 @@ class _BuildPostState extends State<BuildPost> {
   void initState() {
     super.initState();
     currentItem = dropDownValue[0];
-    //   Future.delayed(Duration.zero, () {
-    //     APIService.getUserProfile().then((response) {
-    //       Map userProfile = response as Map<String, dynamic>;
-    //       for (var elder in userProfile["elderly"]) {
-    //         dropDownValue.add(elder.toString());
-    //       }
-    //       print(dropDownValue);
-    //     });
-    //     setState(() {});
-    //   });
   }
 
   @override
@@ -40,7 +30,7 @@ class _BuildPostState extends State<BuildPost> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: const EdgeInsets.only(top: 8.0),
+          padding: const EdgeInsets.only(top: 12.0, bottom: 8.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -59,7 +49,8 @@ class _BuildPostState extends State<BuildPost> {
                   color: Colors.grey.withOpacity(0.1),
                   borderRadius: BorderRadius.circular(10.0),
                 ),
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
                 child: DropdownButtonFormField<String>(
                   icon: Icon(
                     Icons.filter_alt,

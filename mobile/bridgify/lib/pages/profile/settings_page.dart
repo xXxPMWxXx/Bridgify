@@ -2,6 +2,7 @@ import 'package:bridgify/accessories/profile/account_option_row.dart';
 import 'package:bridgify/accessories/profile/notification_option_row.dart';
 import 'package:bridgify/services/shared_service.dart';
 import 'package:flutter/material.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
 
 class SettingsPage extends StatefulWidget {
   const SettingsPage({super.key});
@@ -22,9 +23,9 @@ class _SettingsPageState extends State<SettingsPage> {
             onPressed: () {
               Navigator.pop(context);
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios,
-              color: Color(0xFF27c1a9),
+              color: HexColor('#207A35'),
             ),
           ),
         ),
@@ -39,15 +40,16 @@ class _SettingsPageState extends State<SettingsPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Row(
+                Row(
                   children: [
-                    Icon(Icons.person, color: Color(0xFF27c1a9)),
+                    Icon(Icons.person, color: HexColor('#207A35')),
                     SizedBox(
                       width: 8,
                     ),
                     Text(
                       "Account",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -65,18 +67,19 @@ class _SettingsPageState extends State<SettingsPage> {
                 const SizedBox(
                   height: 20,
                 ),
-                const Row(
+                Row(
                   children: [
                     Icon(
                       Icons.volume_up_outlined,
-                      color: Color(0xFF27c1a9),
+                      color: HexColor('#207A35'),
                     ),
                     SizedBox(
                       width: 8,
                     ),
                     Text(
                       "Notification",
-                      style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                     ),
                   ],
                 ),
@@ -110,7 +113,9 @@ class _SettingsPageState extends State<SettingsPage> {
                     child: const Text(
                       "SIGN OUT",
                       style: TextStyle(
-                          fontSize: 16, letterSpacing: 2.2, color: Colors.black),
+                          fontSize: 16,
+                          letterSpacing: 2.2,
+                          color: Colors.black),
                     ),
                   ),
                 )

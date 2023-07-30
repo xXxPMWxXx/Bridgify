@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
 
 class BuildNotificationOptionRow extends StatefulWidget {
   final String title;
@@ -32,7 +33,7 @@ class _BuildNotificationOptionRowState
         scale: 0.7,
         child: CupertinoSwitch(
             value: currentState,
-            activeColor: const Color(0xFF27c1a9),
+            activeColor: HexColor('#36CF59'),
             onChanged: (bool? value) {
               setState(() {
                 currentState = value ?? false;

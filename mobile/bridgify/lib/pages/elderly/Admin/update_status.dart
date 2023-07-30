@@ -7,6 +7,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
 
 class UpdateStatus extends StatefulWidget {
   final ElderlyRequestModel model;
@@ -148,6 +149,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   MediaQuery.of(context).size.height * 0.05,
                 ),
                 // padding: const EdgeInsets.all(15),
+                backgroundColor: HexColor('#207A35'),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10))),
             child: pageIndex == 0
@@ -581,7 +583,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF444C60),
+                      color: HexColor('#207A35'),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Row(

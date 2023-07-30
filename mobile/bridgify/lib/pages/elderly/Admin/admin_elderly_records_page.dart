@@ -2,6 +2,7 @@ import 'package:bridgify/accessories/elderly/elderly_record_item.dart';
 import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
 
 class AdminElderlyRecords extends StatefulWidget {
   const AdminElderlyRecords({super.key});
@@ -37,9 +38,9 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
                 },
               );
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios,
-              color: Color(0xFF27c1a9),
+              color: HexColor('#207A35'),
             ),
           ),
         ),
@@ -71,6 +72,7 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
         floatingActionButton: FloatingActionButton(
+          backgroundColor: HexColor("#207A35"),
           shape: RoundedRectangleBorder(
             borderRadius:
                 BorderRadius.circular(20.0), // Adjust the radius as needed
