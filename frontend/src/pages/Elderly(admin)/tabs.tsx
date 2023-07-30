@@ -325,10 +325,6 @@ export function CreateElderlyTab() {
         setElderlyID(event.target.value);
     };
     const handleDate = (newDate: Dayjs | null) => {
-        // setDate(event.target.value);
-        // if (newDate) {
-        //     setDateOfBirth(newDate.format('DD/MM/YYYY'))
-        // }
 
         setDateOfBirth(dayjs(newDate))
 

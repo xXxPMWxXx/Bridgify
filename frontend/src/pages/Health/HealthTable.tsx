@@ -291,11 +291,11 @@ export default function HealthTable() {
       setSelectedElderly((prevSelectedElderly) => [...prevSelectedElderly, checkedElderlyId]);
     }
   };
-  
+
   const handleSearch = (event: any) => {
     setSearchQuery(event.target.value.toLowerCase());
   };
-  
+
 
   // React.useEffect(() => {
   //   setRows(tableData.filter(isType));
@@ -348,89 +348,7 @@ export default function HealthTable() {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  // const testButton = (e: any) => {
-  //   e.preventDefault();
-  //   console.log('The link was clicked.');
-  //   window.alert("CLICKED");
-  // }
 
-  // const elderlyFetcher = async (elderlyID:any) => {
-  //   console.log("elderlyFetcher called");
-
-  //   try {
-  //     const token = window.localStorage.getItem('accessToken');
-  //     const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/get/?id=${elderlyID}`, {
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       method: 'GET'
-  //     });
-
-  //     if (response.status !== 200) {
-  //       console.log("error fetching data");
-  //       return null;
-  //     } else {
-  //       console.log("loaded");
-  //       const data = await response.json();
-  //       const { name: elderlyName, photo } = data;
-  //       console.log({ elderlyName, photo });
-  //       return { elderlyName, photo };
-  //     }
-  //   } catch (err) {
-  //     window.alert(err);
-  //     return null;
-  //   }
-  // };
-
-  // return (
-  //   <div>
-
-  //     <br />
-  //     <br />
-
-  //     <Box
-  //       sx={{
-  //         // display: 'flex',
-  //         width: "80%",
-  //         alignItems: 'center',
-  //         margin: "auto",
-  //       }}
-  //     >
-
-  //       {/* <MUIDataTable
-  //           title={"Elderly Records"}
-  //           data={rows}
-  //           columns={columns}
-  //           options={options}
-  //         /> */}
-  //       {dataLoaded ?
-
-  //         <MUIDataTable
-  //           title={"Elderly Records"}
-  //           data={rows}
-  //           columns={columns}
-  //           options={options}
-  //         /> :
-
-  //         <Modal
-  //           keepMounted
-  //           open={open}
-  //           aria-labelledby="loading"
-  //           aria-describedby="loading user data"
-  //         >
-  //           <Box sx={style}>
-  //             <Typography id="loading" variant="h6" component="h2">
-  //               Loading user data, please wait.
-  //             </Typography>
-  //             <LinearProgress />
-  //           </Box>
-  //         </Modal>
-  //       }
-  //     </Box>
-
-  //   </div>
-  // )
 
   return (
     <React.Fragment>
@@ -463,7 +381,7 @@ export default function HealthTable() {
             noValidate
             autoComplete="off"
           >
-        
+
             <TextField
               id="input-with-icon-textfield"
               size="small"
@@ -520,7 +438,12 @@ export default function HealthTable() {
                   <FormControl sx={{ padding: "auto" }}>
                     <Box sx={{ display: 'flex', gap: 1.2, alignItems: 'center', textAlign: "right" }}>
 
-                      <Checkbox key={e.id} name={e.id} onClick={handleCheck} checked={selectedElderly.indexOf(e.id) > -1}
+                      <Checkbox key={e.id} name={e.id} onClick={handleCheck} checked={selectedElderly.indexOf(e.id) > -1} sx={{
+                        color: "black",
+                        '&.Mui-checked': {
+                          color: "#30685e",
+                        },
+                      }}
                       />
                       <Sheet style={{ marginLeft: 2 }}>
                         <Avatar alt={e.name} src={`${imageBASEURL}/${e.photo}`} sx={{}} /></Sheet>
@@ -531,7 +454,7 @@ export default function HealthTable() {
                   </FormControl>
 
                 </FormGroup>))}
-       
+
             </Popover>
           </Box>
           {/* Add Document */}
@@ -609,7 +532,7 @@ export default function HealthTable() {
                     <td >
                       <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                         <Avatar alt={row.elderlyName} src={`${imageBASEURL}/${row.elderlyPhoto}`} />
-                        <Typography sx={{font:"inherit"}}>
+                        <Typography sx={{ font: "inherit" }}>
                           {row.elderlyName}
                         </Typography>
                       </Box>

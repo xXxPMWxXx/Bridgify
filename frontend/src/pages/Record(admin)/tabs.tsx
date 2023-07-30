@@ -3,11 +3,27 @@ import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormCo
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useNavigate } from 'react-router-dom';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
-// import defaultPhoto from `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/001A.png`;
+import { Document, Page } from 'react-pdf';
+
+import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
+
+import "react-pdf/dist/esm/Page/TextLayer.css";
+import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
+
+
+
+
 
 
 import MUIDataTable from "mui-datatables";
 import { Sheet } from '@mui/joy';
+
+import { pdfjs } from 'react-pdf';
+
+pdfjs.GlobalWorkerOptions.workerSrc = new URL(
+    'pdfjs-dist/build/pdf.worker.min.js',
+    import.meta.url,
+).toString();
 
 export function RecordTab() {
     const delay = (ms: number) => new Promise(
@@ -23,8 +39,8 @@ export function RecordTab() {
             options: {
                 customBodyRender: (value: any) => {
                     return (
-                  
-                        <IconButton sx={{p:0}} onClick={()=>{window.open(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/display?fileName=${value}`, '_blank')}}><PictureAsPdfIcon/></IconButton>
+
+                        <IconButton sx={{ p: 0 }} onClick={() => { window.open(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/display?fileName=${value}`, '_blank') }}><PictureAsPdfIcon /></IconButton>
                     )
                 }
             }
@@ -76,7 +92,7 @@ export function RecordTab() {
             });
     }
 
-   
+
 
     //to customise mui datatable
     const options = {
@@ -132,239 +148,346 @@ export function RecordTab() {
 
 
 export function CreateRecordTab() {
-    // const [name, setName] = useState('');
-    // const [elderlyID, setElderlyID] = useState('');
-    // const [dateOfBirth, setDateOfBirth] = React.useState<Dayjs>(dayjs('1980-01-01'));
 
-    // const [activity, setActivity] = useState('');
-    // const [temp, setTemp] = useState('');
-    // const [awakeBool, setAwakeBool] = useState("True");
+    const token = window.localStorage.getItem('accessToken');
 
-    // const [medName, setMedName] = useState<string[]>([]);
-    // const [medTakenBool, setMedTakenBool] = useState("False");
+    const [documentType, setDocumentType] = useState('');
+    const [documentName, setDocumentName] = useState('');
+    const [documentNo, setDocumentNo] = useState('');
+    const [elderlyID, setElderlyID] = useState('');
 
-    // const [condition, setCondition] = useState('');
-    // const [condDescription, setCondDescription] = useState('');
-
-    // //file upload
-    // const [selectedPhoto, setSelectedPhoto] = useState(null);
-
-    // const [openProcessingModal, setOpenProcessingModal] = React.useState(false);
+    const [fileURL, setFileURL] = useState('');
+    const [pageNo, setPageNo] = useState(1);
+    const [numPages, setNumPages] = useState(null);
 
 
+    const [elderlyList, setElderlyList] = useState<any[]>([]);
+    const [selectedFile, setSelectedFile] = useState(null);
+    const [selectedFileName, setSelectedFileName] = useState('');
 
-    // //error , warning , info , success
-    // const [openSnackbar, setOpenSnackbar] = useState(false);
-    // const [alertType, setAlertType]: any = useState('info');
-    // const [alertMsg, setAlertMsg] = useState('');
+    const [openProcessingModal, setOpenProcessingModal] = React.useState(false);
+
+    //error , warning , info , success
+    const [openSnackbar, setOpenSnackbar] = useState(false);
+    const [alertType, setAlertType]: any = useState('info');
+    const [alertMsg, setAlertMsg] = useState('');
+
+
+    const ITEM_HEIGHT = 48;
+    const ITEM_PADDING_TOP = 8;
+    const MenuProps = {
+        PaperProps: {
+            style: {
+                maxHeight: ITEM_HEIGHT * 4.5 + ITEM_PADDING_TOP,
+                width: 100,
+            },
+        },
+    };
 
 
 
-    // let navigate = useNavigate();
+    const fetchElderly = async () => {
+        console.log("fetchElderly called")
+
+        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/elderly/getAll`, {
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            method: 'GET'
+        })
+            .then(async (response) => {
+                if (response.status != 200) {
+                    console.log(response.json())
+
+                } else {
+                    const data = await response.json();
+                    console.log(data)
+                    setElderlyList(data);
+
+                }
+
+            })
+            .catch((err) => {
+                window.alert(err);
+            });
+    }
+
+    function changePage(offset: number) {
+        setPageNo(prevPageNumber => prevPageNumber + offset);
+    }
+
+    function previousPage() {
+        changePage(-1);
+    }
+
+    function nextPage() {
+        changePage(1);
+    }
 
     // //handle form inputs
-    // const handleFileChange = (event: any) => {
-    //     // Get the selected files from the input
+    const handleFileChange = (event: any) => {
+        if ((event.target.files)[0]) {
+            setPageNo(1);
 
-    //     if ((event.target.files)[0]) {
-    //         const file = (event.target.files)[0];
-    //         setSelectedPhoto(file);
-    //         console.log(file)
-    //     } else {
-    //         // window.alert("No file selected")
-    //     }
+            const file = (event.target.files)[0];
+            setSelectedFile(file);
+            setSelectedFileName(file.name)
+            console.log(file)
+        } else {
+            // window.alert("No file selected")
+        }
 
-    // };
-    // const handleName = (event: any) => {
-    //     setName(event.target.value);
-    // };
-    // const handleElderlyID = (event: any) => {
-    //     setElderlyID(event.target.value);
-    // };
-    // const handleDate = (newDate: Dayjs|null) => {
-    //     // setDate(event.target.value);
-    //     // if (newDate) {
-    //     //     setDateOfBirth(newDate.format('DD/MM/YYYY'))
-    //     // }
+    };
+    const handleDocumentName = (event: any) => {
+        setDocumentName(event.target.value);
+    };
+    const handleDocumentType = (event: any) => {
+        setDocumentType(event.target.value);
+    };
+    const handleDocumentNo = (event: any) => {
+        setDocumentNo(event.target.value);
+    };
+    const handleElderlyID = (event: any) => {
+        setElderlyID(event.target.value);
+    };
+    const handleSubmit = (event: any) => {
 
-    //     setDateOfBirth(dayjs(newDate))
+        event.preventDefault();
+        const token = window.localStorage.getItem('accessToken');
 
-    //     console.log(newDate)
-    // };
-    // const handleTemp = (event: any) => {
-    //     setTemp(event.target.value);
-    // };
-    // const handleActivity = (event: any) => {
-    //     setActivity(event.target.value);
-    // };
-    // const handleAwakeBool = (event: any) => {
-    //     if (event.target.checked) {
-    //         setAwakeBool("True");
-    //     } else {
-    //         setAwakeBool("False")
-    //     }
-    // };
-    // const handleMedTakenBool = (event: any) => {
-    //     if (event.target.checked) {
-    //         setMedTakenBool("True");
-    //     } else {
-    //         setMedTakenBool("False")
-    //     }
-    // };
-    // const handleMedication = (event: any) => {
-    //     const {
-    //         target: { value },
-    //     } = event;
-    //     setMedName(
-    //         // On autofill we get a stringified value.
-    //         typeof value === 'string' ? value.split(',') : value,
-    //     );
-    // };
-
-    // const handleCondition = (event: any) => {
-    //     setCondition(event.target.value);
-    // };
-    // const handleCondDescription = (event: any) => {
-    //     setCondDescription(event.target.value);
-    // };
-
-    // const handleSnackbarClose = () => {
-    //     setOpenSnackbar(false);
-    // };
-
- 
-
-    // const handleSubmit = (event: any) => {
-
-    //     event.preventDefault();
-    //     const token = window.localStorage.getItem('accessToken');
-
-    //     if (selectedPhoto !== null &&
-    //         name.trim() !== '' &&
-    //         elderlyID.trim() !== '' ) {
+        if (selectedFile !== null && documentName.trim() !== '' && documentType.trim() !== '' && documentNo.trim() !== '' && elderlyID !== '') {
 
 
-    //         setOpenProcessingModal(true);
-    //         const formData = new FormData();
+            setOpenProcessingModal(true);
+            const formData = new FormData();
 
-    //         formData.append('file', selectedPhoto)
-    //         formData.append('elderlyID', elderlyID);
-    //         formData.append('label', name);
-            
-    //         const imageName = elderlyID + '.png';
+            formData.append('doc', selectedFile)
+            formData.append('elderlyID', elderlyID);
+            formData.append('type', documentType);
+            formData.append('name', documentName);
+            formData.append('document_no', documentNo);
 
-    //         // console.log(rawBody)
-    //         // Make a POST request to the server for elderly insert
-    //         fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/elderly/insert`, {
-    //             headers: {
-    //                 'Authorization': `Bearer ${token}`,
-    //                 'Content-Type': 'application/json',
-    //             },
-    //             method: 'POST',
-    //             body: JSON.stringify(
-    //                 {
-    //                     "id": elderlyID,
-    //                     "name": name,
-    //                     "DOB": dateOfBirth.format('DD/MM/YYYY'),
-    //                     "photo": imageName,
-    //                     "status": {
-    //                         "current_activity": activity,
-    //                         "current_temp": temp,
-    //                         "medication": medName,
-    //                         "taken_med": medTakenBool,
-    //                         "condition": condition,
-    //                         "condition_description": condDescription,
-    //                         "awake": awakeBool
-    //                     }
-    //                 })
-    //         })
-    //             .then(async (response) => {
-    //                 // Make a POST request to the server for post face
-    //                 if (response.status != 200) {
-    //                     const apiResponse = await response.json();
-    //                     //show alert msg
-    //                     setOpenSnackbar(true);
-    //                     setAlertType('error');
-    //                     setAlertMsg("Form submission failed. Please check your inputs and try again.");
-    //                     // setAlertMsg(apiResponse['message']);
-    //                 } else {
-    //                     const apiResponse = await response.json();
+            const imageName = elderlyID + '.png';
 
-    //                     //
-    //                     fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/face/post-face`, {
-    //                         headers: {
-    //                             'Authorization': `Bearer ${token}`,
-    //                         },
-    //                         method: 'POST',
-    //                         body: formData
-    //                     }).then(async (response) => {
+            // console.log(rawBody)
+            // Make a POST request to the server for record insert
+            fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/create`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                },
+                method: 'POST',
+                body: formData
+            })
+                .then(async (response) => {
+                    if (response.status != 200) {
+                        const apiResponse = await response.json();
+                        //show alert msg
+                        setOpenSnackbar(true);
+                        setAlertType('error');
+                        setAlertMsg("Form submission failed. Please check your inputs and try again.");
+                        // setAlertMsg(apiResponse['message']);
+                    } else {
+                        const apiResponse = await response.json();
+                        //show alert msg
+                        setOpenSnackbar(true);
+                        setAlertType('success');
+                        setAlertMsg(`Record: ${documentNo} added successfully`);
 
-    //                         if (response.status != 200) {
-    //                             const apiResponse = await response.json();
-    //                             //show alert msg
-    //                             setOpenSnackbar(true);
-    //                             setAlertType('error');
-    //                             setAlertMsg("Form submission failed. Please check your inputs and try again.");
-    //                             // setAlertMsg(apiResponse['message']);
-    //                         } else {
-    //                             const apiResponse = await response.json();
-    //                             //show alert msg
-    //                             setOpenSnackbar(true);
-    //                             setAlertType('success');
-    //                             setAlertMsg(`Elderly: ${name} added successfully`);
+                        //reset the input fields
+                        setDocumentName('');
+                        setDocumentType('');
+                        setElderlyID('');
+                        setSelectedFile(null);
+                        setSelectedFileName('');
+                        setDocumentNo('');
 
-    //                             //reset the input fields except switch buttons
-    //                             setSelectedPhoto(null);
-    //                             setName('');
-    //                             setElderlyID('');
-    //                             setDateOfBirth(dayjs('1980-01-01'));
+                        setOpenProcessingModal(false);
 
-    //                             setActivity('');
-    //                             setTemp('');
+                    }
+                }
+                )
 
-    //                             setMedName([]);
-    //                             setCondition('');
-    //                             setCondDescription('');
-    //                             setOpenProcessingModal(false);
+                .catch((error) => {
+                    setOpenProcessingModal(false);
+                });
+        } else {
+            setOpenSnackbar(true);
+            setAlertType('error');
+            setAlertMsg("Form submission failed. Please check your inputs and try again.");
+        }
 
-    //                         }
-    //                     }
-    //                     )
-    //                     // .catch((error) => {
-    //                     //     // Handle any error that occurred during the upload process
-    //                     //     window.alert(`Error uploading the image:${error}`);
-    //                     // });
+    };
+    const handleSnackbarClose = () => {
+        setOpenSnackbar(false);
+    };
 
-    //                 }
-    //             })
-    //             .catch((error) => {
-    //                 // Handle any error that occurred during the upload process
-    //                 setOpenProcessingModal(false);
-    //             });
-    //     } else {
-    //         // window.alert("Either photo or name or elderlyID or date of birth is missing")
-    //         setOpenSnackbar(true);
-    //         setAlertType('error');
-    //         setAlertMsg("Form submission failed. Please check your inputs and try again.");
-    //     }
 
-    // };
+    //on start up
+    useEffect(() => {
+        //fetch elderly for select
+        fetchElderly();
+    }, []);
 
-    // //for modal
-    // const style = {
-    //     position: 'absolute' as 'absolute',
-    //     top: '50%',
-    //     left: '50%',
-    //     transform: 'translate(-50%, -50%)',
-    //     width: 400,
-    //     bgcolor: 'background.paper',
-    //     border: '2px solid #000',
-    //     boxShadow: 24,
-    //     p: 4,
-    // };
+
+
+    //for modal
+    const style = {
+        position: 'absolute' as 'absolute',
+        top: '50%',
+        left: '50%',
+        transform: 'translate(-50%, -50%)',
+        width: 400,
+        bgcolor: 'background.paper',
+        border: '2px solid #000',
+        boxShadow: 24,
+        p: 4,
+    };
+
     return (
-        <React.Fragment>
 
+        <React.Fragment>
+            <Box sx={{ width: "60%", alignItems: "center", margin: "auto" }}>
+                <Typography variant="h5" gutterBottom sx={{ marginBottom: 2, textAlign: "center" }}>
+                    New Record
+                </Typography>
+                <Button variant="outlined"
+                    component="label" size="large" sx={{ height: "inherit" }} onClick={() => console.log(documentNo)}>
+                    Test Button
+                </Button>
+                <form onSubmit={handleSubmit}>
+                    <Grid container spacing={3} sx={{ p: 2 }}>
+
+                        <Grid item xs={6} sx={{}}>
+                            <Sheet>
+                                <Typography variant="h6" gutterBottom sx={{ marginBottom: 1 }}>
+                                    Document Information
+                                </Typography>
+                                <Grid container spacing={3} sx={{}}>
+
+                                    <Grid item xs={7} sx={{}}>
+                                        <TextField
+                                            required
+                                            id="docName"
+                                            name="docName"
+                                            label="Document Name"
+                                            value={documentName}
+                                            onChange={handleDocumentName}
+                                            fullWidth
+                                        />
+
+                                    </Grid>
+                                    <Grid item xs={5} sx={{}}>
+                                        <TextField
+                                            required
+                                            id="docNo"
+                                            name="docNo"
+                                            label="Document No"
+                                            value={documentNo}
+                                            onChange={handleDocumentNo}
+                                            fullWidth
+                                        />
+
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={5}>
+                                        <Box sx={{ minWidth: 120 }}>
+                                            <FormControl fullWidth>
+                                                <InputLabel id="demo-simple-select-label">Record Type</InputLabel>
+                                                <Select
+                                                    labelId="demo-simple-select-label"
+                                                    id="demo-simple-select"
+                                                    value={documentType}
+                                                    label="Document Type"
+                                                    onChange={handleDocumentType}
+                                                >
+                                                    <MenuItem value={"medical"}>Medical</MenuItem>
+                                                    <MenuItem value={"medication"}>Medication</MenuItem>
+                                                    <MenuItem value={"other"}>Others</MenuItem>
+
+                                                </Select>
+                                            </FormControl>
+                                        </Box>
+                                    </Grid>
+
+                                    <Grid item xs={12} sm={7}>
+                                        <Box sx={{ minWidth: 120 }}>
+                                            <FormControl fullWidth>
+                                                <InputLabel id="demo-simple-select-label">Elderly</InputLabel>
+                                                <Select
+                                                    labelId="demo-simple-select-label"
+                                                    id="demo-simple-select"
+                                                    value={elderlyID}
+                                                    label="Elderly"
+                                                    onChange={handleElderlyID}
+                                                    MenuProps={MenuProps}
+                                                >
+
+                                                    {elderlyList.map((elderly) => (
+                                                        <MenuItem key={elderly.id} value={elderly.id}>{elderly.name}</MenuItem>
+                                                    ))}
+
+                                                </Select>
+                                            </FormControl>
+                                        </Box>
+                                    </Grid>
+
+
+                                    <Grid item xs={5} sx={{ border: "" }}>
+
+                                        <Button variant="outlined"
+                                            component="label" size="large" fullWidth sx={{ height: "inherit" }}>
+                                            Upload File<input type="file" accept=".pdf" hidden onChange={handleFileChange} />
+                                        </Button>
+
+
+                                    </Grid>
+                                    <Grid item xs={5} sx={{ border: "" }}>
+                                        <Typography sx={{ font: "inherit", fontSize: "inherit", display: "flex", paddingTop: 1, float: 'left' }}>{selectedFileName}</Typography>
+
+
+                                    </Grid>
+                                    <Grid item xs={12} sx={{ border: "" }}>
+                                        <Button type='submit' fullWidth variant="contained" sx={{ p: 1.5, textTransform: "none", fontSize: "16px" }}>Add Record</Button>
+
+                                    </Grid>
+                                </Grid>
+                            </Sheet>
+
+                        </Grid>
+                        <Grid item xs={6} sx={{ border: "", overflow: "none" }}>
+                            <Sheet sx={{ marginLeft: 3 }}>
+                                {selectedFile ? <Document file={URL.createObjectURL(selectedFile)}>  <Page pageNumber={pageNo} height={700} /></Document> : <Typography>TEST</Typography>}
+
+                                {/* <Button onClick={nextPage}>next page</Button> */}</Sheet>
+
+                        </Grid>
+                    </Grid>
+                </form>
+
+                {/* success / error feedback */}
+                <Snackbar open={openSnackbar} autoHideDuration={2000} onClose={handleSnackbarClose}>
+                    <Alert onClose={handleSnackbarClose} severity={alertType} sx={{ width: '100%' }}>
+                        {alertMsg}
+                    </Alert>
+                </Snackbar>
+
+                {/* processing modal */}
+                <Modal
+                    keepMounted
+                    open={openProcessingModal}
+                    aria-labelledby="loading"
+                    aria-describedby="loading elderly data"
+                >
+                    <Box sx={style}>
+                        <Typography id="processing" variant="h6" component="h2">
+                            Processing data, please wait.
+                        </Typography>
+                        <LinearProgress />
+                    </Box>
+                </Modal>
+
+            </Box>
 
         </React.Fragment>)
 }
