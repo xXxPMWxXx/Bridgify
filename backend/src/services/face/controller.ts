@@ -42,7 +42,7 @@ async function uploadLabeledImages(images: any, label: any) {
         const img = await canvas.loadImage(images);
         console.log(img)
         const numOfFaces = await faceapi.detectAllFaces(img).withFaceLandmarks().withFaceDescriptors();
-        console.log(`Detected ${numOfFaces.length} in the image.`)
+        console.log(`Detected ${numOfFaces.length} faces in the image.`)
         if(numOfFaces.length != 1) {
             return false;
         }
