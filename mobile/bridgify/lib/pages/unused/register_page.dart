@@ -235,24 +235,24 @@ class _RegisterPageState extends State<RegisterPage> {
             borderRadius: 10,
           ),
         ),
-        SizedBox(height: 20),
-        Center(
+        const SizedBox(height: 20),
+        const Center(
           child: Text(
             "OR",
             style: TextStyle(
                 fontWeight: FontWeight.bold, fontSize: 18, color: Colors.white),
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Align(
           alignment: Alignment.center,
           child: Padding(
             padding: const EdgeInsets.only(right: 25, top: 10),
             child: RichText(
               text: TextSpan(
-                style: TextStyle(color: Colors.grey, fontSize: 14.0),
+                style: const TextStyle(color: Colors.grey, fontSize: 14.0),
                 children: <TextSpan>[
-                  TextSpan(text: 'Already have an account? '),
+                  const TextSpan(text: 'Already have an account? '),
                   TextSpan(
                     text: 'Log In',
                     style: const TextStyle(

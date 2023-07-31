@@ -28,6 +28,7 @@ class Data {
   Data({
     required this.email,
     required this.name,
+    this.profileImage,
     required this.accRole,
     required this.linkedElderly,
     required this.dateCreated,
@@ -36,6 +37,7 @@ class Data {
   });
   late final String email;
   late final String name;
+  late final String? profileImage;
   late final String accRole;
   late final List<dynamic> linkedElderly;
   late final String dateCreated;
@@ -45,6 +47,7 @@ class Data {
   Data.fromJson(Map<String, dynamic> json) {
     email = json['email'];
     name = json['name'];
+    profileImage = json['profileImage'];
     accRole = json['accRole'];
     linkedElderly = json['linkedElderly'];
     dateCreated = json['dateCreated'];
@@ -56,6 +59,7 @@ class Data {
     final _data = <String, dynamic>{};
     _data['email'] = email;
     _data['name'] = name;
+    _data['profileImage'] = profileImage;
     _data['accRole'] = accRole;
     _data['linkedElderly'] = linkedElderly;
     _data['dateCreated'] = dateCreated;

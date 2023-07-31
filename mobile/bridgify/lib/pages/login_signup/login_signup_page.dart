@@ -1,18 +1,18 @@
 import 'dart:io';
 
 import 'package:bridgify/accessories/background.dart';
+import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/accessories/fadeAnimation.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
 
 import 'package:flutter/gestures.dart';
-import 'package:bridgify/config.dart';
 import 'package:bridgify/models/login_request_model.dart';
 import 'package:bridgify/models/register_request_model.dart';
 import 'package:bridgify/services/api_service.dart';
-import 'package:snippet_coder_utils/hex_color.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({Key? key}) : super(key: key);
@@ -22,7 +22,7 @@ class MainScreen extends StatefulWidget {
 }
 
 class _MainScreenState extends State<MainScreen> {
-  bool isAPIcallProcess = false;
+  bool isAPICallProcess = false;
   bool hidePassword = true;
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   String? emailLogin;
@@ -51,27 +51,37 @@ class _MainScreenState extends State<MainScreen> {
   double windowWidth = 0;
   double windowHeight = 0;
 
-  bool _keyboardVisible = false;
-
   @override
   void initState() {
     super.initState();
   }
 
+  bool _isValidEmail(String value) {
+    // Use a regular expression to check the email format
+    final emailRegex = RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$');
+    return emailRegex.hasMatch(value);
+  }
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
-      child: Scaffold(
+      child: WillPopScope(
+        onWillPop: () async {
+          return false;
+        },
+        child: Scaffold(
           backgroundColor: HexColor("#225518"),
           body: ProgressHUD(
-            inAsyncCall: isAPIcallProcess,
+            inAsyncCall: isAPICallProcess,
             opacity: 0.3,
             key: UniqueKey(),
             child: Form(
               key: globalFormKey,
               child: _loginUI(context),
             ),
-          )),
+          ),
+        ),
+      ),
     );
   }
 
@@ -93,7 +103,7 @@ class _MainScreenState extends State<MainScreen> {
         _loginOpacity = 1;
 
         _loginYOffset = windowHeight;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
+        _loginHeight = windowHeight - 270;
 
         _loginXOffset = 0;
         _registerYOffset = windowHeight;
@@ -107,8 +117,8 @@ class _MainScreenState extends State<MainScreen> {
         _loginWidth = windowWidth;
         _loginOpacity = 1;
 
-        _loginYOffset = _keyboardVisible ? 40 : 270;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 270;
+        _loginYOffset = 270;
+        _loginHeight = windowHeight - 270;
 
         _loginXOffset = 0;
         _registerYOffset = windowHeight;
@@ -122,12 +132,12 @@ class _MainScreenState extends State<MainScreen> {
         _loginWidth = windowWidth - 40;
         _loginOpacity = 0.7;
 
-        _loginYOffset = _keyboardVisible ? 30 : 240;
-        _loginHeight = _keyboardVisible ? windowHeight : windowHeight - 240;
+        _loginYOffset = 240;
+        _loginHeight = windowHeight - 240;
 
         _loginXOffset = 20;
-        _registerYOffset = _keyboardVisible ? 55 : 170;
-        _registerHeight = _keyboardVisible ? windowHeight : windowHeight - 190;
+        _registerYOffset = 170;
+        _registerHeight = windowHeight - 190;
         break;
     }
 
@@ -156,9 +166,12 @@ class _MainScreenState extends State<MainScreen> {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: <Widget>[
-                  const Text(
-                    "Log In to Begin",
-                    style: TextStyle(fontSize: 20),
+                  const FadeAnimation(
+                    1.4,
+                    Text(
+                      "Log In to Begin",
+                      style: TextStyle(fontSize: 20),
+                    ),
                   ),
                   const SizedBox(height: 20),
                   Column(
@@ -197,8 +210,8 @@ class _MainScreenState extends State<MainScreen> {
 
                                       return null;
                                     },
-                                    (onSavedVal) => {
-                                      emailLogin = onSavedVal,
+                                    (onSavedVal) {
+                                      emailLogin = onSavedVal;
                                     },
                                     paddingRight: 0,
                                     paddingLeft: 0,
@@ -240,8 +253,8 @@ class _MainScreenState extends State<MainScreen> {
 
                                       return null;
                                     },
-                                    (onSavedVal) => {
-                                      passwordLogin = onSavedVal,
+                                    (onSavedVal) {
+                                      passwordLogin = onSavedVal;
                                     },
                                     paddingRight: 0,
                                     paddingLeft: 0,
@@ -322,43 +335,88 @@ class _MainScreenState extends State<MainScreen> {
                             () {
                               if (validateAndSave()) {
                                 setState(() {
-                                  isAPIcallProcess = true;
+                                  isAPICallProcess = true;
                                 });
 
-                                LoginRequestModel model = LoginRequestModel(
-                                  email: emailLogin,
-                                  password: passwordLogin,
-                                );
-
-                                APIService.login(model).then(
-                                  (response) {
-                                    setState(() {
-                                      isAPIcallProcess = false;
-                                    });
-
-                                    if (response) {
-                                      Navigator.pushNamedAndRemoveUntil(
-                                        context,
-                                        '/home',
-                                        (route) => false,
+                                if (!_isValidEmail(emailLogin!)) {
+                                  setState(() {
+                                    isAPICallProcess = false;
+                                  });
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        backgroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(24),
+                                        ),
+                                        child: const InvalidCredentialsView(
+                                          primaryText: 'Invalid email address',
+                                          secondaryText:
+                                              'Please give a valid email address',
+                                        ),
                                       );
-                                    } else {
-                                      FormHelper.showSimpleAlertDialog(
-                                        context,
-                                        Config.appName,
-                                        "Invalid email/Password !!",
-                                        "OK",
-                                        () {
-                                          Navigator.of(context).pop();
-                                        },
-                                      );
-                                    }
-                                  },
-                                );
+                                    },
+                                  );
+                                } else {
+                                  LoginRequestModel model = LoginRequestModel(
+                                    email: emailLogin,
+                                    password: passwordLogin,
+                                  );
+
+                                  APIService.login(model).then(
+                                    (response) {
+                                      setState(() {
+                                        isAPICallProcess = false;
+                                      });
+
+                                      if (response) {
+                                        APIService.getUserProfile()
+                                            .then((loginDetails) {
+                                          Map userDetails = loginDetails
+                                              as Map<String, dynamic>;
+                                          if (userDetails["accRole"] ==
+                                              "Admin") {
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/adminHome',
+                                            );
+                                          } else {
+                                            Navigator.pushNamed(
+                                              context,
+                                              '/home',
+                                            );
+                                          }
+                                        });
+                                      } else {
+                                        showDialog(
+                                          context: context,
+                                          builder: (context) {
+                                            return Dialog(
+                                              backgroundColor: Colors.white,
+                                              shape: RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(24),
+                                              ),
+                                              child:
+                                                  const InvalidCredentialsView(
+                                                primaryText:
+                                                    'Invalid email/password detected!',
+                                                secondaryText:
+                                                    'Please re-enter login credentials',
+                                              ),
+                                            );
+                                          },
+                                        );
+                                      }
+                                    },
+                                  );
+                                }
                               }
                             },
-                            btnColor: HexColor("225518"),
-                            borderColor: HexColor("225518"),
+                            btnColor: HexColor("#207A35"),
+                            borderColor: HexColor("#207A35"),
                             txtColor: Colors.white,
                             borderRadius: 20,
                             fontWeight: FontWeight.bold,
@@ -433,7 +491,6 @@ class _MainScreenState extends State<MainScreen> {
                           emailLogin = "";
                           passwordLogin = "";
 
-                          print('sign up working');
                           globalFormKey.currentState!.reset();
                           setState(() {
                             _pageState = 2;
@@ -607,8 +664,8 @@ class _MainScreenState extends State<MainScreen> {
                                     }
                                     return null;
                                   },
-                                  (onSavedVal) => {
-                                    passwordSignUp = onSavedVal,
+                                  (onSavedVal) {
+                                    passwordSignUp = onSavedVal;
                                   },
                                   paddingRight: 0,
                                   paddingLeft: 0,
@@ -662,8 +719,8 @@ class _MainScreenState extends State<MainScreen> {
                                     }
                                     return null;
                                   },
-                                  (onSavedVal) => {
-                                    confirmPasswordSignUp = onSavedVal,
+                                  (onSavedVal) {
+                                    confirmPasswordSignUp = onSavedVal;
                                   },
                                   paddingRight: 0,
                                   paddingLeft: 0,
@@ -713,84 +770,174 @@ class _MainScreenState extends State<MainScreen> {
                             () {
                               if (validateAndSave() &&
                                   confirmPasswordSignUp != passwordSignUp) {
-                                FormHelper.showSimpleAlertDialog(
-                                  context,
-                                  Config.appName,
-                                  "Please re-confirm your password",
-                                  "OK",
-                                  () {
-                                    Navigator.pop(context);
+                                showDialog(
+                                  context: context,
+                                  builder: (context) {
+                                    return Dialog(
+                                      backgroundColor: Colors.white,
+                                      shape: RoundedRectangleBorder(
+                                        borderRadius: BorderRadius.circular(24),
+                                      ),
+                                      child: const InvalidCredentialsView(
+                                        primaryText:
+                                            'Passwords input need to match',
+                                        secondaryText:
+                                            'Please re-confirm your password',
+                                      ),
+                                    );
                                   },
                                 );
                               } else if (validateAndSave()) {
                                 setState(() {
-                                  isAPIcallProcess = true;
+                                  isAPICallProcess = true;
                                 });
-
-                                RegisterRequestModel model =
-                                    RegisterRequestModel(
-                                        name: nameSignUp!,
-                                        email: emailSignUp!,
-                                        password: passwordSignUp!);
-                                APIService.register(model).then((response) {
+                                if (!_isValidEmail(emailSignUp!)) {
                                   setState(() {
-                                    isAPIcallProcess = false;
+                                    isAPICallProcess = false;
                                   });
-
-                                  if (response.data != null) {
-                                    if (validateAndSave()) {
-                                      setState(() {
-                                        isAPIcallProcess = true;
-                                      });
-
-                                      LoginRequestModel model =
-                                          LoginRequestModel(
-                                        email: emailSignUp,
-                                        password: passwordSignUp,
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return Dialog(
+                                        backgroundColor: Colors.white,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius:
+                                              BorderRadius.circular(24),
+                                        ),
+                                        child: const InvalidCredentialsView(
+                                          primaryText: 'Invalid email address',
+                                          secondaryText:
+                                              'Please give a valid email address',
+                                        ),
                                       );
+                                    },
+                                  );
+                                } else {
+                                  RegisterRequestModel model =
+                                      RegisterRequestModel(
+                                          name: nameSignUp!,
+                                          email: emailSignUp!,
+                                          password: passwordSignUp!);
+                                  APIService.register(model).then((response) {
+                                    setState(() {
+                                      isAPICallProcess = false;
+                                    });
 
-                                      APIService.login(model).then(
-                                        (response) {
-                                          setState(() {
-                                            isAPIcallProcess = false;
-                                          });
+                                    if (response.data != null) {
+                                      if (validateAndSave()) {
+                                        setState(() {
+                                          isAPICallProcess = true;
+                                        });
 
-                                          if (response) {
-                                            Navigator.pushNamedAndRemoveUntil(
-                                              context,
-                                              '/home',
-                                              (route) => false,
-                                            );
-                                          } else {
-                                            FormHelper.showSimpleAlertDialog(
-                                              context,
-                                              Config.appName,
-                                              "Invalid name/Password !!",
-                                              "OK",
-                                              () {
-                                                Navigator.of(context).pop();
-                                              },
-                                            );
-                                          }
+                                        LoginRequestModel model =
+                                            LoginRequestModel(
+                                          email: emailSignUp,
+                                          password: passwordSignUp,
+                                        );
+
+                                        APIService.login(model).then(
+                                          (response) {
+                                            setState(() {
+                                              isAPICallProcess = false;
+                                            });
+                                            if (response) {
+                                              APIService.getUserProfile()
+                                                  .then((loginDetails) {
+                                                Map userDetails = loginDetails
+                                                    as Map<String, dynamic>;
+                                                if (userDetails["accRole"] ==
+                                                    "Admin") {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    '/adminHome',
+                                                  );
+                                                } else {
+                                                  Navigator.pushNamed(
+                                                    context,
+                                                    '/home',
+                                                  );
+                                                }
+                                              });
+                                            } else {
+                                              showDialog(
+                                                context: context,
+                                                builder: (context) {
+                                                  return Dialog(
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    shape:
+                                                        RoundedRectangleBorder(
+                                                      borderRadius:
+                                                          BorderRadius.circular(
+                                                              24),
+                                                    ),
+                                                    child:
+                                                        const InvalidCredentialsView(
+                                                      primaryText:
+                                                          'Invalid name/Password',
+                                                    ),
+                                                  );
+                                                },
+                                              );
+                                            }
+                                          },
+                                        );
+                                      }
+                                    } else {
+                                      /*() {
+                                      if (validateAndSave()) {
+                                        setState(() {
+                                          isAPICallProcess = true;
+                                        });
+
+                                        LoginRequestModel model =
+                                            LoginRequestModel(
+                                          email: emailLogin,
+                                          password: passwordLogin,
+                                        );
+
+                                        APIService.login(model).then(
+                                          (response) {
+                                            setState(() {
+                                              isAPICallProcess = false;
+                                            });
+
+                                            if (response) {
+                                              Navigator.pushNamed(
+                                                context,
+                                                '/home',
+                                              );
+                                            } else {*/
+                                      showDialog(
+                                        context: context,
+                                        builder: (context) {
+                                          return Dialog(
+                                            backgroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(24),
+                                            ),
+                                            child: const InvalidCredentialsView(
+                                              primaryText:
+                                                  'User already exists!',
+                                              secondaryText:
+                                                  'Please re-enter login credentials',
+                                            ),
+                                          );
                                         },
                                       );
+                                      // }
+                                      // },
+                                      // );
+                                      // }
+                                      // };
                                     }
-                                  } else {
-                                    FormHelper.showSimpleAlertDialog(
-                                      context,
-                                      Config.appName,
-                                      response.message,
-                                      "OK",
-                                      () {
-                                        Navigator.pop(context);
-                                      },
-                                    );
-                                  }
-                                });
+                                  });
+                                }
                               }
                             },
-                            btnColor: HexColor("225518"),
-                            borderColor: HexColor("225518"),
+                            btnColor: HexColor("207A35"),
+                            borderColor: HexColor("207A35"),
                             txtColor: Colors.white,
                             borderRadius: 20,
                             fontWeight: FontWeight.bold,
@@ -857,26 +1004,26 @@ class _MainScreenState extends State<MainScreen> {
                             emailSignUp = "";
                             passwordSignUp = "";
 
-                            print('Login is working');
                             globalFormKey.currentState!.reset();
                             setState(() {
                               _pageState = 1;
                             });
                           },
                           child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                const Text(
-                                  "Already Have an Account? ",
-                                  style: TextStyle(color: Colors.grey),
-                                ),
-                                Text(
-                                  "Login",
-                                  style: TextStyle(
-                                      color: Colors.blue.shade900,
-                                      fontWeight: FontWeight.bold),
-                                )
-                              ]),
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              const Text(
+                                "Already Have an Account? ",
+                                style: TextStyle(color: Colors.grey),
+                              ),
+                              Text(
+                                "Login",
+                                style: TextStyle(
+                                    color: Colors.blue.shade900,
+                                    fontWeight: FontWeight.bold),
+                              )
+                            ],
+                          ),
                         ),
                       ],
                     ),

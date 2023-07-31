@@ -34,6 +34,10 @@ class SharedService {
     );
 
     await APICacheManager().addCacheData(cacheModel);
+    // await ZIMKit().connectUser(
+    //   id: loginResponse.data.email,
+    //   name: loginResponse.data.name,
+    // );
   }
 
   static Future<void> logout(BuildContext context) async {
@@ -41,7 +45,7 @@ class SharedService {
     Navigator.pushNamedAndRemoveUntil(
       context,
       '/login',
-      (route) => false,
+      (route) => true,
     );
   }
 }

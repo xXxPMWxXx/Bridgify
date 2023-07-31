@@ -1,26 +1,31 @@
-const bodyParser = require('body-parser')
 import cors from 'cors';
 import express from 'express';
 import { services } from './services';
 import jwt from 'jsonwebtoken'
 import 'dotenv/config'
 
-// const fileUpload = require("express-fileupload");
-
-
-//test for face api
-// const tf = require("@tensorflow/tfjs-node");
-
 const faceapi = require("@vladmandic/face-api/dist/face-api.node.js");
+const fileupload = require("express-fileupload");
+const bodyParser = require('body-parser')
 const mongoose = require("mongoose");
 const { Canvas, Image } = require("canvas");
 const canvas = require("canvas");
-
 const swaggerUi = require("swagger-ui-express");
 const swaggerFile = require('./swagger_output.json')
 
 //to access the variable in .env file as : process.env.{variableName}
 const app = express();
+
+// Middlewares
+app.use(express.json());
+app.use(fileupload());
+app.use( bodyParser.json({limit: '50mb'}) );
+app.use(bodyParser.urlencoded({
+  limit: '50mb',
+  extended: true,
+  parameterLimit:50000
+}));
+app.use(cors());
 
 //swagger
 app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
@@ -30,28 +35,11 @@ app.use('/doc', swaggerUi.serve, swaggerUi.setup(swaggerFile))
 // // access config var
 // process.env.TOKEN_SECRET;
 
-// Middlewares
-app.use( bodyParser.json({limit: '50mb'}) );
-app.use(bodyParser.urlencoded({
-  limit: '50mb',
-  extended: true,
-  parameterLimit:50000
-}));
-app.use(cors());
-
-
-
 // Mount REST on /api
 app.use('/api', services);
 
 //To access the image by using http://localhost:8000/images/{fileName}
-app.use("/out", express.static("out"));
-app.use("/trained_face", express.static("trained_face"));
 app.use("/images", express.static('images'));
-app.use("/labeled_images", express.static('labeled_images'));
-
-app.use("/elderly", express.static('elderly'));
-app.use("/post", express.static('post'));
 
 const port = process.env.PORT || 8000;
 
@@ -82,6 +70,5 @@ async function LoadModels() {
 	await faceapi.nets.faceRecognitionNet.loadFromDisk(__dirname + "/faceAPIModel");
 	await faceapi.nets.faceLandmark68Net.loadFromDisk(__dirname + "/faceAPIModel");
 	await faceapi.nets.ssdMobilenetv1.loadFromDisk(__dirname + "/faceAPIModel");
-
 }
 LoadModels();

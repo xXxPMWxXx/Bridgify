@@ -5,7 +5,7 @@
     "title": "Bridgify REST API",
     "description": "Swagger Document for Bridgify Backend API"
   },
-  "host": "13.229.138.25:8000",
+  "host": "13.228.86.148:8000",
   "basePath": "/api",
   "consumes": [
     "application/json",
@@ -67,6 +67,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }
@@ -97,6 +100,9 @@
         "responses": {
           "200": {
             "description": "OK"
+          },
+          "400": {
+            "description": "Bad Rquest"
           }
         }
       }
@@ -124,7 +130,7 @@
         }
       }
     },
-    "/user//user-profile": {
+    "/user/user-profile": {
       "get": {
         "description": "",
         "tags": [
@@ -140,6 +146,45 @@
         "responses": {
           "401": {
             "description": "Authorized User!!"
+          }
+        }
+      }
+    },
+    "/user/update": {
+      "post": {
+        "description": "",
+        "tags": [
+          "User"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "email": {
+                  "example": "any"
+                },
+                "name": {
+                  "example": "any"
+                },
+                "password": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          },
+          "400": {
+            "description": "Bad Request"
+          },
+          "401": {
+            "description": "Invalid Token"
           }
         }
       }
