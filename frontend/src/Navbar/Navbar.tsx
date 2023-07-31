@@ -134,7 +134,7 @@ export const ResponsiveAppBar = () => {
                         >
                             <Button key='Home' onClick={handleHome} sx={{ my: 0, color: 'black', display: 'block' }} >Home</Button>
                             <Button key='Health' onClick={handleHealth} sx={{ my: 0, color: 'black', display: 'block' }} >Health</Button>
-                            <Button key='Message' onClick={handleMessage} sx={{ my: 0, color: 'black', display: 'block' }} >Message</Button>
+                            {/* <Button key='Message' onClick={handleMessage} sx={{ my: 0, color: 'black', display: 'block' }} >Message</Button> */}
                             <Button key='Profile' onClick={handleProfile} sx={{ my: 0, color: 'black', display: 'block' }} >Profile</Button>
                             <Button key='About' onClick={handleAbout} sx={{ my: 0, color: 'black', display: 'block' }} >About</Button>
                         </Menu>
@@ -161,7 +161,7 @@ export const ResponsiveAppBar = () => {
                     <Box justifyContent="center" alignItems="center" sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
                         <Button key='Home' onClick={handleHome} sx={{ my: 2, color: 'white', display: 'block' }} >Home</Button>
                         <Button key='Health' onClick={handleHealth} sx={{ my: 2, color: 'white', display: 'block' }} >Health</Button>
-                        <Button key='Message' onClick={handleMessage} sx={{ my: 2, color: 'white', display: 'block' }} >Message</Button>
+                        {/* <Button key='Message' onClick={handleMessage} sx={{ my: 2, color: 'white', display: 'block' }} >Message</Button> */}
                         <Button key='Profile' onClick={handleProfile} sx={{ my: 2, color: 'white', display: 'block' }} >Profile</Button>
                         <Button key='About' onClick={handleAbout} sx={{ my: 2, color: 'white', display: 'block' }} >About</Button>
                     </Box>
@@ -194,9 +194,9 @@ export const ResponsiveAppBar = () => {
                             <MenuItem key='About' onClick={handleAbout}>
                                 <Typography textAlign="center">About</Typography>
                             </MenuItem>
-                            <MenuItem key='Help' onClick={handleHelp}>
+                            {/* <MenuItem key='Help' onClick={handleHelp}>
                                 <Typography textAlign="center">Help</Typography>
-                            </MenuItem>
+                            </MenuItem> */}
                             <MenuItem key='Logout' onClick={handledLogout}>
                                 <Typography textAlign="center">Log out</Typography>
                             </MenuItem>

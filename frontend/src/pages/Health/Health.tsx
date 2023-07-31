@@ -51,9 +51,6 @@ export const Health = () => {
                     alignItems: 'center',
                 }}
             >
-                <Typography align="center" variant='h2' paragraph>
-                    Health page under consturction,coming soon.
-                </Typography>
             </Box>
 
             <HealthTable />
