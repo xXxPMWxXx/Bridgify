@@ -41,13 +41,17 @@ async function uploadLabeledImages(images: any, label: any) {
         // const img = await canvas.loadImage(images[i]);
         const img = await canvas.loadImage(images);
         console.log(img)
-        // const tensor = await image(images);
+        const numOfFaces = await faceapi.detectAllFaces(img).withFaceLandmarks().withFaceDescriptors();
+        console.log(`Detected ${numOfFaces.length} in the image.`)
+        if(numOfFaces.length != 1) {
+            return false;
+        }
 
         // Read each face and save the face descriptions in the descriptions array
         const detections = await faceapi.detectSingleFace(img)
             .withFaceLandmarks()
             .withFaceDescriptor();
-
+        
         descriptions.push(detections.descriptor);
         // }
 
@@ -78,18 +82,20 @@ export const postface = async (req: any, res: any, next: NextFunction) => {
         const elderlyID = req.body.elderlyID
         let result = await uploadLabeledImages(file.data, label);
         if (result) {
-            
+
             // Move the uploaded image to our upload folder
             file.mv(baseDir + '/images/trained_face/' + elderlyID + '.png');
-            return res.status(200).json({ message: "Face data stored successfully",
-                                            for_development_url: `http://localhost:8000/images/trained_face/${elderlyID}.png`,
-                                            for_production_url: `http://13.228.86.148:8000/images/trained_face/${elderlyID}.png`, })
+            return res.status(200).json({
+                message: "Face data stored successfully",
+                for_development_url: `http://localhost:8000/images/trained_face/${elderlyID}.png`,
+                for_production_url: `http://13.228.86.148:8000/images/trained_face/${elderlyID}.png`,
+            })
         } else {
             return res.status(400).json({ message: "Something went wrong, make sure your label is unique and does not existed in the DB." })
         }
     } catch (error) {
         console.log(error)
-        return res.status(400).json({ message: "Please make sure the input file is valid type" , error : String(error)});
+        return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
     }
 }
 
@@ -137,18 +143,18 @@ export const checkface = async (req: any, res: any, next: NextFunction) => {
         const { file } = req.files;
         let result = await getDescriptorsFromDB(file.data);
 
-        // *** TODO: process the result and store relevant data into the DB
-
         // Move the uploaded image to our post folder
         file.mv(baseDir + '/images/post/' + file.name);
 
-        return res.status(200).json({ result ,
+        return res.status(200).json({
+            result,
             for_development_url: `http://localhost:8000/images/post/${file.name}`,
-            for_production_url: `http://13.228.86.148:8000/images/post/${file.name}`, });
+            for_production_url: `http://13.228.86.148:8000/images/post/${file.name}`,
+        });
 
     } catch (error) {
         console.log(error)
-        return res.status(400).json({ message: "Please make sure the input file is valid type" , error : String(error)});
+        return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
     }
 
 };
