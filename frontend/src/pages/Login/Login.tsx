@@ -19,7 +19,7 @@ function Copyright(props: any) {
   return (
     <Typography variant="body2" color="text.secondary" align="center" {...props}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
+      <Link color="inherit" href="/login">
         Bridgify
       </Link>{' '}
       {new Date().getFullYear()}
@@ -160,14 +160,14 @@ export function Login() {
                 <img src={logo} alt="Logo" width={28} height={28} style={{ marginLeft: -230, marginTop: -5, position: 'absolute' }} />
                 <span style={{ color: 'black', fontSize: 15, textAlign: 'left', marginTop: -1.5, marginLeft: -195, fontWeight: 500, position: 'absolute' }}>Bridgify</span>
               </a>
-              <Button
+              {/* <Button
                 type="submit"
                 variant="outlined"
                 color='inherit'
                 sx={{ mt: 3, mb: 2, fontWeight: 500, borderRadius: 8, position: 'absolute', top: 30, right: 80 }}
               >
                 Admin
-              </Button>
+              </Button> */}
             </div>
             <Typography component="h1" variant="h5" sx={{ fontWeight: 'bold', fontSize: 55, letterSpacing: -2, marginTop: 8, marginBottom: -1.5 }}>
               Hi there!
