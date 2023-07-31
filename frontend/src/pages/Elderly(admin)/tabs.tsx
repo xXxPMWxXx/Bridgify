@@ -168,6 +168,7 @@ export function ElderlyTab() {
         onRowsSelect: onRowsSelect,
         onRowClick: handleRowClick,
         onRowsDelete: handleClickDeleteIcon,
+        downloadOptions: { filename: `Bridgify Elderly Data(${new Date().toDateString()}).csv`},
     };
 
     useEffect(() => {

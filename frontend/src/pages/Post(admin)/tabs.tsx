@@ -1,7 +1,7 @@
 import './Post_admin.css';
 import {
     Box, Typography, LinearProgress, Modal,
-    Grid, Button, Snackbar, Alert, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions
+    Grid, Button, Snackbar, Alert, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Card, CardMedia, CardContent
 } from '@mui/material';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';
@@ -10,6 +10,9 @@ import React, { useEffect, useState } from 'react';
 import MUIDataTable from "mui-datatables";
 import ImageList from '@mui/material/ImageList';
 import ImageListItem from '@mui/material/ImageListItem';
+import Carousel from 'react-material-ui-carousel';
+import CarouselSlide from 'react-material-ui-carousel';
+
 
 export function PostTab() {
     const delay = (ms: number) => new Promise(
@@ -53,9 +56,11 @@ export function PostTab() {
         width: 400,
         bgcolor: 'background.paper',
         border: '2px solid #000',
+        overflow: 'scroll',
         boxShadow: 24,
         p: 4,
     };
+
     const [open, setOpen] = React.useState(false);
 
     const loadPostData = async () => {
@@ -72,10 +77,10 @@ export function PostTab() {
                     window.alert("Something is wrong!");
                 } else {
                     const res = await response.json();
-                    const fetchData : any = [];
+                    const fetchData: any = [];
                     res.data.forEach((post: any) => {
                         const row = [post.author_email, post.activity_type, post.description,
-                        post.elderlyInvolved.toString(), post.imagesCount, post.dateTime]
+                        post.elderlyInvolved.toString(), post.imagesCount, post.dateTime, post.postImages]
                         fetchData.push(row)
                     });
                     setPostData(fetchData);
@@ -103,10 +108,11 @@ export function PostTab() {
 
     //For update post
     const [updateOpen, setUpdateOpen] = React.useState(false);
-    const [authorEmail, setAuthorEmail] = useState('');
-    const [activityType, setActivityType] = useState('');
-    const [description, setDescription] = useState('');
-    const [createdDate, setCreatedDate] = useState('');
+    const [authorEmail, setAuthorEmail] = React.useState('');
+    const [activityType, setActivityType] = React.useState('');
+    const [description, setDescription] = React.useState('');
+    const [createdDate, setCreatedDate] = React.useState('');
+    const [images, setImages] = React.useState([]);
     //for update the input
     const handleActivity = (event: any) => {
         setActivityType(event.target.value);
@@ -118,6 +124,10 @@ export function PostTab() {
 
     const handleRowClick = (rowData: any, rowMeta: any) => {
         console.log(rowData, rowMeta);
+        const dataIndex = rowMeta.dataIndex;
+        const imgName = postData[dataIndex][6];
+        // set the selected row images for display
+        setImages(imgName);
         setAuthorEmail(rowData[0]);
         setActivityType(rowData[1]);
         setDescription(rowData[2]);
@@ -229,7 +239,9 @@ export function PostTab() {
         onRowsSelect: onRowsSelect,
         onRowClick: handleRowClick,
         onRowsDelete: handleClickDeleteIcon,
+        downloadOptions: { filename: `Bridgify Post Data(${new Date().toDateString()}).csv`},
     };
+
     useEffect(() => {
         async function loadData() {
             setOpen(true);
@@ -241,7 +253,7 @@ export function PostTab() {
             loadData();
         }
 
-        if(reload) {
+        if (reload) {
             loadPostData();
             setReload(false);
         }
@@ -258,7 +270,7 @@ export function PostTab() {
             {dataLoaded ?
 
                 <MUIDataTable
-                    title={"Elderly Lists"}
+                    title={"Post Data"}
                     data={postData}
                     columns={columns}
                     options={options}
@@ -284,10 +296,17 @@ export function PostTab() {
                 onClose={handleUpdateClose}
                 aria-labelledby="updatePost"
                 aria-describedby="updatePost"
+                sx={{
+                    position: 'absolute',
+                    top: '8%',
+                    overflow: 'scroll',
+                    height: '100%',
+                    display: 'block'
+                }}
             >
 
                 <form onSubmit={handleUpdateSubmit}>
-                    <Box sx={{ ...style, width: 800 }} textAlign='center'>
+                    <Box sx={{ ...style, width: 800, mt:5, }} textAlign='center'>
                         <h2 id="updatePost">Update Post</h2>
                         <TextField
                             required
@@ -319,9 +338,23 @@ export function PostTab() {
 
                         <TextareaAutosize onChange={handleDescription} style={{ width: 500 }} id='Description' className='StyledTextarea' value={description} placeholder="Description" />
 
+                        <Carousel sx={{ height : "350px", width : "100%", mt: 5}}>
+                            {images.map((imgName: any) => (
+                                <CarouselSlide key={imgName}>
+                                    <Card>
+                                        <CardMedia
+                                            image={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${imgName}`}
+                                            title={activityType}
+                                            style={{ height: 300 }}
+                                        />
+                                    </Card>
+                                </CarouselSlide>
+                            ))}
+                        </Carousel>
+
                         <Box textAlign='center'>
-                            <Button type="submit" variant="contained" sx={{ width: 300, m: 3 }}>
-                                Submit
+                            <Button type="submit" variant="contained" sx={{ width: 300, mb: 5 }}>
+                                Update
                             </Button>
                         </Box>
                     </Box>
