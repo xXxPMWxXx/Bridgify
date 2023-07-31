@@ -410,7 +410,7 @@ export function CreateElderlyTab() {
                         setOpenProcessingModal(false);
                         setOpenSnackbar(true);
                         setAlertType('error');
-                        setAlertMsg("Unable detect face in the photo, please change another photo and try again!");
+                        setAlertMsg("No face detected or multiple faces found. Please try another photo.!");
                         // setAlertMsg(apiResponse['message']);
                     } else {
                         const apiResponse = await response.json();
