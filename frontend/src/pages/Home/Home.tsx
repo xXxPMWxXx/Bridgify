@@ -18,23 +18,6 @@ const Background = styled("div") ({
     backgroundRepeat: 'no-repeat'
 })
 
-const posts = [
-    {
-        elderlyInvolved: 'Amy',
-        profileImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLP-Khig_cQdjFjvvyq73E4SZ6hqJBtcqjlEH-L9kUFg&s',
-        caption: 'was captured in a picture during lunch',
-        time: 2,
-        images:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLP-Khig_cQdjFjvvyq73E4SZ6hqJBtcqjlEH-L9kUFg&s',
-    },
-    {
-        elderlyInvolved: 'Amy',
-        profileImage: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLP-Khig_cQdjFjvvyq73E4SZ6hqJBtcqjlEH-L9kUFg&s',
-        caption: 'was captured in a picture during lunch',
-        time: 2,
-        images:'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSLP-Khig_cQdjFjvvyq73E4SZ6hqJBtcqjlEH-L9kUFg&s',
-    },
-]
-
 const notifs =[
     {
         image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
@@ -49,6 +32,7 @@ export const Home = () => {
 
     useEffect(() => {
         elderlyStatuses();
+        getPosts();
     }, []);
 
     const [openSnackbar, setOpenSnackbar] = useState(false);
@@ -72,6 +56,7 @@ export const Home = () => {
     console.log(email);
 
     const[elderly, setElderly]: any[] = useState([]);
+    const[posts, setPosts]: any[] = useState([]);
     
     //change linkedElderly to Array
     // if(linkedElderly != null){
@@ -101,7 +86,7 @@ export const Home = () => {
           }
 
           const elderlyResponse = await response.json();
-        //   console.log(elderlyResponse);
+         //console.log(elderlyResponse);
           const elderlyArray = elderlyResponse.map((elderly: any) => ({
             id: elderly.id,
             name: elderly.name,
@@ -112,13 +97,63 @@ export const Home = () => {
             condition: elderly.status.condition,
           }));
           
+          console.log("statuscheck");
+          console.log(elderlyArray);
           setElderly(elderlyArray);
         } catch (error) {
           console.error('Error fetching linked elderly:', error);
           window.alert('Error: Failed to fetch linked elderly');
         }
       };
-      
+
+      const getPosts = async () => {
+        try {
+            const APImethod = 'getByUser';
+
+            const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/post/${APImethod}?email=${email}`, {
+                headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+                },
+                method: 'GET',
+            });
+
+            if (!response.ok) {
+                const apiResponse = await response.json();
+                return;
+            }
+
+            const postResponse = await response.json();
+            console.log('---------Post--------');
+            console.log(postResponse);
+
+            const postArray = postResponse.map((post: any) => ({
+                id: post.id,
+                elderlyInvolved: post.elderlyInvolved,
+                //profileImage: null,
+                caption: post.activity_type,
+                time: post.dateTime,
+                imagesCount: post.imagesCount,
+                images: post.postImages,
+                // elderlyInvolvedArray: postArray.map((postItem: any) => postItem.elderlyInvolved),
+                // imagesArray: postArray.map((postItem: any) => postItem.images),
+            }));
+
+            const elderlyInvolvedArray = postArray.map((postItem: any) => postItem.elderlyInvolved);
+            console.log(elderlyInvolvedArray)
+            const imagesArray = postArray.map((postItem: any) => postItem.images);
+            setPosts(postArray);
+
+            // console.log("elderlyInvolvedArray");
+            // console.log(elderlyInvolvedArray);
+            // console.log("imagesArray");
+            // console.log(imagesArray);
+
+        } catch (error) {
+            console.error('Error fetching', error);
+            window.alert('Error: Failed to fetch');
+        }
+    };
     
 
     return (
@@ -161,9 +196,13 @@ export const Home = () => {
                 <Box width='70%'>
                     <Grid container spacing={52.5} flexDirection='column'>
                         {posts.map((post:any) => (
-                            <Grid item key={post.elderlyInvolved}>
-                                <Posts post={post} />
-                            </Grid>
+                        <Grid item key={post.id}> {/* Use post.id as the key */}
+                            <Posts
+                                post={post}
+                                elderlyInvolvedArray={post.elderlyInvolved} // Use the actual property from the post object
+                                imagesArray={post.images} // Use the actual property from the post object
+                            />
+                        </Grid>
                         ))}
                     </Grid>
                 </Box>
