@@ -64,6 +64,15 @@ class _UpdateStatusState extends State<UpdateStatus> {
         backgroundColor: Colors.white,
         iconTheme: const IconThemeData(color: Colors.black),
         elevation: 1,
+        leading: IconButton(
+          onPressed: () {
+            if (Navigator.canPop(context)) Navigator.pop(context);
+          },
+          icon: Icon(
+            Icons.arrow_back_ios,
+            color: HexColor('#207A35'),
+          ),
+        ),
       ),
       body: ProgressHUD(
         key: UniqueKey(),

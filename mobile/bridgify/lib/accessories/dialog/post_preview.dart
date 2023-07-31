@@ -80,15 +80,6 @@ class _PostPreviewState extends State<PostPreview> {
             child: MaterialButton(
               onPressed: () {
                 if (_hasClicked) {
-                  if (_hasPosted) {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/',
-                      (Route<dynamic> route) {
-                        return route.settings.name == '/adminHome';
-                      },
-                    );
-                  }
                   if (Navigator.canPop(context)) {
                     Navigator.pop(context);
                   }

@@ -22,7 +22,7 @@ class _InvalidCredentialsViewState extends State<InvalidCredentialsView> {
       child: Stack(children: [
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.2,
-          width: MediaQuery.of(context).size.width * 0.75,
+          width: MediaQuery.of(context).size.width * 0.80,
           child: /*_causeOfError(),*/
               Column(
             mainAxisAlignment: MainAxisAlignment.center,

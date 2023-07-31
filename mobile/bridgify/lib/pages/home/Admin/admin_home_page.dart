@@ -27,8 +27,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
   GlobalKey<FormState> globalFormKey = GlobalKey<FormState>();
   PostResponseModel? postResponseModel;
   String? postAuthorEmail;
-  String? postDescription;
-  String? postActivityType;
+  String? postDescription = "";
+  String? postActivityType = "";
   List<String>? postImages = [];
 
   //Chosen Image
@@ -301,20 +301,20 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       },
                       paddingRight: 0,
                       paddingLeft: 0,
-                      initialValue: "",
+                      initialValue: postActivityType!,
                       prefixIcon: const Icon(Icons.run_circle_outlined),
                       showPrefixIcon: true,
                       prefixIconColor: Colors.black.withOpacity(0.5),
                       hintColor: Colors.black.withOpacity(0.5),
                       textColor: Colors.black.withOpacity(0.5),
-                      borderFocusColor: Colors.white,
+                      borderFocusColor: Colors.grey.shade700,
                       borderColor: Colors.grey.shade200,
                       borderWidth: 5,
                       borderRadius: 5,
-                      borderErrorColor: Colors.white,
+                      borderErrorColor: Colors.grey.shade200,
                       errorBorderWidth: 0,
                       focusedErrorBorderWidth: 0,
-                      borderFocusedErrorColor: Colors.white,
+                      borderFocusedErrorColor: Colors.grey.shade200,
                     ),
                   ),
                   Container(
@@ -343,7 +343,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       paddingTop: 5,
                       paddingRight: 0,
                       paddingLeft: 0,
-                      initialValue: "",
+                      initialValue: postDescription!,
                       obscureText: false,
                       prefixIcon: const Icon(Icons.description_rounded),
                       showPrefixIcon: true,
@@ -355,10 +355,10 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       borderColor: Colors.grey.shade200,
                       borderWidth: 5,
                       borderRadius: 5,
-                      borderErrorColor: Colors.white,
+                      borderErrorColor: Colors.grey.shade200,
                       errorBorderWidth: 0,
                       focusedErrorBorderWidth: 0,
-                      borderFocusedErrorColor: Colors.white,
+                      borderFocusedErrorColor: Colors.grey.shade200,
                     ),
                   ),
                 ],
@@ -374,6 +374,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     width: 150,
                     "CLEAR",
                     () {
+                      globalFormKey.currentState!.reset();
                       setState(() {
                         postDescription = "";
                         postActivityType = "";
@@ -398,6 +399,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                           print(imagePath);
                           postImages!.add(imagePath);
                         }
+                        imageCount = postImages!.length;
                         if (imageCount == 0) {
                           showDialog(
                             context: context,
@@ -425,6 +427,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
                           postResponseModel!.elderlyInvolved = [];
                           postResponseModel!.postImages = postImages;
                           postResponseModel!.imagesCount = imageCount;
+
+                          globalFormKey.currentState!.reset();
+                          setState(() {
+                            postDescription = "";
+                            postActivityType = "";
+                            _imageList = [];
+                          });
 
                           showDialog(
                             context: context,
@@ -641,7 +650,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         Navigator.pushNamed(context, "/adminChatList");
                       }),
                   DrawerItem(
-                      title: 'Elderly Services',
+                      title: 'Elderly Records',
                       icon: Icons.elderly,
                       onTapPath: () {
                         Navigator.pushNamed(context, "/adminElderlyRecords");
