@@ -64,7 +64,6 @@ class _BuildPostState extends State<BuildPost> {
                     _scrollController.animateTo(0.0,
                         duration: const Duration(milliseconds: 1),
                         curve: Curves.easeInOut);
-                    print('Selected Value: $value');
                   },
                   style: const TextStyle(
                     color: Colors.black,

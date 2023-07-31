@@ -121,7 +121,6 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
 
   Widget buildIndicator(bool isSelected) {
     // indicatorCount++;
-    print("indicatorCount $indicatorCount");
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: Container(

@@ -112,14 +112,13 @@ class APIService {
       Config.apiURL,
       Config.updateAPI,
     );
-    print(url);
+
     var request = http.MultipartRequest("PUT", url);
     request.headers.addAll(requestHeaders);
     request.fields["email"] = model.email!;
     request.fields["name"] = model.name!;
     request.fields["password"] = model.password!;
     if (!isFileSelected) {
-      print(isFileSelected);
       request.fields["imageChange"] = "false";
     } else if (model.profileImage != null) {
       request.fields["imageChange"] = "true";
@@ -228,7 +227,7 @@ class APIService {
 
       request.files.add(multipartFile);
     }
-    print(request.files);
+
     http.StreamedResponse streamResponse = await request.send();
 
     final response = await http.Response.fromStream(streamResponse);
@@ -249,12 +248,12 @@ class APIService {
 
     var url = Uri.http(Config.apiURL, Config.getElderlyByUserAPI,
         {"email": currentLoginDetails.data.email});
-    print(url);
+
     var response = await client.get(
       url,
       headers: requestHeaders,
     );
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
 
@@ -272,12 +271,12 @@ class APIService {
     };
 
     var url = Uri.http(Config.apiURL, Config.getElderlyAPI);
-    print(url);
+
     var response = await client.get(
       url,
       headers: requestHeaders,
     );
-    print(response.statusCode);
+
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
 
@@ -331,11 +330,10 @@ class APIService {
         headers: requestHeaders,
         body: jsonEncode(model.toJson()),
       );
-      print(postingResponse);
-      print(model.toJson());
+
       return postingResponse.statusCode == 200;
     }
-    print("face posted failed");
+
     return false;
   }
 
@@ -350,7 +348,6 @@ class APIService {
       Config.apiURL,
       Config.updateElderlyAPI,
     );
-    print(url);
 
     var response = await client.put(
       url,
@@ -358,8 +355,6 @@ class APIService {
       body: jsonEncode(model.toJson()),
     );
 
-    print(model.toJson());
-    print(response.body);
     return response.statusCode == 200;
   }
 

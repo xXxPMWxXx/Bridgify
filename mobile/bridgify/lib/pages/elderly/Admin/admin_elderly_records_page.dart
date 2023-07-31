@@ -58,7 +58,6 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
                   padding: const EdgeInsets.all(0),
                   itemCount: model.data!.length,
                   itemBuilder: (context, index) {
-                    print(model.data!.length);
                     return ElderlyRecordItem(
                         context: context, model: model.data![index]);
                   },

@@ -93,7 +93,6 @@ class _PostPreviewState extends State<PostPreview> {
                   APIService.createPosts(postRequestModel).then(
                     (response) {
                       if (response) {
-                        print("success");
                         setState(() {
                           _hasPosted = true;
                           _hasClicked = true;

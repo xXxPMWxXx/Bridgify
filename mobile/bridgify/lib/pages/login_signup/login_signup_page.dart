@@ -491,7 +491,6 @@ class _MainScreenState extends State<MainScreen> {
                           emailLogin = "";
                           passwordLogin = "";
 
-                          print('sign up working');
                           globalFormKey.currentState!.reset();
                           setState(() {
                             _pageState = 2;
@@ -1005,7 +1004,6 @@ class _MainScreenState extends State<MainScreen> {
                             emailSignUp = "";
                             passwordSignUp = "";
 
-                            print('Login is working');
                             globalFormKey.currentState!.reset();
                             setState(() {
                               _pageState = 1;

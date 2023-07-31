@@ -232,8 +232,6 @@ class _CreateElderlyState extends State<CreateElderly> {
                             elderlyRequestModel!.dob =
                                 '${dobElderly!.day.toString().padLeft(2, '0')}/${dobElderly!.month.toString().padLeft(2, '0')}/${dobElderly!.year.toString().padLeft(2, '0')}';
                           });
-                          print(
-                              'Date selected:  ${dobElderly!.day}/${dobElderly!.month}/${dobElderly!.year}');
                         }
                       },
                       color: Colors.black.withOpacity(0.5),
@@ -442,7 +440,6 @@ class _CreateElderlyState extends State<CreateElderly> {
                         );
                       } else if (!isValidDateFormat(
                           elderlyRequestModel!.dob!)) {
-                        print(elderlyRequestModel!.dob!);
                         showDialog(
                           context: context,
                           builder: (context) {
@@ -547,9 +544,6 @@ class _CreateElderlyState extends State<CreateElderly> {
 
   bool isValidDateFormat(String input) {
     final RegExp dateRegex = RegExp(r'^\d{2}/\d{2}/\d{4}$');
-    print(dateRegex.hasMatch("28/7/2023"));
-    print(input);
-    print(dateRegex.hasMatch(input));
     return dateRegex.hasMatch(input);
   }
 
@@ -566,8 +560,6 @@ class _CreateElderlyState extends State<CreateElderly> {
 
       DateTime date = DateTime(year, month, day);
       DateTime currentDate = DateTime.now();
-      print(date);
-      print(currentDate);
 
       if (date.isAfter(currentDate)) {
         return false;

@@ -12,7 +12,6 @@ class BuildPicture extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print(model!.imagesCount);
     if (model!.imagesCount! > 1) {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),

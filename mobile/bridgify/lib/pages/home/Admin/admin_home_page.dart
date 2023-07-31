@@ -219,7 +219,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                           onPressed: () {
                                             _imageList.removeAt(index);
                                             imageCount = _imageList.length;
-                                            print(imageCount);
                                             setState(() {});
                                           },
                                           icon: const Icon(
@@ -396,7 +395,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
                         postImages!.clear();
                         for (XFile image in _imageList) {
                           String? imagePath = image.path;
-                          print(imagePath);
                           postImages!.add(imagePath);
                         }
                         imageCount = postImages!.length;
@@ -492,7 +490,6 @@ class _AdminHomePageState extends State<AdminHomePage> {
     setState(() {
       selectedImages = [];
     });
-    // print(selectedImage!.path.toString());
   }
 
   Widget loadDrawer() {

@@ -59,7 +59,6 @@ class _DeleteConfirmationViewState extends State<DeleteConfirmationView> {
                   APIService.deleteElderly(widget.id).then(
                     (response) {
                       if (response) {
-                        print("success");
                         setState(() {
                           _hasPosted = true;
                           _hasClicked = true;

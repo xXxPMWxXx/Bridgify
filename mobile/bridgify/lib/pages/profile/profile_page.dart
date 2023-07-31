@@ -123,11 +123,8 @@ class _ProfilePageState extends State<ProfilePage> {
       if (ModalRoute.of(context)?.settings.arguments != null) {
         final Map arguments = ModalRoute.of(context)?.settings.arguments as Map;
         nameUpdate = arguments['name'];
-        print(nameUpdate);
         imagePathUpdate = arguments['imagePath'];
-        print(imagePathUpdate);
         emailUpdate = arguments["email"];
-        print(emailUpdate);
         setState(() {});
       }
     });
@@ -155,9 +152,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   () {
                     //model.productPic = file.path;
                     imagePathUpdate = file.path;
-                    print(imagePathUpdate);
                     updateUserRequestModel!.profileImage = imagePathUpdate;
-                    print(updateUserRequestModel!.profileImage);
                     isImageSelected = true;
                   },
                 )
@@ -336,6 +331,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: 150,
                   "CLEAR",
                   () {
+                    globalFormKey.currentState!.reset();
                     setState(() {
                       passwordUpdate = "";
                       confirmPasswordUpdate = "";
@@ -378,7 +374,6 @@ class _ProfilePageState extends State<ProfilePage> {
                       if (passwordUpdate != null) {
                         updateUserRequestModel!.password = passwordUpdate;
                       }
-                      print(isImageSelected);
                       APIService.update(
                               updateUserRequestModel!, isImageSelected)
                           .then(
@@ -446,13 +441,8 @@ class _ProfilePageState extends State<ProfilePage> {
           imageFile = picker.pickImage(source: ImageSource.gallery);
           imageFile.then((file) async {
             onFilePicked(file);
-            print("1");
-            print(isImageSelected);
             // Navigator.of(context).pop();
           }).catchError((e) {
-            print(e);
-            print("2");
-            print(isImageSelected);
             Navigator.of(context).pop();
           });
         } catch (e) {

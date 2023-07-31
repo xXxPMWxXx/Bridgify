@@ -99,7 +99,6 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   setState(() {
                     isAPICallProcess = true;
                   });
-                  print(listController);
                   currentStatus!.medication = [];
                   for (var i = 0; i < listController!.length; i++) {
                     String temp = listController![i].text;
@@ -582,8 +581,6 @@ class _UpdateStatusState extends State<UpdateStatus> {
               GestureDetector(
                 onTap: () {
                   setState(() {
-                    print("added");
-                    print(listController);
                     listController!.add(TextEditingController());
                   });
                 },
