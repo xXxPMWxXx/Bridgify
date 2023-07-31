@@ -20,7 +20,7 @@ class _BuildElderlyViewState extends State<BuildElderlyView> {
             flex: 2,
             child: ListView.builder(
               shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+              // physics: const NeverScrollableScrollPhysics(),
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.all(0),
               itemCount: widget.models!.length,

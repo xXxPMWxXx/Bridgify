@@ -20,7 +20,7 @@ class _BuildElderlyAvatarState extends State<BuildElderlyAvatar> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(right: 20.0),
+      padding: const EdgeInsets.symmetric(horizontal: 10.0),
       child: GestureDetector(
         onTap: () {
           showDialog(

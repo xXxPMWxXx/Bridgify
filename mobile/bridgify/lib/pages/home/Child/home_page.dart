@@ -153,20 +153,22 @@ class _HomePageState extends State<HomePage> {
                 ),
                 const SizedBox(height: 10),
                 SizedBox(
-                    height: 90,
-                    child: FutureBuilder(
-                        future: APIService.getElderlyByUser(),
-                        builder: (
-                          BuildContext context,
-                          AsyncSnapshot<List<ElderlyResponseModel>?> model,
-                        ) {
-                          if (model.hasData) {
-                            return BuildElderlyView(models: model.data);
-                          }
-                          return const Center(
-                            child: CircularProgressIndicator(),
-                          );
-                        }))
+                  height: 90,
+                  child: FutureBuilder(
+                    future: APIService.getElderlyByUser(),
+                    builder: (
+                      BuildContext context,
+                      AsyncSnapshot<List<ElderlyResponseModel>?> model,
+                    ) {
+                      if (model.hasData) {
+                        return BuildElderlyView(models: model.data);
+                      }
+                      return const Center(
+                        child: CircularProgressIndicator(),
+                      );
+                    },
+                  ),
+                ),
               ],
             ),
           ),
