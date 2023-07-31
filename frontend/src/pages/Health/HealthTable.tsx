@@ -6,7 +6,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Table from '@mui/joy/Table';
 import { Sheet, Button } from '@mui/joy';
-import Checkbox from '@mui/joy/Checkbox';
+import Checkbox from '@mui/material/Checkbox';
 import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
 import { Add } from '@mui/icons-material';
 import TuneIcon from '@mui/icons-material/Tune';
@@ -95,7 +95,9 @@ export default function HealthTable() {
 
 
   const isQuery = (obj: any) => {
-    return obj.name.toLowerCase().includes(searchQuery);
+    const wordArray = obj.name.toLowerCase().split(' ');
+    return wordArray.some((word: string) => word.startsWith(searchQuery));
+
   };
 
   const columns = [{
@@ -148,7 +150,6 @@ export default function HealthTable() {
           console.log(data)
           setTableData(data);
           setFetchAdditional(true);
-          console.log("first useeffect called")
         }
 
       })
@@ -186,7 +187,7 @@ export default function HealthTable() {
 
               // Check if 'foundItem' exists (it will be undefined if no match is found)
               if (foundItem) {
-                console.log("found " + foundItem.id)
+                // console.log("found " + foundItem.id)
                 // Create a new object with all properties from 'row' along with the elderly name and photo
                 return {
                   ...row,
@@ -227,6 +228,7 @@ export default function HealthTable() {
   //on start up
   React.useEffect(() => {
     async function loadData() {
+      console.log("first useeffect called")
       setLoadProgressOpen(true);
       await delay(500);
       loadUserData();
@@ -291,20 +293,15 @@ export default function HealthTable() {
       setSelectedElderly((prevSelectedElderly) => [...prevSelectedElderly, checkedElderlyId]);
     }
   };
-  
+
   const handleSearch = (event: any) => {
     setSearchQuery(event.target.value.toLowerCase());
   };
-  
-
-  // React.useEffect(() => {
-  //   setRows(tableData.filter(isType));
-  // }, [tableData]);
 
   //filter
   React.useEffect(() => {
-    setRows(tableData.filter(isType).filter(isSelectedElderly).filter(isQuery));
-    setLoadProgressOpen(false)
+   setRows(tableData.filter(isType).filter(isSelectedElderly).filter(isQuery));
+  
     // console.log("filter is called")
 
     // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
@@ -348,96 +345,20 @@ export default function HealthTable() {
   const open = Boolean(anchorEl);
   const id = open ? 'simple-popover' : undefined;
 
-  // const testButton = (e: any) => {
-  //   e.preventDefault();
-  //   console.log('The link was clicked.');
-  //   window.alert("CLICKED");
-  // }
 
-  // const elderlyFetcher = async (elderlyID:any) => {
-  //   console.log("elderlyFetcher called");
-
-  //   try {
-  //     const token = window.localStorage.getItem('accessToken');
-  //     const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/get/?id=${elderlyID}`, {
-  //       headers: {
-  //         'Authorization': `Bearer ${token}`,
-  //         'Content-Type': 'application/json',
-  //       },
-  //       method: 'GET'
-  //     });
-
-  //     if (response.status !== 200) {
-  //       console.log("error fetching data");
-  //       return null;
-  //     } else {
-  //       console.log("loaded");
-  //       const data = await response.json();
-  //       const { name: elderlyName, photo } = data;
-  //       console.log({ elderlyName, photo });
-  //       return { elderlyName, photo };
-  //     }
-  //   } catch (err) {
-  //     window.alert(err);
-  //     return null;
-  //   }
-  // };
-
-  // return (
-  //   <div>
-
-  //     <br />
-  //     <br />
-
-  //     <Box
-  //       sx={{
-  //         // display: 'flex',
-  //         width: "80%",
-  //         alignItems: 'center',
-  //         margin: "auto",
-  //       }}
-  //     >
-
-  //       {/* <MUIDataTable
-  //           title={"Elderly Records"}
-  //           data={rows}
-  //           columns={columns}
-  //           options={options}
-  //         /> */}
-  //       {dataLoaded ?
-
-  //         <MUIDataTable
-  //           title={"Elderly Records"}
-  //           data={rows}
-  //           columns={columns}
-  //           options={options}
-  //         /> :
-
-  //         <Modal
-  //           keepMounted
-  //           open={open}
-  //           aria-labelledby="loading"
-  //           aria-describedby="loading user data"
-  //         >
-  //           <Box sx={style}>
-  //             <Typography id="loading" variant="h6" component="h2">
-  //               Loading user data, please wait.
-  //             </Typography>
-  //             <LinearProgress />
-  //           </Box>
-  //         </Modal>
-  //       }
-  //     </Box>
-
-  //   </div>
-  // )
 
   return (
     <React.Fragment>
 
 
       <Box sx={{ width: "80%", alignItems: 'center', margin: "auto" }}>
-        <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" sx={{ marginBottom: 2, borderBottom: 1 }}>
+        <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" 
+        sx={{ marginBottom: 2, borderBottom: 1 ,
+          ".Mui-selected":{color:"#30685e !important" }
+        }} TabIndicatorProps={{
+          style: {
+            backgroundColor: "#30685e"          }
+        }}>
           <Tab label="All" {...a11yProps(0)} />
           <Tab label="Medical Records" {...a11yProps(1)} />
           <Tab label="Medication" {...a11yProps(2)} />
@@ -463,7 +384,7 @@ export default function HealthTable() {
             noValidate
             autoComplete="off"
           >
-        
+
             <TextField
               id="input-with-icon-textfield"
               size="small"
@@ -506,7 +427,7 @@ export default function HealthTable() {
                 vertical: 'bottom',
                 horizontal: 'left',
               }}
-              slotProps={{ paper: { sx: { p: 1, marginTop: 1, borderRadius: 3, border: "1px solid #30685e" } } }}
+              slotProps={{ paper: { sx: { p: 1, marginTop: 1, borderRadius: 3, border: "1px solid #30685e" ,boxShadow:"none"} } }}
               onClose={handleClose}
               transformOrigin={{
                 vertical: 'top',
@@ -520,7 +441,12 @@ export default function HealthTable() {
                   <FormControl sx={{ padding: "auto" }}>
                     <Box sx={{ display: 'flex', gap: 1.2, alignItems: 'center', textAlign: "right" }}>
 
-                      <Checkbox key={e.id} name={e.id} onClick={handleCheck} checked={selectedElderly.indexOf(e.id) > -1}
+                      <Checkbox key={e.id} name={e.id} onClick={handleCheck} checked={selectedElderly.indexOf(e.id) > -1} sx={{
+                        accentColor:  "#30685e",
+                        '&.Mui-checked': {
+                          color: "#30685e !important"
+                        },
+                      }}
                       />
                       <Sheet style={{ marginLeft: 2 }}>
                         <Avatar alt={e.name} src={`${imageBASEURL}/${e.photo}`} sx={{}} /></Sheet>
@@ -531,7 +457,7 @@ export default function HealthTable() {
                   </FormControl>
 
                 </FormGroup>))}
-       
+
             </Popover>
           </Box>
           {/* Add Document */}
@@ -609,7 +535,7 @@ export default function HealthTable() {
                     <td >
                       <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
                         <Avatar alt={row.elderlyName} src={`${imageBASEURL}/${row.elderlyPhoto}`} />
-                        <Typography sx={{font:"inherit"}}>
+                        <Typography sx={{ font: "inherit" }}>
                           {row.elderlyName}
                         </Typography>
                       </Box>

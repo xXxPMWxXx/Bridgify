@@ -188,7 +188,6 @@ export default function UpdateElderly(props: any) {
             <form onSubmit={handleUpdateSubmit}>
                 <Box sx={{ ...style, width: 800, mt: 15 }} textAlign='center'>
 
-                    <h2 id="updateelderly">Update elderly</h2>
                     <Avatar
                         src={elderlyPhoto}
                         style={{

@@ -135,7 +135,7 @@ export const getAll = async (req: any, res: Response, next: NextFunction) => {
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
       if (decoded) {
         // 4. check if the email is existed
-        const allPost = await PostModel.find({});
+        const allPost = await PostModel.find({}).sort({ dateTime: -1 });
         res.status(200).json({ message: "Success", data: allPost });
       } else if (err) {
         res.status(401).json({ error: "You must have a valid token" });

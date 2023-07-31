@@ -188,6 +188,7 @@ export const Home_admin = () => {
         onRowsSelect: onRowsSelect,
         onRowClick: handleRowClick,
         onRowsDelete: handleClickDeleteIcon,
+        downloadOptions: { filename: `Bridgify User Data(${new Date().toDateString()}).csv`},
     };
 
     return (
