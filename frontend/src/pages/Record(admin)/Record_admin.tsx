@@ -4,6 +4,8 @@ import { ResponsiveAppBarAdmin } from '../../Navbar';
 import { Box, Tab, Tabs} from '@mui/material';
 import { TabContext, TabPanel } from '@mui/lab';
 import {RecordTab, CreateRecordTab} from './tabs';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
 
 
 export const Record_admin = () => {

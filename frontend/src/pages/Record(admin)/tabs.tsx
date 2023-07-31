@@ -5,8 +5,8 @@ import { useNavigate } from 'react-router-dom';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { Document, Page } from 'react-pdf';
 
-import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
+
 
 import "react-pdf/dist/esm/Page/TextLayer.css";
 import 'react-pdf/dist/esm/Page/AnnotationLayer.css';
@@ -444,7 +444,7 @@ export function CreateRecordTab() {
                                     <Grid item xs={6} sx={{ border: "" }}>
 
                                         <Button variant="outlined"
-                                            component="label" size="large" fullWidth sx={{ height: "inherit" }}>
+                                            component="label" size="large" fullWidth sx={{ height: "inherit" }} startIcon={<CloudUploadIcon />}>
                                             Upload File<input type="file" accept=".pdf" hidden onChange={handleFileChange} />
                                         </Button>
 

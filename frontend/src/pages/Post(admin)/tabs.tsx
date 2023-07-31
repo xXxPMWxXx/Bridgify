@@ -239,7 +239,7 @@ export function PostTab() {
         onRowsSelect: onRowsSelect,
         onRowClick: handleRowClick,
         onRowsDelete: handleClickDeleteIcon,
-        downloadOptions: { filename: `Bridgify Post Data(${new Date().toDateString()}).csv`},
+        downloadOptions: { filename: `Bridgify Post Data(${new Date().toDateString()}).csv` },
     };
 
     useEffect(() => {
@@ -306,7 +306,7 @@ export function PostTab() {
             >
 
                 <form onSubmit={handleUpdateSubmit}>
-                    <Box sx={{ ...style, width: 800, mt:5, }} textAlign='center'>
+                    <Box sx={{ ...style, width: 800, mt: 5, }} textAlign='center'>
                         <h2 id="updatePost">Update Post</h2>
                         <TextField
                             required
@@ -338,7 +338,7 @@ export function PostTab() {
 
                         <TextareaAutosize onChange={handleDescription} style={{ width: 500 }} id='Description' className='StyledTextarea' value={description} placeholder="Description" />
 
-                        <Carousel sx={{ height : "350px", width : "100%", mt: 5}}>
+                        <Carousel sx={{ height: "350px", width: "100%", mt: 5 }}>
                             {images.map((imgName: any) => (
                                 <CarouselSlide key={imgName}>
                                     <Card>
@@ -491,107 +491,87 @@ export function CreatePostTab() {
     }
 
     return (
-        <Grid container
-            spacing={2}
-            direction="column"
-            alignItems="center"
-            justifyContent="center"
-        >            <Typography variant="h5" sx={{ margin: 2, marginBottom: 3 }}>Create New Post</Typography>
-
-            {selectedFiles.length > 0 && (
-
-                <ImageList sx={{ width: 500, height: 180 }} cols={3} rowHeight={164} gap={2}>
-                    {selectedFiles.map((file, index) => (
-                        <ImageListItem key={index}>
-                            <img
-                                src={`${URL.createObjectURL(file)}?w=164&h=164&fit=crop&auto=format`}
-                                srcSet={`${URL.createObjectURL(file)}`}
-                                alt={`Selected ${index + 1}`}
-                                loading="lazy"
-                            />
-                        </ImageListItem>
-                    ))}
-                </ImageList>
-
-            )}
-            <form onSubmit={handleSubmit} style={{ textAlign: "center", width: 500 }}>
-                <Button
-                    variant="outlined"
-                    component="label"
-                    sx={{ width: 500, marginBottom: 2 }}
-                    size='large'
-                    startIcon={<CloudUploadIcon />}
-                >
-                    Upload Photos
-                    <input
-                        type="file"
-                        hidden
-                        onChange={handleFileChange}
-                        accept="image/*"
-                        multiple
-                    />
-                </Button>
-                <TextField
-                    required
-                    id="activityType"
-                    name="activityType"
-                    label="Activity Type"
-                    value={activityType}
-                    onChange={handleActivity}
-                    fullWidth
-                    sx={{ marginBottom: 2 }}
-                />
-                <Box textAlign='center'>
-                    <TextareaAutosize onChange={handleDescription} minRows={5} style={{ width: 500, fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4 }} id='Description' className='StyledTextarea' value={description} placeholder="Description" />
-                    {/* <Box sx={{ width: 500 }} alignItems="center" justifyContent="center"> */}
-
-                    <br /></Box>
-                {/* <input
-                            type="file"
-                            accept="image/*"
-                            style={{ display: 'none' }}
-                            id="image-upload"
-                            onChange={handleFileChange}
-                            multiple
-                        />
-                        <label htmlFor="image-upload">
-                            <Button
-                                variant="contained"
-                                color="primary"
-                                component="span"
-                                startIcon={<CloudUploadIcon />}
-                            >
-                                Upload Images
-                            </Button>
-
-                        </label> */}
-                <Box>
+        <Box sx={{ width: "70%", alignItems: "center", margin: "auto" }}>
 
 
-                    {/* {selectedFiles.length > 0 && (
-                        <div>
-                            <h2>Selected Images:</h2>
-                            <div style={{ display: 'flex', flexWrap: 'wrap' }}>
-                                {selectedFiles.map((file, index) => (
-                                    <img
-                                        key={index}
-                                        src={URL.createObjectURL(file)}
-                                        alt={`Selected ${index + 1}`}
-                                        style={{ maxWidth: '200px', maxHeight: '200px', margin: '8px' }}
+            <Typography variant="h5" gutterBottom sx={{ marginBottom: 3, textAlign: "center" }}>
+                Create New Post
+            </Typography>
+            <form onSubmit={handleSubmit} style={{ textAlign: "center" }}>
+                <Grid container spacing={2}>
+                    <Grid item xs={6} sx={{}}>
+                        <Grid container spacing={2} sx={{}}>
+                            <Grid item xs={12}>
+
+                                <Button
+                                    variant="outlined"
+                                    component="label"
+                                    sx={{ marginBottom: 2 }}
+                                    size='large'
+                                    startIcon={<CloudUploadIcon />}
+                                    fullWidth
+                                >
+                                    Upload File
+                                    <input
+                                        type="file"
+                                        hidden
+                                        onChange={handleFileChange}
+                                        accept="image/*"
+                                        multiple
                                     />
-                                ))}
-                            </div>
-                        </div>
-                    )} */}
+                                </Button>
+                            </Grid>
+                            <Grid item xs={12}>
 
-                    {/* </Box> */}
+                                <TextField
+                                    required
+                                    id="activityType"
+                                    name="activityType"
+                                    label="Activity Type"
+                                    value={activityType}
+                                    onChange={handleActivity}
+                                    fullWidth
+                                    sx={{ marginBottom: 2 }}
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+
+                                <TextareaAutosize onChange={handleDescription} minRows={5}
+                                    style={{ fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4, width: "100%" }} id='Description' className='StyledTextarea' value={description} placeholder="Description" />
+
+                            </Grid>
+                            <Grid item xs={12}>
 
 
-                    <Button type="submit" variant="contained" sx={{ fontSize: "inherit", height: "inherit", width: "50%", m: 2 }}>
-                        Submit
-                    </Button>
-                </Box>
+                                <Button type="submit" variant="contained" size='large' fullWidth sx={{ fontSize: "inherit", height: "inherit", width: "100%", marginTop: 2 }}>
+                                    Submit
+                                </Button></Grid>
+                        </Grid>
+                    </Grid>
+                    <Grid item xs={6}>
+                        <Grid container spacing={2} sx={{marginLeft:2}}>
+                            <Grid item xs={12}></Grid>
+                            {selectedFiles.length > 0 && (
+
+                                <ImageList sx={{ width: 500, height: "100%" }} cols={3} rowHeight={164} gap={2}>
+                                    {selectedFiles.map((file, index) => (
+                                        <ImageListItem key={index}>
+                                            <img
+                                                src={`${URL.createObjectURL(file)}?w=164&h=164&fit=crop&auto=format`}
+                                                srcSet={`${URL.createObjectURL(file)}`}
+                                                alt={`Selected ${index + 1}`}
+                                                loading="lazy"
+                                            />
+                                        </ImageListItem>
+                                    ))}
+                                </ImageList>
+
+                            )}
+                        </Grid>
+                    </Grid>
+                </Grid>
             </form>
+
 
             <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity={alertType} sx={{ width: '100%' }}>
@@ -611,6 +591,6 @@ export function CreatePostTab() {
                     <LinearProgress />
                 </Box>
             </Modal>
-        </Grid >
+        </Box >
     )
 }
