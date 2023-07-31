@@ -11,7 +11,7 @@ const jwt_secret: any = process.env.JWT_SECRET;
 const path = require('path');
 const baseDir = path.resolve(__dirname, "../../..");
 const getDateTime = require("../../services/utils/getDateTime");
-
+var fs = require('fs');
 
 // // 1. get token from req
 // const token =
@@ -124,28 +124,59 @@ export const create = async (req: any, res: any, next: NextFunction) => {
 // };
 
 
-// to delete a new post
-// export const deleteRecord = async (req: any, res: any, next: NextFunction) => {
+// to delete a new record
+// get update record, find by 
+export const deleteRecord = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    // 1. get token from req
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
 
-//   // 1. get token from req
-//   const token =
-//     req.headers.authorization && req.headers.authorization.split(" ")[1];
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      // 3. allow admin to update post details
+      if (decoded) {
+        const { elderlyID, document_no } = req.body;
+        // 4. check if the post is existed
+        const record = await RecordModel.findOne({ 'elderlyID': elderlyID, 'document_no': document_no });
+        if (record == null) {
+          return res
+            .status(400)
+            .json({ message: `Record does not exit!` });
 
-//   // 2. verify token with secret key
-//   jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
-//     try {
-//       if (decoded) {
-//         const data = req.body;
+        } else {
+          const filePath = record.document_path;
 
-//         const record = await RecordModel.findOne({ document_no: id });
-//       }else if (err) {
-//   res.status(401).json({ error: "You must have a valid token" });
-// }
-//     } catch (error) {
-//       return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
-//     }
-//   });
-// };
+          const filePDF = `${baseDir}/records/${filePath}`;
+          if (fs.existsSync(filePDF)) {
+            fs.unlink(filePDF, (err: any) => {
+              if (err) {
+                console.log(err);
+              }
+              console.log(`${filePath} deleted`);
+            })
+          } else {
+            console.log(`${filePath} does not exist!`);
+          }
+        }
+        try {
+          await RecordModel.deleteOne({ 'elderlyID': elderlyID, 'document_no': document_no });
+          res.status(200).send({ message: `Record delete successfully` });
+        } catch (error) {
+          res.status(400).json({ error: "Delete fail, please try again later" });
+        }
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
+
+  } catch (error) {
+    res.status(400).json({ error, message: "Make sure your request body is correct" });
+  }
+
+};
+
 
 // to display document
 export const display = async (req: any, res: any, next: NextFunction) => {
@@ -231,8 +262,8 @@ export const getLinked = async (req: any, res: any, next: NextFunction) => {
         const resolvedResults = await Promise.all(promises);
         resolvedResults.forEach((element: any) =>
           element.forEach((e: any) =>
-          results.push(e)
-        )
+            results.push(e)
+          )
         )
         // console.log(resolvedResults);
 

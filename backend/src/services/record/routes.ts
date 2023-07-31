@@ -18,7 +18,7 @@ recordRouter.route('/display').get(controller.display);
 // recordRouter.route('/update').put(controller.update);
 
 /** POST /api/record/delete */
-// recordRouter.route('/delete').post(controller.deleteRecord);
+recordRouter.route('/delete').delete(controller.deleteRecord);
 
 /** GET /api/record/getSelected */
 recordRouter.route('/get').get(controller.getSelected);

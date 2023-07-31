@@ -7,7 +7,7 @@ const RecordSchema = new Schema({
         type: String,
         required: true
     },
-    //type : medical/medication/other
+    //type : medical/medication/others
     type: {
         type: String,
         required: true,

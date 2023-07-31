@@ -354,9 +354,9 @@ export function CreateRecordTab() {
 
     return (
 
-        <React.Fragment>
-            <Box sx={{ width: "60%", alignItems: "center", margin: "auto" }}>
-                <Typography variant="h5" gutterBottom sx={{ marginBottom: 2, textAlign: "center" }}>
+        <React.Fragment> <Box sx={{ width: "70%", alignItems: "center", margin: "auto" }}>
+        <Typography variant="h5"  sx={{  textAlign: "center" }}>
+                    
                     New Record
                 </Typography>
                 {/* <Button variant="outlined"
