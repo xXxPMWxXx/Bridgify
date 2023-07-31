@@ -7,13 +7,12 @@ import Link from '@mui/material/Link';
 import Paper from '@mui/material/Paper';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import { borders } from '@mui/system';
-import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import backgroundImage from '../../images/logInBackground.jpeg';
 import logo from '../../images/icon.png';
 import { useNavigate } from 'react-router-dom';
+import DownloadIcon from '@mui/icons-material/Download';
 
 function Copyright(props: any) {
   return (
@@ -98,10 +97,8 @@ export function Login() {
           window.alert("Email/Password invalid!");
         } else {
 
-          console.log("testing");
           const loginResponse = await response.json();
           const data = loginResponse.data;
-          console.log(data);
           //pass the info to the local storage, so other page can access them
           localStorage.setItem('accessToken', data.accessToken);
           localStorage.setItem('userName', data.name);
@@ -109,14 +106,12 @@ export function Login() {
           localStorage.setItem('linkedElderly', data.linkedElderly);
           localStorage.setItem('profileImage', data.profileImage);
           localStorage.setItem('email', data.email);
-          
+
           if (data.accRole == 'Admin') {
             navigate('/home-admin');
           } else {
             navigate('/home');
           }
-
-
         }
 
       })
@@ -220,7 +215,17 @@ export function Login() {
                   </Link>
                 </Grid>
               </Grid>
-              <Copyright sx={{ mt: 5 }} />
+              <Copyright sx={{ mt: 5, mb: 5 }} />
+              <Grid container spacing={2}   direction="row" justifyContent="center" alignItems="center">
+                <Grid item xs={8}>
+                  <Link href="https://bridgify.s3.ap-southeast-1.amazonaws.com/mobile-apk/bridgify-mobile-app-arm64-v8a-release.apk">
+                    <Button variant="outlined" startIcon={<DownloadIcon />}>
+                      Download Our Mobile APP APK
+                    </Button>
+                  </Link>
+                </Grid>
+
+              </Grid>
             </form>
           </Box>
         </Grid>
