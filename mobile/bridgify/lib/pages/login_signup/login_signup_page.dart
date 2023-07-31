@@ -415,8 +415,8 @@ class _MainScreenState extends State<MainScreen> {
                                 }
                               }
                             },
-                            btnColor: HexColor("207A35"),
-                            borderColor: HexColor("207A35"),
+                            btnColor: HexColor("#207A35"),
+                            borderColor: HexColor("#207A35"),
                             txtColor: Colors.white,
                             borderRadius: 20,
                             fontWeight: FontWeight.bold,

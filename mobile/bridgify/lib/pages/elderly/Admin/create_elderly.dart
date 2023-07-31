@@ -46,9 +46,9 @@ class _CreateElderlyState extends State<CreateElderly> {
             onPressed: () {
               if (Navigator.canPop(context)) Navigator.pop(context);
             },
-            icon: const Icon(
+            icon: Icon(
               Icons.arrow_back_ios,
-              color: Color(0xFF27c1a9),
+              color: HexColor('#207A35'),
             ),
           ),
         ),
@@ -398,7 +398,11 @@ class _CreateElderlyState extends State<CreateElderly> {
                   width: 150,
                   "CLEAR",
                   () {
+                    globalFormKey.currentState!.reset();
                     setState(() {
+                      imagePathUpdate = "";
+                      elderlyRequestModel!.photo = null;
+                      isImageSelected = false;
                       elderlyRequestModel!.id = "";
                       elderlyRequestModel!.name = "";
                       dobElderly = null;
@@ -634,7 +638,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                 height: 40,
                 width: 40,
                 decoration: BoxDecoration(
-                  color: const Color(0xFF27c1a9),
+                  color: HexColor('#207A35'),
                   shape: BoxShape.circle,
                   border: Border.all(
                       color: Theme.of(context).scaffoldBackgroundColor),
