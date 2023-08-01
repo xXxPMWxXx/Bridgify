@@ -11,8 +11,6 @@ import BasicDatePicker from './dateElement';
 import MUIDataTable from "mui-datatables";
 import { Sheet } from '@mui/joy';
 import UpdateElderly from './updateElderly';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
-
 
 export function ElderlyTab() {
     const delay = (ms: number) => new Promise(
@@ -170,6 +168,7 @@ export function ElderlyTab() {
         onRowsSelect: onRowsSelect,
         onRowClick: handleRowClick,
         onRowsDelete: handleClickDeleteIcon,
+        downloadOptions: { filename: `Bridgify Elderly Data(${new Date().toDateString()}).csv`},
     };
 
     useEffect(() => {
@@ -396,58 +395,59 @@ export function CreateElderlyTab() {
 
             // console.log(rawBody)
             // Make a POST request to the server for elderly insert
-            fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/insert`, {
+            fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/face/post-face`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
-                    'Content-Type': 'application/json',
                 },
                 method: 'POST',
-                body: JSON.stringify(
-                    {
-                        "id": elderlyID,
-                        "name": name,
-                        "DOB": dateOfBirth.format('DD/MM/YYYY'),
-                        "photo": imageName,
-                        "status": {
-                            "current_activity": activity,
-                            "current_temp": temp,
-                            "medication": medName,
-                            "taken_med": medTakenBool,
-                            "condition": condition,
-                            "condition_description": condDescription,
-                            "awake": awakeBool
-                        }
-                    })
+                body: formData
             })
                 .then(async (response) => {
                     // Make a POST request to the server for post face
                     if (response.status != 200) {
                         const apiResponse = await response.json();
                         //show alert msg
+                        setOpenProcessingModal(false);
                         setOpenSnackbar(true);
                         setAlertType('error');
-                        setAlertMsg(apiResponse['message']);
-
-                        setOpenProcessingModal(false)
+                        setAlertMsg("No face detected or multiple faces found. Please try another photo.!");
+                        // setAlertMsg(apiResponse['message']);
                     } else {
                         const apiResponse = await response.json();
 
                         //
-                        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/face/post-face`, {
+                        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/insert`, {
                             headers: {
                                 'Authorization': `Bearer ${token}`,
+                                'Content-Type': 'application/json',
                             },
                             method: 'POST',
-                            body: formData
-                        }).then(async (response) => {
-
+                            body: JSON.stringify(
+                                {
+                                    "id": elderlyID,
+                                    "name": name,
+                                    "DOB": dateOfBirth.format('DD/MM/YYYY'),
+                                    "photo": imageName,
+                                    "status": {
+                                        "current_activity": activity,
+                                        "current_temp": temp,
+                                        "medication": medName,
+                                        "taken_med": medTakenBool,
+                                        "condition": condition,
+                                        "condition_description": condDescription,
+                                        "awake": awakeBool
+                                    }
+                                })
+                        })
+                        .then(async (response) => {
                             if (response.status != 200) {
                                 const apiResponse = await response.json();
+                                setOpenProcessingModal(false);
                                 //show alert msg
                                 setOpenSnackbar(true);
                                 setAlertType('error');
-                                setAlertMsg(apiResponse['message']);
-                                setOpenProcessingModal(false)
+                                setAlertMsg("Form submission failed. Please check your inputs and try again.");
+                                // setAlertMsg(apiResponse['message']);
                             } else {
                                 const apiResponse = await response.json();
                                 //show alert msg
@@ -542,9 +542,8 @@ export function CreateElderlyTab() {
                         <Button
                             variant="outlined"
                             component="label"
-                            sx={{ width: 200, marginTop: 2 }}
+                            sx={{ width: "20%", marginTop: 2 }}
                             size='large'
-                            startIcon={<CloudUploadIcon />}
                         >
                             Upload File
                             <input
