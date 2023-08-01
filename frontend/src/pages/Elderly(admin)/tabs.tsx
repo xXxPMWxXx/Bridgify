@@ -394,7 +394,6 @@ export function CreateElderlyTab() {
 
             const imageName = elderlyID + '.png';
 
-            // console.log(rawBody)
             // Make a POST request to the server for elderly insert
             fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/face/post-face`, {
                 headers: {

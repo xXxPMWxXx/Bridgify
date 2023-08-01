@@ -117,7 +117,7 @@ export const delete_elderly = async (req: any, res: Response, next: NextFunction
         }
         try {
           //remove from Face and Elderly table
-          await FaceModel.deleteOne({ label: elderly.name });
+          await FaceModel.deleteOne({ label: `${elderly.name}(${id})` });
           await ElderlyModel.deleteOne({ id: id });
           res.status(200).send({ message: `Elderly ID : ${id} deleted successfully` });
         } catch (error) {

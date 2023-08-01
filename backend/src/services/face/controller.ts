@@ -31,7 +31,7 @@ export const upload = async (req: any, res: Response, next: NextFunction) => {
 // 	return result;
 //   }
 
-async function uploadLabeledImages(images: any, label: any) {
+async function uploadLabeledImages(images: any, label: any, elderlyID: any) {
     try {
 
         const descriptions = [];
@@ -57,7 +57,7 @@ async function uploadLabeledImages(images: any, label: any) {
 
         // Create a new face document with the given label and save it in DB
         const createFace = new FaceModel({
-            label: label,
+            label: `${label}(${elderlyID})`,
             descriptions: descriptions,
         });
         try {
@@ -80,7 +80,7 @@ export const postface = async (req: any, res: any, next: NextFunction) => {
 
         const label = req.body.label
         const elderlyID = req.body.elderlyID
-        let result = await uploadLabeledImages(file.data, label);
+        let result = await uploadLabeledImages(file.data, label, elderlyID);
         if (result) {
 
             // Move the uploaded image to our upload folder
