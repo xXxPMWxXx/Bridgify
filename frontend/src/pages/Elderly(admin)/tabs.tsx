@@ -11,6 +11,7 @@ import BasicDatePicker from './dateElement';
 import MUIDataTable from "mui-datatables";
 import { Sheet } from '@mui/joy';
 import UpdateElderly from './updateElderly';
+import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 
 export function ElderlyTab() {
     const delay = (ms: number) => new Promise(
@@ -544,6 +545,7 @@ export function CreateElderlyTab() {
                             component="label"
                             sx={{ width: "20%", marginTop: 2 }}
                             size='large'
+                            startIcon={<CloudUploadIcon />}
                         >
                             Upload File
                             <input
