@@ -4,6 +4,7 @@ import "dotenv/config";
 
 const ElderlyModel = require("../../models/elderly");
 const UserModel = require("../../models/user");
+const FaceModel = require('../../models/face');
 
 const jwt_secret: any = process.env.JWT_SECRET;
 
@@ -115,6 +116,8 @@ export const delete_elderly = async (req: any, res: Response, next: NextFunction
             .json({ message: `Elderly ID: ${id} does not exit!` });
         }
         try {
+          //remove from Face and Elderly table
+          await FaceModel.deleteOne({ label: elderly.name });
           await ElderlyModel.deleteOne({ id: id });
           res.status(200).send({ message: `Elderly ID : ${id} deleted successfully` });
         } catch (error) {
