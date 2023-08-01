@@ -34,9 +34,24 @@ class _CurrentStatusState extends State<CurrentStatus> {
         Positioned(
           left: 20,
           top: 55,
-          child: ElderlyAvatar(
-            filename: widget.model.photo!,
-            radius: 31,
+          child: Row(
+            children: [
+              ElderlyAvatar(
+                filename: widget.model.photo!,
+                radius: 31,
+              ),
+              SizedBox(width: 10),
+              Text.rich(
+                TextSpan(
+                  text: truncateString(widget.model.name!, 10),
+                  style: const TextStyle(
+                    fontSize: 15,
+                    color: Colors.black54,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
           ),
         ),
         Positioned(
@@ -258,5 +273,13 @@ class _CurrentStatusState extends State<CurrentStatus> {
         ),
       ]),
     );
+  }
+
+  String truncateString(String input, int maxLength) {
+    if (input.length <= maxLength) {
+      return input;
+    } else {
+      return input.substring(0, maxLength - 3) + '...';
+    }
   }
 }

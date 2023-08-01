@@ -67,7 +67,7 @@ class _BuildPostState extends State<BuildPost> {
                   },
                   style: const TextStyle(
                     color: Colors.black,
-                    fontSize: 16.0,
+                    fontSize: 14.0,
                   ),
                   decoration: const InputDecoration(
                     border: InputBorder.none,
