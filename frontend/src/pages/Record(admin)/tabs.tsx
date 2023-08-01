@@ -66,7 +66,7 @@ export function RecordTab() {
 
     const loadRecordData = async () => {
         // //calling backend API
-        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/getAll`, {
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/getAll`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
@@ -188,7 +188,7 @@ export function CreateRecordTab() {
     const fetchElderly = async () => {
         console.log("fetchElderly called")
 
-        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/elderly/getAll`, {
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/getAll`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
@@ -275,7 +275,7 @@ export function CreateRecordTab() {
 
             // console.log(rawBody)
             // Make a POST request to the server for record insert
-            fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/create`, {
+            fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/create`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                 },
@@ -288,8 +288,10 @@ export function CreateRecordTab() {
                         //show alert msg
                         setOpenSnackbar(true);
                         setAlertType('error');
-                        setAlertMsg("Form submission failed. Please check your inputs and try again.");
-                        // setAlertMsg(apiResponse['message']);
+                        setAlertMsg(apiResponse['message']);
+                        
+                        setOpenProcessingModal(false);
+
                     } else {
                         const apiResponse = await response.json();
                         //show alert msg
@@ -304,6 +306,8 @@ export function CreateRecordTab() {
                         setSelectedFile(null);
                         setSelectedFileName('No File Selected');
                         setDocumentNo('');
+                        setPageNo(1);
+                        setNumPages(null);
 
                         setOpenProcessingModal(false);
 

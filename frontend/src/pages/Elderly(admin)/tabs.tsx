@@ -396,7 +396,7 @@ export function CreateElderlyTab() {
 
             // console.log(rawBody)
             // Make a POST request to the server for elderly insert
-            fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/elderly/insert`, {
+            fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/insert`, {
                 headers: {
                     'Authorization': `Bearer ${token}`,
                     'Content-Type': 'application/json',
@@ -426,13 +426,14 @@ export function CreateElderlyTab() {
                         //show alert msg
                         setOpenSnackbar(true);
                         setAlertType('error');
-                        setAlertMsg("Form submission failed. Please check your inputs and try again.");
-                        // setAlertMsg(apiResponse['message']);
+                        setAlertMsg(apiResponse['message']);
+
+                        setOpenProcessingModal(false)
                     } else {
                         const apiResponse = await response.json();
 
                         //
-                        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/face/post-face`, {
+                        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/face/post-face`, {
                             headers: {
                                 'Authorization': `Bearer ${token}`,
                             },
@@ -445,8 +446,8 @@ export function CreateElderlyTab() {
                                 //show alert msg
                                 setOpenSnackbar(true);
                                 setAlertType('error');
-                                setAlertMsg("Form submission failed. Please check your inputs and try again.");
-                                // setAlertMsg(apiResponse['message']);
+                                setAlertMsg(apiResponse['message']);
+                                setOpenProcessingModal(false)
                             } else {
                                 const apiResponse = await response.json();
                                 //show alert msg
