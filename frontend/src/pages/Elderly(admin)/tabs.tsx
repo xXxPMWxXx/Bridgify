@@ -543,7 +543,7 @@ export function CreateElderlyTab() {
                         <Button
                             variant="outlined"
                             component="label"
-                            sx={{ width: "20%", marginTop: 2 }}
+                            sx={{ width: 200, marginTop: 2 }}
                             size='large'
                             startIcon={<CloudUploadIcon />}
                         >
