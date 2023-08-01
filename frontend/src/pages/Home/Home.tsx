@@ -135,6 +135,7 @@ export const Home = () => {
                 time: post.dateTime,
                 imagesCount: post.imagesCount,
                 images: post.postImages,
+                description: post.description,
                 // elderlyInvolvedArray: postArray.map((postItem: any) => postItem.elderlyInvolved),
                 // imagesArray: postArray.map((postItem: any) => postItem.images),
             }));
@@ -194,7 +195,7 @@ export const Home = () => {
 
             <main>
                 <Box width='70%'>
-                    <Grid container spacing={52.5} flexDirection='column'>
+                    <Grid container spacing={54} flexDirection='column'>
                         {posts.map((post:any) => (
                         <Grid item key={post.id}> {/* Use post.id as the key */}
                             <Posts
