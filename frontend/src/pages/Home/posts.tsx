@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
-import { Avatar, AvatarGroup, CardActionArea, CardContent, CardMedia } from '@mui/material';
+import { Avatar, AvatarGroup, CardActionArea, CardContent, CardMedia, ImageList, ImageListItem } from '@mui/material';
 import { Card } from 'react-bootstrap';
 import { BorderAllRounded, SportsRugbySharp } from '@mui/icons-material';
 
@@ -46,6 +46,7 @@ interface PostProps extends postInfo {
 //   }
 // }
 
+
 export default function Posts (props:PostProps) {
     const { post, elderlyInvolvedArray, imagesArray } = props;
 
@@ -84,7 +85,11 @@ export default function Posts (props:PostProps) {
         }
     
         const daysDiff = Math.floor(hoursDiff / 24);
-        return `${daysDiff} days ago`;
+        if (daysDiff === 1) {
+          return `${daysDiff} day ago`;
+        } else {
+          return `${daysDiff} days ago`;
+        }
     }
 
     return (
@@ -112,11 +117,18 @@ export default function Posts (props:PostProps) {
                   <Typography sx={{fontFamily:'Roboto', marginLeft:17.4, fontSize:16}}>
                     {post.description}
                   </Typography>
-                  <CardMedia
-                    component="img"
-                    sx={{borderRadius:'8px', width:600, height:280, marginLeft:12.5, marginTop:3}}
-                    image={imagesArray[0]}
-                  />
+                      <ImageList sx={{ width: 500, height: 450, marginLeft:17, marginTop:2.8, gap:2}} cols={2} rowHeight={104}>
+                            {imagesArray.map((image, index) => (
+                              <ImageListItem key={index}>
+                                <img
+                                  src={`${image}?w=164&h=164&fit=crop&auto=format`}
+                                  srcSet={`${image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                  loading='lazy'
+                                  alt={`Image ${index + 1}`} 
+                                />
+                              </ImageListItem>
+                            ))}
+                      </ImageList>
                 </CardContent>
               </Card>
           </CardActionArea>

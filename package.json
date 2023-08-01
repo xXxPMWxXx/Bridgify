@@ -5,8 +5,10 @@
         "start": "run-p -l start:*"
     },
     "dependencies": {
+        "@material/grid-list": "^4.0.0",
         "@mui/joy": "^5.0.0-alpha.87",
         "@mui/lab": "^5.0.0-alpha.136",
+        "@mui/styles": "^5.14.3",
         "@mui/x-date-pickers": "^6.10.2",
         "date-fns": "^2.30.0",
         "dayjs": "^1.11.9",
