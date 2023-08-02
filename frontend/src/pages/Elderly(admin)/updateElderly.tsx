@@ -121,8 +121,7 @@ export default function UpdateElderly(props: any) {
 
     const handleUpdateSubmit = (event: any) => {
         event.preventDefault();
-        //TODO: impplement backend API call
-        // // Make a POST request to the server with the formData
+        // Make a POST request to the server with the formData
         fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/update`, {
             headers: {
                 'Content-Type': 'application/json',

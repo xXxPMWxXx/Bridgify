@@ -9,6 +9,8 @@ import React, { useEffect, useState } from 'react';
 
 
 export default function UpdateUser(props: any) {
+
+    const token = window.localStorage.getItem('accessToken');
     const [updateOpen, setUpdateOpen] = React.useState(true);
     const [user, SetUser] = React.useState({ ...props.user });
     console.log(user);
@@ -41,21 +43,57 @@ export default function UpdateUser(props: any) {
         if ((event.target.files)[0]) {
             const file = (event.target.files)[0];
             setSelectedPhoto(file);
-            console.log(file)
         } else {
             // window.alert("No file selected")
         }
 
     };
     const [name, setName] = useState(user[0]);
+    const [updatePassword, setUpdatePassword] = useState("");
     //for update the input
     const handleName = (event: any) => {
         setName(event.target.value);
     };
+    const handleUpdatePassword = (event: any) => {
+        setUpdatePassword(event.target.value);
+    };
 
     const handleUpdateSubmit = (event: any) => {
         event.preventDefault();
-        //TODO: impplement backend API call
+        // // Make a POST request to the server with the formData
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/update`, {
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+            },
+            method: 'PUT',
+            body: JSON.stringify({
+                "email": user[1],
+                "name": name,
+                "password": updatePassword,
+            })
+        })
+            .then(async (response) => {
+                if (response.status != 200) {
+                    const apiResponse = await response.json();
+                    //pass to parent to show alert msg
+                    props.setOpenSnackbar(true);
+                    props.setAlertType('error');
+                    props.setAlertMsg(`Something went wrong during updating user information for user email: ${user[1]}! Please try again later!`);
+                } else {
+                    const apiResponse = await response.json();
+                    //pass to parent to show alert msg
+                    props.setOpenSnackbar(true);
+                    props.setAlertType('success');
+                    props.setAlertMsg(`Successfully, update user information for user email: ${user[1]}!`);
+                    props.setReload(true);
+                    setUpdateOpen(false);
+                }
+            })
+            .catch((error) => {
+                // Handle any error that occurred during the update process
+                window.alert(`Error during update post:${error}`);
+            });
     }
 
     return (
@@ -97,6 +135,12 @@ export default function UpdateUser(props: any) {
                         label="Name"
                         value={name}
                         onChange={handleName}
+                        sx={{ width: 500, m: 2 }}
+                    />
+                     <TextField
+                        label="newPassword"
+                        value={updatePassword}
+                        onChange={handleUpdatePassword}
                         sx={{ width: 500, m: 2 }}
                     />
                     <Box textAlign='center'>

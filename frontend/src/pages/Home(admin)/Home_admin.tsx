@@ -9,7 +9,8 @@ const delay = (ms: number) => new Promise(
     resolve => setTimeout(resolve, ms)
 );
 export const Home_admin = () => {
-
+    //for reload
+    const [reload, setReload] = useState(false);
     useEffect(() => {
         async function loadData() {
             setOpen(true);
@@ -19,7 +20,15 @@ export const Home_admin = () => {
         if (!dataLoaded) {
             loadData();
         }
-    }, []);
+        //trigger whenever reload value changed
+        if (reload) {
+            //reload whenever openSnackbar was changed
+            loadData();
+            //need set this, if not cannot click open again
+            setUpdateOpen(false);
+            setReload(false);
+        }
+    }, [reload]);
 
     //for alert
     //error , warning , info , success
@@ -236,7 +245,7 @@ export const Home_admin = () => {
                 }
             </Box>
             {updateOpen ?
-                <UpdateUser open={setUpdateOpen} user={user} />
+                <UpdateUser open={setUpdateOpen} user={user} setReload={setReload} setOpenSnackbar={setOpenSnackbar} setAlertType={setAlertType} setAlertMsg={setAlertMsg} />
                 : null}
 
             <Dialog open={openConfirmDialog} onClose={handleCloseConfirmDialog}>
