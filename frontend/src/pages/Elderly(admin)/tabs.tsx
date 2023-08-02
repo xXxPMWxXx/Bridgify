@@ -71,7 +71,7 @@ export function ElderlyTab() {
                         const status = elderly.status;
                         const row = [elderly.id, elderly.name, elderly.DOB, elderly.created,
                         status.current_activity, status.medication.toString(), status.current_temp, status.condition, status.condition_description,
-                        status.awake, status.taken_med, elderly.photo]
+                        String(status.awake).toUpperCase(), String(status.taken_med).toUpperCase(), elderly.photo]
                         fetchData.push(row)
                     });
                     setElderlyData(fetchData);
