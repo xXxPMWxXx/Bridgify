@@ -174,7 +174,7 @@ export function ElderlyTab() {
     useEffect(() => {
         async function loadData() {
             setOpen(true);
-            await delay(500);
+            await delay(250);
             loadElderlyData();
         }
         if (!dataLoaded) {

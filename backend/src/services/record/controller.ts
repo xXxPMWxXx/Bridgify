@@ -3,31 +3,12 @@ import jwt from "jsonwebtoken";
 import cors from "cors";
 import "dotenv/config";
 
-const bcrypt = require("bcryptjs");
 const RecordModel = require("../../models/record");
-
 const jwt_secret: any = process.env.JWT_SECRET;
-
 const path = require('path');
 const baseDir = path.resolve(__dirname, "../../..");
 const getDateTime = require("../../services/utils/getDateTime");
 var fs = require('fs');
-
-// // 1. get token from req
-// const token =
-// req.headers.authorization && req.headers.authorization.split(" ")[1];
-
-// // 2. verify token with secret key
-// jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
-// // 3. allow elderly to update elderly details
-// const { id } = req.body;
-// if (decoded) {
-//code here
-
-// } else if (err) {
-//   res.status(401).json({ error: "You must have a valid token" });
-// }
-// });
 
 // for testing only
 export const test = async (req: any, res: any, next: NextFunction) => {
@@ -101,27 +82,42 @@ export const create = async (req: any, res: any, next: NextFunction) => {
   });
 };
 
-// // to update a record
-// export const update = async (req: any, res: any, next: NextFunction) => {
+// get update post, find by author email and date created
+export const update = async (req: any, res: Response, next: NextFunction) => {
+  try {
+    // 1. get token from req
+    const token =
+      req.headers.authorization && req.headers.authorization.split(" ")[1];
 
-//   // 1. get token from req
-//   const token =
-//     req.headers.authorization && req.headers.authorization.split(" ")[1];
+    // 2. verify token with secret key
+    jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+      // 3. allow admin to update post details
+      if (decoded) {
+        const { elderlyID, dateTime } = req.body;
+        // 4. check if the post is existed
+        const post = await RecordModel.findOne({ 'elderlyID': elderlyID, 'dateTime': dateTime });
+        if (post == null) {
+          return res
+            .status(400)
+            .json({ message: `Record does not exit!` });
+        }
+        try {
+          await RecordModel.updateOne({ 'elderlyID': elderlyID, 'dateTime': dateTime }, req.body);
+          res.status(200).send({ message: `Record updated successfully` });
+        } catch (error) {
+          res.status(400).json({ error: "Update fail, please try again later" });
+        }
 
-//   // 2. verify token with secret key
-//   jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
-//     try {
-//       if (decoded) {
-//         const {elderlyID, document_no} = req.body;
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    });
 
-//       } else if (err) {
-//         res.status(401).json({ error: "You must have a valid token" });
-//       }
-//     } catch (error) {
-//       return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
-//     }
-//   });
-// };
+  } catch (error) {
+    res.status(400).json({ error, message: "Make sure your request body is correct" });
+  }
+
+};
 
 
 // to delete a new record
