@@ -1,9 +1,9 @@
 const fs = require("fs");
 const path = require("path");
 
-const baseDir = path.resolve(__dirname, "../../../images/out");
+export function saveFile(fileName : string, buf : Buffer, folder :String = "out") {
 
-export function saveFile(fileName : string, buf : Buffer) {
+  const baseDir = path.resolve(__dirname, `../../../images/${folder}`);
   if (!fs.existsSync(baseDir)) {
     fs.mkdirSync(baseDir);
   }
