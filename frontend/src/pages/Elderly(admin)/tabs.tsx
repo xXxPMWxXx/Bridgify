@@ -127,7 +127,6 @@ export function ElderlyTab() {
         selectedRows.forEach((element: any) => {
             const dataIndex = element.dataIndex;
             const elderlyID = elderlyData[dataIndex][0];
-            console.log(elderlyID)
             // call backend to del from database
             fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/delete/?id=${elderlyID}`, {
                 headers: {

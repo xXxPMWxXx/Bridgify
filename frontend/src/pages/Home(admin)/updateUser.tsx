@@ -13,7 +13,6 @@ export default function UpdateUser(props: any) {
     const token = window.localStorage.getItem('accessToken');
     const [updateOpen, setUpdateOpen] = React.useState(true);
     const [user, SetUser] = React.useState({ ...props.user });
-    console.log(user);
     useEffect(() => {
         setSelectedPhoto(user[5].props.src)
     }, []);

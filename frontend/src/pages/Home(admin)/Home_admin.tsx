@@ -99,11 +99,13 @@ export const Home_admin = () => {
                     window.alert("Something is wrong!");
                 } else {
                     const data = await response.json();
+                    const fetchData: any = [];
                     data.forEach((user: any) => {
                         const row = [user.name, user.email, user.accRole, user.linkedElderly.toString(),
                         user.dateCreated, user.profileImage]
-                        userData.push(row)
+                        fetchData.push(row)
                     });
+                    setUserData(fetchData);
                     setDataLoaded(true);
                     //close the modal
                     setOpen(false);
@@ -117,7 +119,6 @@ export const Home_admin = () => {
     const [updateOpen, setUpdateOpen] = React.useState(false);
     const [user, SetUser] = React.useState();
     const handleRowClick = (rowData: any, rowMeta: any) => {
-        console.log(rowData);
         SetUser(rowData);
         setUpdateOpen(true);
     };
