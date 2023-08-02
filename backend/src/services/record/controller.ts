@@ -119,7 +119,6 @@ export const update = async (req: any, res: Response, next: NextFunction) => {
 
 };
 
-
 // to delete a new record
 // get update record, find by 
 export const deleteRecord = async (req: any, res: Response, next: NextFunction) => {

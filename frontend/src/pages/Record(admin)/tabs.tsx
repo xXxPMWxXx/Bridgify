@@ -125,40 +125,45 @@ export function RecordTab() {
 
     const handleDelete = () => {
         // Implement  delete logic
-        //  selectedRows.forEach((element: any) => {
-        //      const dataIndex = element.dataIndex;
-        //      const elderlyID = elderlyData[dataIndex][0];
-        //      // call backend to del from database
-        //      fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/delete/?id=${elderlyID}`, {
-        //          headers: {
-        //              'Content-Type': 'application/json',
-        //              'Authorization': `Bearer ${token}`,
-        //          },
-        //          method: 'DELETE'
-        //      })
-        //          .then(async (response) => {
-        //              if (response.status != 200) {
-        //                  const apiResponse = await response.json();
-        //                  //show alert msg
-        //                  setOpenSnackbar(true);
-        //                  setAlertType('error');
-        //                  setAlertMsg(apiResponse['message']);
-        //              } else {
-        //                  const apiResponse = await response.json();
-        //                  //show alert msg
-        //                  setOpenSnackbar(true);
-        //                  setAlertType('success');
-        //                  setAlertMsg(apiResponse['message']);
-        //                  setReload(true);
-        //              }
-        //          })
-        //          .catch((error) => {
-        //              // Handle any error that occurred during the update process
-        //              window.alert(`Error during deleting elderly:${error}`);
-        //          });
-        //  });
-        //  // After the deletion is successful, close the dialog
-        //  handleCloseConfirmDialog();
+         selectedRows.forEach((element: any) => {
+             const dataIndex = element.dataIndex;
+             const elderlyID = recordData[dataIndex][0];
+             const document_no = recordData[dataIndex][4];
+             // call backend to del from database
+             fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/delete`, {
+                 headers: {
+                     'Content-Type': 'application/json',
+                     'Authorization': `Bearer ${token}`,
+                 },
+                 method: 'DELETE',
+                 body: JSON.stringify({
+                    "elderlyID": elderlyID,
+                    "document_no": document_no
+                })
+             })
+                 .then(async (response) => {
+                     if (response.status != 200) {
+                         const apiResponse = await response.json();
+                         //show alert msg
+                         setOpenSnackbar(true);
+                         setAlertType('error');
+                         setAlertMsg(apiResponse['message']);
+                     } else {
+                         const apiResponse = await response.json();
+                         //show alert msg
+                         setOpenSnackbar(true);
+                         setAlertType('success');
+                         setAlertMsg(apiResponse['message']);
+                         setReload(true);
+                     }
+                 })
+                 .catch((error) => {
+                     // Handle any error that occurred during the update process
+                     window.alert(`Error during deleting elderly:${error}`);
+                 });
+         });
+         // After the deletion is successful, close the dialog
+         handleCloseConfirmDialog();
     };
     //to customise mui datatable
     const options = {
@@ -359,7 +364,7 @@ export function CreateRecordTab() {
     const handleElderlyID = (event: any) => {
         setElderlyID(event.target.value);
     };
-    
+
     const handleSubmit = (event: any) => {
 
         event.preventDefault();

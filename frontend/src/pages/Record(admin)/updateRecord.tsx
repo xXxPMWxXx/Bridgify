@@ -52,7 +52,7 @@ export default function UpdateRecord(props: any) {
     const handleUpdateSubmit = (event: any) => {
         event.preventDefault();
         // // Make a POST request to the server with the formData
-        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/record/update`, {
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/update`, {
             headers: {
                 'Content-Type': 'application/json',
                 'Authorization': `Bearer ${token}`,
