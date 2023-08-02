@@ -55,9 +55,6 @@ export default function HealthTable() {
   const linkedElderly = window.localStorage.getItem('linkedElderly');
   const email = window.localStorage.getItem('email');
 
-  // const columns = ["Date", "Document No", "Document Name", "Elderly"];
-  // const accRole = window.localStorage.getItem('accRole');
-
   const [tableData, setTableData] = React.useState<any[]>([]); //raw data
   const [fetchAdditional, setFetchAdditional] = React.useState(false); //for elderly info
 
@@ -71,9 +68,6 @@ export default function HealthTable() {
 
   const [selectedElderly, setSelectedElderly] = React.useState<string[]>([]);
   const [searchQuery, setSearchQuery] = React.useState('');
-
-  // const [filteredList, setFilteredList] = new useState(itemList);
-
 
   //filter condition for tab
   const isType = (obj: any) => {
@@ -89,46 +83,19 @@ export default function HealthTable() {
 
   };
 
+  //filter for selected elderly
   const isSelectedElderly = (obj: any) => {
     return selectedElderly.includes(obj.elderlyID)
   };
 
-
+//search filter for document name
   const isQuery = (obj: any) => {
     const wordArray = obj.name.toLowerCase().split(' ');
     return wordArray.some((word: string) => word.startsWith(searchQuery));
 
   };
 
-  const columns = [{
-    name: "dateTime",
-    label: "Published Date",
-  }, {
-    name: "document_no",
-    label: "Document No",
-  }, {
-    name: "name",
-    label: "Document Name",
-    options: {
-      filter: true,
-      sort: true,
-    }
-  }, {
-    name: "elderlyPhoto",
-    label: "Elderly",
-    options: {
-      customBodyRender: (value: any, tableMeta: any, updateValue: any) => {
-        return (
-          <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-            <Avatar size="sm" alt={value} src={`${imageBASEURL}/${value}`} />
-
-          </Box>
-        )
-      }
-    }
-  }];
-
-  //get from server, all the data
+  //get from server, all the data for the linked elderly only
   const loadUserData = async () => {
     // //calling backend API
     fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/record/getLinked`, {
@@ -157,14 +124,10 @@ export default function HealthTable() {
         window.alert(err);
       });
 
-
   }
 
-  //fetch additional data
+  //fetch additional elderly data
   React.useEffect(() => {
-    // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
-
-
     if (fetchAdditional) {
       //calling getall for elderly
       fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/getAll`, {
@@ -210,6 +173,7 @@ export default function HealthTable() {
             await setTableData(updatedRows);
             setFetchAdditional(false);
             setRows(tableData.filter(isType));
+
             setDataLoaded(true)
             setLoadProgressOpen(false)
 
@@ -232,7 +196,7 @@ export default function HealthTable() {
       setLoadProgressOpen(true);
       await delay(500);
       loadUserData();
-      elderlyFetcher()
+      elderlyFetcher();
     }
 
     if (!dataLoaded) {
@@ -242,11 +206,13 @@ export default function HealthTable() {
 
   //set default checked boxes
   React.useEffect(() => {
+    if(elderly.length >0){
     elderly.forEach((e) =>
       selectedElderly.push(e.id)
-    )
+    )}
   }, [elderly]);
 
+  //retrieve linked elderly informatino
   const elderlyFetcher = async () => {
     console.log("elderlyFetcher called");
 
@@ -298,13 +264,9 @@ export default function HealthTable() {
     setSearchQuery(event.target.value.toLowerCase());
   };
 
-  //filter
+  //filter and sets filtered rows
   React.useEffect(() => {
-   setRows(tableData.filter(isType).filter(isSelectedElderly).filter(isQuery));
-  
-    // console.log("filter is called")
-
-    // const elderlyImageSrc = `http://13.228.86.148:8000/images/trained_face/${photo}`;
+    setRows(tableData.filter(isType).filter(isSelectedElderly).filter(isQuery));
   }, [tableData, tabValue, selectedElderly, searchQuery]);
 
 
@@ -352,13 +314,15 @@ export default function HealthTable() {
 
 
       <Box sx={{ width: "80%", alignItems: 'center', margin: "auto" }}>
-        <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example" 
-        sx={{ marginBottom: 2, borderBottom: 1 ,
-          ".Mui-selected":{color:"#30685e !important" }
-        }} TabIndicatorProps={{
-          style: {
-            backgroundColor: "#30685e"          }
-        }}>
+        <Tabs value={tabValue} onChange={handleChange} aria-label="basic tabs example"
+          sx={{
+            marginBottom: 2, borderBottom: 1,
+            ".Mui-selected": { color: "#30685e !important" }
+          }} TabIndicatorProps={{
+            style: {
+              backgroundColor: "#30685e"
+            }
+          }}>
           <Tab label="All" {...a11yProps(0)} />
           <Tab label="Medical Records" {...a11yProps(1)} />
           <Tab label="Medication" {...a11yProps(2)} />
@@ -427,7 +391,7 @@ export default function HealthTable() {
                 vertical: 'bottom',
                 horizontal: 'left',
               }}
-              slotProps={{ paper: { sx: { p: 1, marginTop: 1, borderRadius: 3, border: "1px solid #30685e" ,boxShadow:"none"} } }}
+              slotProps={{ paper: { sx: { p: 1, marginTop: 1, borderRadius: 3, border: "1px solid #30685e", boxShadow: "none" } } }}
               onClose={handleClose}
               transformOrigin={{
                 vertical: 'top',
@@ -436,28 +400,30 @@ export default function HealthTable() {
                 border: "2px solid #3A5FCD"
               }}
             >
-              {elderly.map((e) => (
-                <FormGroup sx={{ p: 1.5, margin: "auto", borderWidth: 2, borderColor: "black", }}>
-                  <FormControl sx={{ padding: "auto" }}>
-                    <Box sx={{ display: 'flex', gap: 1.2, alignItems: 'center', textAlign: "right" }}>
+          
+                {linkedElderly==""?<Typography>No elderly found</Typography>:
+                  elderly.map((e: any) => (
+                    <FormGroup sx={{ p: 1.5, margin: "auto", borderWidth: 2, borderColor: "black", }}>
+                      <FormControl sx={{ padding: "auto" }}>
+                        <Box sx={{ display: 'flex', gap: 1.2, alignItems: 'center', textAlign: "right" }}>
 
-                      <Checkbox key={e.id} name={e.id} onClick={handleCheck} checked={selectedElderly.indexOf(e.id) > -1} sx={{
-                        accentColor:  "#30685e",
-                        '&.Mui-checked': {
-                          color: "#30685e !important"
-                        },
-                      }}
-                      />
-                      <Sheet style={{ marginLeft: 2 }}>
-                        <Avatar alt={e.name} src={`${imageBASEURL}/${e.photo}`} sx={{}} /></Sheet>
-                      <Typography>
-                        {e.name}
-                      </Typography>
-                    </Box>
-                  </FormControl>
+                          <Checkbox key={e.id} name={e.id} onClick={handleCheck} checked={selectedElderly.indexOf(e.id) > -1} sx={{
+                            accentColor: "#30685e",
+                            '&.Mui-checked': {
+                              color: "#30685e !important"
+                            },
+                          }}
+                          />
+                          <Sheet style={{ marginLeft: 2 }}>
+                            <Avatar alt={e.name} src={`${imageBASEURL}/${e.photo}`} sx={{}} /></Sheet>
+                          <Typography>
+                            {e.name}
+                          </Typography>
+                        </Box>
+                      </FormControl>
 
-                </FormGroup>))}
-
+                    </FormGroup>))
+                }
             </Popover>
           </Box>
           {/* Add Document */}
@@ -550,8 +516,12 @@ export default function HealthTable() {
                   </td> */}
                   </tr>
                 ))}
+
+
               </tbody>
             </Table>
+            {rows.length>0?<Typography></Typography>:<Box textAlign={'center'} sx={{p:5}} fontSize={"24px"}>No Records Found...</Box>}
+
 
             <Modal
               keepMounted
@@ -569,7 +539,8 @@ export default function HealthTable() {
 
 
           </Sheet>
-        </Box>
+        </Box>              
+
       </Box>
 
     </React.Fragment>
