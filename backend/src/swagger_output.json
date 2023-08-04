@@ -3,7 +3,7 @@
   "info": {
     "version": "1.0.0",
     "title": "Bridgify REST API",
-    "description": "Swagger Document for Bridgify Backend API, never really maintain this, please refer Postman Workspaces"
+    "description": "Swagger Document for Bridgify Backend API, never really maintain this, please refer our Postman Workspaces"
   },
   "host": "13.228.86.148:8000",
   "basePath": "/api",
