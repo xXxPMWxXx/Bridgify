@@ -75,19 +75,19 @@ class PictureSingle extends StatelessWidget {
             if (elderlyInvolved!.length == 1)
               PostText(
                 text:
-                    "${elderlyInvolved![0].substring(0, elderlyInvolved![0].length - 4).split(' ')[0]} is having fun",
+                    "${elderlyInvolved![0].substring(0, elderlyInvolved![0].length - 6).split(' ')[0]} is having fun",
                 fontSize: 16,
               ),
           if (elderlyInvolved!.length == 2)
             PostText(
               text:
-                  "${elderlyInvolved![0].substring(0, elderlyInvolved![0].length - 4).split(' ')[0]}, ${elderlyInvolved![1].substring(0, elderlyInvolved![1].length - 4).split(' ')[0]} are having fun",
+                  "${elderlyInvolved![0].substring(0, elderlyInvolved![0].length - 6).split(' ')[0]}, ${elderlyInvolved![1].substring(0, elderlyInvolved![1].length - 6).split(' ')[0]} are having fun",
               fontSize: 16,
             ),
           if (elderlyInvolved!.length >= 2)
             PostText(
               text:
-                  "${elderlyInvolved![0].substring(0, elderlyInvolved![0].length - 4).split(' ')[0]}, ${elderlyInvolved![1].substring(0, elderlyInvolved![0].length - 4).split(' ')[0]} are having fun and ${elderlyInvolved!.length - 1} others are having fun",
+                  "${elderlyInvolved![0].substring(0, elderlyInvolved![0].length - 6).split(' ')[0]}, ${elderlyInvolved![1].substring(0, elderlyInvolved![0].length - 6).split(' ')[0]} and ${elderlyInvolved!.length - 1} others are having fun",
               fontSize: 16,
             ),
           const SizedBox(

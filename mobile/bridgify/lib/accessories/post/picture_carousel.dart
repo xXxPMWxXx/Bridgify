@@ -105,19 +105,19 @@ class _PictureCarouselState extends State<PictureCarousel> {
             if (widget.elderlyInvolved!.length == 1)
               PostText(
                 text:
-                    "${widget.elderlyInvolved![0].substring(0, widget.elderlyInvolved![0].length - 4).split(' ')[0]} is having fun",
+                    "${widget.elderlyInvolved![0].substring(0, widget.elderlyInvolved![0].length - 6).split(' ')[0]} is having fun",
                 fontSize: 16,
               ),
           if (widget.elderlyInvolved!.length == 2)
             PostText(
               text:
-                  "${widget.elderlyInvolved![0].substring(0, widget.elderlyInvolved![0].length - 4).split(' ')[0]}, ${widget.elderlyInvolved![1].substring(0, widget.elderlyInvolved![1].length - 4).split(' ')[0]} are having fun",
+                  "${widget.elderlyInvolved![0].substring(0, widget.elderlyInvolved![0].length - 6).split(' ')[0]}, ${widget.elderlyInvolved![1].substring(0, widget.elderlyInvolved![1].length - 6).split(' ')[0]} are having fun",
               fontSize: 16,
             ),
           if (widget.elderlyInvolved!.length >= 2)
             PostText(
               text:
-                  "${widget.elderlyInvolved![0].substring(0, widget.elderlyInvolved![0].length - 4).split(' ')[0]}, ${widget.elderlyInvolved![1].substring(0, widget.elderlyInvolved![1].length - 4).split(' ')[0]} are having fun and ${widget.elderlyInvolved!.length - 1} others are having fun",
+                  "${widget.elderlyInvolved![0].substring(0, widget.elderlyInvolved![0].length - 6).split(' ')[0]}, ${widget.elderlyInvolved![1].substring(0, widget.elderlyInvolved![1].length - 6).split(' ')[0]} and ${widget.elderlyInvolved!.length - 1} others are having fun",
               fontSize: 16,
             ),
           const SizedBox(
