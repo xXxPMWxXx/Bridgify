@@ -38,7 +38,6 @@ dependencies:
   http: ^0.13.5
   api_cache_manager: ^1.0.2
   snippet_coder_utils: ^1.0.14
-  font_awesome_flutter: ^10.4.0
   simple_animations: ^4.2.0
   pinput: ^2.2.11
   image_picker: ^0.8.4+2

@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:bridgify/accessories/background.dart';
 import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/accessories/fadeAnimation.dart';
@@ -84,9 +86,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _loginUI(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height;
-    print(windowHeight);
     windowWidth = MediaQuery.of(context).size.width;
-    print(windowWidth);
 
     _loginHeight = windowHeight - 270;
     _registerHeight = windowHeight - 270;
@@ -116,8 +116,8 @@ class _MainScreenState extends State<MainScreen> {
         _loginWidth = windowWidth;
         _loginOpacity = 1;
 
-        _loginYOffset = windowHeight * 0.3;
-        _loginHeight = windowHeight * 0.7;
+        _loginYOffset = 280;
+        _loginHeight = windowHeight - 270;
 
         _loginXOffset = 0;
         _registerYOffset = windowHeight;
@@ -131,12 +131,12 @@ class _MainScreenState extends State<MainScreen> {
         _loginWidth = windowWidth - 40;
         _loginOpacity = 0.7;
 
-        _loginYOffset = 155;
+        _loginYOffset = 240;
         _loginHeight = windowHeight - 240;
 
         _loginXOffset = 20;
-        _registerYOffset = windowHeight * 0.135;
-        _registerHeight = windowHeight * 0.865;
+        _registerYOffset = 160;
+        _registerHeight = windowHeight - 190;
         break;
     }
 
@@ -291,33 +291,33 @@ class _MainScreenState extends State<MainScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      // FadeAnimation(
-                      //   1.5,
-                      //   Align(
-                      //     alignment: Alignment.bottomRight,
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.only(
-                      //         right: 25,
-                      //       ),
-                      //       child: RichText(
-                      //         text: TextSpan(
-                      //           style: const TextStyle(
-                      //               color: Colors.grey, fontSize: 14.0),
-                      //           children: <TextSpan>[
-                      //             TextSpan(
-                      //               text: 'Forget Password?',
-                      //               style: const TextStyle(
-                      //                 color: Colors.grey,
-                      //               ),
-                      //               recognizer: TapGestureRecognizer()
-                      //                 ..onTap = () {},
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      FadeAnimation(
+                        1.5,
+                        Align(
+                          alignment: Alignment.bottomRight,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                              right: 25,
+                            ),
+                            child: RichText(
+                              text: TextSpan(
+                                style: const TextStyle(
+                                    color: Colors.grey, fontSize: 14.0),
+                                children: <TextSpan>[
+                                  TextSpan(
+                                    text: 'Forget Password?',
+                                    style: const TextStyle(
+                                      color: Colors.grey,
+                                    ),
+                                    recognizer: TapGestureRecognizer()
+                                      ..onTap = () {},
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -422,7 +422,7 @@ class _MainScreenState extends State<MainScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
                           //clear field
@@ -688,7 +688,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ),
                         const SizedBox(
-                          height: 35,
+                          height: 20,
                         ),
                         Center(
                           child: FormHelper.submitButton(
@@ -843,7 +843,7 @@ class _MainScreenState extends State<MainScreen> {
                           ),
                         ),
                         const SizedBox(
-                          height: 25,
+                          height: 20,
                         ),
                         const SizedBox(height: 20),
                         GestureDetector(

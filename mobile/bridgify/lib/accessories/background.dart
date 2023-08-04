@@ -29,7 +29,7 @@ class _BackgroundWidgetState extends State<BackgroundWidget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 SizedBox(
-                  height: 100.0,
+                  height: 85.0,
                 ),
                 FadeAnimation(
                     1,
