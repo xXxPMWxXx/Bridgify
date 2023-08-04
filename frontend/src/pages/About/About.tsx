@@ -48,7 +48,7 @@ export const About = () => {
                     }}>
                     </Grid>
                     <Grid item xs={7} >
-                        <div style={{ width: "80%", margin: "auto", alignContent: "center", justifyContent: "center", marginTop: 5 }}>
+                        <div style={{ width: "80%", margin: "auto", alignContent: "center", justifyContent: "center", marginTop: 5, height:"70vh" }}>
                             <Typography variant="h3" component="h1" gutterBottom sx={{ textAlign: "center" }}>
                                 About Us
                             </Typography>
