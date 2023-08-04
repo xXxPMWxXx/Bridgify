@@ -192,8 +192,8 @@ export const Profile = () => {
             }
             < ResponsiveAppBar />
             <Grid container sx={{ justifyContent: "center", marginTop: "5%" }}>
-                <Grid item sx={{
-                    border: "2px solid black", justifyContent: "center", alignItems: "center", p: 2,
+                <Grid item xs={4} sx={{
+                    justifyContent: "center", alignItems: "center", p: 2,
                     width: "auto", height: 500, marginRight: 5, bgcolor: "#30685E", borderRadius: 5
                 }}>
                     <Avatar
@@ -201,12 +201,15 @@ export const Profile = () => {
                         src={profileImageSrc}
                         sx={{ width: 200, height: 200, margin: "auto", marginTop: 5 }}
                     />
-                    <Typography variant="h5" sx={{ color: "white", marginTop: "10%", paddingLeft: "10%", width: "auto" }} >
-                        <b>Profile:</b><br />
+                    <div  style={{ color: "white", marginTop: 15, paddingLeft: "10%", width: "auto" }}>
+                    <Typography variant='h4' lineHeight={1.5}> Profile</Typography>
+                    
+                    <Typography variant="h5" lineHeight={1.5} >
+                        {/* <b style={{fontSize:"26px"}}>Profile:</b><br /> */}
                         User: {userName} <br />
                         Email: {email}<br />
                         Account Role: {accRole}<br />
-                    </Typography>
+                    </Typography></div>
                 </Grid>
                 <Grid item>
 
