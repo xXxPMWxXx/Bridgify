@@ -663,12 +663,12 @@ class _AdminHomePageState extends State<AdminHomePage> {
                     height: 20,
                     color: Colors.white,
                   ),
-                  DrawerItem(
-                      title: 'Help',
-                      icon: Icons.help,
-                      onTapPath: () {
-                        Navigator.pushNamed(context, "/adminHome");
-                      }),
+                  // DrawerItem(
+                  //     title: 'Help',
+                  //     icon: Icons.help,
+                  //     onTapPath: () {
+                  //       Navigator.pushNamed(context, "/adminHome");
+                  //     }),
                   DrawerItem(
                       title: 'About App',
                       icon: Icons.phone_android_rounded,

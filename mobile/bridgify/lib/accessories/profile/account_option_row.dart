@@ -4,7 +4,6 @@ class BuildAccountOptionRow extends StatelessWidget {
   final String title;
   const BuildAccountOptionRow({super.key, required this.title});
 
-
   @override
   Widget build(BuildContext context) {
     return Row(
@@ -19,28 +18,7 @@ class BuildAccountOptionRow extends StatelessWidget {
           ),
         ),
         IconButton(
-            onPressed: () {
-              showDialog(
-                  context: context,
-                  builder: (BuildContext context) {
-                    return AlertDialog(
-                        title: Text(title),
-                        content: const Column(
-                          children: [
-                            Text("Option 1"),
-                            Text("Option 2"),
-                            Text("Option 3")
-                          ],
-                        ),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                Navigator.of(context).pop();
-                              },
-                              child: const Text("Close"))
-                        ]);
-                  });
-            },
+            onPressed: () {},
             icon: const Icon(Icons.arrow_forward_ios, color: Colors.grey))
       ],
     );
