@@ -20,7 +20,7 @@ SMU .HEAP 2023 G14
   - Mac OS : brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
   - Windows : https://github.com/Automattic/node-canvas/wiki/Installation:-Windows
     
-##### After you setup the neccessary package (Since our code is using production backend URL, you dont need to run backend locally, just need run frontend locally)
+### After you setup the neccessary package (Since our code is using production backend URL, you dont need to run backend locally, just need run frontend locally)
 - Please make sure you have install Node js (V18)
 - cd Bridgify => npm install
 - cd Bridgify/backend => npm install
