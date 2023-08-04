@@ -40,7 +40,7 @@ export const About = () => {
                 }}
             >
                 {/* <Box sx={{width:80%}}> */}
-                <Grid container sx={{marginTop:10,marginBottom:10, borderRadius:5, p:3, border:"3px solid #C5D3D0"}}>
+                <Grid container sx={{marginTop:7,marginBottom:7, borderRadius:5, p:3}}>
                 <Grid item xs={5} sx={{
                         backgroundImage: `url(${backgroundImage})`,
                         backgroundRepeat: 'no-repeat',
@@ -48,7 +48,7 @@ export const About = () => {
                     }}>
                     </Grid>
                     <Grid item xs={7} >
-                        <div style={{ width: "80%", margin: "auto", alignContent: "center", justifyContent: "center", marginTop: "5%" }}>
+                        <div style={{ width: "80%", margin: "auto", alignContent: "center", justifyContent: "center", marginTop: 5 }}>
                             <Typography variant="h3" component="h1" gutterBottom sx={{ textAlign: "center" }}>
                                 About Us
                             </Typography>
