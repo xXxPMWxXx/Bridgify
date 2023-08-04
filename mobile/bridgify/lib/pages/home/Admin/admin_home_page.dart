@@ -656,19 +656,19 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       title: 'Settings',
                       icon: Icons.settings,
                       onTapPath: () {
-                        Navigator.pushNamed(context, "/settings");
+                        _globalKey.currentState!.closeDrawer();
                       }),
                   const Divider(
                     thickness: 2.5,
                     height: 20,
                     color: Colors.white,
                   ),
-                  // DrawerItem(
-                  //     title: 'Help',
-                  //     icon: Icons.help,
-                  //     onTapPath: () {
-                  //       Navigator.pushNamed(context, "/adminHome");
-                  //     }),
+                  DrawerItem(
+                      title: 'Help',
+                      icon: Icons.help,
+                      onTapPath: () {
+                        Navigator.pushNamed(context, "/adminHome");
+                      }),
                   DrawerItem(
                       title: 'About App',
                       icon: Icons.phone_android_rounded,

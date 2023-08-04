@@ -378,12 +378,12 @@ class _HomePageState extends State<HomePage> {
                     height: 20,
                     color: Colors.white,
                   ),
-                  // DrawerItem(
-                  //     title: 'Help',
-                  //     icon: Icons.help,
-                  //     onTapPath: () {
-                  //       Navigator.pushNamed(context, "/home");
-                  //     }),
+                  DrawerItem(
+                      title: 'Help',
+                      icon: Icons.help,
+                      onTapPath: () {
+                        _globalKey.currentState!.closeDrawer();
+                      }),
                   DrawerItem(
                       title: 'About App',
                       icon: Icons.phone_android_rounded,
