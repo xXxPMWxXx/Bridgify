@@ -164,7 +164,10 @@ class _HomePageState extends State<HomePage> {
                         return BuildElderlyView(models: model.data);
                       }
                       return const Center(
-                        child: CircularProgressIndicator(),
+                        child: Text(
+                          "No Elderly has been assigned to you yet",
+                          style: TextStyle(color: Colors.white, fontSize: 16),
+                        ),
                       );
                     },
                   ),

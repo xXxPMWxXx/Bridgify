@@ -76,12 +76,18 @@ class AboutUsScreen extends StatelessWidget {
     );
 
     final firstPara = Text(
-      'With the growing ageing population and the fast-paced career culture of young adults, many adult children find themselves with no time to take care of their elderly parents themselves. As a result, they often turn to elderly care services for assistance in providing their parents with the care they need.',
+      'Welcome to Bridgify! We are a passionate team dedicated to redefining family connections and elderly care in Singapore.',
       style: TextStyle(fontSize: 18.0),
       textAlign: TextAlign.center,
     );
     final secondPara = Text(
-      'To address the possible challenges that may arise, Bridgify enables regular updates and effective communication between family members and eldercare facilities.',
+      'With the growing elderly population and the challenges of modern life, we saw a need for a solution that brings families closer together.',
+      style: TextStyle(fontSize: 18.0),
+      textAlign: TextAlign.center,
+    );
+
+    final thirdPara = Text(
+      'Our mission is clear: to empower families by keeping them effortlessly connected with their elderly loved ones. Through our innovative solution, caregivers and care centers provide real-time updates on health, activities, and well-being, ensuring you\'re always in the know and your loved ones are always cared for.',
       style: TextStyle(fontSize: 18.0),
       textAlign: TextAlign.center,
     );

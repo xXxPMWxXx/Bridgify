@@ -169,8 +169,15 @@ class APIService {
     );
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-
-      return postFromJson(data);
+      try {
+        Map<String, dynamic> jsonDecoded = json.decode(data);
+        if (jsonDecoded['message'] == null) {
+          return postFromJson(data);
+        }
+      } catch (e) {
+        return null;
+      }
+      return null;
     } else {
       return null;
     }
@@ -256,8 +263,15 @@ class APIService {
 
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
-
-      return elderlyFromJson(data);
+      try {
+        Map<String, dynamic> jsonDecoded = json.decode(data);
+        if (jsonDecoded['message'] == null) {
+          return elderlyFromJson(data);
+        }
+      } catch (e) {
+        return null;
+      }
+      return null;
     } else {
       return null;
     }

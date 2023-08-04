@@ -28,7 +28,9 @@ class ChatScreen extends StatelessWidget {
           title: Row(
             children: [
               CircleAvatar(
-                  backgroundImage: Image.asset('images/test.png').image),
+                backgroundImage: Image.asset('images/test.png').image,
+                backgroundColor: Colors.white,
+              ),
               const SizedBox(width: 15),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,

@@ -126,8 +126,14 @@ class _BuildPostState extends State<BuildPost> {
                 );
               }
 
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 80.0),
+                child: Center(
+                  child: Text(
+                    "No relevant post found at the moment",
+                    style: TextStyle(color: Colors.grey.shade800, fontSize: 16),
+                  ),
+                ),
               );
             },
           ),
@@ -161,8 +167,14 @@ class _BuildPostState extends State<BuildPost> {
                 );
               }
 
-              return const Center(
-                child: CircularProgressIndicator(),
+              return Padding(
+                padding: const EdgeInsets.symmetric(vertical: 80.0),
+                child: Center(
+                  child: Text(
+                    "No relevant post found at the moment",
+                    style: TextStyle(color: Colors.grey.shade800, fontSize: 16),
+                  ),
+                ),
               );
             },
           ),
