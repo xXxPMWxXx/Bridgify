@@ -506,14 +506,7 @@ export default function HealthTable() {
                         </Typography>
                       </Box>
                     </td>
-                    {/* <td style={{
-                    width: '20px',
-
-
-                  }}>
-                    <IconButton aria-label="filter" onClick={()=>displayPDF(row.document_path)}>
-                      <TuneIcon /></IconButton>
-                  </td> */}
+                 
                   </tr>
                 ))}
 
