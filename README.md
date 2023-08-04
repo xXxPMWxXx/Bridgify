@@ -30,6 +30,11 @@ SMU .HEAP 2023 G14
 ### Docker
 - `docker compose up` => to build the image and run
     - Notes: if have Segmentation fault => use Docker Desktop to start the container
+<img width="1180" alt="image" src="https://github.com/xXxPMWxXx/Bridgify/assets/53245147/0acc6163-4a8c-42b0-a165-d4ca84b2fe03">
+<img width="1171" alt="image" src="https://github.com/xXxPMWxXx/Bridgify/assets/53245147/8594c138-1fd1-43bb-a4bf-e0239bbee2d0">
+<img width="1552" alt="image" src="https://github.com/xXxPMWxXx/Bridgify/assets/53245147/3102b196-8cec-472b-be8a-37dc408cb354">
+
+
 
 #### AWS EC2
 - `ssh -i ".ssh/id_rsa" ubuntu@13.228.86.148` => connect to EC2 via ssh
