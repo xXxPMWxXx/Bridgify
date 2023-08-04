@@ -84,9 +84,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _loginUI(BuildContext context) {
     windowHeight = MediaQuery.of(context).size.height;
-    print(windowHeight);
     windowWidth = MediaQuery.of(context).size.width;
-    print(windowWidth);
 
     _loginHeight = windowHeight - 270;
     _registerHeight = windowHeight - 270;
