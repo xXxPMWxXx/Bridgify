@@ -3,10 +3,10 @@ SMU .HEAP 2023 G14
 
 ## Get Started (Recommend to use Docker if want to run locally)
 ### Local
-#### need to install python@3.10 and below in order to run npm install without error
+#### need to install python@3.10 and below in order to run npm install without error (Require to run backend)
     - install pyenv => brew install pyenv
     
-##### setup shell environment for pyenv (https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv)
+##### setup shell environment for pyenv (https://github.com/pyenv/pyenv#set-up-your-shell-environment-for-pyenv) (Require to run backend)
     - in your terminal run : (for mac)
     echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
     echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
@@ -16,12 +16,12 @@ SMU .HEAP 2023 G14
     -pyenv versions
     -pyenv global 2.7.18 => change your python version
 
-#### For npm install canvas 
+#### For npm install canvas (Require to run backend)
   - Mac OS : brew install pkg-config cairo pango libpng jpeg giflib librsvg pixman
   - Windows : https://github.com/Automattic/node-canvas/wiki/Installation:-Windows
     
-##### After you setup the neccessary package
-- Please make sure you have install Node js
+##### After you setup the neccessary package (Since our code is using production backend URL, you dont need to run backend locally, just need run frontend locally)
+- Please make sure you have install Node js (V18)
 - cd Bridgify => npm install
 - cd Bridgify/backend => npm install
 - cd Bridgify/frontend => npm install
