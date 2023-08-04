@@ -27,8 +27,6 @@ function Copyright(props: any) {
   );
 }
 
-// TODO remove, this demo shouldn't need to reset the theme.
-//const defaultTheme = createTheme();
 const myTheme = createTheme({
   palette: {
     background: {
@@ -36,17 +34,6 @@ const myTheme = createTheme({
     }
   }
 });
-
-// const { palette } = createTheme();
-// const { augmentColor } = palette;
-// const createColor = (mainColor) => augmentColor({color: { main: mainColor }});
-// const theme = createTheme({
-//     palette: {
-//         darkGreen: createColor('#588061'),
-//         lightPink :createColor('#FEF9F9'),
-//         pink: createColor('#E7B5AC'),
-//     },
-// });
 
 export function Login() {
 
@@ -155,14 +142,6 @@ export function Login() {
                 <img src={logo} alt="Logo" width={28} height={28} style={{ marginLeft: -230, marginTop: -5, position: 'absolute' }} />
                 <span style={{ color: 'black', fontSize: 15, textAlign: 'left', marginTop: -1.5, marginLeft: -195, fontWeight: 500, position: 'absolute' }}>Bridgify</span>
               </a>
-              {/* <Button
-                type="submit"
-                variant="outlined"
-                color='inherit'
-                sx={{ mt: 3, mb: 2, fontWeight: 500, borderRadius: 8, position: 'absolute', top: 30, right: 80 }}
-              >
-                Admin
-              </Button> */}
             </div>
             <Typography component="h1" variant="h5" sx={{ fontWeight: 'bold', fontSize: 55, letterSpacing: -2, marginTop: 8, marginBottom: -1.5 }}>
               Hi there!
@@ -204,11 +183,6 @@ export function Login() {
                 Log In
               </Button>
               <Grid container>
-                <Grid item xs>
-                  <Link href="#" variant="body2">
-                    Forgot password?
-                  </Link>
-                </Grid>
                 <Grid item>
                   <Link href="/signUp" variant="body2">
                     {"Don't have an account? Sign Up"}
