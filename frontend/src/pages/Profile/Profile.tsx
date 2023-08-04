@@ -114,8 +114,8 @@ export const Profile = () => {
                     //show alert msg
                     setOpenSnackbar(true);
                     setAlertType('success');
-                    setAlertMsg(apiResponse['message']);        
-                    
+                    setAlertMsg(apiResponse['message']);
+
                     handleClose();
 
                 }
@@ -201,15 +201,15 @@ export const Profile = () => {
                         src={profileImageSrc}
                         sx={{ width: 200, height: 200, margin: "auto", marginTop: 5 }}
                     />
-                    <div  style={{ color: "white", marginTop: 15, paddingLeft: "10%", width: "auto" }}>
-                    <Typography variant='h4' lineHeight={1.5}> Profile</Typography>
-                    
-                    <Typography variant="h5" lineHeight={1.5} >
-                        {/* <b style={{fontSize:"26px"}}>Profile:</b><br /> */}
-                        User: {userName} <br />
-                        Email: {email}<br />
-                        Account Role: {accRole}<br />
-                    </Typography></div>
+                    <div style={{ color: "white", marginTop: 15, paddingLeft: "10%", width: "auto" }}>
+                        <Typography variant='h4' lineHeight={1.5}> Profile</Typography>
+
+                        <Typography variant="h5" lineHeight={1.5} >
+                            {/* <b style={{fontSize:"26px"}}>Profile:</b><br /> */}
+                            User: {userName} <br />
+                            Email: {email}<br />
+                            Account Role: {accRole}<br />
+                        </Typography></div>
                 </Grid>
                 <Grid item>
 
@@ -245,74 +245,75 @@ export const Profile = () => {
                                 overflow: 'auto',
                             }}
                         >
-                            {(linkedElderlyData.length != 0) ?
-                                <Table
-                                    aria-labelledby="tableTitle"
-                                    stickyHeader
-                                    hoverRow
-                                    sx={{
-                                        '--TableCell-headBackground': (theme: { vars: { palette: { background: { level1: any; }; }; }; }) =>
-                                            theme.vars.palette.background.level1,
-                                        '--Table-headerUnderlineThickness': '1px',
-                                        '--TableRow-hoverBackground': (theme: { vars: { palette: { background: { level1: any; }; }; }; }) =>
-                                            theme.vars.palette.background.level1,
-                                    }}
-                                >
-                                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }} />
-                                    <thead >
-                                        <tr style={{}}>
 
-                                            <th style={{ padding: 12, backgroundColor: "white", width: "20%" }}>ID</th>
-                                            <th style={{ padding: 12, backgroundColor: "white", width: "40%" }}>Name</th>
-                                            <th style={{ padding: 12, backgroundColor: "white", width: "25%" }}>Date of Birth</th>
-                                            <th style={{ padding: 12, backgroundColor: "white", width: "15%" }}></th>
+                            <Table
+                                aria-labelledby="tableTitle"
+                                stickyHeader
+                                hoverRow
+                                sx={{
+                                    '--TableCell-headBackground': (theme: { vars: { palette: { background: { level1: any; }; }; }; }) =>
+                                        theme.vars.palette.background.level1,
+                                    '--Table-headerUnderlineThickness': '1px',
+                                    '--TableRow-hoverBackground': (theme: { vars: { palette: { background: { level1: any; }; }; }; }) =>
+                                        theme.vars.palette.background.level1,
+                                }}
+                            >
+                                <Box sx={{ borderBottom: 1, borderColor: 'divider' }} />
+                                <thead >
+                                    <tr style={{}}>
 
+                                        <th style={{ padding: 12, backgroundColor: "white", width: "20%" }}>ID</th>
+                                        <th style={{ padding: 12, backgroundColor: "white", width: "40%" }}>Name</th>
+                                        <th style={{ padding: 12, backgroundColor: "white", width: "25%" }}>Date of Birth</th>
+                                        <th style={{ padding: 12, backgroundColor: "white", width: "15%" }}></th>
+
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {linkedElderlyData.map((row) => (
+                                        <tr key={row.id} >
+                                            <td style={{ padding: 12, width: "5%" }}>{row.id}</td>
+                                            <td >
+                                                <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
+                                                    <Avatar alt={row.elderlyName} src={`${imageBASEURL}/${row.photo}`} />
+                                                    <Typography sx={{ font: "inherit" }}>
+                                                        {row.name}
+                                                    </Typography>
+                                                </Box>
+                                            </td>
+                                            <td style={{ padding: 12 }}>{row.DOB}</td>
+
+                                            <td style={{
+                                                width: "5%",
+
+
+                                            }}>
+                                                <IconButton aria-label="unlink" onClick={() => handleRemove(row.id)}>
+                                                    <LinkOffIcon /></IconButton>
+                                            </td>
                                         </tr>
-                                    </thead>
-                                    <tbody>
-                                        {linkedElderlyData.map((row) => (
-                                            <tr key={row.id} >
-                                                <td style={{ padding: 12, width: "5%" }}>{row.id}</td>
-                                                <td >
-                                                    <Box sx={{ display: 'flex', gap: 2, alignItems: 'center' }}>
-                                                        <Avatar alt={row.elderlyName} src={`${imageBASEURL}/${row.photo}`} />
-                                                        <Typography sx={{ font: "inherit" }}>
-                                                            {row.name}
-                                                        </Typography>
-                                                    </Box>
-                                                </td>
-                                                <td style={{ padding: 12 }}>{row.DOB}</td>
+                                    ))}
+                                </tbody>
 
-                                                <td style={{
-                                                    width: "5%",
-
-
-                                                }}>
-                                                    <IconButton aria-label="unlink" onClick={() => handleRemove(row.id)}>
-                                                        <LinkOffIcon /></IconButton>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-
-                                </Table> : null}
+                            </Table>
+                            {linkedElderlyData.length > 0 ? <Typography></Typography> : <Box textAlign={'center'} sx={{ p: 5, paddingTop: 20, paddingBottom: 20 }} fontSize={"24px"}>No Linked Elderly...</Box>}
 
                         </Sheet>
                     </Box></Grid>
 
             </Grid>
-                <Dialog open={open} onClose={handleClose} >
-                    <DialogTitle>Link Elderly</DialogTitle>
-                    <DialogContent>
-               
+            <Dialog open={open} onClose={handleClose} >
+                <DialogTitle>Link Elderly</DialogTitle>
+                <DialogContent>
 
-                        <TextField onChange={handleElderlyID} required label="Elderly ID (Last 4 digit of NRIC)" variant="outlined" sx={{ width: 300, marginTop:1}} />
-                    </DialogContent>
-                    <DialogActions>
-                        <Button onClick={handleClose}>Cancel</Button>
-                        <Button type="submit" onClick={handleSubmit}>Link</Button>
-                    </DialogActions>
-                </Dialog>
+
+                    <TextField onChange={handleElderlyID} required label="Elderly ID (Last 4 digit of NRIC)" variant="outlined" sx={{ width: 300, marginTop: 1 }} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose}>Cancel</Button>
+                    <Button type="submit" onClick={handleSubmit}>Link</Button>
+                </DialogActions>
+            </Dialog>
             {/* <form onSubmit={handleSubmit}>
                 <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
                     <RadioGroup
