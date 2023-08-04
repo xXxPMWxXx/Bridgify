@@ -16,17 +16,21 @@ class BuildPicture extends StatelessWidget {
       return Padding(
         padding: const EdgeInsets.symmetric(vertical: 8.0),
         child: PictureCarousel(
-            images: model!.postImages!,
-            description: model!.description!,
-            activity: model!.activityType!),
+          images: model!.postImages!,
+          description: model!.description!,
+          activity: model!.activityType!,
+          elderlyInvolved: model!.elderlyInvolved,
+        ),
       );
     }
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
       child: PictureSingle(
-          image: model!.postImages![0],
-          description: model!.description!,
-          activity: model!.activityType!),
+        image: model!.postImages![0],
+        description: model!.description!,
+        activity: model!.activityType!,
+        elderlyInvolved: model!.elderlyInvolved,
+      ),
     );
   }
 }

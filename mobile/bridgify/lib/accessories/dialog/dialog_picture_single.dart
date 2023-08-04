@@ -50,12 +50,12 @@ class DialogPictureSingle extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 // boxShadow: [
-                  // BoxShadow(
-                  //   color: Colors.black.withOpacity(0.3),
-                  //   spreadRadius: 2,
-                  //   blurRadius: 20,
-                  //   offset: Offset(0, 10),
-                  // ),
+                // BoxShadow(
+                //   color: Colors.black.withOpacity(0.3),
+                //   spreadRadius: 2,
+                //   blurRadius: 20,
+                //   offset: Offset(0, 10),
+                // ),
                 // ],
                 image: DecorationImage(
                   fit: BoxFit.cover,
@@ -68,7 +68,7 @@ class DialogPictureSingle extends StatelessWidget {
             height: 5,
           ),
           PostText(
-            text: "$description #$activity",
+            text: "$description #${activity.replaceAll(' ', '_')}",
             fontSize: 16,
           ),
           const SizedBox(

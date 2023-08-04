@@ -6,11 +6,13 @@ class PictureSingle extends StatelessWidget {
   final String image;
   final String description;
   final String activity;
+  final List<dynamic>? elderlyInvolved;
   const PictureSingle(
       {super.key,
       required this.image,
       required this.description,
-      required this.activity});
+      required this.activity,
+      required this.elderlyInvolved});
 
   @override
   Widget build(BuildContext context) {
@@ -67,10 +69,32 @@ class PictureSingle extends StatelessWidget {
             ),
           ),
           const SizedBox(
+            height: 5,
+          ),
+          if (elderlyInvolved!.isNotEmpty)
+            if (elderlyInvolved!.length == 1)
+              PostText(
+                text:
+                    "${elderlyInvolved![0].substring(0, elderlyInvolved![0].length - 4).split(' ')[0]} is having fun",
+                fontSize: 16,
+              ),
+          if (elderlyInvolved!.length == 2)
+            PostText(
+              text:
+                  "${elderlyInvolved![0].substring(0, elderlyInvolved![0].length - 4).split(' ')[0]}, ${elderlyInvolved![1].substring(0, elderlyInvolved![1].length - 4).split(' ')[0]} are having fun",
+              fontSize: 16,
+            ),
+          if (elderlyInvolved!.length >= 2)
+            PostText(
+              text:
+                  "${elderlyInvolved![0].substring(0, elderlyInvolved![0].length - 4).split(' ')[0]}, ${elderlyInvolved![1].substring(0, elderlyInvolved![0].length - 4).split(' ')[0]} are having fun and ${elderlyInvolved!.length - 1} others are having fun",
+              fontSize: 16,
+            ),
+          const SizedBox(
             height: 15,
           ),
           PostText(
-            text: "$description #$activity",
+            text: "$description #${activity.replaceAll(' ', '_')}",
             fontSize: 16,
           ),
           const SizedBox(

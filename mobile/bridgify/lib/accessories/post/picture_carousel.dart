@@ -6,11 +6,13 @@ class PictureCarousel extends StatefulWidget {
   final List<String> images;
   final String description;
   final String activity;
+  final List<dynamic>? elderlyInvolved;
   const PictureCarousel(
       {Key? key,
       required this.images,
       required this.description,
-      required this.activity})
+      required this.activity,
+      required this.elderlyInvolved})
       : super(key: key);
 
   @override
@@ -77,7 +79,8 @@ class _PictureCarouselState extends State<PictureCarousel> {
                     // ],
                     image: DecorationImage(
                       fit: BoxFit.contain,
-                      image: Image.network('http://${Config.apiURL}/images/post/${widget.images[index % widget.images.length]}')
+                      image: Image.network(
+                              'http://${Config.apiURL}/images/post/${widget.images[index % widget.images.length]}')
                           .image,
                     ),
                   ),
@@ -98,8 +101,31 @@ class _PictureCarouselState extends State<PictureCarousel> {
           const SizedBox(
             height: 5,
           ),
+          if (widget.elderlyInvolved!.isNotEmpty)
+            if (widget.elderlyInvolved!.length == 1)
+              PostText(
+                text:
+                    "${widget.elderlyInvolved![0].substring(0, widget.elderlyInvolved![0].length - 4).split(' ')[0]} is having fun",
+                fontSize: 16,
+              ),
+          if (widget.elderlyInvolved!.length == 2)
+            PostText(
+              text:
+                  "${widget.elderlyInvolved![0].substring(0, widget.elderlyInvolved![0].length - 4).split(' ')[0]}, ${widget.elderlyInvolved![1].substring(0, widget.elderlyInvolved![1].length - 4).split(' ')[0]} are having fun",
+              fontSize: 16,
+            ),
+          if (widget.elderlyInvolved!.length >= 2)
+            PostText(
+              text:
+                  "${widget.elderlyInvolved![0].substring(0, widget.elderlyInvolved![0].length - 4).split(' ')[0]}, ${widget.elderlyInvolved![1].substring(0, widget.elderlyInvolved![1].length - 4).split(' ')[0]} are having fun and ${widget.elderlyInvolved!.length - 1} others are having fun",
+              fontSize: 16,
+            ),
+          const SizedBox(
+            height: 5,
+          ),
           PostText(
-            text: "${widget.description} #${widget.activity.replaceAll(' ', '_')}",
+            text:
+                "$widget.description #${widget.activity.replaceAll(' ', '_')}",
             fontSize: 16,
           ),
           const SizedBox(

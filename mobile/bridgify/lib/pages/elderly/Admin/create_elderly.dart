@@ -116,7 +116,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                     "NRIC",
                     "Last 4 characters of NRIC",
                     (onValidateVal) {
-                      if (onValidateVal.isEmpty) {
+                      if (onValidateVal.isEmpty || onValidateVal.length < 4) {
                         return 'Please input a valid NRIC.';
                       }
 

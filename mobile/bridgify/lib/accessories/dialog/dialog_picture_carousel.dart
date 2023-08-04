@@ -108,7 +108,8 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
             height: 5,
           ),
           PostText(
-            text: "${widget.description} #${widget.activity}",
+            text:
+                "$widget.description #${widget.activity.replaceAll(' ', '_')}",
             fontSize: 16,
           ),
           const SizedBox(

@@ -673,7 +673,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       title: 'About App',
                       icon: Icons.phone_android_rounded,
                       onTapPath: () {
-                        Navigator.pushNamed(context, "/adminHome");
+                        Navigator.pushNamed(context, "/about");
                       }),
                 ],
               ),

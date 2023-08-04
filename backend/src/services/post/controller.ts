@@ -179,7 +179,7 @@ export const getByUser = async (req: any, res: Response, next: NextFunction) => 
         //map linked elderly ID to their name
         for (const elderlyID of linkedElderly) {
           const elderlyName = await ElderlyModel.findOne({ id: elderlyID }).select('name');
-          linkedElderlyNameList.push(elderlyName.name);
+          linkedElderlyNameList.push(elderlyName.name + `(${elderlyID})`);
         };
         const post = await PostModel.find({ 'elderlyInvolved': { $in: linkedElderlyNameList } })
         res.status(200).json(post);

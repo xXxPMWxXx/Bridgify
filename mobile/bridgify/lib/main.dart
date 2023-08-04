@@ -1,5 +1,6 @@
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/login_response_model.dart';
+import 'package:bridgify/pages/about/about_us_page.dart';
 import 'package:bridgify/pages/chat/Admin/admin_chat_list_screen.dart';
 import 'package:bridgify/pages/chat/Child/chat_screen.dart';
 import 'package:bridgify/pages/elderly/Admin/admin_elderly_records_page.dart';
@@ -83,6 +84,7 @@ class _FirstPageState extends State<FirstPage> {
         '/login': (context) => const MainScreen(),
         '/settings': (context) => const SettingsPage(),
         '/profile': (context) => const ProfilePage(),
+        '/about': (context) => const AboutUsScreen(),
 
         //Child user
         '/home': (context) => const HomePage(),

@@ -1,10 +1,7 @@
-import 'dart:io';
-
 import 'package:bridgify/accessories/background.dart';
 import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
 import 'package:bridgify/accessories/fadeAnimation.dart';
 import 'package:flutter/material.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
@@ -117,7 +114,7 @@ class _MainScreenState extends State<MainScreen> {
         _loginWidth = windowWidth;
         _loginOpacity = 1;
 
-        _loginYOffset = 270;
+        _loginYOffset = 280;
         _loginHeight = windowHeight - 270;
 
         _loginXOffset = 0;
@@ -127,7 +124,7 @@ class _MainScreenState extends State<MainScreen> {
         _backgroundColor = const Color.fromARGB(251, 64, 40, 74);
         _headingColor = Colors.white;
 
-        _headingTop = 90;
+        _headingTop = 70;
 
         _loginWidth = windowWidth - 40;
         _loginOpacity = 0.7;
@@ -136,7 +133,7 @@ class _MainScreenState extends State<MainScreen> {
         _loginHeight = windowHeight - 240;
 
         _loginXOffset = 20;
-        _registerYOffset = 170;
+        _registerYOffset = 160;
         _registerHeight = windowHeight - 190;
         break;
     }
@@ -146,7 +143,7 @@ class _MainScreenState extends State<MainScreen> {
       body: Stack(
         children: <Widget>[
           const BackgroundWidget(),
-          // const SizedBox(height: 20),
+
           //Login
           AnimatedContainer(
             padding: const EdgeInsets.all(32),
@@ -191,7 +188,6 @@ class _MainScreenState extends State<MainScreen> {
                             child: Column(
                               children: <Widget>[
                                 Container(
-                                  // padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom: BorderSide(
@@ -232,7 +228,6 @@ class _MainScreenState extends State<MainScreen> {
                                     borderFocusedErrorColor: Colors.white,
                                   ),
                                 ),
-                                //////////////////////////////////////////////////////////////////////////////////////////
                                 Container(
                                   // padding: const EdgeInsets.all(10),
                                   decoration: BoxDecoration(
@@ -288,40 +283,39 @@ class _MainScreenState extends State<MainScreen> {
                                     borderFocusedErrorColor: Colors.white,
                                   ),
                                 ),
-                                ///////////////////////////////////////////////////////////
                               ],
                             ),
                           )),
                       const SizedBox(
                         height: 15,
                       ),
-                      FadeAnimation(
-                        1.5,
-                        Align(
-                          alignment: Alignment.bottomRight,
-                          child: Padding(
-                            padding: const EdgeInsets.only(
-                              right: 25,
-                            ),
-                            child: RichText(
-                              text: TextSpan(
-                                style: const TextStyle(
-                                    color: Colors.grey, fontSize: 14.0),
-                                children: <TextSpan>[
-                                  TextSpan(
-                                    text: 'Forget Password?',
-                                    style: const TextStyle(
-                                      color: Colors.grey,
-                                    ),
-                                    recognizer: TapGestureRecognizer()
-                                      ..onTap = () {},
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
+                      // FadeAnimation(
+                      //   1.5,
+                      //   Align(
+                      //     alignment: Alignment.bottomRight,
+                      //     child: Padding(
+                      //       padding: const EdgeInsets.only(
+                      //         right: 25,
+                      //       ),
+                      //       child: RichText(
+                      //         text: TextSpan(
+                      //           style: const TextStyle(
+                      //               color: Colors.grey, fontSize: 14.0),
+                      //           children: <TextSpan>[
+                      //             TextSpan(
+                      //               text: 'Forget Password?',
+                      //               style: const TextStyle(
+                      //                 color: Colors.grey,
+                      //               ),
+                      //               recognizer: TapGestureRecognizer()
+                      //                 ..onTap = () {},
+                      //             ),
+                      //           ],
+                      //         ),
+                      //       ),
+                      //     ),
+                      //   ),
+                      // ),
                       const SizedBox(
                         height: 20,
                       ),
@@ -426,64 +420,6 @@ class _MainScreenState extends State<MainScreen> {
                       const SizedBox(
                         height: 20,
                       ),
-                      const FadeAnimation(
-                          1.7,
-                          Text(
-                            "Continue with google & OTP",
-                            style: TextStyle(color: Colors.grey),
-                          )),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      SingleChildScrollView(
-                        physics: const NeverScrollableScrollPhysics(),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: <Widget>[
-                            FadeAnimation(
-                              1.9,
-                              Platform.isAndroid
-                                  ? MaterialButton(
-                                      onPressed: () {},
-                                      color: const Color.fromARGB(
-                                          255, 234, 67, 53),
-                                      textColor: Colors.white,
-                                      padding: const EdgeInsets.all(14),
-                                      shape: const CircleBorder(),
-                                      child: const Icon(
-                                        FontAwesomeIcons.google,
-                                        size: 19,
-                                      ),
-                                    )
-                                  : MaterialButton(
-                                      onPressed: () {},
-                                      color: const Color.fromARGB(
-                                          255, 255, 255, 255),
-                                      textColor: Colors.black.withOpacity(0.7),
-                                      padding: const EdgeInsets.all(14),
-                                      shape: const CircleBorder(),
-                                      child: const Icon(
-                                        FontAwesomeIcons.apple,
-                                        size: 19,
-                                      ),
-                                    ),
-                            ),
-                            FadeAnimation(
-                                1.9,
-                                MaterialButton(
-                                  onPressed: () {},
-                                  color: const Color.fromARGB(255, 52, 168, 83),
-                                  textColor: Colors.white,
-                                  padding: const EdgeInsets.all(14),
-                                  shape: const CircleBorder(),
-                                  child: const Icon(
-                                    FontAwesomeIcons.mobileScreenButton,
-                                    size: 19,
-                                  ),
-                                )),
-                          ],
-                        ),
-                      ),
                       const SizedBox(height: 20),
                       GestureDetector(
                         onTap: () {
@@ -521,7 +457,7 @@ class _MainScreenState extends State<MainScreen> {
               ),
             ),
           ),
-          //Registration///////////////////////////////////////////////////////////////////////////////////////////////////////////
+          //Registration
           AnimatedContainer(
             height: _registerHeight,
             padding: const EdgeInsets.symmetric(horizontal: 32, vertical: 15),
@@ -561,8 +497,6 @@ class _MainScreenState extends State<MainScreen> {
                           child: Column(
                             children: <Widget>[
                               Container(
-                                // padding: const EdgeInsetsDirectional.symmetric(
-                                //     horizontal: 5, vertical: 0),
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
@@ -602,10 +536,7 @@ class _MainScreenState extends State<MainScreen> {
                                   borderFocusedErrorColor: Colors.white,
                                 ),
                               ),
-                              /////////////////////////////////////////////////////////////////////////////////
                               Container(
-                                // padding: const EdgeInsetsDirectional.symmetric(
-                                //     horizontal: 5, vertical: 0),
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
@@ -645,10 +576,7 @@ class _MainScreenState extends State<MainScreen> {
                                   borderFocusedErrorColor: Colors.white,
                                 ),
                               ),
-                              //////////////////////////////////////////////////////////////
                               Container(
-                                // padding: const EdgeInsetsDirectional.symmetric(
-                                //     horizontal: 5, vertical: 0),
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
@@ -702,8 +630,6 @@ class _MainScreenState extends State<MainScreen> {
                                 ),
                               ),
                               Container(
-                                // padding: const EdgeInsetsDirectional.symmetric(
-                                //     horizontal: 5, vertical: 0),
                                 decoration: BoxDecoration(
                                     border: Border(
                                         bottom: BorderSide(
@@ -884,30 +810,6 @@ class _MainScreenState extends State<MainScreen> {
                                         );
                                       }
                                     } else {
-                                      /*() {
-                                      if (validateAndSave()) {
-                                        setState(() {
-                                          isAPICallProcess = true;
-                                        });
-
-                                        LoginRequestModel model =
-                                            LoginRequestModel(
-                                          email: emailLogin,
-                                          password: passwordLogin,
-                                        );
-
-                                        APIService.login(model).then(
-                                          (response) {
-                                            setState(() {
-                                              isAPICallProcess = false;
-                                            });
-
-                                            if (response) {
-                                              Navigator.pushNamed(
-                                                context,
-                                                '/home',
-                                              );
-                                            } else {*/
                                       showDialog(
                                         context: context,
                                         builder: (context) {
@@ -926,11 +828,6 @@ class _MainScreenState extends State<MainScreen> {
                                           );
                                         },
                                       );
-                                      // }
-                                      // },
-                                      // );
-                                      // }
-                                      // };
                                     }
                                   });
                                 }
@@ -945,57 +842,6 @@ class _MainScreenState extends State<MainScreen> {
                         ),
                         const SizedBox(
                           height: 20,
-                        ),
-                        const Text(
-                          "Signup with Google or OTP",
-                          style: TextStyle(color: Colors.grey),
-                        ),
-                        const SizedBox(
-                          height: 20,
-                        ),
-                        SingleChildScrollView(
-                          physics: const NeverScrollableScrollPhysics(),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: <Widget>[
-                              Platform.isAndroid
-                                  ? MaterialButton(
-                                      onPressed: () {},
-                                      color: const Color.fromARGB(
-                                          255, 234, 67, 53),
-                                      textColor: Colors.white,
-                                      padding: const EdgeInsets.all(14),
-                                      shape: const CircleBorder(),
-                                      child: const Icon(
-                                        FontAwesomeIcons.google,
-                                        size: 19,
-                                      ),
-                                    )
-                                  : MaterialButton(
-                                      onPressed: () {},
-                                      color: const Color.fromARGB(
-                                          255, 255, 255, 255),
-                                      textColor: Colors.black.withOpacity(0.7),
-                                      padding: const EdgeInsets.all(14),
-                                      shape: const CircleBorder(),
-                                      child: const Icon(
-                                        FontAwesomeIcons.apple,
-                                        size: 19,
-                                      ),
-                                    ),
-                              MaterialButton(
-                                onPressed: () {},
-                                color: const Color.fromARGB(255, 52, 168, 83),
-                                textColor: Colors.white,
-                                padding: const EdgeInsets.all(14),
-                                shape: const CircleBorder(),
-                                child: const Icon(
-                                  FontAwesomeIcons.mobileScreenButton,
-                                  size: 19,
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
                         const SizedBox(height: 20),
                         GestureDetector(

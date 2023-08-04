@@ -388,7 +388,7 @@ class _HomePageState extends State<HomePage> {
                       title: 'About App',
                       icon: Icons.phone_android_rounded,
                       onTapPath: () {
-                        Navigator.pushNamed(context, "/home");
+                        Navigator.pushNamed(context, "/about");
                       }),
                 ],
               ),
