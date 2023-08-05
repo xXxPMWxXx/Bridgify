@@ -60,7 +60,7 @@ SMU .HEAP 2023 G14
 - Install accordingly for mac and windows and extract to desired location (https://docs.flutter.dev/get-started/install)
 - Please note to have VSCode already installed
 - #### Windows:
-- Navigate to "flutter\bin" and copy its path
+- Navigate to "flutter\bin" and copy its path within the previously chosen location
 - Edit environment variables for your account to include the copied path in "Path" entry
 ![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/4042307f-77b8-4146-bdde-210c709fe794)
 - fun 'flutter --version' from the console window
@@ -94,7 +94,50 @@ SMU .HEAP 2023 G14
 ![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/dc5529a8-c71c-481b-bf07-3bf2a0a961e4)
 
 
-- Mac:
+- #### macOS:
+- Determine the path of your clone of the Flutter SDK
+- Open (or create) the rc file for your shell. Typing echo $SHELL in your Terminal tells you which shell you’re using. If you’re using Bash, edit $HOME/.bash_profile or $HOME/.bashrc. If you’re using Z shell, edit $HOME/.zshrc. If you’re using a different shell, the file path and filename will be different on your machine.
+- Add the following line and change [PATH_OF_FLUTTER_GIT_DIRECTORY] to be the path of your clone of the Flutter git repo:
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/ceed3d9b-4bdb-49c8-906d-1c252f55ecf2)
+- Run source $HOME/.<rc file> to refresh the current window, or open a new terminal window to automatically source the file.
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/4a123c95-e1e4-411e-a715-8ec37b1e0021)
+- Run 'which flutter' to verify that the flutter command is available
+- Run 'flutter doctor', which checks your environment and displays a report to the terminal window. The Dart SDK is bundled with Flutter; it isn’t necessary to install Dart separately. Check the output carefully for other software you might need to install or further tasks to perform (shown in bold text).
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/c698fa37-9e43-4c4b-94b0-d6bc7cfc1d99)
+- Install the latest version of Android Studio (https://developer.android.com/studio)
+- Start Android Studio, and go through with the default configurations to the home page.
+- Click on 'More Actions' icon => SDK Manager
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/4b391c2e-610c-4e26-a2f8-7c4629e41e0e)
+- Navigate to 'SDK Tools' => install 'Android SDK Command-Line Tools (latest)'
+- Once installed, run 'flutter doctor' from the console window to check the status of Android Studio
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/2c77692a-325d-4bb9-b611-a8aa0c66b076)
+- Run 'flutter doctor --android licenses' and accept all license agreements
+- Once completed, run 'flutter doctor' to check the status of Android toolchain
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/dce6f04b-945e-46c4-97c3-edfe5771a87c)
+- Now to open a flutter project, open VSCode and download the extensions 'Flutter' and 'Awesome Flutter Snippets'
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/7c0385cd-0c66-4dcf-93b4-6a2606b5f297)
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/9c4a4669-a0a5-49bb-a260-c74d28ff923c)
+- Navigate to the desired project directory => run 'flutter create <Project_Name>' in the command line
+- This creates a flutter project within the directory
+- Enable VM acceleration on your machine (https://developer.android.com/studio/run/emulator-acceleration#accel-vm)
+- Open Android Studio => Click on 'More Actions' icon => Android Device Manager => Create Device (Phone)
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/2840293d-c016-449f-9a6b-29fd9f3d4a80)
+- Choose a device definition and select Next.
+- Select one or more system images for the Android versions you want to emulate, and select Next. An x86 or x86_64 image is recommended.
+- Under Emulated Performance, select Hardware - GLES 2.0 to enable hardware acceleration.
+- Verify the AVD configuration is correct, and select Finish.
+- #### To run the emulator, either 
+- In Android Virtual Device Manager, click Run in the toolbar. The emulator starts up and displays the default canvas for your selected OS version and device.
+- #### or
+- Click on the 'Chrome(web-javascript)' on the bottom right of the screen
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/f4c564e8-4f9c-446e-be2e-5a050a0f8ed4)
+- This show a pop up on the top of the screen where you can choose the android emulator that you just created
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/05ff89ba-866c-49f5-be8e-4a974db87db8)
+- To run and debug your project, go to the main.dart file => with the android emulator open, click on "Start Debugging" 
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/dc5529a8-c71c-481b-bf07-3bf2a0a961e4)
+
+
+
 
 
 ## Contributors
