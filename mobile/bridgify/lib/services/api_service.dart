@@ -170,10 +170,7 @@ class APIService {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       try {
-        Map<String, dynamic> jsonDecoded = json.decode(data);
-        if (jsonDecoded['message'] == null) {
-          return postFromJson(data);
-        }
+        return postFromJson(data);
       } catch (e) {
         return null;
       }
@@ -264,10 +261,7 @@ class APIService {
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
       try {
-        Map<String, dynamic> jsonDecoded = json.decode(data);
-        if (jsonDecoded['message'] == null) {
-          return elderlyFromJson(data);
-        }
+        return elderlyFromJson(data);
       } catch (e) {
         return null;
       }
