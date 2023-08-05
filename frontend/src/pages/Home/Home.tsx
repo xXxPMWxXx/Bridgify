@@ -229,7 +229,8 @@ export const Home = () => {
             </main>
 
             <main>
-                
+                <Box sx={{marginTop:50}}>
+                <Notifications /></Box>
             </main>
 
         </div>

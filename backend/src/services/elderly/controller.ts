@@ -117,7 +117,7 @@ export const update = async (req: any, res: Response, next: NextFunction) => {
           await ElderlyModel.updateOne({ id: id }, req.body)
             .then((updateResp: any) => {
               for (const key in differences) {
-                const newNotification = new NotificationModel({ "elderlyID": id, "message": `${key} has been updated to ${differences[key]['new']}`, "date": getDateTime.now() })
+                const newNotification = new NotificationModel({ "elderlyID": id, "message": `${key} has been updated to "${differences[key]['new']}".`, "date": getDateTime.now() })
 
                 notificationList.push(
                   newNotification.save().catch((error: any) => {
@@ -132,8 +132,9 @@ export const update = async (req: any, res: Response, next: NextFunction) => {
             .then(() => {
               // This block will run when all notifications have been successfully saved
               return res.status(200).send({
-                message: `Notifications for ${id} created successfully`,
-                message2: `Elderly ID : ${id} updated successfully`,
+                message: `Elderly ID : ${id} updated successfully`,     
+                message2: `Notifications for ${id} created successfully`,
+                differences
               });
             })
             .catch((error: any) => {

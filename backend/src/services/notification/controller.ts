@@ -86,7 +86,7 @@ export const create = async (req: any, res: any, next: NextFunction) => {
 
 };
 
-// to get all records for the linked elderly for user side
+// to get all notifications for the linked elderly for user side
 export const getLinked = async (req: any, res: any, next: NextFunction) => {
 
   // 1. get token from req
@@ -116,7 +116,10 @@ export const getLinked = async (req: any, res: any, next: NextFunction) => {
             results.push(e)
           )
         )
+        
         // console.log(resolvedResults);
+        results.sort((a, b) => b.date.localeCompare(a.date));
+
 
         res.status(200).json(results);
 
