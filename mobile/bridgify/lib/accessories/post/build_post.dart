@@ -17,12 +17,15 @@ class BuildPost extends StatefulWidget {
 class _BuildPostState extends State<BuildPost> {
   List<String> dropDownValue = ['My Elderly', 'General'];
   final ScrollController _scrollController = ScrollController();
-  String? currentItem = 'General';
+  String? currentItem;
 
   @override
   void initState() {
     super.initState();
-    setState(() {});
+
+    setState(() {
+      currentItem = dropDownValue[0];
+    });
   }
 
   @override
@@ -52,70 +55,51 @@ class _BuildPostState extends State<BuildPost> {
                 ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-                child: FutureBuilder(
-                  future: APIService.getUserProfile(),
-                  builder: (BuildContext context, AsyncSnapshot<Object> model) {
-                    var userProfileData = model.data as Map<String, dynamic>?;
-
-                    if (model.hasData) {
-                      List<dynamic> elderlyList = userProfileData!["elderly"];
-                      if (elderlyList.isEmpty) {
-                        currentItem = dropDownValue[1];
-                      } else {
-                        currentItem = dropDownValue[0];
-                      }
-                      return DropdownButtonFormField<String>(
-                        icon: Icon(
-                          Icons.filter_alt,
-                          color: Colors.grey.shade600,
-                        ),
-                        value: currentItem,
-                        onChanged: (value) {
-                          setState(() {
-                            currentItem = value;
-                          });
-                          _scrollController.animateTo(0.0,
-                              duration: const Duration(milliseconds: 1),
-                              curve: Curves.easeInOut);
-                        },
-                        style: const TextStyle(
-                          color: Colors.black,
-                          fontSize: 14.0,
-                        ),
-                        decoration: const InputDecoration(
-                          border: InputBorder.none,
-                        ),
-                        items: dropDownValue.map((value) {
-                          return DropdownMenuItem<String>(
-                            value: value,
-                            child: Row(
-                              children: [
-                                value == 'My Elderly'
-                                    ? Icon(
-                                        Icons.elderly,
-                                        color: Colors.grey.shade600,
-                                      )
-                                    : Icon(Icons.group,
-                                        color: Colors.grey.shade600),
-                                const SizedBox(width: 5),
-                                Text(
-                                  value,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 16.0,
-                                    fontFamily: 'Sofia',
-                                  ),
-                                ),
-                              ],
-                            ),
-                          );
-                        }).toList(),
-                      );
-                    }
-                    return const Center(
-                      child: CircularProgressIndicator(),
-                    );
+                child: DropdownButtonFormField<String>(
+                  icon: Icon(
+                    Icons.filter_alt,
+                    color: Colors.grey.shade600,
+                  ),
+                  value: currentItem,
+                  onChanged: (value) {
+                    setState(() {
+                      currentItem = value;
+                    });
+                    _scrollController.animateTo(0.0,
+                        duration: const Duration(milliseconds: 1),
+                        curve: Curves.easeInOut);
                   },
+                  style: const TextStyle(
+                    color: Colors.black,
+                    fontSize: 14.0,
+                  ),
+                  decoration: const InputDecoration(
+                    border: InputBorder.none,
+                  ),
+                  items: dropDownValue.map((value) {
+                    return DropdownMenuItem<String>(
+                      value: value,
+                      child: Row(
+                        children: [
+                          value == 'My Elderly'
+                              ? Icon(
+                                  Icons.elderly,
+                                  color: Colors.grey.shade600,
+                                )
+                              : Icon(Icons.group, color: Colors.grey.shade600),
+                          const SizedBox(width: 5),
+                          Text(
+                            value,
+                            style: const TextStyle(
+                              color: Colors.black,
+                              fontSize: 16.0,
+                              fontFamily: 'Sofia',
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  }).toList(),
                 ),
               ),
             ],
