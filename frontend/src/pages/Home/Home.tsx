@@ -3,6 +3,9 @@ import { Link, Navigate } from 'react-router-dom';
 import {ResponsiveAppBar} from '../../Navbar';
 import { Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
+import Dialog from '@mui/material/Dialog';
+import DialogTitle from '@mui/material/DialogTitle';
+import DialogContent from '@mui/material/DialogContent';
 import backgroundImage from '../../images/background.png';
 import ElderlyStatus from './elderlyStatus';
 import Posts from './posts';
@@ -38,6 +41,7 @@ export const Home = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [alertType, setAlertType]: any = useState('info');
     const [alertMsg, setAlertMsg] = useState('');
+    const [open, setOpen] = useState(false);
 
     // const linkedElderly = window.localStorage.getItem('linkedElderly')
     const token = window.localStorage.getItem('accessToken');
@@ -63,6 +67,15 @@ export const Home = () => {
     //     var elderlyArray = linkedElderly.split(",");
     //     // console.log(elderlyArray[0])
     // }
+
+    //for the elderlyStatus popup
+    const handleOpen = () => {
+        setOpen(true);
+    }
+
+    const handleClose = () => {
+        setOpen(false);
+    }
 
     const elderlyStatuses = async () => {
         try {
@@ -180,7 +193,13 @@ export const Home = () => {
                     <Grid container spacing={-5} justifyContent="center">
                         {elderly.map((post:any) => ( // Add index as the second parameter
                         <Grid item key={post.id} xs={12} sm={6} md={4} lg={3} xl={2}>
-                            <ElderlyStatus post={post} />
+                            <ElderlyStatus post={post} onClick={handleOpen}/>
+                            <Dialog open={open} onClose={handleClose}>
+                                <DialogTitle>{"Elderly Health Information"}</DialogTitle>
+                                <DialogContent>
+                                    
+                                </DialogContent>
+                            </Dialog>
                         </Grid>
                         ))}
                     </Grid>
