@@ -128,7 +128,6 @@ class _BuildPostState extends State<BuildPost> {
               BuildContext context,
               AsyncSnapshot<List<PostResponseModel>?> model,
             ) {
-              print("line194" + currentItem!);
               if (model.hasData) {
                 return Expanded(
                   flex: 2,
