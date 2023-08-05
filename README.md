@@ -56,10 +56,10 @@ SMU .HEAP 2023 G14
 - `tmux attach-session -t session_name` => Connect to a named session
 - `tmux kill-session -t session_name` => Kill/stop a session (enter `exit` command while connected to the session also will kill the session)
 
-###### Setting up Flutter framework on vscode
+#### Setting up Flutter framework on vscode
 - Install accordingly for mac and windows and extract to desired location (https://docs.flutter.dev/get-started/install)
 - Please note to have VSCode already installed
-- # Windows:
+- ###### Windows:
 - Navigate to "flutter\bin" and copy its path
 - Edit environment variables for your account to include the copied path in "Path" entry
 ![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/4042307f-77b8-4146-bdde-210c709fe794)
