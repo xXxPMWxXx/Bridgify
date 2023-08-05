@@ -7,6 +7,8 @@ const UserModel = require("../../models/user");
 const FaceModel = require('../../models/face');
 const NotificationModel = require("../../models/notification");
 
+const getDateTime = require("../../services/utils/getDateTime");
+
 
 const jwt_secret: any = process.env.JWT_SECRET;
 
@@ -59,6 +61,9 @@ export const insert = async (req: any, res: Response, next: NextFunction) => {
   }
 
 };
+function arraysAreEqual(arr1: any[], arr2: string | any[]) {
+  return arr1.length === arr2.length && arr1.every((value, index) => value === arr2[index]);
+}
 
 // get update elderly profile
 export const update = async (req: any, res: Response, next: NextFunction) => {
@@ -71,6 +76,7 @@ export const update = async (req: any, res: Response, next: NextFunction) => {
     jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
       // 3. allow elderly to update elderly details
       const { id } = req.body;
+      const updateStatus = req.body.status;
       if (decoded) {
         // 4. check if the email is existed
         const elderly = await ElderlyModel.findOne({ id: id });
@@ -80,17 +86,67 @@ export const update = async (req: any, res: Response, next: NextFunction) => {
             .json({ message: `Elderly ID: ${id} does not exit!` });
         }
         try {
-          await ElderlyModel.updateOne({ id: id }, req.body);
-          res.status(200).send({ message: `Elderly ID : ${id} updated successfully` });
+          //compare original db data with incoming request body
+          //and check for the difference (for notification) 
+          const originalData = await ElderlyModel.findOne({ id: id });
+          const originalStatus = originalData.status;
+
+          const differences: { [key: string]: { old: any; new: any } } = {};
+          for (const key in updateStatus) {
+            if (key == "medication") {
+              if ((!arraysAreEqual(originalStatus[key], updateStatus[key]))) {
+                differences[key] = {
+                  old: originalStatus[key],
+                  new: updateStatus[key]
+                };
+              }
+            } else {
+              //if there is a difference
+              if (originalStatus[key] !== updateStatus[key]) {
+                differences[key] = {
+                  old: originalStatus[key],
+                  new: updateStatus[key]
+                };
+              }
+            }
+          }
+
+          //create new notifications
+          const notificationList: any[] = [];
+
+          await ElderlyModel.updateOne({ id: id }, req.body)
+            .then((updateResp: any) => {
+              for (const key in differences) {
+                const newNotification = new NotificationModel({ "elderlyID": id, "message": `${id}'s ${key} has been updated to ${differences[key]['new']}`, "date": getDateTime.now() })
+
+                notificationList.push(
+                  newNotification.save().catch((error: any) => {
+                    console.log(error);
+                    // Handle the error, maybe log it
+                  })
+                );
+              }
+
+              return Promise.all(notificationList);
+            })
+            .then(() => {
+              // This block will run when all notifications have been successfully saved
+              return res.status(200).send({
+                message: `Notifications for ${id} created successfully`,
+                message2: `Elderly ID : ${id} updated successfully`,
+              });
+            })
+            .catch((error: any) => {
+              // Handle errors from update or notification saving
+              console.error(error);
+              return res.status(500).json({ error: "An error occurred while updating and creating notifications." });
+            });
         } catch (error) {
-          res.status(400).json({ error: "Update fail, please try again later" });
+          return res.status(400).json({ error: "Update fail, please try again later" });
         }
 
-      } else if (err) {
-        res.status(401).json({ error: "You must have a valid token" });
       }
-    });
-
+    })
   } catch (error) {
     res.status(400).json({ error, message: "Make sure your request body is correct" });
   }
@@ -222,7 +278,7 @@ export const getByUser = async (req: any, res: Response, next: NextFunction) => 
             .json({ message: `User email: ${email} is not linked to any elderly yet!` });
         }
 
-        const elderly =  await ElderlyModel.find({'id' : {$in : linkedElderly}})
+        const elderly = await ElderlyModel.find({ 'id': { $in: linkedElderly } })
         res.status(200).json(elderly);
 
       } else if (err) {
