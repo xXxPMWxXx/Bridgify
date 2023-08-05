@@ -5,6 +5,8 @@ import "dotenv/config";
 const ElderlyModel = require("../../models/elderly");
 const UserModel = require("../../models/user");
 const FaceModel = require('../../models/face');
+const NotificationModel = require("../../models/notification");
+
 
 const jwt_secret: any = process.env.JWT_SECRET;
 

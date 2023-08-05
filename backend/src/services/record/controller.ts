@@ -44,32 +44,49 @@ export const create = async (req: any, res: any, next: NextFunction) => {
       if (decoded) {
         const data = req.body;
         const file = req.files.doc;
+        //check if record already exist
+        const record = await RecordModel.findOne({ 'elderlyID': data.elderlyID, 'document_no': data.document_no });
+        //if record with same elderly id and doc no exists then return error
+        if (record == null) {
+          //only accepts one file
+          const fileName = `${data.elderlyID}_${data.name}_${data.document_no}` + path.extname(file.name);
+          file.mv(baseDir + `/records/${fileName}`);
 
-        //only accepts one file
-        const fileName = `${data.elderlyID}_${data.name}_${data.document_no}` + path.extname(file.name);
-        file.mv(baseDir + `/records/${fileName}`);
-
-        //create the DB object
-        const newRecord = new RecordModel({
-          "elderlyID": data.elderlyID,
-          "type": data.type,
-          "dateTime": getDateTime.now(),
-          "name": data.name,
-          "document_no": data.document_no,
-          "document_path": fileName
-        });
-
-        // add a new record to mongodb
-        newRecord
-          .save()
-          .then((response: any) => {
-            return res.status(200).send({
-              message: `Record ${data.document_no} created successfully`
-            });
-          })
-          .catch((error: any) => {
-            return next(error);
+          //create the DB object
+          const newRecord = new RecordModel({
+            "elderlyID": data.elderlyID,
+            "type": data.type,
+            "dateTime": getDateTime.now(),
+            "name": data.name,
+            "document_no": data.document_no,
+            "document_path": fileName
           });
+
+          // add a new record to mongodb
+          newRecord
+            .save()
+            .then((response: any) => {
+              return res.status(200).send({
+                message: `Record ${data.document_no} created successfully`
+              });
+            })
+            .catch((error: any) => {
+              return next(error);
+            });
+            
+        } else {
+          return res
+            .status(400)
+            .json({
+              message: `Record: ${data.document_no} for ${data.elderlyID} already exist!`,
+            });
+        }
+
+
+
+
+
+
 
 
       } else if (err) {
