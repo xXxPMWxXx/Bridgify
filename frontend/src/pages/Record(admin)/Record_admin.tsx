@@ -13,7 +13,7 @@ export const Record_admin = () => {
     const token = window.localStorage.getItem('accessToken');
     const accRole = window.localStorage.getItem('accRole');
 
-    const [value, setValue] = React.useState('Insert Record');
+    const [value, setValue] = React.useState('Records');
 
     const handleChange = (event: React.SyntheticEvent, newValue: string) => {
         setValue(newValue);
