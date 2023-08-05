@@ -58,7 +58,8 @@ SMU .HEAP 2023 G14
 
 ###### Setting up Flutter framework on vscode
 - Install accordingly for mac and windows and extract to desired location (https://docs.flutter.dev/get-started/install)
-- Windows:
+- Please note to have VSCode already installed
+- # Windows:
 - Navigate to "flutter\bin" and copy its path
 - Edit environment variables for your account to include the copied path in "Path" entry
 ![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/4042307f-77b8-4146-bdde-210c709fe794)
@@ -66,7 +67,6 @@ SMU .HEAP 2023 G14
 ![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/b9fa9be1-c7ab-42e7-aa36-b52b361cbef7)
 - run 'flutter doctor' from the console window
 ![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/7216333f-0714-48a7-93a2-4af8a6cefab8)
-- As an android application was development, We would have to install Android tool chain, installing the dependencies for android studio and visual studio are not mandatory, so i'll just be using Android Studio
 - Install the latest version of Android Studio (https://developer.android.com/studio)
 - Start Android Studio, and go through with the default configurations to the home page.
 - Click on 'More Actions' icon => SDK Manager
