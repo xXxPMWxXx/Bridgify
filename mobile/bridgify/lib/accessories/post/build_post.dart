@@ -17,11 +17,12 @@ class BuildPost extends StatefulWidget {
 class _BuildPostState extends State<BuildPost> {
   List<String> dropDownValue = ['My Elderly', 'General'];
   final ScrollController _scrollController = ScrollController();
-  String? currentItem;
+  String? currentItem = 'General';
+
   @override
   void initState() {
     super.initState();
-    currentItem = dropDownValue[0];
+    setState(() {});
   }
 
   @override
@@ -51,51 +52,70 @@ class _BuildPostState extends State<BuildPost> {
                 ),
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 0),
-                child: DropdownButtonFormField<String>(
-                  icon: Icon(
-                    Icons.filter_alt,
-                    color: Colors.grey.shade600,
-                  ),
-                  value: currentItem,
-                  onChanged: (value) {
-                    setState(() {
-                      currentItem = value;
-                    });
-                    _scrollController.animateTo(0.0,
-                        duration: const Duration(milliseconds: 1),
-                        curve: Curves.easeInOut);
-                  },
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 14.0,
-                  ),
-                  decoration: const InputDecoration(
-                    border: InputBorder.none,
-                  ),
-                  items: dropDownValue.map((value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Row(
-                        children: [
-                          value == 'My Elderly'
-                              ? Icon(
-                                  Icons.elderly,
-                                  color: Colors.grey.shade600,
-                                )
-                              : Icon(Icons.group, color: Colors.grey.shade600),
-                          const SizedBox(width: 5),
-                          Text(
-                            value,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16.0,
-                              fontFamily: 'Sofia',
+                child: FutureBuilder(
+                  future: APIService.getUserProfile(),
+                  builder: (BuildContext context, AsyncSnapshot<Object> model) {
+                    var userProfileData = model.data as Map<String, dynamic>?;
+
+                    if (model.hasData) {
+                      List<dynamic> elderlyList = userProfileData!["elderly"];
+                      if (elderlyList.isEmpty) {
+                        currentItem = dropDownValue[1];
+                      } else {
+                        currentItem = dropDownValue[0];
+                      }
+                      return DropdownButtonFormField<String>(
+                        icon: Icon(
+                          Icons.filter_alt,
+                          color: Colors.grey.shade600,
+                        ),
+                        value: currentItem,
+                        onChanged: (value) {
+                          setState(() {
+                            currentItem = value;
+                          });
+                          _scrollController.animateTo(0.0,
+                              duration: const Duration(milliseconds: 1),
+                              curve: Curves.easeInOut);
+                        },
+                        style: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 14.0,
+                        ),
+                        decoration: const InputDecoration(
+                          border: InputBorder.none,
+                        ),
+                        items: dropDownValue.map((value) {
+                          return DropdownMenuItem<String>(
+                            value: value,
+                            child: Row(
+                              children: [
+                                value == 'My Elderly'
+                                    ? Icon(
+                                        Icons.elderly,
+                                        color: Colors.grey.shade600,
+                                      )
+                                    : Icon(Icons.group,
+                                        color: Colors.grey.shade600),
+                                const SizedBox(width: 5),
+                                Text(
+                                  value,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 16.0,
+                                    fontFamily: 'Sofia',
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                        ],
-                      ),
+                          );
+                        }).toList(),
+                      );
+                    }
+                    return const Center(
+                      child: CircularProgressIndicator(),
                     );
-                  }).toList(),
+                  },
                 ),
               ),
             ],
@@ -108,12 +128,13 @@ class _BuildPostState extends State<BuildPost> {
               BuildContext context,
               AsyncSnapshot<List<PostResponseModel>?> model,
             ) {
+              print("line194" + currentItem!);
               if (model.hasData) {
                 return Expanded(
                   flex: 2,
                   child: ListView.builder(
                     controller: _scrollController,
-                    shrinkWrap: true,
+                    shrinkWrap: false,
                     physics: const ClampingScrollPhysics(),
                     scrollDirection: Axis.vertical,
                     padding: const EdgeInsets.all(0),
@@ -124,17 +145,26 @@ class _BuildPostState extends State<BuildPost> {
                     },
                   ),
                 );
-              }
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 80.0),
-                child: Center(
-                  child: Text(
-                    "No relevant post found at the moment",
-                    style: TextStyle(color: Colors.grey.shade800, fontSize: 16),
+              } else {
+                return Expanded(
+                  flex: 2,
+                  child: ListView(
+                    controller: _scrollController,
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 80.0),
+                        child: Center(
+                          child: Text(
+                            "No relevant post found at the moment",
+                            style: TextStyle(
+                                color: Colors.grey.shade800, fontSize: 16),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              );
+                );
+              }
             },
           ),
         if (currentItem == dropDownValue[1])
@@ -146,34 +176,58 @@ class _BuildPostState extends State<BuildPost> {
             ) {
               if (model.hasData) {
                 if (model.data!.isEmpty) {
-                  return const Center(
-                    child: CircularProgressIndicator(),
+                  return Expanded(
+                    flex: 2,
+                    child: ListView(
+                      controller: _scrollController,
+                      children: [
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 80.0),
+                          child: Center(
+                            child: Text(
+                              "No relevant post found at the moment",
+                              style: TextStyle(
+                                  color: Colors.grey.shade800, fontSize: 16),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  );
+                } else {
+                  return Expanded(
+                    flex: 2,
+                    child: ListView.builder(
+                      controller: _scrollController,
+                      shrinkWrap: false,
+                      physics: const ClampingScrollPhysics(),
+                      scrollDirection: Axis.vertical,
+                      padding: const EdgeInsets.all(0),
+                      itemCount: model.data!.length,
+                      itemBuilder: (context, index) {
+                        return BuildPicture(
+                            model: model.data![model.data!.length - 1 - index]);
+                      },
+                    ),
                   );
                 }
-                return Expanded(
-                  flex: 2,
-                  child: ListView.builder(
-                    controller: _scrollController,
-                    shrinkWrap: true,
-                    physics: const ClampingScrollPhysics(),
-                    scrollDirection: Axis.vertical,
-                    padding: const EdgeInsets.all(0),
-                    itemCount: model.data!.length,
-                    itemBuilder: (context, index) {
-                      return BuildPicture(
-                          model: model.data![model.data!.length - 1 - index]);
-                    },
-                  ),
-                );
               }
-
-              return Padding(
-                padding: const EdgeInsets.symmetric(vertical: 80.0),
-                child: Center(
-                  child: Text(
-                    "No relevant post found at the moment",
-                    style: TextStyle(color: Colors.grey.shade800, fontSize: 16),
-                  ),
+              return Expanded(
+                flex: 2,
+                child: ListView(
+                  controller: _scrollController,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 80.0),
+                      child: Center(
+                        child: Text(
+                          "No relevant post found at the moment",
+                          style: TextStyle(
+                              color: Colors.grey.shade800, fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ],
                 ),
               );
             },

@@ -174,7 +174,6 @@ class APIService {
       } catch (e) {
         return null;
       }
-      return null;
     } else {
       return null;
     }
@@ -265,7 +264,6 @@ class APIService {
       } catch (e) {
         return null;
       }
-      return null;
     } else {
       return null;
     }
