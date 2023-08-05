@@ -85,3 +85,46 @@ export const create = async (req: any, res: any, next: NextFunction) => {
   });
 
 };
+
+// to get all records for the linked elderly for user side
+export const getLinked = async (req: any, res: any, next: NextFunction) => {
+
+  // 1. get token from req
+  const token =
+    req.headers.authorization && req.headers.authorization.split(" ")[1];
+
+  // 2. verify token with secret key
+  jwt.verify(token, jwt_secret, async (err: any, decoded: any) => {
+    try {
+      if (decoded) {
+        const data = req.body;
+        const strlinkedElderly = data.linkedElderly;
+        const linkedElderly = strlinkedElderly.split(',')
+        const results: any[] = [];
+
+        // Using map to create an array of promises
+        const promises = linkedElderly.map(async (id: any) => {
+          const notifications = await NotificationModel.find({ elderlyID: id });
+          // console.log(records)
+          return notifications;
+        });
+
+        // Wait for all promises to resolve using Promise.all
+        const resolvedResults = await Promise.all(promises);
+        resolvedResults.forEach((element: any) =>
+          element.forEach((e: any) =>
+            results.push(e)
+          )
+        )
+        // console.log(resolvedResults);
+
+        res.status(200).json(results);
+
+      } else if (err) {
+        res.status(401).json({ error: "You must have a valid token" });
+      }
+    } catch (error) {
+      return res.status(400).json({ message: "Please make sure the input file is valid type", error: String(error) });
+    }
+  });
+};

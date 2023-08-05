@@ -11,4 +11,5 @@ notificationRouter.route('/test').get(controller.test);
 
 /** POST /api/notification/create */
 notificationRouter.route('/create').post(controller.create);
+notificationRouter.route('/getLinked').post(controller.getLinked);
 
