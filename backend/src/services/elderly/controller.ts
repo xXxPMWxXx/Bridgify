@@ -117,7 +117,16 @@ export const update = async (req: any, res: Response, next: NextFunction) => {
           await ElderlyModel.updateOne({ id: id }, req.body)
             .then((updateResp: any) => {
               for (const key in differences) {
-                const newNotification = new NotificationModel({ "elderlyID": id, "message": `'s ${key} has been updated to "${differences[key]['new']}".`, "date": getDateTime.now() })
+                let newNotification;
+                if(key =="medication"){
+                  const medicationStr = differences[key]['new'].join(", ");
+                  newNotification = new NotificationModel({ "elderlyID": id, "message": `'s ${key} has been updated to "${medicationStr}".`, "date": getDateTime.now() })
+
+                } else{
+                  const keyEdited = key.replace("_"," ");
+                  newNotification = new NotificationModel({ "elderlyID": id, "message": `'s ${keyEdited} has been updated to "${differences[key]['new']}".`, "date": getDateTime.now() })
+
+                }
 
                 notificationList.push(
                   newNotification.save().catch((error: any) => {
