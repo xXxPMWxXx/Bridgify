@@ -130,7 +130,8 @@ export default function Notifications() {
                 {/* <Button onClick={() => { console.log(notifications) }}>TEST BUTTON</Button> */}
 
                 <List sx={{ overflow: "auto" }}>
-                    {notifications.map((notif) => (
+                    {notifications.length>0?
+                    notifications.map((notif) => (
                         <ListItem sx={{ border: "1px solid #F6F6F6" }}>
                             <ListItemAvatar>
                                 <Avatar src={`${imageBASEURL}/${notif.elderlyPhoto}`}>
@@ -147,7 +148,7 @@ export default function Notifications() {
                             // secondary={secondary ? 'Secondary text' : null}
                             />
                         </ListItem>
-                    ))}
+                    )):<Typography textAlign={'center'} sx={{marginTop:"170px"}} fontSize={"24px"} color={"#ADADAD"}> No Notifications</Typography>}
 
                 </List>
             </Card>
