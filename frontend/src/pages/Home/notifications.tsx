@@ -39,7 +39,7 @@ export default function Notifications() {
 
     const loadNotifications = async () => {
         // //calling backend API
-        fetch(`${process.env.REACT_APP_BACKEND_DEV_URL}/notification/getLinked`, {
+        fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/notification/getLinked`, {
             headers: {
                 'Authorization': `Bearer ${token}`,
                 'Content-Type': 'application/json',
