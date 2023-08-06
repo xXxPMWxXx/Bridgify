@@ -49,7 +49,8 @@ SMU .HEAP 2023 G14
 ###### Managing a single session
 - `tmux` => to start a session
 - `tmux attach` => to reconnect to the session, after login to new ssh
-
+- `tmux detach` => to disconnect to from the current attached session
+- 
 ###### Managing a multiple session
 - `tmux new-session -s session_name` => Start(and connect to) a new named session
 - `tmux list-sessions` => List all active sessions
