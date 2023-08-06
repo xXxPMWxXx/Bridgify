@@ -51,14 +51,6 @@ class PictureSingle extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
                 color: Colors.black45,
-                // boxShadow: [
-                //   BoxShadow(
-                //     color: Colors.black.withOpacity(0.3),
-                //     spreadRadius: 0.5,
-                //     blurRadius: 20,
-                //     offset: Offset(0, 4),
-                //   ),
-                // ],
                 image: DecorationImage(
                   fit: BoxFit.contain,
                   image: Image.network(
