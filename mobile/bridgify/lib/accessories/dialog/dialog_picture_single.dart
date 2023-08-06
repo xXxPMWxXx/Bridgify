@@ -68,7 +68,7 @@ class DialogPictureSingle extends StatelessWidget {
             height: 5,
           ),
           PostText(
-            text: "$description #${activity.replaceAll(' ', '_')}",
+            text: "$description #${activity.trim().replaceAll(' ', '_')}",
             fontSize: 16,
           ),
           const SizedBox(

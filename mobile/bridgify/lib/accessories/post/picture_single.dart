@@ -94,7 +94,7 @@ class PictureSingle extends StatelessWidget {
             height: 15,
           ),
           PostText(
-            text: "$description #${activity.replaceAll(' ', '_')}",
+            text: "$description #${activity.trim().replaceAll(' ', '_')}",
             fontSize: 16,
           ),
           const SizedBox(
