@@ -638,13 +638,15 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       title: 'Chats',
                       icon: Icons.chat_bubble,
                       onTapPath: () async {
-                        await ZIMKit().connectUser(
-                          id: 'admin_account',
-                          name: 'Administrator',
-                        );
+                        await ZIMKit()
+                            .connectUser(
+                              id: 'admin_account',
+                              name: 'Administrator',
+                            )
+                            .whenComplete(() =>
+                                Navigator.pushNamed(context, "/adminChatList"));
 
                         if (!mounted) return;
-                        Navigator.pushNamed(context, "/adminChatList");
                       }),
                   DrawerItem(
                       title: 'Elderly Records',

@@ -356,13 +356,15 @@ class _HomePageState extends State<HomePage> {
                             title: 'Chats',
                             icon: Icons.chat_bubble,
                             onTapPath: () async {
-                              await ZIMKit().connectUser(
-                                id: userEmail,
-                                name: userName,
-                              );
+                              await ZIMKit()
+                                  .connectUser(
+                                    id: userEmail,
+                                    name: userName,
+                                  )
+                                  .whenComplete(() =>
+                                      Navigator.pushNamed(context, "/chat"));
 
                               if (!mounted) return;
-                              Navigator.pushNamed(context, "/chat");
                             });
                       }
                       return const SizedBox(

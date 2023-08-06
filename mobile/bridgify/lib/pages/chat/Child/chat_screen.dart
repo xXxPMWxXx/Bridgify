@@ -25,6 +25,7 @@ class ChatScreen extends StatelessWidget {
       appBarBuilder: (context, defaultAppBar) {
         return AppBar(
           backgroundColor: HexColor("#225518"),
+          elevation: 1,
           title: Row(
             children: [
               CircleAvatar(
@@ -44,6 +45,21 @@ class ChatScreen extends StatelessWidget {
                 ],
               )
             ],
+          ),
+          leading: IconButton(
+            onPressed: () async {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/home',
+                (Route<dynamic> route) {
+                  return route.settings.name == '/home';
+                },
+              );
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
           ),
           actions: [
             IconButton(

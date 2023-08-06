@@ -20,8 +20,24 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
         backgroundColor: Colors.white,
         appBar: AppBar(
           backgroundColor: HexColor("#225518"),
-          elevation: 0,
+          elevation: 1,
           title: const Text("Bridgify User Chats"),
+          iconTheme: const IconThemeData(color: Colors.black),
+          leading: IconButton(
+            onPressed: () {
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/adminHome',
+                (Route<dynamic> route) {
+                  return route.settings.name == '/adminHome';
+                },
+              );
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios,
+              color: Colors.white,
+            ),
+          ),
         ),
         body: Column(
           children: [
@@ -86,6 +102,21 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
                         ],
                       )
                     ],
+                  ),
+                  leading: IconButton(
+                    onPressed: () {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/adminChatList',
+                        (Route<dynamic> route) {
+                          return route.settings.name == '/adminChatList';
+                        },
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                      color: Colors.white,
+                    ),
                   ),
                   actions: [
                     IconButton(
