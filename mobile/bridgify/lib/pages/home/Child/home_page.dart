@@ -67,7 +67,7 @@ class _HomePageState extends State<HomePage> {
                           if (model.hasData) {
                             List<dynamic> elderlyList =
                                 userProfileData?["elderly"];
-                            String elderlyString = " ";
+                            String elderlyString = "";
                             for (var el in elderlyList) {
                               elderlyString += "$el,";
                             }
@@ -77,8 +77,10 @@ class _HomePageState extends State<HomePage> {
                                   context,
                                   '/notification',
                                   arguments: {
-                                    'elderly': elderlyString.substring(
-                                        1, elderlyString.length - 1),
+                                    'elderly': elderlyString != ""
+                                        ? elderlyString.substring(
+                                            0, elderlyString.length - 1)
+                                        : elderlyString,
                                     'elderlyCount': elderlyList.length,
                                   },
                                 );

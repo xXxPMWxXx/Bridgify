@@ -112,21 +112,28 @@ class _NotificationPageState extends State<NotificationPage> {
                               },
                             );
                           }
-                          return const Center(
-                            child: Text(
-                              "No notifications received yet",
-                              style:
-                                  TextStyle(color: Colors.black, fontSize: 16),
+                          return Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 80.0),
+                            child: Center(
+                              child: Text(
+                                "No notifications received yet",
+                                style: TextStyle(
+                                    color: Colors.grey.shade800, fontSize: 16),
+                              ),
                             ),
                           );
                         },
                       )
-                    : const Center(
-                        child: Text(
-                          "No notifications received yet",
-                          style: TextStyle(color: Colors.black, fontSize: 16),
+                    : Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 80.0),
+                        child: Center(
+                          child: Text(
+                            "No notifications received yet",
+                            style: TextStyle(
+                                color: Colors.grey.shade800, fontSize: 16),
+                          ),
                         ),
-                      ),
+                      )
               ],
             ),
           ),
