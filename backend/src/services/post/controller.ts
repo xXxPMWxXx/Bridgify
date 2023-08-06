@@ -10,6 +10,8 @@ const baseDir = path.resolve(__dirname, "../../..");
 const PostModel = require("../../models/post");
 const UserModel = require("../../models/user");
 const ElderlyModel = require("../../models/elderly");
+const NotificationModel = require("../../models/notification");
+
 var fs = require('fs');
 
 // to create a new post
@@ -96,12 +98,42 @@ export const create = async (req: any, res: any, next: NextFunction) => {
           imagesCount: imagesCount,
         });
 
+        const notificationList: any[] = [];
+        const regex = /\((.*?)\)/;
+
+
         // add a new post to mongodb
         newPost
-          .save()
+          .save().then((response:any)=>{
+            //create new notification
+            for (const index in elderlyInvolved) {
+              const elderlyLabel = elderlyInvolved[index];
+              const match = elderlyLabel.match(regex);
+
+              if (match && match.length > 1) {
+                const elderlyID = match[1];
+                
+                const newNotification = new NotificationModel({ "elderlyID": elderlyID, "message": ` has been captured in a new post!".`, "date": getDateTime.now() })
+
+              notificationList.push(
+                newNotification.save().catch((error: any) => {
+                  console.log(error);
+                  // Handle the error, maybe log it
+                })
+              );
+              } else {
+                console.log("No match found");
+              }
+
+              
+            }
+            return Promise.all(notificationList);
+
+          })
           .then((response: any) => {
             return res.status(200).send({
               message: `Post created successfully`,
+              message2:`Notification created successfully`,
               elderlyInvolved: JSON.stringify(elderlyInvolved),
               imageURL: imageURL,
               devImageURL: devImageURL,
