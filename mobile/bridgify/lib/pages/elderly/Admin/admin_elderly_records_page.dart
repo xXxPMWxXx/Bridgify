@@ -30,7 +30,13 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
           elevation: 1,
           leading: IconButton(
             onPressed: () {
-              if (Navigator.canPop(context)) Navigator.pop(context);
+              Navigator.pushNamedAndRemoveUntil(
+                context,
+                '/adminHome',
+                (Route<dynamic> route) {
+                  return route.settings.name == '/adminHome';
+                },
+              );
             },
             icon: Icon(
               Icons.arrow_back_ios,
