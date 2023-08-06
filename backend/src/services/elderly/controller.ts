@@ -122,11 +122,28 @@ export const update = async (req: any, res: Response, next: NextFunction) => {
                   const medicationStr = differences[key]['new'].join(", ");
                   newNotification = new NotificationModel({ "elderlyID": id, "message": `'s ${key} has been updated to "${medicationStr}".`, "date": getDateTime.now() })
 
-                } else{
+                } else if(key =="awake"){
+                  const awakeState = differences[key]['new'].toLowerCase()
+                  if(awakeState=="false"){
+                    newNotification = new NotificationModel({ "elderlyID": id, "message": ` is now asleep".`, "date": getDateTime.now() })
+                  } else if(awakeState=="true"){
+                    newNotification = new NotificationModel({ "elderlyID": id, "message": ` is now awake.`, "date": getDateTime.now() })
+                  }
+                }else if(key =="taken_med"){
+                  const takenMedState = differences[key]['new'].toLowerCase()
+                  if(takenMedState=="true"){
+                    newNotification = new NotificationModel({ "elderlyID": id, "message": ` has taken their medication.`, "date": getDateTime.now() })
+                  } else if(takenMedState=="false"){
+                    console.log("No notification is logged for med state since it is false")
+                    continue;
+                  }
+                }  else{
                   const keyEdited = key.replace("_"," ");
                   newNotification = new NotificationModel({ "elderlyID": id, "message": `'s ${keyEdited} has been updated to "${differences[key]['new']}".`, "date": getDateTime.now() })
 
                 }
+
+                
 
                 notificationList.push(
                   newNotification.save().catch((error: any) => {
