@@ -113,7 +113,7 @@ export const create = async (req: any, res: any, next: NextFunction) => {
               if (match && match.length > 1) {
                 const elderlyID = match[1];
                 
-                const newNotification = new NotificationModel({ "elderlyID": elderlyID, "message": ` has been captured in a new post!".`, "date": getDateTime.now() })
+                const newNotification = new NotificationModel({ "elderlyID": elderlyID, "message": ` has been captured in a new post!`, "date": getDateTime.now() })
 
               notificationList.push(
                 newNotification.save().catch((error: any) => {
