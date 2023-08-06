@@ -125,7 +125,7 @@ export const update = async (req: any, res: Response, next: NextFunction) => {
                 } else if(key =="awake"){
                   const awakeState = differences[key]['new'].toLowerCase()
                   if(awakeState=="false"){
-                    newNotification = new NotificationModel({ "elderlyID": id, "message": ` is now asleep".`, "date": getDateTime.now() })
+                    newNotification = new NotificationModel({ "elderlyID": id, "message": ` is now asleep.`, "date": getDateTime.now() })
                   } else if(awakeState=="true"){
                     newNotification = new NotificationModel({ "elderlyID": id, "message": ` is now awake.`, "date": getDateTime.now() })
                   }
