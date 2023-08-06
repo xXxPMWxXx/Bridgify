@@ -1,6 +1,11 @@
+import 'dart:convert';
+
 List<ElderlyResponseModel> elderlyFromJson(dynamic str) =>
     List<ElderlyResponseModel>.from(
         (str).map((x) => ElderlyResponseModel.fromJson(x)));
+
+ElderlyResponseModel elderlyResponseJson(dynamic str) =>
+    ElderlyResponseModel.fromJson(json.decode(str));
 
 class ElderlyResponseModel {
   late String? id;

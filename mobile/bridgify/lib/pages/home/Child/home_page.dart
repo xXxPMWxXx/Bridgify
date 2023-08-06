@@ -57,12 +57,42 @@ class _HomePageState extends State<HomePage> {
                       )),
                   Row(
                     children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.notifications_none_rounded,
-                          color: Colors.grey.shade800,
-                        ),
+                      FutureBuilder(
+                        future: APIService.getUserProfile(),
+                        builder: (BuildContext context,
+                            AsyncSnapshot<Object> model) {
+                          var userProfileData =
+                              model.data as Map<String, dynamic>?;
+
+                          if (model.hasData) {
+                            List<dynamic> elderlyList =
+                                userProfileData?["elderly"];
+                            String elderlyString = " ";
+                            for (var el in elderlyList) {
+                              elderlyString += "$el,";
+                            }
+                            return IconButton(
+                              onPressed: () {
+                                Navigator.pushNamed(
+                                  context,
+                                  '/notification',
+                                  arguments: {
+                                    'elderly': elderlyString.substring(
+                                        1, elderlyString.length - 1),
+                                    'elderlyCount': elderlyList.length,
+                                  },
+                                );
+                              },
+                              icon: Icon(
+                                Icons.notifications_none_rounded,
+                                color: Colors.grey.shade800,
+                              ),
+                            );
+                          }
+                          return const Center(
+                            child: CircularProgressIndicator(),
+                          );
+                        },
                       ),
                       FutureBuilder(
                         future: APIService.getUserProfile(),

@@ -1,0 +1,96 @@
+import 'package:bridgify/accessories/elderly/elderly_avatar.dart';
+import 'package:bridgify/models/elderly_response_model.dart';
+import 'package:bridgify/models/notification_response_model.dart';
+import 'package:bridgify/services/api_service.dart';
+import 'package:flutter/material.dart';
+import 'package:snippet_coder_utils/hex_color.dart';
+
+class BuildNotificationitem extends StatefulWidget {
+  final NotificationResponseModel? model;
+  const BuildNotificationitem({Key? key, required this.model})
+      : super(key: key);
+
+  @override
+  State<BuildNotificationitem> createState() => _BuildNotificationitemState();
+}
+
+class _BuildNotificationitemState extends State<BuildNotificationitem> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return FutureBuilder(
+      future: APIService.getElderlyById(widget.model!.elderlyID!),
+      builder:
+          (BuildContext context, AsyncSnapshot<ElderlyResponseModel?> model) {
+        if (model.hasData) {
+          String notificationMessage =
+              "${model.data!.name!}'s ${widget.model!.message!}";
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 5),
+            child: Row(
+              children: [
+                ElderlyAvatar(
+                  filename: model.data!.photo!,
+                  radius: 25,
+                ),
+                Container(
+                  height: 50.0,
+                  child: VerticalDivider(
+                    color: Colors.grey.shade500,
+                    width: 25,
+                  ),
+                ),
+                Expanded(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        notificationMessage,
+                        softWrap: true,
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Colors.grey.shade600),
+                      ),
+                    ],
+                  ),
+                ),
+              ],
+            ),
+          );
+        }
+        return const Center(
+          child: CircularProgressIndicator(),
+        );
+      },
+      // child: Row(
+      //   children: [
+      //     UserAvatar(
+      //       filename: elderlyResponseModel!.photo!,
+      //       radius: 25,
+      //     ),
+      //     const SizedBox(
+      //       width: 15,
+      //     ),
+      //     Column(
+      //       mainAxisSize: MainAxisSize.min,
+      //       children: [
+      //         Text(
+      //           elderlyResponseModel!.name!,
+      //           style: Theme.of(context)
+      //               .textTheme
+      //               .bodyMedium
+      //               ?.copyWith(color: Colors.grey),
+      //         ),
+      //       ],
+      //     ),
+      //   ],
+      // ),
+    );
+  }
+}

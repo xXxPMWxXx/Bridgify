@@ -24,7 +24,17 @@ class ChatScreen extends StatelessWidget {
           BoxDecoration(borderRadius: BorderRadius.circular(40)),
       appBarBuilder: (context, defaultAppBar) {
         return AppBar(
-          backgroundColor: HexColor("#225518"),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                colors: [
+                  Color.fromRGBO(48, 132, 67, 0.722),
+                  Color.fromRGBO(48, 132, 67, 0.6),
+                ],
+              ),
+            ),
+          ),
           elevation: 1,
           title: Row(
             children: [

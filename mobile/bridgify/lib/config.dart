@@ -34,6 +34,7 @@ class Config {
   static const String createPostAPI = "api/post/create";
 
   //elderly
+  static const String getElderlyByIdAPI = "api/elderly/get";
   static const String getElderlyByUserAPI = "api/elderly/getByUser";
   static const String getElderlyAPI = "api/elderly/getAll";
   static const String createElderlyAPI = "api/elderly/insert";
@@ -42,4 +43,7 @@ class Config {
 
   //faces
   static const String postFaceAPI = "api/face/post-face";
+
+  //notification
+  static const String getNotificationAPI = "api/notification/getLinked";
 }

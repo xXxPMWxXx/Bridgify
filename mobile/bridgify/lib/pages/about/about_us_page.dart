@@ -15,7 +15,7 @@ class AboutUsScreen extends StatelessWidget {
         ),
         Container(
           width: 100.0,
-          child: new Divider(color: HexColor('#EDFDF9')),
+          child: Divider(color: HexColor('#EDFDF9')),
         ),
       ],
     );
@@ -25,8 +25,8 @@ class AboutUsScreen extends StatelessWidget {
         Container(
             padding: EdgeInsets.only(left: 10.0),
             height: MediaQuery.of(context).size.height * 0.35,
-            decoration: new BoxDecoration(
-              image: new DecorationImage(
+            decoration: BoxDecoration(
+              image: DecorationImage(
                 image: Image.asset('images/drawer.png').image,
                 fit: BoxFit.fitWidth,
               ),

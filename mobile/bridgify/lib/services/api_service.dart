@@ -4,6 +4,8 @@ import 'package:bridgify/models/elderly_request_model.dart';
 import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:bridgify/models/login_request_model.dart';
 import 'package:bridgify/models/login_response_model.dart';
+import 'package:bridgify/models/notification_request_model.dart';
+import 'package:bridgify/models/notification_response_model.dart';
 import 'package:bridgify/models/post_request_model.dart';
 import 'package:bridgify/models/post_response_model.dart';
 import 'package:bridgify/models/register_request_model.dart';
@@ -242,6 +244,34 @@ class APIService {
     }
   }
 
+  static Future<ElderlyResponseModel?> getElderlyById(String id) async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.getElderlyByIdAPI, {"id": id});
+    print(url);
+    var response = await client.get(
+      url,
+      headers: requestHeaders,
+    );
+
+    if (response.statusCode == 200) {
+      try {
+        print(response.body);
+        return elderlyResponseJson(
+          response.body,
+        );
+      } catch (e) {
+        return null;
+      }
+    } else {
+      return null;
+    }
+  }
+
   static Future<List<ElderlyResponseModel>?> getElderlyByUser() async {
     var currentLoginDetails = await SharedService.loginDetails();
     Map<String, String> requestHeaders = {
@@ -379,5 +409,31 @@ class APIService {
       headers: requestHeaders,
     );
     return response.statusCode == 200;
+  }
+
+  static Future<List<NotificationResponseModel>?> getElderlyNotifications(
+      NotificationRequestModel model) async {
+    var currentLoginDetails = await SharedService.loginDetails();
+    Map<String, String> requestHeaders = {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
+    };
+
+    var url = Uri.http(Config.apiURL, Config.getNotificationAPI);
+
+    var response = await client.post(
+      url,
+      headers: requestHeaders,
+      body: jsonEncode(model.toJson()),
+    );
+    print(model.toJson());
+    print(response.body);
+    if (response.statusCode == 200) {
+      var data = jsonDecode(response.body);
+
+      return notificationFromJson(data);
+    } else {
+      return null;
+    }
   }
 }

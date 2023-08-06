@@ -18,6 +18,7 @@ class _RatingViewState extends State<RatingView> {
   var _selectedChipIndex = -1;
   var _isMoreDetailActive = false;
   final _moreDetailFocusNode = FocusNode();
+  final List<String> category = ['Friendliness', 'Promptness', 'Knowledge'];
 
   @override
   Widget build(BuildContext context) {
@@ -188,7 +189,7 @@ class _RatingViewState extends State<RatingView> {
                 alignment: WrapAlignment.center,
                 spacing: 8.0,
                 children: List.generate(
-                  6,
+                  3,
                   (index) => InkWell(
                     onTap: () {
                       setState(() {
@@ -199,7 +200,7 @@ class _RatingViewState extends State<RatingView> {
                       backgroundColor: _selectedChipIndex == index
                           ? HexColor("#33A11D")
                           : Colors.grey[300],
-                      label: Text('Text ${index + 1}'),
+                      label: Text(category[index]),
                     ),
                   ),
                 ),

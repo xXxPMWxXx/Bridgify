@@ -19,7 +19,17 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
     return Scaffold(
         backgroundColor: Colors.white,
         appBar: AppBar(
-          backgroundColor: HexColor("#225518"),
+          flexibleSpace: Container(
+            decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomCenter,
+                colors: [
+                  Color.fromRGBO(48, 132, 67, 0.722),
+                  Color.fromRGBO(48, 132, 67, 0.6),
+                ],
+              ),
+            ),
+          ),
           elevation: 1,
           title: const Text("Bridgify User Chats"),
           iconTheme: const IconThemeData(color: Colors.black),
@@ -87,7 +97,17 @@ class _AdminChatListScreenState extends State<AdminChatListScreen> {
                   BoxDecoration(borderRadius: BorderRadius.circular(40)),
               appBarBuilder: (context, defaultAppBar) {
                 return AppBar(
-                  backgroundColor: HexColor("#225518"),
+                  flexibleSpace: Container(
+                    decoration: const BoxDecoration(
+                      gradient: LinearGradient(
+                        begin: Alignment.bottomCenter,
+                        colors: [
+                          Color.fromRGBO(48, 132, 67, 0.722),
+                          Color.fromRGBO(48, 132, 67, 0.6),
+                        ],
+                      ),
+                    ),
+                  ),
                   title: Row(
                     children: [
                       Column(

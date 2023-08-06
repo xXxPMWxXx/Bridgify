@@ -84,13 +84,13 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       )),
                   Row(
                     children: [
-                      IconButton(
-                        onPressed: () {},
-                        icon: Icon(
-                          Icons.notifications_none_rounded,
-                          color: Colors.grey.shade800,
-                        ),
-                      ),
+                      // IconButton(
+                      //   onPressed: () {},
+                      //   icon: Icon(
+                      //     Icons.notifications_none_rounded,
+                      //     color: Colors.grey.shade800,
+                      //   ),
+                      // ),
                       FutureBuilder(
                         future: APIService.getUserProfile(),
                         builder: (BuildContext context,
