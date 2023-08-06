@@ -28,7 +28,7 @@ class _BuildNotificationitemState extends State<BuildNotificationitem> {
           (BuildContext context, AsyncSnapshot<ElderlyResponseModel?> model) {
         if (model.hasData) {
           String notificationMessage =
-              "${model.data!.name!}'s ${widget.model!.message!}";
+              "${model.data!.name!} ${widget.model!.message!}";
           return Padding(
             padding: const EdgeInsets.symmetric(vertical: 5),
             child: Row(
