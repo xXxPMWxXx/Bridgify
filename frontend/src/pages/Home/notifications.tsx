@@ -143,7 +143,7 @@ export default function Notifications() {
                                 WebkitBoxOrient: 'vertical',
                                 overflow: 'hidden',
                             }}
-                                primary={`${notif.elderlyName}'s ${notif.message.replace("_", " ")} `}
+                                primary={`${notif.elderlyName}${notif.message.replace("_", " ")} `}
                             // secondary={secondary ? 'Secondary text' : null}
                             />
                         </ListItem>
