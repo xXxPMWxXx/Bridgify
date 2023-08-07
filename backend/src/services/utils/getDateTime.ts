@@ -17,10 +17,10 @@ export function now() {
     let hours =  ("0" + (date_ob.getHours())).slice(-2);
     
     // current minutes
-    let minutes = date_ob.getMinutes();
+    let minutes = ("0" + (date_ob.getMinutes())).slice(-2);
     
     // current seconds
-    let seconds = date_ob.getSeconds();
+    let seconds = ("0" + (date_ob.getSeconds())).slice(-2);
     
     const dateTime : String = year + "-" + month + "-" + date + "T" + hours + ":" + minutes + ":" + seconds;
    
