@@ -1,4 +1,4 @@
-# Bridgify
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/941f24e5-5665-4aab-813f-3efaa73024e0)# Bridgify
 - SMU .HEAP 2023 G14, Please refer to our [main repo](https://github.com/xXxPMWxXx/Bridgify)
 - You can access our others documentation via your SMU Google Account [here](https://drive.google.com/drive/folders/1PzMxQXV3oaVrTCWjZk5e-R0c1zfKt1NW?usp=drive_link)
 - Recommendation on setting up our project:
@@ -20,8 +20,18 @@
     - Database : MongoDB => it enables us to build our applications faster, handle highly diverse data types, and manage applications more efficiently at scale. Especially, we are storing face descriptions in the DB as well.
     
 ## Get Started (Recommend to use Docker if want to run locally for website and doownload our [mobile apk](https://bridgify.s3.ap-southeast-1.amazonaws.com/Bridgify.apk) to install via an Android Phone to save the hassle)
-### Docker
-- `docker compose up` => to build the image and run
+### Docker (Since we are using production URL for our backend, you can just build our frontend image)
+Make sure your Docker is running
+
+#### Only frontend
+- cd to 'Bridgify/frontend'
+    - Build the image : `docker build -t bridgify-frontend .`
+    - Run the image : `docker run -dp 127.0.0.1:3000:3000 bridgify-frontend`
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/d8d6b14e-c319-48f6-ae08-3c20f7061204)
+    - After 'No issues found', you can then access our website locally via: `localhost:3000`
+
+#### Both both frontend and backend
+- cd to 'Bridgify' : `docker compose up` 
     - Notes: if have Segmentation fault => use Docker Desktop to start the container
 ![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/fcb8443b-ca8a-4fc8-96d4-fba34bbef8a1)
 ![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/4fb9faa9-81b6-4fd2-98b3-60d3579298c7)
