@@ -1,15 +1,10 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
 import { CardActionArea, CardContent, CardMedia } from '@mui/material';
 import { Card } from 'react-bootstrap';
-import { BorderAllRounded, SportsRugbySharp } from '@mui/icons-material';
 import awakeIcon from '../../images/awakeStatus.png';
 import asleepIcon from '../../images/asleepStatus.png';
-import { url } from 'inspector';
 
 interface elderlyStatusInfo {
     post: {

@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select, FormLabel, RadioGroup, Radio, Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, InputAdornment, Dialog, DialogActions, DialogTitle, DialogContentText, DialogContent, } from '@mui/material';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-// import { DatePicker } from '@mui/x-date-pickers/DatePicker';
+import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, 
+    Checkbox, FormControl, InputLabel, MenuItem, Select,
+    Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, InputAdornment, 
+    Dialog, DialogActions, DialogTitle, DialogContentText, DialogContent, } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import { useNavigate } from 'react-router-dom';
-// import defaultPhoto from `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/001A.png`;
 import BasicDatePicker from './dateElement';
 import MUIDataTable from "mui-datatables";
 import { Sheet } from '@mui/joy';

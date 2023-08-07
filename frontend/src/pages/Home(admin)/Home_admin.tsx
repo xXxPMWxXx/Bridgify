@@ -1,7 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { ResponsiveAppBarAdmin } from '../../Navbar';
-import { Alert, Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, LinearProgress, Modal, Snackbar, Typography } from '@mui/material';
+import { Alert, Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, 
+    DialogTitle, LinearProgress, Modal, Snackbar, Typography } from '@mui/material';
 import MUIDataTable from "mui-datatables";
 import UpdateUser from './updateUser';
 

@@ -1,12 +1,9 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
 import Box from '@mui/material/Box';
-import { Avatar, AvatarGroup, CardActionArea, CardContent, CardMedia, ImageList, ImageListItem, Modal } from '@mui/material';
+import { Avatar, AvatarGroup, CardActionArea, CardContent, CardMedia, Modal } from '@mui/material';
 import { Card } from 'react-bootstrap';
-import { BorderAllRounded, SportsRugbySharp } from '@mui/icons-material';
 import Carousel from 'react-material-ui-carousel';
 import CarouselSlide from 'react-material-ui-carousel';
 

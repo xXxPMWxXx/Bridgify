@@ -1,14 +1,13 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
 import * as React from 'react';
 import Avatar from '@mui/joy/Avatar';
-import { Box, FormControl, Input, LinearProgress, Modal, Typography, Menu, MenuItem, FormGroup, FormControlLabel, Popover, TextField, InputLabel, Select, InputAdornment } from '@mui/material';
+import { Box, FormControl, LinearProgress, Modal, Typography, FormGroup, Popover, TextField, InputAdornment } from '@mui/material';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Table from '@mui/joy/Table';
-import { Sheet, Button } from '@mui/joy';
+import { Sheet } from '@mui/joy';
 import Checkbox from '@mui/material/Checkbox';
-import IconButton, { iconButtonClasses } from '@mui/joy/IconButton';
-import { Add } from '@mui/icons-material';
+import IconButton from '@mui/joy/IconButton';
 import TuneIcon from '@mui/icons-material/Tune';
 import SearchIcon from '@mui/icons-material/Search';
 

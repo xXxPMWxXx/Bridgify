@@ -8,10 +8,8 @@ import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { createRoot } from 'react-dom/client';
 //for normal user
 import { Health } from './pages/Health';
-import { Help } from './pages/Help';
 import { Home } from './pages/Home';
 import { Login } from './pages/Login';
-import { Message } from './pages/Message';
 import { Page404 } from './pages/Page404';
 import { Profile } from './pages/Profile';
 import { About } from './pages/About';
@@ -31,11 +29,9 @@ root.render(
 	<BrowserRouter>
 		<Routes>
 			<Route path="/Health" element={<Health />} />
-			<Route path="/Help" element={<Help />} />
 			<Route path="/Home" element={<Home />} />
 			<Route path="/" element={<Navigate to="/Home" />} />
 			<Route path="/Login" element={<Login />} />
-			<Route path="/Message" element={<Message />} />
 			<Route path="/404" element={<Page404 />} />
 			<Route path="/Profile" element={<Profile />} />
 			<Route path="/About" element={<About />} />
@@ -46,7 +42,6 @@ root.render(
 			<Route path="/Elderly-admin" element={<Elderly_admin />} />
 			<Route path="/Post-admin" element={<Post_admin />} />
 			<Route path="/Record-admin" element={<Record_admin/>} />
-
 		</Routes>
 	</BrowserRouter>);
 

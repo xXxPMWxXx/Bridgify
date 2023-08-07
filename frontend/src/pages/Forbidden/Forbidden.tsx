@@ -8,7 +8,6 @@ export const Forbidden = () => {
     const handleClick = (e: any) => {
         navigate('/');
     }
-    const token = window.localStorage.getItem('accessToken');
 
     return (
         <div>

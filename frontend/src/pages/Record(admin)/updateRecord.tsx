@@ -1,9 +1,6 @@
 import {
-    Box, Typography, LinearProgress, Modal,
-    Grid, Button, Snackbar, Alert, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Avatar, FormControl, InputLabel, Select, MenuItem
+    Box,  Modal, Button, TextField, FormControl, InputLabel, Select, MenuItem
 } from '@mui/material';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React, { useEffect, useState } from 'react';
 
 export default function UpdateRecord(props: any) {

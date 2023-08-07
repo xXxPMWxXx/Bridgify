@@ -1,25 +1,10 @@
 import * as React from 'react';
-import Paper from '@mui/material/Paper';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
-import { Avatar, Button, CardActionArea, CardContent, CardMedia, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { Avatar, List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import { Card } from 'react-bootstrap';
-// import { BorderAllRounded, SportsRugbySharp } from '@mui/icons-material';
+
 const imageBASEURL = `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face`;
-
-
-
-// interface notificationInfo {
-//     notifs: {
-//         image: string;
-//         sender: String;
-//         message: String;
-//         time: number;
-//     }
-// }
-
 
 
 function preventDefault(event: React.MouseEvent) {
@@ -28,10 +13,6 @@ function preventDefault(event: React.MouseEvent) {
 
 export default function Notifications() {
     const token = window.localStorage.getItem('accessToken');
-    const userName = window.localStorage.getItem('userName');
-    const accRole = window.localStorage.getItem('accRole');
-    const profileImage = window.localStorage.getItem('profileImage');
-    const email = window.localStorage.getItem('email');
     const linkedElderly = window.localStorage.getItem('linkedElderly');
 
     const [notifications, setNotifications] = React.useState<any[]>([]); //depending on tabs
@@ -55,10 +36,6 @@ export default function Notifications() {
 
                 } else {
                     const notif = await response.json();
-                    // console.log(notif)
-                    // setNotifications(data);
-                    //   setTableData(data);
-                    //   setFetchAdditional(true);
 
                     fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly/getAll`, {
                         headers: {

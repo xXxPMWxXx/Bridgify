@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { ResponsiveAppBar } from '../../Navbar';
-import { styled } from '@mui/material/styles';
-import { Alert, Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, FormControlLabel, Grid, IconButton, Radio, RadioGroup, Snackbar, TextField, Typography } from '@mui/material';
+import { Alert, Avatar, Box, Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Snackbar, TextField, Typography } from '@mui/material';
 import Table from '@mui/joy/Table';
 import { Sheet } from '@mui/joy';
 import LinkOffIcon from '@mui/icons-material/LinkOff';
@@ -82,11 +81,8 @@ export const Profile = () => {
 
     const handleSubmit = (event: any) => {
         event.preventDefault();
-        console.log("Handle submit clicked")
         var APIMethod = 'linkElderly';
-        // if (mode != 'Add') {
-        //     APIMethod = 'remove-linkElderly';
-        // }
+
         // //calling backend API
         fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/${APIMethod}`, {
             headers: {
@@ -128,8 +124,6 @@ export const Profile = () => {
     }
 
     const handleRemove = (removeID: any) => {
-        // event.preventDefault();
-
         // //calling backend API
         fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/user/remove-linkElderly`, {
             headers: {
@@ -159,7 +153,6 @@ export const Profile = () => {
                     setAlertType('success');
                     setAlertMsg(apiResponse['message']);
                 }
-
             })
             .catch((err) => {
                 window.alert(err);
@@ -167,11 +160,9 @@ export const Profile = () => {
 
     }
 
-
     const handleSnackbarClose = () => {
         setOpenSnackbar(false);
     };
-
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -205,7 +196,6 @@ export const Profile = () => {
                         <Typography variant='h4' lineHeight={1.5}> Profile</Typography>
 
                         <Typography variant="h5" lineHeight={1.5} >
-                            {/* <b style={{fontSize:"26px"}}>Profile:</b><br /> */}
                             User: {userName} <br />
                             Email: {email}<br />
                             Account Role: {accRole}<br />
@@ -314,30 +304,6 @@ export const Profile = () => {
                     <Button type="submit" onClick={handleSubmit}>Link</Button>
                 </DialogActions>
             </Dialog>
-            {/* <form onSubmit={handleSubmit}>
-                <Box display="flex" flexDirection="column" alignItems="center" justifyContent="center">
-                    <RadioGroup
-                        row
-                        defaultValue="Add"
-                        onChange={handleMode}
-                    >
-                        <FormControlLabel value="Add" control={<Radio />} label="Add" />
-                        <FormControlLabel value="Remove" control={<Radio />} label="Remove" />
-
-                    </RadioGroup>
-                    <TextField onChange={handleElderlyID} margin="normal" required autoFocus label="Elderly ID(last 4 digit of NRIC)" sx={{ width: 400 }} />
-                    <Button
-                        type="submit"
-                        variant="contained"
-                        sx={{ width: 300, m: 2 }}
-                    >
-                        Submit
-                    </Button>
-                </Box>
-
-             
-            </form>    */}
-
 
             <Snackbar open={openSnackbar} autoHideDuration={3000} onClose={handleSnackbarClose}>
                 <Alert onClose={handleSnackbarClose} severity={alertType} sx={{ width: '100%' }}>

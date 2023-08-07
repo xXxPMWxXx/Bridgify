@@ -1,7 +1,7 @@
 import './Post_admin.css';
 import {
     Box, Typography, LinearProgress, Modal,
-    Grid, Button, Snackbar, Alert, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Card, CardMedia, CardContent
+    Grid, Button, Snackbar, Alert, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Card, CardMedia
 } from '@mui/material';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';

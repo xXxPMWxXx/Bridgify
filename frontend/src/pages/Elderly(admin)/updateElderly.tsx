@@ -1,9 +1,10 @@
 import {
-    Box, Typography, LinearProgress, Modal,
-    Grid, Button, Snackbar, Alert, TextField, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, Avatar, FormControl, InputLabel, Select, MenuItem, InputAdornment, FormGroup, FormControlLabel, Switch, OutlinedInput, Checkbox, ListItemText
+    Box, Typography, Modal,
+    Grid, Button, TextField,Avatar, FormControl, 
+     InputLabel, Select, MenuItem, InputAdornment, FormGroup, FormControlLabel, 
+     Switch, OutlinedInput, Checkbox, ListItemText
 } from '@mui/material';
 import TextareaAutosize from '@mui/base/TextareaAutosize';
-import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import React, { useEffect, useState } from 'react';
 import { Sheet } from '@mui/joy';
 import BasicDatePicker from './dateElement';

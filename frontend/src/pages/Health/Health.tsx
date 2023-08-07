@@ -1,12 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import { ResponsiveAppBar } from '../../Navbar';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import HealthTable from './HealthTable';
-
 import { styled } from '@mui/system';
 import backgroundImage from '../../images/background.png';
-import ElderlyStatus from '../Home/elderlyStatus';
 
 const Background = styled("div") ({
   position: 'absolute', 
@@ -29,12 +27,6 @@ export const Health = () => {
     const accRole = window.localStorage.getItem('accRole');
     const linkedElderly = window.localStorage.getItem('linkedElderly');
     const profileImage = window.localStorage.getItem('proofileImage')
-    console.log(token);
-    console.log(userName);
-    console.log(accRole);
-    console.log(linkedElderly);
-    console.log(profileImage);
-
 
     return (
         <div>

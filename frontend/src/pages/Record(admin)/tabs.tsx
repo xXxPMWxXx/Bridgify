@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
-import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormControlLabel, Checkbox, FormControl, InputLabel, MenuItem, Select, FormLabel, RadioGroup, Radio, Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, InputAdornment, Pagination, Dialog, DialogTitle, DialogContent, DialogContentText, DialogActions, } from '@mui/material';
+import { Box, Typography, LinearProgress, Modal,  Grid, TextField, FormControl, InputLabel, MenuItem, 
+    Select, Button, Snackbar, Alert, IconButton, Pagination, Dialog, DialogTitle, DialogContent,
+    DialogContentText, DialogActions, } from '@mui/material';
 import PictureAsPdfIcon from '@mui/icons-material/PictureAsPdf';
 import { Document, Page } from 'react-pdf';
 import CloudUploadIcon from '@mui/icons-material/CloudUpload';

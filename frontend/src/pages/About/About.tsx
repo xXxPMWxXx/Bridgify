@@ -1,26 +1,14 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { ResponsiveAppBar } from '../../Navbar';
 import { Box, Grid, Typography } from '@mui/material';
 import backgroundImage from '../../images/logInBackground.jpeg';
-import { WidthFull } from '@mui/icons-material';
-
 
 export const About = () => {
 
     useEffect(() => {
     }, []);
     const token = window.localStorage.getItem('accessToken');
-    const userName = window.localStorage.getItem('userName');
-    const accRole = window.localStorage.getItem('accRole');
-    const linkedElderly = window.localStorage.getItem('linkedElderly');
-    const profileImage = window.localStorage.getItem('proofileImage')
-    console.log(token);
-    console.log(userName);
-    console.log(accRole);
-    console.log(linkedElderly);
-    console.log(profileImage);
-
 
     return (
         <div>
@@ -36,10 +24,8 @@ export const About = () => {
                     alignItems: 'center',
                     margin:"auto",
                     width:"80%"
-
                 }}
             >
-                {/* <Box sx={{width:80%}}> */}
                 <Grid container sx={{marginTop:7,marginBottom:7, borderRadius:5, p:3}}>
                 <Grid item xs={5} sx={{
                         backgroundImage: `url(${backgroundImage})`,

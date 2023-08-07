@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { Link, Navigate } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 import { ResponsiveAppBar } from '../../Navbar';
 import { Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
