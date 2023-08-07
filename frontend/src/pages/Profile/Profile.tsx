@@ -73,7 +73,7 @@ export const Profile = () => {
     console.log(linkedElderlyData.length);
 
     const handleElderlyID = (e: any) => {
-        setElderlyID(e.target.value);
+        setElderlyID(e.target.value.toUpperCase());
     }
     const handleMode = (e: any) => {
         setMode(e.target.value);

@@ -88,7 +88,7 @@ export default function DisplayElderly(props: any) {
             }}
 
         >
-            <Box sx={{ ...style, width: 800, mt: 15 }} textAlign='center'>
+            <Box sx={{ ...style, width: 800, mt: 10}} textAlign='center'>
 
                 <Avatar
                     src={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/${elderlyPhoto}`}
@@ -238,7 +238,7 @@ export default function DisplayElderly(props: any) {
                             />
                         </Grid>
 
-                        <Grid item xs={12} sm={12}>
+                        <Grid item xs={12} sm={12} sx={{mb:10}}>
                             <TextareaAutosize disabled minRows="7"
                                 style={{ width: "100%", fontSize: "inherit", font: "inherit", border: "1px solid light-grey", borderRadius: 4 }}
                                 id='Description' className='StyledTextarea' value={conditionDescription} placeholder="Condition Description" />

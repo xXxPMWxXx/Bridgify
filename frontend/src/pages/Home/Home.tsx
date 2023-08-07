@@ -157,7 +157,7 @@ export const Home = () => {
             </div>
 
             <main style={{marginLeft:40}}>
-                <Grid container spacing={2}>
+                <Grid container spacing={2} sx={{marginBottom:20}}>
                     <Grid item xs={8}>
                         <Box width='70%'>
                             <Grid container spacing={54} flexDirection='column'>
