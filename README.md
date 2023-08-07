@@ -1,7 +1,21 @@
 # Bridgify
-SMU .HEAP 2023 G14
+SMU .HEAP 2023 G14, Please refer to our main repo (https://github.com/xXxPMWxXx/Bridgify)
 
-## Get Started (Recommend to use Docker if want to run locally)
+## [Our website](http://bridgify-8a0acea7cc5f9d2d.elb.ap-southeast-1.amazonaws.com/)
+### Normal Account
+    - email: `mw@gmail.com`
+    - password: `password`
+### Admin Account
+    - email: `admin@admin.com`
+    - password: `admin`
+    
+## Technology & Framework
+    - Frontend : React (Typescript)
+    - Backend : Express (Typescript)
+    - Mobile : Flutter
+    - Database : MongoDB => it enables them to build applications faster, handle highly diverse data types, and manage applications more efficiently at scale. Especially, we are storing face descriptions in the DB as well.
+    
+## Get Started (Recommend to use Docker if want to run locally for website and doownload our [mobile apk](https://bridgify.s3.ap-southeast-1.amazonaws.com/Bridgify.apk) to install via an Android Phone to save the hassle)
 ### Local
 #### need to install python@3.10 and below in order to run npm install without error (Require to run backend)
     - install pyenv => brew install pyenv
