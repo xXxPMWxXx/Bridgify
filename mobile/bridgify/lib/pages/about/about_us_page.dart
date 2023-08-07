@@ -75,18 +75,18 @@ class AboutUsScreen extends StatelessWidget {
       ],
     );
 
-    final firstPara = const Text(
+    const firstPara = Text(
       'Welcome to Bridgify! We are a passionate team dedicated to redefining family connections and elderly care in Singapore.',
       style: TextStyle(fontSize: 18.0),
       textAlign: TextAlign.center,
     );
-    final secondPara = const Text(
+    const secondPara = Text(
       'With the growing elderly population and the challenges of modern life, we saw a need for a solution that brings families closer together.',
       style: TextStyle(fontSize: 18.0),
       textAlign: TextAlign.center,
     );
 
-    final thirdPara = const Text(
+    const thirdPara = Text(
       'Our mission is clear: to empower families by keeping them effortlessly connected with their elderly loved ones. Through our innovative solution, caregivers and care centers provide real-time updates on health, activities, and well-being, ensuring you\'re always in the know and your loved ones are always cared for.',
       style: TextStyle(fontSize: 18.0),
       textAlign: TextAlign.center,
@@ -95,14 +95,18 @@ class AboutUsScreen extends StatelessWidget {
     final bottomContent = Container(
       width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(40.0),
-      child: Center(
+      child: const Center(
         child: Column(
           children: <Widget>[
             firstPara,
-            const SizedBox(
+            SizedBox(
               height: 30,
             ),
-            secondPara
+            secondPara,
+            SizedBox(
+              height: 30,
+            ),
+            thirdPara
           ],
         ),
       ),

@@ -123,8 +123,7 @@ class _HomePageState extends State<HomePage> {
                                     child: CircleAvatar(
                                         radius: 22,
                                         backgroundImage: Image.network(
-                                                'http://${Config.apiURL}/images/user_profile/' +
-                                                    imagePath)
+                                                'http://${Config.apiURL}/images/user_profile/$imagePath')
                                             .image))
                                 : GestureDetector(
                                     onTap: () {
@@ -215,7 +214,7 @@ class _HomePageState extends State<HomePage> {
           bottom: 0,
           child: Container(
             decoration: BoxDecoration(
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30)),
               color: HexColor('#EDFDF9'),
             ),
@@ -294,8 +293,7 @@ class _HomePageState extends State<HomePage> {
                                   ? CircleAvatar(
                                       radius: 32,
                                       backgroundImage: Image.network(
-                                              'http://${Config.apiURL}/images/user_profile/' +
-                                                  imagePath)
+                                              'http://${Config.apiURL}/images/user_profile/$imagePath')
                                           .image)
                                   : const UserAvatar(
                                       filename: 'img1.jpeg', radius: 32);

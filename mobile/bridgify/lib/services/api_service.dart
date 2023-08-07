@@ -250,7 +250,7 @@ class APIService {
     };
 
     var url = Uri.http(Config.apiURL, Config.getElderlyByIdAPI, {"id": id});
-    print(url);
+  
     var response = await client.get(
       url,
       headers: requestHeaders,
@@ -258,7 +258,7 @@ class APIService {
 
     if (response.statusCode == 200) {
       try {
-        print(response.body);
+        
         return elderlyResponseJson(
           response.body,
         );
@@ -422,8 +422,7 @@ class APIService {
       headers: requestHeaders,
       body: jsonEncode(model.toJson()),
     );
-    print(model.toJson());
-    print(response.body);
+
     if (response.statusCode == 200) {
       var data = jsonDecode(response.body);
 

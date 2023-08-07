@@ -40,7 +40,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
                 filename: widget.model.photo!,
                 radius: 31,
               ),
-              SizedBox(width: 10),
+              const SizedBox(width: 10),
               Text.rich(
                 TextSpan(
                   text: truncateString(widget.model.name!, 10),
@@ -279,7 +279,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
     if (input.length <= maxLength) {
       return input;
     } else {
-      return input.substring(0, maxLength - 3) + '...';
+      return '${input.substring(0, maxLength - 3)}...';
     }
   }
 }

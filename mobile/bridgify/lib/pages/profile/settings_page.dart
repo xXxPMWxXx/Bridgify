@@ -43,10 +43,10 @@ class _SettingsPageState extends State<SettingsPage> {
                 Row(
                   children: [
                     Icon(Icons.person, color: HexColor('#207A35')),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
-                    Text(
+                    const Text(
                       "Account",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -73,10 +73,10 @@ class _SettingsPageState extends State<SettingsPage> {
                       Icons.volume_up_outlined,
                       color: HexColor('#207A35'),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 8,
                     ),
-                    Text(
+                    const Text(
                       "Notification",
                       style:
                           TextStyle(fontSize: 18, fontWeight: FontWeight.bold),

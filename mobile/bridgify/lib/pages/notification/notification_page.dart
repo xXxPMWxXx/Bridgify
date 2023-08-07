@@ -63,7 +63,7 @@ class _NotificationPageState extends State<NotificationPage> {
                 },
               );
             },
-            icon: Icon(
+            icon: const Icon(
               Icons.arrow_back_ios,
               color: Colors.white,
             ),
@@ -92,14 +92,14 @@ class _NotificationPageState extends State<NotificationPage> {
                               itemCount: model.data!.length,
                               itemBuilder: (context, index) {
                                 return Padding(
-                                  padding: EdgeInsets.symmetric(
+                                  padding: const EdgeInsets.symmetric(
                                       vertical: 10, horizontal: 5),
                                   child: Column(
                                     // Adjust padding as needed
                                     children: [
                                       BuildNotificationitem(
                                           model: model.data![index]),
-                                      Container(
+                                      SizedBox(
                                         width:
                                             MediaQuery.of(context).size.width *
                                                 0.75,

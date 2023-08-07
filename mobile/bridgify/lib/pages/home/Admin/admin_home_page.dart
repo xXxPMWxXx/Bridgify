@@ -111,8 +111,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                     child: CircleAvatar(
                                         radius: 22,
                                         backgroundImage: Image.network(
-                                                'http://${Config.apiURL}/images/user_profile/' +
-                                                    imagePath)
+                                                'http://${Config.apiURL}/images/user_profile/$imagePath')
                                             .image),
                                   )
                                 : GestureDetector(
@@ -150,14 +149,14 @@ class _AdminHomePageState extends State<AdminHomePage> {
           child: Container(
             padding: const EdgeInsets.symmetric(vertical: 5),
             decoration: BoxDecoration(
-              gradient: LinearGradient(
+              gradient: const LinearGradient(
                 begin: Alignment.bottomCenter,
                 colors: [
                   Color.fromRGBO(48, 132, 67, 0.722),
                   Color.fromRGBO(48, 132, 67, 0.6),
                 ],
               ),
-              borderRadius: BorderRadius.only(
+              borderRadius: const BorderRadius.only(
                 topLeft: Radius.circular(30),
                 topRight: Radius.circular(30),
               ),
@@ -555,8 +554,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                   ? CircleAvatar(
                                       radius: 32,
                                       backgroundImage: Image.network(
-                                              'http://${Config.apiURL}/images/user_profile/' +
-                                                  imagePath)
+                                              'http://${Config.apiURL}/images/user_profile/$imagePath')
                                           .image)
                                   : const UserAvatar(
                                       filename: 'img1.jpeg', radius: 32);

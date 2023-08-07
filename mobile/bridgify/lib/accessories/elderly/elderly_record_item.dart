@@ -82,12 +82,12 @@ class ElderlyRecordItem extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(
+                padding: const EdgeInsets.symmetric(
                   vertical: 25,
                 ),
                 decoration: BoxDecoration(
                   color: HexColor("#207A35"),
-                  borderRadius: BorderRadius.only(
+                  borderRadius: const BorderRadius.only(
                       topRight: Radius.circular(8.0),
                       bottomRight: Radius.circular(8.0)),
                 ),
@@ -124,7 +124,7 @@ class ElderlyRecordItem extends StatelessWidget {
                       ),
                     );
                   },
-                  icon: Icon(
+                  icon: const Icon(
                     Icons.update,
                     color: Colors.white,
                   ),

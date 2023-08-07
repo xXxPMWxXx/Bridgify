@@ -36,7 +36,7 @@ class _BuildNotificationitemState extends State<BuildNotificationitem> {
                   filename: model.data!.photo!,
                   radius: 25,
                 ),
-                Container(
+                SizedBox(
                   height: 50.0,
                   child: VerticalDivider(
                     color: Colors.grey.shade500,
