@@ -191,9 +191,11 @@ export function ElderlyTab() {
     return (
         <Box
             sx={{
-                display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                width:"100%",
+                overflow:"auto",
+                boxShadow:"5"
             }}
         >
             {dataLoaded ?
