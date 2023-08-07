@@ -84,6 +84,34 @@ export default function Notifications() {
 
     }
 
+    //function to calculate the time elapsed
+    const getTimeElapsed = (dateTime: string): string => {
+        const postDateTime = new Date(dateTime);
+        const currentTime = new Date();
+        const timeDiffInMs = currentTime.getTime() - postDateTime.getTime();
+        const secondsDiff = Math.floor(timeDiffInMs / 1000);
+
+        if (secondsDiff < 60) {
+            return `${secondsDiff} seconds ago`;
+        }
+
+        const minutesDiff = Math.floor(secondsDiff / 60);
+        if (minutesDiff < 60) {
+            return `${minutesDiff} minutes ago`;
+        }
+
+        const hoursDiff = Math.floor(minutesDiff / 60);
+        if (hoursDiff < 24) {
+            return `${hoursDiff} hours ago`;
+        }
+
+        const daysDiff = Math.floor(hoursDiff / 24);
+        if (daysDiff === 1) {
+            return `${daysDiff} day ago`;
+        } else {
+            return `${daysDiff} days ago`;
+        }
+    }
 
     React.useEffect(() => {
         const fetchData = async () => {
@@ -96,8 +124,8 @@ export default function Notifications() {
     return (
         <Grid item >
             {/* <CardActionArea> */}
-            <Card style={{ display: 'flex', width: '400px', height: '500px', borderRadius: '10px', backgroundColor:'rgba(236.94, 236.94, 236.94, 0.40)', marginTop:-30, marginLeft:-30 }}>
-                <Typography variant="h5" sx={{ textAlign: "left", marginTop: 2, font:'Roboto', fontWeight: 500, fontSize: 21, marginLeft:3.5 }}>Notifications</Typography>
+            <Card style={{ display: 'flex', width: '400px', height: '500px', borderRadius: '10px', backgroundColor: 'rgba(236.94, 236.94, 236.94, 0.40)', marginTop: -30, marginLeft: -30 }}>
+                <Typography variant="h5" sx={{ textAlign: "left", marginTop: 2, font: 'Roboto', fontWeight: 500, fontSize: 21, marginLeft: 3.5 }}>Notifications</Typography>
 
                 <List sx={{ overflow: "auto" }}>
                     {notifications.length > 0 ?
@@ -108,13 +136,32 @@ export default function Notifications() {
                                     </Avatar>
                                 </ListItemAvatar>
                                 <ListItemText sx={{
-                                    display: '-webkit-box',
-                                    WebkitLineClamp: 2, // Limit to 2 lines
-                                    WebkitBoxOrient: 'vertical',
-                                    overflow: 'hidden',
+                               
                                 }}
-                                    primary={`${notif.elderlyName}${notif.message} `}
+                                    primary={<Typography
+                                        sx={{
+                                            display: '-webkit-box',
+                                            WebkitLineClamp: 2, // Limit to 2 lines
+                                            WebkitBoxOrient: 'vertical',
+                                            overflow: 'hidden',
+                                        }}
+                                        component="span"
+                                        variant="body2"
+                                    >
+                                        {`${notif.elderlyName}${notif.message} `}
 
+                                    </Typography>}
+                                    // primary={`${notif.elderlyName}${notif.message} `}
+                                    secondary={<Typography
+                                        sx={{ display: 'inline' }}
+                                        component="span"
+                                        variant="body2"
+                                        color="text.secondary"
+
+                                    >
+                                        {getTimeElapsed(notif.date)}
+
+                                    </Typography>}
                                 />
                             </ListItem>
                         )) : <Typography textAlign={'center'} sx={{ marginTop: "170px" }} fontSize={"24px"} color={"#ADADAD"}> No Notifications</Typography>}
