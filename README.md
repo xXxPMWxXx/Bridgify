@@ -1,6 +1,10 @@
 # Bridgify
-SMU .HEAP 2023 G14, Please refer to our [main repo](https://github.com/xXxPMWxXx/Bridgify)
-
+- SMU .HEAP 2023 G14, Please refer to our [main repo](https://github.com/xXxPMWxXx/Bridgify)
+- You can access our others documentation via your SMU Google Account [here](https://drive.google.com/drive/folders/1PzMxQXV3oaVrTCWjZk5e-R0c1zfKt1NW?usp=drive_link)
+- Recommendation on setting up our project:
+    - Use Docker for our Website Application (Refer below for more details)
+    - Use [APK](https://bridgify.s3.ap-southeast-1.amazonaws.com/Bridgify.apk) for our Mobile Applicaiton (Refer below for more details)
+      
 ## [Our website](http://bridgify-8a0acea7cc5f9d2d.elb.ap-southeast-1.amazonaws.com/)
 ### Normal Account
     - email: `mw@gmail.com`
@@ -16,6 +20,13 @@ SMU .HEAP 2023 G14, Please refer to our [main repo](https://github.com/xXxPMWxXx
     - Database : MongoDB => it enables us to build our applications faster, handle highly diverse data types, and manage applications more efficiently at scale. Especially, we are storing face descriptions in the DB as well.
     
 ## Get Started (Recommend to use Docker if want to run locally for website and doownload our [mobile apk](https://bridgify.s3.ap-southeast-1.amazonaws.com/Bridgify.apk) to install via an Android Phone to save the hassle)
+### Docker
+- `docker compose up` => to build the image and run
+    - Notes: if have Segmentation fault => use Docker Desktop to start the container
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/fcb8443b-ca8a-4fc8-96d4-fba34bbef8a1)
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/4fb9faa9-81b6-4fd2-98b3-60d3579298c7)
+![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/e7ebe4a7-ed37-47b3-acc6-526ac76172dc)
+
 ### Local
 #### need to install python@3.10 and below in order to run npm install without error (Require to run backend)
     - install pyenv => brew install pyenv
@@ -41,14 +52,7 @@ SMU .HEAP 2023 G14, Please refer to our [main repo](https://github.com/xXxPMWxXx
 - cd Bridgify/frontend => npm install
 - cd Bridgify => npm start => to run both frontend && backend
 
-### Docker
-- `docker compose up` => to build the image and run
-    - Notes: if have Segmentation fault => use Docker Desktop to start the container
-![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/fcb8443b-ca8a-4fc8-96d4-fba34bbef8a1)
-![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/4fb9faa9-81b6-4fd2-98b3-60d3579298c7)
-![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/e7ebe4a7-ed37-47b3-acc6-526ac76172dc)
-
-#### AWS EC2
+### AWS EC2
 - `ssh -i ".ssh/id_rsa" ubuntu@13.228.86.148` => connect to EC2 via ssh
     - .ssh/id_rsa = the location of your id_rsa file
 - `rm -rf node_modules/` => remove folder in ubuntu
@@ -71,7 +75,7 @@ SMU .HEAP 2023 G14, Please refer to our [main repo](https://github.com/xXxPMWxXx
 - `tmux attach-session -t session_name` => Connect to a named session
 - `tmux kill-session -t session_name` => Kill/stop a session (enter `exit` command while connected to the session also will kill the session)
 
-#### Setting up Flutter framework on vscode
+### Setting up Flutter framework on vscode
 - Install accordingly for mac and windows and extract to desired location (https://docs.flutter.dev/get-started/install)
 - Please note to have VSCode already installed
 - #### Windows:
@@ -150,15 +154,3 @@ SMU .HEAP 2023 G14, Please refer to our [main repo](https://github.com/xXxPMWxXx
 ![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/05ff89ba-866c-49f5-be8e-4a974db87db8)
 - To run and debug your project, go to the main.dart file => with the android emulator open, click on "Start Debugging" 
 ![image](https://github.com/xXxPMWxXx/Bridgify/assets/64420980/dc5529a8-c71c-481b-bf07-3bf2a0a961e4)
-
-
-
-
-
-## Contributors
-- [Petrina Wong Jing Ting](https://github.com/petrinawjt)
-- [Pan Mingwei](https://github.com/xXxPMWxXx)
-- [Lim ZhengLong Brian](https://github.com/Liseon617)
-- [Georgia Ng](https://github.com/Georgiaxng)
-- [Naufal Syaqil Bin Azmi](https://github.com/nafutofu)
-
