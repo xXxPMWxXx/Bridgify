@@ -213,7 +213,7 @@ export const getByUser = async (req: any, res: Response, next: NextFunction) => 
           const elderlyName = await ElderlyModel.findOne({ id: elderlyID }).select('name');
           linkedElderlyNameList.push(elderlyName.name + `(${elderlyID})`);
         };
-        const post = await PostModel.find({ 'elderlyInvolved': { $in: linkedElderlyNameList } })
+        const post = await PostModel.find({ 'elderlyInvolved': { $in: linkedElderlyNameList } }).sort({ dateTime: -1 });
         res.status(200).json(post);
 
       } else if (err) {
