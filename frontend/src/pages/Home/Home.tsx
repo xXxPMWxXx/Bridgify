@@ -34,10 +34,12 @@ export const Home = () => {
     const [elderly, setElderly]: any[] = useState([]);
     const [posts, setPosts]: any[] = useState([]);
     const [displayOpen, setdisplayOpen] = React.useState(false);
+    const [selectedElderlyStatus, setSelectedElderlyStatus]: any[] = useState([]);
 
     //for the elderlyStatus popup
-    const handleOpenElderlyDetails = () => {
+    const handleOpenElderlyDetails = (selectedElderly:any) => {
         setdisplayOpen(true);
+        setSelectedElderlyStatus(selectedElderly);
     }
 
     const elderlyStatuses = async () => {
@@ -140,9 +142,10 @@ export const Home = () => {
                         {elderly.length > 0 ? 
                                 elderly.map((elderly: any) => (
                                 <Grid item key={elderly.id} xs={12} sm={6} md={4} lg={3} xl={2}>
-                                    <ElderlyStatus post={elderly} onClick={handleOpenElderlyDetails} />
+                                    <ElderlyStatus post={elderly} onClick={()=>handleOpenElderlyDetails(elderly.elderlyData)} />
                                     {displayOpen ?
-                                        <DisplayElderly open={setdisplayOpen} elderly={elderly.elderlyData} />
+                                        <DisplayElderly open={setdisplayOpen} elderly={selectedElderlyStatus} />
+
                                         : null}
                                 </Grid>
                         )) : (<Typography textAlign={'center'} fontSize={"28px"} color={"#ADADAD"} sx={{zIndex:1, marginTop:-3, marginLeft:2.5}}>No Linked Elderly</Typography>)}
