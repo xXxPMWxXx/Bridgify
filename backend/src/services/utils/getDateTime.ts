@@ -14,7 +14,7 @@ export function now() {
     let year = date_ob.getFullYear();
     
     // current hours
-    let hours = date_ob.getHours();
+    let hours =  ("0" + (date_ob.getHours())).slice(-2);
     
     // current minutes
     let minutes = date_ob.getMinutes();
@@ -23,7 +23,6 @@ export function now() {
     let seconds = date_ob.getSeconds();
     
     const dateTime : String = year + "-" + month + "-" + date + "T" + hours + ":" + minutes + ":" + seconds;
-    console.log(dateTime)
-    // return date & time in YYYY-MM-DD HH:MM:SS format
+   
     return dateTime;
 }

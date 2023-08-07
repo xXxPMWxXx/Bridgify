@@ -55,12 +55,13 @@ export default function Posts (props:PostProps) {
     // }, []);
 
     //get all the profileImages of the elderly involved
+    //need split as the format is like: Amy(123A)
+    // it will split to ['Amy','123A',''];
     const elderlyInvolvedImageArray = elderlyInvolvedArray!.map((elderlyName: any) => ({
-        name: elderlyName,
-        image: `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/${elderlyName.photo}`,
+        name: elderlyName.split(/[()]/)[0],
+        image: `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/${elderlyName.split(/[()]/)[1]}.png`,
     }));
-    console.log("check");
-    console.log(elderlyInvolvedImageArray);
+    console.log(imagesArray);
 
     //function to calculate the time elapsed
     const getTimeElapsed = (dateTime: string): string => {
@@ -121,8 +122,8 @@ export default function Posts (props:PostProps) {
                             {imagesArray.map((image, index) => (
                               <ImageListItem key={index}>
                                 <img
-                                  src={`${image}?w=164&h=164&fit=crop&auto=format`}
-                                  srcSet={`${image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
+                                  src={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${image}?w=164&h=164&fit=crop&auto=format`}
+                                  srcSet={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
                                   loading='lazy'
                                   alt={`Image ${index + 1}`} 
                                 />
