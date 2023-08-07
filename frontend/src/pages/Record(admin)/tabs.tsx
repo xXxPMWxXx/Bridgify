@@ -314,8 +314,9 @@ export function CreateRecordTab() {
 
                 } else {
                     const data = await response.json();
-                    console.log(data)
-                    setElderlyList(data);
+                    
+                    //sort elderly in alphabetical order for record admin select 
+                    setElderlyList(data.sort((a: { name: string; }, b: { name: any; }) => a.name.localeCompare(b.name)));
 
                 }
 
