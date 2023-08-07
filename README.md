@@ -1,5 +1,5 @@
 # Bridgify
-SMU .HEAP 2023 G14, Please refer to our main repo (https://github.com/xXxPMWxXx/Bridgify)
+SMU .HEAP 2023 G14, Please refer to our [main repo](https://github.com/xXxPMWxXx/Bridgify)
 
 ## [Our website](http://bridgify-8a0acea7cc5f9d2d.elb.ap-southeast-1.amazonaws.com/)
 ### Normal Account
@@ -13,7 +13,7 @@ SMU .HEAP 2023 G14, Please refer to our main repo (https://github.com/xXxPMWxXx/
     - Frontend : React (Typescript)
     - Backend : Express (Typescript)
     - Mobile : Flutter
-    - Database : MongoDB => it enables them to build applications faster, handle highly diverse data types, and manage applications more efficiently at scale. Especially, we are storing face descriptions in the DB as well.
+    - Database : MongoDB => it enables us to build our applications faster, handle highly diverse data types, and manage applications more efficiently at scale. Especially, we are storing face descriptions in the DB as well.
     
 ## Get Started (Recommend to use Docker if want to run locally for website and doownload our [mobile apk](https://bridgify.s3.ap-southeast-1.amazonaws.com/Bridgify.apk) to install via an Android Phone to save the hassle)
 ### Local
