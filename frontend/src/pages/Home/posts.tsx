@@ -20,36 +20,14 @@ interface postInfo {
   }
 }
 
-// interface elderlyInfo {
-//     elderlyID: string;
-//     name: string;
-//     image: string;
-// }
-
 interface PostProps extends postInfo {
   elderlyInvolvedArray: string[];
   imagesArray: string[];
 }
 
-// async function getElderlyInfo(elderlyName: string): Promise<elderlyInfo | null> {
-//   try {
-//     const response = await fetch(`${process.env.REACT_APP_BACKEND_PRODUCTION_URL}/elderly?name=${elderlyName}`)
-//     if(!response.ok) {
-//       throw new Error('Failed to fetch elderly information');
-//     }
-//     const data = await response.json();
-//     return data;
-//   } catch(error) {
-//     console.error('Error while fetching elderly information:', error);
-//     throw error;
-//   }
-// }
-
 
 export default function Posts(props: PostProps) {
   const { post, elderlyInvolvedArray, imagesArray } = props;
-
-  console.log(post);
 
   //get all the profileImages of the elderly involved
   //need split as the format is like: Amy(123A)

@@ -16,7 +16,6 @@ export default function Notifications() {
     const linkedElderly = window.localStorage.getItem('linkedElderly');
 
     const [notifications, setNotifications] = React.useState<any[]>([]); //depending on tabs
-    // const [ updatedNotification, setUpdatedNotifications] = 
 
     const loadNotifications = async () => {
         // //calling backend API
@@ -102,34 +101,31 @@ export default function Notifications() {
         <Grid item >
             {/* <CardActionArea> */}
             <Card style={{ display: 'flex', width: '400px', height: '500px', borderRadius: '10px' }}>
-                {/* <Card style={{ display: 'flex', width: '400px', height: '400px', backgroundColor: 'rgba(236.94, 236.94, 236.94, 0.80)', borderRadius: '10px' }}> */}
                 <Typography variant="h5" sx={{ textAlign: "center", marginTop: 2 }}>Notifications</Typography>
-                {/* <Button onClick={() => { console.log(notifications) }}>TEST BUTTON</Button> */}
 
                 <List sx={{ overflow: "auto" }}>
-                    {notifications.length>0?
-                    notifications.map((notif) => (
-                        <ListItem sx={{ border: "1px solid #F6F6F6" }}>
-                            <ListItemAvatar>
-                                <Avatar src={`${imageBASEURL}/${notif.elderlyPhoto}`}>
-                                    {/* <FolderIcon /> */}
-                                </Avatar>
-                            </ListItemAvatar>
-                            <ListItemText sx={{
-                                display: '-webkit-box',
-                                WebkitLineClamp: 2, // Limit to 2 lines
-                                WebkitBoxOrient: 'vertical',
-                                overflow: 'hidden',
-                            }}
-                                primary={`${notif.elderlyName}${notif.message} `}
-                            // secondary={secondary ? 'Secondary text' : null}
-                            />
-                        </ListItem>
-                    )):<Typography textAlign={'center'} sx={{marginTop:"170px"}} fontSize={"24px"} color={"#ADADAD"}> No Notifications</Typography>}
+                    {notifications.length > 0 ?
+                        notifications.map((notif) => (
+                            <ListItem sx={{ border: "1px solid #F6F6F6" }}>
+                                <ListItemAvatar>
+                                    <Avatar src={`${imageBASEURL}/${notif.elderlyPhoto}`}>
+                                    </Avatar>
+                                </ListItemAvatar>
+                                <ListItemText sx={{
+                                    display: '-webkit-box',
+                                    WebkitLineClamp: 2, // Limit to 2 lines
+                                    WebkitBoxOrient: 'vertical',
+                                    overflow: 'hidden',
+                                }}
+                                    primary={`${notif.elderlyName}${notif.message} `}
+
+                                />
+                            </ListItem>
+                        )) : <Typography textAlign={'center'} sx={{ marginTop: "170px" }} fontSize={"24px"} color={"#ADADAD"}> No Notifications</Typography>}
 
                 </List>
             </Card>
-            {/* </CardActionArea> */}
+
         </Grid>
     )
 }

@@ -3,13 +3,11 @@ import { Navigate } from 'react-router-dom';
 import { ResponsiveAppBar } from '../../Navbar';
 import { Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
 import backgroundImage from '../../images/background.png';
 import ElderlyStatus from './elderlyStatus';
 import Posts from './posts';
 import Notifications from './notifications';
+import DisplayElderly from './displayElderly';
 
 const Background = styled("div")({
     position: 'absolute',
@@ -21,16 +19,6 @@ const Background = styled("div")({
     backgroundRepeat: 'no-repeat'
 })
 
-const notifs = [
-    {
-        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
-        sender: 'Ruby B.',
-        message: 'condition has been updated to a little sick',
-        time: 2
-    },
-]
-
-
 export const Home = () => {
 
     useEffect(() => {
@@ -41,30 +29,14 @@ export const Home = () => {
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [alertType, setAlertType]: any = useState('info');
     const [alertMsg, setAlertMsg] = useState('');
-    const [open, setOpen] = useState(false);
-
-    // const linkedElderly = window.localStorage.getItem('linkedElderly')
     const token = window.localStorage.getItem('accessToken');
-    const userName = window.localStorage.getItem('userName');
-    const accRole = window.localStorage.getItem('accRole');
-    const profileImage = window.localStorage.getItem('profileImage');
     const email = window.localStorage.getItem('email');
     const [elderly, setElderly]: any[] = useState([]);
     const [posts, setPosts]: any[] = useState([]);
-
-    //change linkedElderly to Array
-    // if(linkedElderly != null){
-    //     var elderlyArray = linkedElderly.split(",");
-    //     // console.log(elderlyArray[0])
-    // }
-
+    const [displayOpen, setdisplayOpen] = React.useState(false);
     //for the elderlyStatus popup
-    const handleOpen = () => {
-        setOpen(true);
-    }
-
-    const handleClose = () => {
-        setOpen(false);
+    const handleOpenElderlyDetails = () => {
+        setdisplayOpen(true);
     }
 
     const elderlyStatuses = async () => {
@@ -89,7 +61,6 @@ export const Home = () => {
             }
 
             const elderlyResponse = await response.json();
-            //console.log(elderlyResponse);
             const elderlyArray = elderlyResponse.map((elderly: any) => ({
                 id: elderly.id,
                 name: elderly.name,
@@ -98,6 +69,7 @@ export const Home = () => {
                 activity: elderly.status.current_activity,
                 medication: elderly.status.taken_med === 'True' ? 'Taken' : 'Not Taken',
                 condition: elderly.status.condition,
+                elderlyData: elderly
             }));
             setElderly(elderlyArray);
         } catch (error) {
@@ -128,14 +100,11 @@ export const Home = () => {
             const postArray = postResponse.map((post: any) => ({
                 id: post.id,
                 elderlyInvolved: post.elderlyInvolved,
-                //profileImage: null,
                 caption: post.activity_type,
                 time: post.dateTime,
                 imagesCount: post.imagesCount,
                 images: post.postImages,
                 description: post.description,
-                // elderlyInvolvedArray: postArray.map((postItem: any) => postItem.elderlyInvolved),
-                // imagesArray: postArray.map((postItem: any) => postItem.images),
             }));
 
             const elderlyInvolvedArray = postArray.map((postItem: any) => postItem.elderlyInvolved);
@@ -156,8 +125,6 @@ export const Home = () => {
                     <Navigate to="/Login" /> : <Navigate to="/Home" />
             }
             < ResponsiveAppBar />
-            {/* < Layout/> */}
-            {/* < DefaultNavbar/> */}
 
             <Background />
 
@@ -170,15 +137,12 @@ export const Home = () => {
             <main>
                 <Box display='flex' justifyContent='center' alignItems='center' height='60vh' width='100%'>
                     <Grid container spacing={-5} justifyContent="center">
-                        {elderly.map((post: any) => ( // Add index as the second parameter
-                            <Grid item key={post.id} xs={12} sm={6} md={4} lg={3} xl={2}>
-                                <ElderlyStatus post={post} onClick={handleOpen} />
-                                <Dialog open={open} onClose={handleClose}>
-                                    <DialogTitle>{"Elderly Health Information"}</DialogTitle>
-                                    <DialogContent>
-
-                                    </DialogContent>
-                                </Dialog>
+                        {elderly.map((elderly: any) => (
+                            <Grid item key={elderly.id} xs={12} sm={6} md={4} lg={3} xl={2}>
+                                <ElderlyStatus post={elderly} onClick={handleOpenElderlyDetails} />
+                                {displayOpen ?
+                                    <DisplayElderly open={setdisplayOpen} elderly={elderly.elderlyData} />
+                                    : null}
                             </Grid>
                         ))}
                     </Grid>
@@ -197,11 +161,11 @@ export const Home = () => {
                         <Box width='70%'>
                             <Grid container spacing={54} flexDirection='column'>
                                 {posts.map((post: any) => (
-                                    <Grid item key={post.id}> {/* Use post.id as the key */}
+                                    <Grid item key={post.id}> 
                                         <Posts
                                             post={post}
-                                            elderlyInvolvedArray={post.elderlyInvolved} // Use the actual property from the post object
-                                            imagesArray={post.images} // Use the actual property from the post object
+                                            elderlyInvolvedArray={post.elderlyInvolved}
+                                            imagesArray={post.images} 
                                         />
                                     </Grid>
                                 ))}

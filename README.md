@@ -3,7 +3,7 @@
 - You can access our others documentation via your SMU Google Account [here](https://drive.google.com/drive/folders/1PzMxQXV3oaVrTCWjZk5e-R0c1zfKt1NW?usp=drive_link)
 - Recommendation on setting up our project:
     - Use Docker for our Website Application (Refer below for more details)
-    - Use [APK](https://bridgify.s3.ap-southeast-1.amazonaws.com/Bridgify.apk) for our Mobile Applicaiton (Refer below for more details)
+    - Use [APK](https://bridgify.s3.ap-southeast-1.amazonaws.com/mobile/Bridgify.apk) for our Mobile Applicaiton (Refer below for more details)
       
 ## [Our website](http://bridgify-8a0acea7cc5f9d2d.elb.ap-southeast-1.amazonaws.com/)
 ### Normal Account
@@ -19,7 +19,7 @@
     - Mobile : Flutter
     - Database : MongoDB => it enables us to build our applications faster, handle highly diverse data types, and manage applications more efficiently at scale. Especially, we are storing face descriptions in the DB as well.
     
-## Get Started (Recommend to use Docker if want to run locally for website and doownload our [mobile apk](https://bridgify.s3.ap-southeast-1.amazonaws.com/Bridgify.apk) to install via an Android Phone to save the hassle)
+## Get Started (Recommend to use Docker if want to run locally for website and doownload our [mobile apk](https://bridgify.s3.ap-southeast-1.amazonaws.com/mobile/Bridgify.apk) to install via an Android Phone to save the hassle)
 ### Docker (Since we are using production URL for our backend, you can just build our frontend image)
 Make sure your Docker is running
 
