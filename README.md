@@ -1,4 +1,4 @@
-![image](https://github.com/xXxPMWxXx/Bridgify/assets/53245147/941f24e5-5665-4aab-813f-3efaa73024e0)# Bridgify
+# Bridgify
 - SMU .HEAP 2023 G14, Please refer to our [main repo](https://github.com/xXxPMWxXx/Bridgify)
 - You can access our others documentation via your SMU Google Account [here](https://drive.google.com/drive/folders/1PzMxQXV3oaVrTCWjZk5e-R0c1zfKt1NW?usp=drive_link)
 - Recommendation on setting up our project:
