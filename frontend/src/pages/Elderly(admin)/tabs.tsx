@@ -195,7 +195,8 @@ export function ElderlyTab() {
                 alignItems: 'center',
                 width:"100%",
                 overflow:"auto",
-                boxShadow:"5"
+                boxShadow:"5", 
+                marginBottom:5
             }}
         >
             {dataLoaded ?

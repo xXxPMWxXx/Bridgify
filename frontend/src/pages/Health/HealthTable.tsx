@@ -335,8 +335,6 @@ export default function HealthTable() {
           flexWrap: 'wrap',
           gap: 1.5,
 
-          // margin: "auto",   
-
         }}>
           {/* Search Bar */}
           <Box
@@ -425,25 +423,7 @@ export default function HealthTable() {
                 }
             </Popover>
           </Box>
-          {/* Add Document */}
-          {/* <Button
-            startDecorator={<Add />}
-            disabled={false}
-            size="sm"
-            variant="outlined"
-            sx={{
-              borderWidth: "2px",
-              borderColor: "#30685e",
-              backgroundColor: "white",
-              color: "#30685e",
-              ":hover": {
-                bgcolor: "#224942",
-                color: "white"
-              }
-            }}
-            onClick={() => console.log(searchQuery)}
-
-          > Add Document</Button> */}
+         
         </Sheet>
 
         <Box

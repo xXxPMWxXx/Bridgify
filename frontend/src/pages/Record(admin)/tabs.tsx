@@ -203,6 +203,7 @@ export function RecordTab() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                marginBottom:5
             }}
         >
             {dataLoaded ?
