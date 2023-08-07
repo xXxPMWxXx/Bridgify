@@ -100,13 +100,13 @@ export default function Notifications() {
     return (
         <Grid item >
             {/* <CardActionArea> */}
-            <Card style={{ display: 'flex', width: '400px', height: '500px', borderRadius: '10px' }}>
-                <Typography variant="h5" sx={{ textAlign: "center", marginTop: 2 }}>Notifications</Typography>
+            <Card style={{ display: 'flex', width: '400px', height: '500px', borderRadius: '10px', backgroundColor:'rgba(236.94, 236.94, 236.94, 0.40)', marginTop:-30, marginLeft:-30 }}>
+                <Typography variant="h5" sx={{ textAlign: "left", marginTop: 2, font:'Roboto', fontWeight: 500, fontSize: 21, marginLeft:3.5 }}>Notifications</Typography>
 
                 <List sx={{ overflow: "auto" }}>
                     {notifications.length > 0 ?
                         notifications.map((notif) => (
-                            <ListItem sx={{ border: "1px solid #F6F6F6" }}>
+                            <ListItem sx={{ border: "0.5px solid rgba(201.88, 201.88, 201.88, 0.60)" }}>
                                 <ListItemAvatar>
                                     <Avatar src={`${imageBASEURL}/${notif.elderlyPhoto}`}>
                                     </Avatar>

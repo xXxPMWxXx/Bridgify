@@ -91,7 +91,7 @@ export default function Posts(props: PostProps) {
               </AvatarGroup>
             </div>
             <Typography variant='body1' sx={{ fontFamily: 'Roboto', marginLeft: 17.4, marginTop: -4.6, fontSize: 18 }}>
-              <span style={{ fontWeight: 500 }}>{elderlyInvolvedArray[0]}</span>, <span style={{ fontWeight: 500 }}>{elderlyInvolvedArray[1]}</span> and more are {post.caption}
+              <span style={{ fontWeight: 500 }}>{elderlyInvolvedArray[0].split(/[()]/)[0]}</span>, <span style={{ fontWeight: 500 }}>{elderlyInvolvedArray[1].split(/[()]/)[0]}</span> and more are {post.caption}
             </Typography>
             <Typography sx={{ fontFamily: 'Roboto', marginLeft: 81.5, marginTop: -3, color: '#909090' }}>
               {getTimeElapsed(post.time)}
@@ -100,19 +100,7 @@ export default function Posts(props: PostProps) {
               {post.description}
             </Typography>
 
-            {/* <ImageList sx={{ width: 500, height: 450, marginLeft: 17, marginTop: 2.8, gap: 2 }} cols={2} rowHeight={104}>
-              {imagesArray.map((image, index) => (
-                <ImageListItem key={index}>
-                  <img
-                    src={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${image}?w=164&h=164&fit=crop&auto=format`}
-                    srcSet={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${image}?w=164&h=164&fit=crop&auto=format&dpr=2 2x`}
-                    loading='lazy'
-                    alt={`Image ${index + 1}`}
-                  />
-                </ImageListItem>
-              ))}
-            </ImageList> */}
-            <Carousel sx={{ maxHeight: 300, height: '100%', maxWidth: 650, width: '100%', mt: 5 }}>
+            <Carousel sx={{ maxHeight: 300, height: '100%', maxWidth: 650, width: '100%', mt: 5, marginLeft:8 }}>
               {imagesArray.map((imgName: any) => (
                 <CarouselSlide key={imgName} >
                   <Card >

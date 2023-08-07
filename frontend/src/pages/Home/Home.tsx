@@ -34,6 +34,7 @@ export const Home = () => {
     const [elderly, setElderly]: any[] = useState([]);
     const [posts, setPosts]: any[] = useState([]);
     const [displayOpen, setdisplayOpen] = React.useState(false);
+
     //for the elderlyStatus popup
     const handleOpenElderlyDetails = () => {
         setdisplayOpen(true);
@@ -150,12 +151,12 @@ export const Home = () => {
             </main>
 
             <div>
-                <Typography component="h2" align="left" alignItems="left" sx={{ color: 'black', position: 'absolute', fontFamily: 'Roboto', fontWeight: 500, fontSize: 22, marginLeft: 9, marginTop: -9 }}>
+                <Typography component="h2" align="left" alignItems="left" sx={{ color: 'black', position: 'absolute', fontFamily: 'Roboto', fontWeight: 500, fontSize: 22, marginLeft: 15, marginTop: -9 }}>
                     Posts
                 </Typography>
             </div>
 
-            <main>
+            <main style={{marginLeft:40}}>
                 <Grid container spacing={2}>
                     <Grid item xs={8}>
                         <Box width='70%'>
