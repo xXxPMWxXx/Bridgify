@@ -74,8 +74,7 @@ export const Home = () => {
             }));
             setElderly(elderlyArray);
         } catch (error) {
-            console.error('Error fetching linked elderly:', error);
-            window.alert('Error: Failed to fetch linked elderly');
+            
         }
     };
 
@@ -114,7 +113,6 @@ export const Home = () => {
 
         } catch (error) {
             console.error('Error fetching', error);
-            window.alert('Error: Failed to fetch');
         }
     };
 
@@ -138,14 +136,16 @@ export const Home = () => {
             <main>
                 <Box display='flex' justifyContent='center' alignItems='center' height='60vh' width='100%'>
                     <Grid container spacing={-5} justifyContent="center">
-                        {elderly.map((elderly: any) => (
-                            <Grid item key={elderly.id} xs={12} sm={6} md={4} lg={3} xl={2}>
-                                <ElderlyStatus post={elderly} onClick={handleOpenElderlyDetails} />
-                                {displayOpen ?
-                                    <DisplayElderly open={setdisplayOpen} elderly={elderly.elderlyData} />
-                                    : null}
-                            </Grid>
-                        ))}
+
+                        {elderly.length > 0 ? 
+                                elderly.map((elderly: any) => (
+                                <Grid item key={elderly.id} xs={12} sm={6} md={4} lg={3} xl={2}>
+                                    <ElderlyStatus post={elderly} onClick={handleOpenElderlyDetails} />
+                                    {displayOpen ?
+                                        <DisplayElderly open={setdisplayOpen} elderly={elderly.elderlyData} />
+                                        : null}
+                                </Grid>
+                        )) : (<Typography textAlign={'center'} fontSize={"28px"} color={"#ADADAD"} sx={{zIndex:1, marginTop:-3, marginLeft:2.5}}>No Linked Elderly</Typography>)}
                     </Grid>
                 </Box>
             </main>

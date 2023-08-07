@@ -31,7 +31,6 @@ export default function Notifications() {
         })
             .then(async (response) => {
                 if (response.status != 200) {
-                    console.log(response.json())
 
                 } else {
                     const notif = await response.json();
@@ -45,7 +44,6 @@ export default function Notifications() {
                     })
                         .then(async (response) => {
                             if (response.status != 200) {
-                                console.log("error fetching elderly")
 
                             } else {
                                 const data = await response.json();
@@ -69,7 +67,6 @@ export default function Notifications() {
                                     //   If no matching item is found, return the original 'row' object
                                     return row;
                                 });
-                                console.log("Notifications are set")
                                 await setNotifications(updatedRows);
 
                             }
@@ -89,7 +86,6 @@ export default function Notifications() {
 
 
     React.useEffect(() => {
-        console.log("useEffect is called");
         const fetchData = async () => {
             await loadNotifications();
         };
