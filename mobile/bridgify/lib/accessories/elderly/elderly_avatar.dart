@@ -18,7 +18,6 @@ class ElderlyAvatar extends StatelessWidget {
         'http://${Config.apiURL}/images/trained_face/$filename',
         fit: BoxFit.contain,
       ).image,
-      // ),
     );
   }
 }

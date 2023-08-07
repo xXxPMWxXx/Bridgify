@@ -19,7 +19,6 @@ class _BuildNotificationOptionRowState
   bool currentState = true;
   @override
   Widget build(BuildContext context) {
-    // currentState = widget.isActive;
     return Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
       Text(
         widget.title,

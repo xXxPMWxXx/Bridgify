@@ -84,13 +84,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                       )),
                   Row(
                     children: [
-                      // IconButton(
-                      //   onPressed: () {},
-                      //   icon: Icon(
-                      //     Icons.notifications_none_rounded,
-                      //     color: Colors.grey.shade800,
-                      //   ),
-                      // ),
+                     
                       FutureBuilder(
                         future: APIService.getUserProfile(),
                         builder: (BuildContext context,
@@ -190,8 +184,8 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                     )
                                   : Border.all(
                                       color: Colors.grey
-                                          .shade200, // Set the dynamic border color here
-                                      width: 2.0, // Set the border width
+                                          .shade200, 
+                                      width: 2.0, 
                                     ),
                             ),
                             child: GridView.builder(
@@ -498,7 +492,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
     return Drawer(
       width: 275,
       elevation: 30,
-      // backgroundColor: const Color(0xF3393838),
+      
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.horizontal(right: Radius.circular(40))),
       child: Container(
@@ -600,7 +594,7 @@ class _AdminHomePageState extends State<AdminHomePage> {
                                     ),
                                     Text(
                                       userEmail,
-                                      // softWrap: true,
+                                      
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),

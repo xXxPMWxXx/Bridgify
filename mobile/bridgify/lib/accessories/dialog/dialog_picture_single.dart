@@ -49,14 +49,7 @@ class DialogPictureSingle extends StatelessWidget {
             child: Container(
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(30),
-                // boxShadow: [
-                // BoxShadow(
-                //   color: Colors.black.withOpacity(0.3),
-                //   spreadRadius: 2,
-                //   blurRadius: 20,
-                //   offset: Offset(0, 10),
-                // ),
-                // ],
+
                 image: DecorationImage(
                   fit: BoxFit.cover,
                   image: Image.file(File(image)).image,

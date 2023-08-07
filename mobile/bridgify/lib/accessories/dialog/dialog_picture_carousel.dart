@@ -71,14 +71,7 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
                 return Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(30),
-                    // boxShadow: [
-                    //   BoxShadow(
-                    //     color: Colors.black.withOpacity(0.3),
-                    //     spreadRadius: 2,
-                    //     blurRadius: 20,
-                    //     offset: Offset(0, 10),
-                    //   ),
-                    // ],
+
                     image: DecorationImage(
                       fit: BoxFit.cover,
                       image: Image.file(
@@ -121,7 +114,6 @@ class _PictureCarouselState extends State<DialogPictureCarousel> {
   }
 
   Widget buildIndicator(bool isSelected) {
-    // indicatorCount++;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 2),
       child: Container(

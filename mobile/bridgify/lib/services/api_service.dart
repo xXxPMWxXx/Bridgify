@@ -25,7 +25,7 @@ class APIService {
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
     };
-    //String? wifiIP = await NetworkInfo().getWifiIP();
+
     var url = Uri.http(
       Config.apiURL,
       Config.loginAPI,
@@ -74,9 +74,7 @@ class APIService {
 
   static Future<Object> getUserProfile() async {
     var loginDetails = await SharedService.loginDetails();
-    // if (loginDetails == null) {
-    //   // return ;
-    // }
+
     Map<String, String> requestHeaders = {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${loginDetails!.data.accessToken}'
@@ -328,8 +326,6 @@ class APIService {
       'Content-Type': 'application/json',
       'Authorization': 'Bearer ${currentLoginDetails!.data.accessToken}'
     };
-    // static const String createElderlyAPI = "api/elderly/insert";
-    // static const String postFaceAPI = "api/face/post-face";
 
     var trainingUrl = Uri.http(
       Config.apiURL,

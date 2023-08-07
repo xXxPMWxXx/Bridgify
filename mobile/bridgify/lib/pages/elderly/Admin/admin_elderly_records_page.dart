@@ -74,7 +74,7 @@ class _AdminElderlyRecordsState extends State<AdminElderlyRecords> {
           backgroundColor: HexColor("#207A35"),
           shape: RoundedRectangleBorder(
             borderRadius:
-                BorderRadius.circular(20.0), // Adjust the radius as needed
+                BorderRadius.circular(20.0),
           ),
           onPressed: () {
             Navigator.pushNamed(

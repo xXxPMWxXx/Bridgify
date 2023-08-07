@@ -1,12 +1,11 @@
-import 'package:bridgify/accessories/background.dart';
+import 'package:bridgify/accessories/login_signup/background.dart';
 import 'package:bridgify/accessories/dialog/invalid_credentials_view.dart';
-import 'package:bridgify/accessories/fadeAnimation.dart';
+import 'package:bridgify/accessories/login_signup/fade_animation.dart';
 import 'package:flutter/material.dart';
 import 'package:snippet_coder_utils/FormHelper.dart';
 import 'package:snippet_coder_utils/ProgressHUD.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
-import 'package:flutter/gestures.dart';
 import 'package:bridgify/models/login_request_model.dart';
 import 'package:bridgify/models/register_request_model.dart';
 import 'package:bridgify/services/api_service.dart';
@@ -229,7 +228,7 @@ class _MainScreenState extends State<MainScreen> {
                                   ),
                                 ),
                                 Container(
-                                  // padding: const EdgeInsets.all(10),
+                                  
                                   decoration: BoxDecoration(
                                     border: Border(
                                       bottom: BorderSide(
@@ -289,33 +288,7 @@ class _MainScreenState extends State<MainScreen> {
                       const SizedBox(
                         height: 15,
                       ),
-                      // FadeAnimation(
-                      //   1.5,
-                      //   Align(
-                      //     alignment: Alignment.bottomRight,
-                      //     child: Padding(
-                      //       padding: const EdgeInsets.only(
-                      //         right: 25,
-                      //       ),
-                      //       child: RichText(
-                      //         text: TextSpan(
-                      //           style: const TextStyle(
-                      //               color: Colors.grey, fontSize: 14.0),
-                      //           children: <TextSpan>[
-                      //             TextSpan(
-                      //               text: 'Forget Password?',
-                      //               style: const TextStyle(
-                      //                 color: Colors.grey,
-                      //               ),
-                      //               recognizer: TapGestureRecognizer()
-                      //                 ..onTap = () {},
-                      //             ),
-                      //           ],
-                      //         ),
-                      //       ),
-                      //     ),
-                      //   ),
-                      // ),
+                      
                       const SizedBox(
                         height: 20,
                       ),

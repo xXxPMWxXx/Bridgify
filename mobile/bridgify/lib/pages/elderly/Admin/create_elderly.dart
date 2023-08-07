@@ -80,10 +80,6 @@ class _CreateElderlyState extends State<CreateElderly> {
         },
         child: ListView(
           children: [
-            // const Text(
-            //   "Register Elderly",
-            //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            // ),
             picPicker(
               context,
               imagePathUpdate ?? "",
@@ -91,7 +87,6 @@ class _CreateElderlyState extends State<CreateElderly> {
               (file) => {
                 setState(
                   () {
-                    //model.productPic = file.path;
                     imagePathUpdate = file.path;
                     elderlyRequestModel!.photo = imagePathUpdate;
                     isImageSelected = true;
@@ -104,7 +99,7 @@ class _CreateElderlyState extends State<CreateElderly> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: <Widget>[
                 Container(
-                  // width: MediaQuery.of(context).size.width * 0.35,
+                
                   padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     border: Border(
@@ -145,7 +140,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                   ),
                 ),
                 Container(
-                  // width: MediaQuery.of(context).size.width * 0.35,
+                  
                   padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     border: Border(
@@ -185,7 +180,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                   ),
                 ),
                 Container(
-                  // width: MediaQuery.of(context).size.width * 0.55,
+                  
                   padding: const EdgeInsets.only(bottom: 10),
                   decoration: BoxDecoration(
                     border: Border(
@@ -254,139 +249,7 @@ class _CreateElderlyState extends State<CreateElderly> {
               ],
             ),
 
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            //   children: [
-            //     Container(
-            //       width: 100,
-            //       decoration: BoxDecoration(
-            //         border: Border(
-            //           bottom: BorderSide(color: Colors.grey.shade200),
-            //         ),
-            //       ),
-            //       child: FormHelper.inputFieldWidget(
-            //         context,
-            //         "name",
-            //         "Name",
-            //         (onValidateVal) {
-            //           if (onValidateVal.isEmpty) {
-            //             return 'Please input a valid name';
-            //           }
-
-            //           return null;
-            //         },
-            //         (onSavedVal) {
-            //           elderlyRequestModel!.name = onSavedVal;
-            //         },
-            //         paddingRight: 0,
-            //         paddingLeft: 0,
-            //         initialValue: "",
-            //         obscureText: false,
-            //         prefixIcon: const Icon(Icons.person),
-            //         showPrefixIcon: true,
-            //         prefixIconColor: Colors.black.withOpacity(0.5),
-            //         textColor: Colors.black.withOpacity(0.7),
-            //         hintColor: Colors.grey.withOpacity(0.7),
-            //         borderFocusColor: Colors.white,
-            //         borderColor: Colors.white,
-            //         borderRadius: 0,
-            //         borderErrorColor: Colors.white,
-            //         errorBorderWidth: 0,
-            //         focusedErrorBorderWidth: 0,
-            //         borderFocusedErrorColor: Colors.white,
-            //       ),
-            //     ),
-            //     Container(
-            //       decoration: BoxDecoration(
-            //         border: Border(
-            //           bottom: BorderSide(color: Colors.grey.shade200),
-            //         ),
-            //       ),
-            //       child: FormHelper.inputFieldWidget(
-            //         context,
-            //         "name",
-            //         "Name",
-            //         (onValidateVal) {
-            //           if (onValidateVal.isEmpty) {
-            //             return 'Please input a valid name';
-            //           }
-
-            //           return null;
-            //         },
-            //         (onSavedVal) {
-            //           elderlyRequestModel!.name = onSavedVal;
-            //         },
-            //         paddingRight: 0,
-            //         paddingLeft: 0,
-            //         initialValue: "",
-            //         obscureText: false,
-            //         prefixIcon: const Icon(Icons.person),
-            //         showPrefixIcon: true,
-            //         prefixIconColor: Colors.black.withOpacity(0.5),
-            //         textColor: Colors.black.withOpacity(0.7),
-            //         hintColor: Colors.grey.withOpacity(0.7),
-            //         borderFocusColor: Colors.white,
-            //         borderColor: Colors.white,
-            //         borderRadius: 0,
-            //         borderErrorColor: Colors.white,
-            //         errorBorderWidth: 0,
-            //         focusedErrorBorderWidth: 0,
-            //         borderFocusedErrorColor: Colors.white,
-            //       ),
-            //     ),
-            //   ],
-            // ),
-            // FormHelper.submitButton(
-            //   height: 50,
-            //   width: 150,
-            //   "INPUT STATUS",
-            //   () {
-            //     // passwordUpdate = passwordUpdate ?? "";
-            //     // confirmPasswordUpdate = confirmPasswordUpdate ?? "";
-            //     if (validateAndSave()) {
-            //       setState(() {
-            //         isAPICallProcess = true;
-            //       });
-
-            //       // APIService.update(
-            //       //         updateUserRequestModel!, isImageSelected)
-            //       //     .then(
-            //       //   (response) {
-            //       //     setState(() {
-            //       //       isAPICallProcess = false;
-            //       //     });
-
-            //       //     if (response) {
-            //       //       setState(() {
-            //       //         passwordUpdate = "";
-            //       //         confirmPasswordUpdate = "";
-            //       //       });
-            //       //     } else {
-            //       //       showDialog(
-            //       //         context: context,
-            //       //         builder: (context) {
-            //       //           return Dialog(
-            //       //             backgroundColor: Colors.white,
-            //       //             shape: RoundedRectangleBorder(
-            //       //               borderRadius: BorderRadius.circular(24),
-            //       //             ),
-            //       //             child: const InvalidCredentialsView(
-            //       //               primaryText: 'Invalid field change !!',
-            //       //             ),
-            //       //           );
-            //       //         },
-            //       //       );
-            //       //     }
-            //       //   },
-            //       // );
-            //     }
-            //   },
-            //   btnColor: HexColor("207A35"),
-            //   borderColor: HexColor("207A35"),
-            //   txtColor: Colors.white,
-            //   borderRadius: 20,
-            //   fontWeight: FontWeight.bold,
-            // ),
+            
             const SizedBox(height: 35),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -417,8 +280,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                   width: 165,
                   "INPUT STATUS",
                   () {
-                    // passwordUpdate = passwordUpdate ?? "";
-                    // confirmPasswordUpdate = confirmPasswordUpdate ?? "";
+                    
                     if (validateAndSave()) {
                       if (elderlyRequestModel!.photo == null &&
                           !isValidDateFormat(elderlyRequestModel!.dob!)) {
@@ -486,37 +348,7 @@ class _CreateElderlyState extends State<CreateElderly> {
                         }
                       }
 
-                      // APIService.update(
-                      //         updateUserRequestModel!, isImageSelected)
-                      //     .then(
-                      //   (response) {
-                      //     setState(() {
-                      //       isAPICallProcess = false;
-                      //     });
-
-                      //     if (response) {
-                      //       setState(() {
-                      //         passwordUpdate = "";
-                      //         confirmPasswordUpdate = "";
-                      //       });
-                      //     } else {
-                      //       showDialog(
-                      //         context: context,
-                      //         builder: (context) {
-                      //           return Dialog(
-                      //             backgroundColor: Colors.white,
-                      //             shape: RoundedRectangleBorder(
-                      //               borderRadius: BorderRadius.circular(24),
-                      //             ),
-                      //             child: const InvalidCredentialsView(
-                      //               primaryText: 'Invalid field change !!',
-                      //             ),
-                      //           );
-                      //         },
-                      //       );
-                      //     }
-                      //   },
-                      // );
+                      
                     }
                   },
                   btnColor: HexColor("207A35"),

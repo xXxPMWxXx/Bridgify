@@ -85,7 +85,7 @@ class _NotificationPageState extends State<NotificationPage> {
                                 model) {
                           if (model.hasData) {
                             return ListView.builder(
-                              // physics: NeverScrollableScrollPhysics(),
+                              
                               physics: const ClampingScrollPhysics(),
                               scrollDirection: Axis.vertical,
                               shrinkWrap: true,

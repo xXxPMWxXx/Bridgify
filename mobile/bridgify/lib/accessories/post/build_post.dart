@@ -4,10 +4,8 @@ import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
 
 class BuildPost extends StatefulWidget {
-  // final List<PostResponseModel>? models;
   const BuildPost({
     super.key,
-    /*required this.models*/
   });
 
   @override

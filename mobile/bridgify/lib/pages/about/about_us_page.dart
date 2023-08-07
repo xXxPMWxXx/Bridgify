@@ -9,11 +9,11 @@ class AboutUsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.center,
       mainAxisAlignment: MainAxisAlignment.end,
       children: <Widget>[
-        Text(
+        const Text(
           'About Us',
           style: TextStyle(color: Colors.white, fontSize: 45.0),
         ),
-        Container(
+        SizedBox(
           width: 100.0,
           child: Divider(color: HexColor('#EDFDF9')),
         ),
@@ -23,7 +23,7 @@ class AboutUsScreen extends StatelessWidget {
     final topContent = Stack(
       children: <Widget>[
         Container(
-            padding: EdgeInsets.only(left: 10.0),
+            padding: const EdgeInsets.only(left: 10.0),
             height: MediaQuery.of(context).size.height * 0.35,
             decoration: BoxDecoration(
               image: DecorationImage(
@@ -33,9 +33,9 @@ class AboutUsScreen extends StatelessWidget {
             )),
         Container(
           height: MediaQuery.of(context).size.height * 0.35,
-          padding: EdgeInsets.all(40.0),
+          padding: const EdgeInsets.all(40.0),
           width: MediaQuery.of(context).size.width,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment.bottomCenter,
               colors: [
@@ -75,18 +75,18 @@ class AboutUsScreen extends StatelessWidget {
       ],
     );
 
-    final firstPara = Text(
+    final firstPara = const Text(
       'Welcome to Bridgify! We are a passionate team dedicated to redefining family connections and elderly care in Singapore.',
       style: TextStyle(fontSize: 18.0),
       textAlign: TextAlign.center,
     );
-    final secondPara = Text(
+    final secondPara = const Text(
       'With the growing elderly population and the challenges of modern life, we saw a need for a solution that brings families closer together.',
       style: TextStyle(fontSize: 18.0),
       textAlign: TextAlign.center,
     );
 
-    final thirdPara = Text(
+    final thirdPara = const Text(
       'Our mission is clear: to empower families by keeping them effortlessly connected with their elderly loved ones. Through our innovative solution, caregivers and care centers provide real-time updates on health, activities, and well-being, ensuring you\'re always in the know and your loved ones are always cared for.',
       style: TextStyle(fontSize: 18.0),
       textAlign: TextAlign.center,
@@ -94,12 +94,12 @@ class AboutUsScreen extends StatelessWidget {
 
     final bottomContent = Container(
       width: MediaQuery.of(context).size.width,
-      padding: EdgeInsets.all(40.0),
+      padding: const EdgeInsets.all(40.0),
       child: Center(
         child: Column(
           children: <Widget>[
             firstPara,
-            SizedBox(
+            const SizedBox(
               height: 30,
             ),
             secondPara

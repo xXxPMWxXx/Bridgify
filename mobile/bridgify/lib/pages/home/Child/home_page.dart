@@ -214,7 +214,6 @@ class _HomePageState extends State<HomePage> {
           right: 0,
           bottom: 0,
           child: Container(
-            // padding: const EdgeInsets.symmetric(vertical: 15),
             decoration: BoxDecoration(
               borderRadius: BorderRadius.only(
                   topLeft: Radius.circular(30), topRight: Radius.circular(30)),
@@ -233,7 +232,6 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: HexColor('#476E40'),
       width: 275,
       elevation: 30,
-      // backgroundColor: const Color(0xF3393838),
       shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.horizontal(right: Radius.circular(40))),
       child: Container(
@@ -335,7 +333,6 @@ class _HomePageState extends State<HomePage> {
                                     ),
                                     Text(
                                       userEmail,
-                                      // softWrap: true,
                                       style: const TextStyle(
                                         color: Colors.white,
                                       ),

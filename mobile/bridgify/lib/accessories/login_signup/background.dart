@@ -1,4 +1,4 @@
-import 'package:bridgify/accessories/fadeAnimation.dart';
+import 'package:bridgify/accessories/login_signup/fade_animation.dart';
 import 'package:flutter/material.dart';
 
 class BackgroundWidget extends StatefulWidget {

@@ -15,7 +15,6 @@ class UserAvatar extends StatelessWidget {
       radius: radius,
       backgroundImage: 
       Image.asset('images/$filename').image,
-      // ),
     );
   }
 }

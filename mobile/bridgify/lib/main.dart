@@ -15,9 +15,6 @@ import 'package:bridgify/services/shared_service.dart';
 import 'package:flutter/material.dart';
 import 'package:zego_zimkit/services/services.dart';
 
-// import 'pages/login_page.dart';
-// import 'pages/register_page.dart';
-
 Widget _defaultHome = const MainScreen();
 
 void main() async {
@@ -47,7 +44,7 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({Key? key}) : super(key: key);
 
-  // This widget is the root of your application.
+  // The root of the application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -56,9 +53,6 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      // home: PictureCarousel(images: images),
-      // home: PictureSingle(urlImage: images[0]),
-      // home: const BuildPost(),
       home: const FirstPage(),
     );
   }

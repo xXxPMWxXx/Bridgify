@@ -1,4 +1,3 @@
-// import 'package:bridgify/accessories/dialog/delete_confirmation_view.dart';
 import 'package:bridgify/config.dart';
 import 'package:bridgify/models/elderly_request_model.dart' as req;
 import 'package:bridgify/models/elderly_response_model.dart';
@@ -30,12 +29,10 @@ class ElderlyRecordItem extends StatelessWidget {
       ),
       child: Row(
         children: [
-          //Change container to include elderly image
           SizedBox(
             height: 100,
             width: 75,
             child: Container(
-              // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(20)),
               child: ClipRRect(
@@ -111,10 +108,6 @@ class ElderlyRecordItem extends StatelessWidget {
                         model!.status!.current_temp;
                     elderlyRequestModel.status!.medication =
                         model!.status!.medication;
-                    // elderlyRequestModel.status!.medication = model!
-                    //     .status!.medication!
-                    //     .map((el) => el.toString())
-                    //     .toList();
                     elderlyRequestModel.status!.taken_med =
                         model!.status!.taken_med;
                     elderlyRequestModel.status!.condition =
@@ -137,27 +130,6 @@ class ElderlyRecordItem extends StatelessWidget {
                   ),
                 ),
               ),
-              // IconButton(
-              //   onPressed: () async {
-              //     var result = showDialog(
-              //         context: context,
-              //         builder: (context) {
-              //           return Dialog(
-              //             backgroundColor: Colors.white,
-              //             shape: RoundedRectangleBorder(
-              //               borderRadius: BorderRadius.circular(24),
-              //             ),
-              //             child: DeleteConfirmationView(
-              //               secondaryText:
-              //                   "You are currently deleting ${model!.id}'s account",
-              //               id: model!.id!,
-              //             ),
-              //           );
-              //         });
-              //     if (result == "refresh") {}
-              //   },
-              //   icon: Icon(Icons.delete),
-              // ),
             ],
           ),
         ],

@@ -243,7 +243,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
           right: 0,
           top: 0,
           child: Container(
-            height: 45, // Set the desired height of the bar
+            height: 45, 
             color: widget.model.status!.awake!.toLowerCase() == "true"
                 ? HexColor("#33A11D")
                 : Colors.grey,

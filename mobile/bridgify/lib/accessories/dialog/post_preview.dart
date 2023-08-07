@@ -41,11 +41,7 @@ class _PostPreviewState extends State<PostPreview> {
             ],
           ),
         ),
-        // SizedBox(
-        //   height: MediaQuery.of(context).size.height * 0.7,
-        //   width: MediaQuery.of(context).size.width,
-        //   child: buildPreview(widget.model),
-        // ),
+
         Positioned(
           left: 20,
           top: 20,

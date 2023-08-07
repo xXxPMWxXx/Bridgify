@@ -15,8 +15,6 @@ class BuildElderlyAvatar extends StatefulWidget {
 }
 
 class _BuildElderlyAvatarState extends State<BuildElderlyAvatar> {
-  // get filename => filename;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -54,8 +52,3 @@ class _BuildElderlyAvatarState extends State<BuildElderlyAvatar> {
     );
   }
 }
-  
-  
-  // Padding BuildElderlyAvatar(String name, String filename) {
-    
-  // }

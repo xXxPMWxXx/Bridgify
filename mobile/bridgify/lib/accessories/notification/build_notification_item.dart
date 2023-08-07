@@ -3,7 +3,6 @@ import 'package:bridgify/models/elderly_response_model.dart';
 import 'package:bridgify/models/notification_response_model.dart';
 import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
-import 'package:snippet_coder_utils/hex_color.dart';
 
 class BuildNotificationitem extends StatefulWidget {
   final NotificationResponseModel? model;
@@ -68,29 +67,6 @@ class _BuildNotificationitemState extends State<BuildNotificationitem> {
           child: CircularProgressIndicator(),
         );
       },
-      // child: Row(
-      //   children: [
-      //     UserAvatar(
-      //       filename: elderlyResponseModel!.photo!,
-      //       radius: 25,
-      //     ),
-      //     const SizedBox(
-      //       width: 15,
-      //     ),
-      //     Column(
-      //       mainAxisSize: MainAxisSize.min,
-      //       children: [
-      //         Text(
-      //           elderlyResponseModel!.name!,
-      //           style: Theme.of(context)
-      //               .textTheme
-      //               .bodyMedium
-      //               ?.copyWith(color: Colors.grey),
-      //         ),
-      //       ],
-      //     ),
-      //   ],
-      // ),
     );
   }
 }

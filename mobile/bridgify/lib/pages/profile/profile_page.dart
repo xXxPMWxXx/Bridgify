@@ -58,7 +58,7 @@ class _ProfilePageState extends State<ProfilePage> {
                       },
                       icon: const Icon(
                         Icons.arrow_back_ios,
-                        // color: Color(0xFF27c1a9),
+                        
                       ),
                     );
                   }
@@ -88,11 +88,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   context,
                   '/settings',
                 );
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (BuildContext context) => SettingsPage(),
-                //   ),
-                // );
+                
               },
               icon: Icon(
                 Icons.settings,
@@ -139,10 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
         },
         child: ListView(
           children: [
-            // const Text(
-            //   "Edit profile",
-            //   style: TextStyle(fontSize: 25, fontWeight: FontWeight.w500),
-            // ),
+           
             picPicker(
               context,
               imagePathUpdate ?? "",
@@ -150,7 +143,7 @@ class _ProfilePageState extends State<ProfilePage> {
               (file) => {
                 setState(
                   () {
-                    //model.productPic = file.path;
+                    
                     imagePathUpdate = file.path;
                     updateUserRequestModel!.profileImage = imagePathUpdate;
                     isImageSelected = true;
@@ -179,7 +172,7 @@ class _ProfilePageState extends State<ProfilePage> {
                     isReadonly: true,
                     paddingRight: 0,
                     paddingLeft: 0,
-                    // initialValue: updateUserRequestModel!.email == null ? "" : updateUserRequestModel!.email.toString(),
+          
                     initialValue: emailUpdate ?? "",
                     obscureText: false,
                     prefixIcon: const Icon(Icons.mail),
@@ -348,8 +341,7 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: 150,
                   "SAVE",
                   () {
-                    // passwordUpdate = passwordUpdate ?? "";
-                    // confirmPasswordUpdate = confirmPasswordUpdate ?? "";
+                    
                     if (validateAndSave() &&
                         passwordUpdate != confirmPasswordUpdate) {
                       showDialog(
@@ -441,7 +433,7 @@ class _ProfilePageState extends State<ProfilePage> {
           imageFile = picker.pickImage(source: ImageSource.gallery);
           imageFile.then((file) async {
             onFilePicked(file);
-            // Navigator.of(context).pop();
+            
           }).catchError((e) {
             Navigator.of(context).pop();
           });

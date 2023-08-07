@@ -17,18 +17,18 @@ class _BuildElderlyViewState extends State<BuildElderlyView> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Expanded(
-            flex: 2,
-            child: ListView.builder(
-              shrinkWrap: true,
-              // physics: const NeverScrollableScrollPhysics(),
-              scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.all(0),
-              itemCount: widget.models!.length,
-              itemBuilder: (context, index) {
-                return BuildElderlyAvatar(
-                    model: widget.models![widget.models!.length - 1 - index]);
-              },
-            ))
+          flex: 2,
+          child: ListView.builder(
+            shrinkWrap: true,
+            scrollDirection: Axis.horizontal,
+            padding: const EdgeInsets.all(0),
+            itemCount: widget.models!.length,
+            itemBuilder: (context, index) {
+              return BuildElderlyAvatar(
+                  model: widget.models![widget.models!.length - 1 - index]);
+            },
+          ),
+        ),
       ],
     );
   }

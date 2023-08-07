@@ -6,7 +6,7 @@ import 'package:snippet_coder_utils/hex_color.dart';
 import 'package:zego_zimkit/zego_zimkit.dart';
 
 class AdminChatListScreen extends StatefulWidget {
-  final String conversationID; //Bridgify no phone number, use email
+  final String conversationID;
   const AdminChatListScreen({super.key, required this.conversationID});
 
   @override

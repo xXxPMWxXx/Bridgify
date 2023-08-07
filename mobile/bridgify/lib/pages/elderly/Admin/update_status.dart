@@ -144,7 +144,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   }
                 }
               } else {
-                // if (Navigator.canPop(context)) Navigator.pop(context);
+           
                 Navigator.pushNamed(
                   context,
                   '/adminElderlyRecords',
@@ -156,7 +156,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
                   MediaQuery.of(context).size.width,
                   MediaQuery.of(context).size.height * 0.05,
                 ),
-                // padding: const EdgeInsets.all(15),
+                
                 backgroundColor: HexColor('#207A35'),
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10))),
@@ -214,7 +214,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
             height: 100,
             width: 85,
             child: Container(
-              // padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+              
               decoration:
                   BoxDecoration(borderRadius: BorderRadius.circular(25)),
               child: ClipRRect(
@@ -593,7 +593,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: const Row(
-                      // mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      
                       children: [
                         Text(
                           "Add",
@@ -614,7 +614,7 @@ class _UpdateStatusState extends State<UpdateStatus> {
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.5,
           child: ListView.builder(
-            // physics: const NeverScrollableScrollPhysics(),
+            
             padding: const EdgeInsets.symmetric(horizontal: 15),
             shrinkWrap: true,
             itemCount: listController!.length,
