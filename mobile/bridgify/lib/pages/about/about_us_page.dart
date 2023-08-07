@@ -94,17 +94,17 @@ class AboutUsScreen extends StatelessWidget {
 
     final bottomContent = Container(
       width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.all(40.0),
+      padding: const EdgeInsets.symmetric(vertical: 15.0, horizontal: 40.0),
       child: const Center(
         child: Column(
           children: <Widget>[
             firstPara,
             SizedBox(
-              height: 30,
+              height: 15,
             ),
             secondPara,
             SizedBox(
-              height: 30,
+              height: 15,
             ),
             thirdPara
           ],
