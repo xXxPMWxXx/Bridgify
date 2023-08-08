@@ -8,7 +8,7 @@ COPY . .
 
 RUN rm -rf /app/node_modules
 
-RUN npm install
+RUN npm install --legacy-peer-deps
 
 #expose the port
 EXPOSE 3000

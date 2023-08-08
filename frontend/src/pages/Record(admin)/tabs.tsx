@@ -203,6 +203,7 @@ export function RecordTab() {
                 display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                marginBottom:5
             }}
         >
             {dataLoaded ?
@@ -313,8 +314,9 @@ export function CreateRecordTab() {
 
                 } else {
                     const data = await response.json();
-                    console.log(data)
-                    setElderlyList(data);
+                    
+                    //sort elderly in alphabetical order for record admin select 
+                    setElderlyList(data.sort((a: { name: string; }, b: { name: any; }) => a.name.localeCompare(b.name)));
 
                 }
 
@@ -528,7 +530,7 @@ export function CreateRecordTab() {
                                             >
                                                 <MenuItem value={"medical"}>Medical</MenuItem>
                                                 <MenuItem value={"medication"}>Medication</MenuItem>
-                                                <MenuItem value={"other"}>Others</MenuItem>
+                                                <MenuItem value={"others"}>Others</MenuItem>
 
                                             </Select>
                                         </FormControl>

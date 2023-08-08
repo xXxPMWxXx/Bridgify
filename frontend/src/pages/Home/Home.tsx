@@ -3,14 +3,13 @@ import { Navigate } from 'react-router-dom';
 import { ResponsiveAppBar } from '../../Navbar';
 import { Box, Grid, Typography } from '@mui/material';
 import { styled } from '@mui/system';
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
 import backgroundImage from '../../images/background.png';
 import ElderlyStatus from './elderlyStatus';
 import Posts from './posts';
 import Notifications from './notifications';
+import DisplayElderly from './displayElderly';
 
+// background styling
 const Background = styled("div")({
     position: 'absolute',
     width: '100%',
@@ -21,16 +20,6 @@ const Background = styled("div")({
     backgroundRepeat: 'no-repeat'
 })
 
-const notifs = [
-    {
-        image: 'https://t3.ftcdn.net/jpg/00/56/14/04/240_F_56140454_q4nbUmTCcC1ovIJrOL1SxJuaYXwvSz68.jpg',
-        sender: 'Ruby B.',
-        message: 'condition has been updated to a little sick',
-        time: 2
-    },
-]
-
-
 export const Home = () => {
 
     useEffect(() => {
@@ -38,33 +27,18 @@ export const Home = () => {
         getPosts();
     }, []);
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [alertType, setAlertType]: any = useState('info');
-    const [alertMsg, setAlertMsg] = useState('');
-    const [open, setOpen] = useState(false);
-
-    // const linkedElderly = window.localStorage.getItem('linkedElderly')
-    const token = window.localStorage.getItem('accessToken');
     const userName = window.localStorage.getItem('userName');
-    const accRole = window.localStorage.getItem('accRole');
-    const profileImage = window.localStorage.getItem('profileImage');
+    const token = window.localStorage.getItem('accessToken');
     const email = window.localStorage.getItem('email');
     const [elderly, setElderly]: any[] = useState([]);
     const [posts, setPosts]: any[] = useState([]);
-
-    //change linkedElderly to Array
-    // if(linkedElderly != null){
-    //     var elderlyArray = linkedElderly.split(",");
-    //     // console.log(elderlyArray[0])
-    // }
+    const [displayOpen, setdisplayOpen] = React.useState(false);
+    const [selectedElderlyStatus, setSelectedElderlyStatus]: any[] = useState([]);
 
     //for the elderlyStatus popup
-    const handleOpen = () => {
-        setOpen(true);
-    }
-
-    const handleClose = () => {
-        setOpen(false);
+    const handleOpenElderlyDetails = (selectedElderly:any) => {
+        setdisplayOpen(true);
+        setSelectedElderlyStatus(selectedElderly);
     }
 
     const elderlyStatuses = async () => {
@@ -81,28 +55,24 @@ export const Home = () => {
 
             if (!response.ok) {
                 const apiResponse = await response.json();
-                // Show alert message
-                setOpenSnackbar(true);
-                setAlertType('error');
-                setAlertMsg(apiResponse['message']);
                 return;
             }
 
+            //getting the elderly information of each linked elderly
             const elderlyResponse = await response.json();
-            //console.log(elderlyResponse);
             const elderlyArray = elderlyResponse.map((elderly: any) => ({
                 id: elderly.id,
                 name: elderly.name,
                 image: `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/${elderly.photo}`,
-                status: elderly.status.awake === 'True' ? 'Awake' : 'Asleep',
+                status: elderly.status.awake.toUpperCase() === 'TRUE' ? 'Awake' : 'Asleep',
                 activity: elderly.status.current_activity,
-                medication: elderly.status.taken_med === 'True' ? 'Taken' : 'Not Taken',
+                medication: elderly.status.taken_med.toUpperCase() === 'TRUE' ? 'Taken' : 'Not Taken',
                 condition: elderly.status.condition,
+                elderlyData: elderly
             }));
             setElderly(elderlyArray);
         } catch (error) {
-            console.error('Error fetching linked elderly:', error);
-            window.alert('Error: Failed to fetch linked elderly');
+            
         }
     };
 
@@ -125,17 +95,15 @@ export const Home = () => {
 
             const postResponse = await response.json();
 
+            //getting post information
             const postArray = postResponse.map((post: any) => ({
                 id: post.id,
                 elderlyInvolved: post.elderlyInvolved,
-                //profileImage: null,
                 caption: post.activity_type,
                 time: post.dateTime,
                 imagesCount: post.imagesCount,
                 images: post.postImages,
                 description: post.description,
-                // elderlyInvolvedArray: postArray.map((postItem: any) => postItem.elderlyInvolved),
-                // imagesArray: postArray.map((postItem: any) => postItem.images),
             }));
 
             const elderlyInvolvedArray = postArray.map((postItem: any) => postItem.elderlyInvolved);
@@ -144,7 +112,6 @@ export const Home = () => {
 
         } catch (error) {
             console.error('Error fetching', error);
-            window.alert('Error: Failed to fetch');
         }
     };
 
@@ -156,58 +123,60 @@ export const Home = () => {
                     <Navigate to="/Login" /> : <Navigate to="/Home" />
             }
             < ResponsiveAppBar />
-            {/* < Layout/> */}
-            {/* < DefaultNavbar/> */}
 
             <Background />
 
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Typography component="h1" align="center" sx={{ color: 'white', position: 'absolute', fontFamily: 'Roboto', fontWeight: 500, fontSize: 42, marginTop: 5 }}>
-                    Welcome!
+                    Welcome, {userName}!
                 </Typography>
             </div>
 
+            {/* display elderly status */}
             <main>
                 <Box display='flex' justifyContent='center' alignItems='center' height='60vh' width='100%'>
                     <Grid container spacing={-5} justifyContent="center">
-                        {elderly.map((post: any) => ( // Add index as the second parameter
-                            <Grid item key={post.id} xs={12} sm={6} md={4} lg={3} xl={2}>
-                                <ElderlyStatus post={post} onClick={handleOpen} />
-                                <Dialog open={open} onClose={handleClose}>
-                                    <DialogTitle>{"Elderly Health Information"}</DialogTitle>
-                                    <DialogContent>
 
-                                    </DialogContent>
-                                </Dialog>
-                            </Grid>
-                        ))}
+                        {elderly.length > 0 ? 
+                                elderly.map((elderly: any) => (
+                                <Grid item key={elderly.id} xs={12} sm={6} md={4} lg={3} xl={2}>
+                                    <ElderlyStatus post={elderly} onClick={()=>handleOpenElderlyDetails(elderly.elderlyData)} />
+                                    {displayOpen ?
+                                        <DisplayElderly open={setdisplayOpen} elderly={selectedElderlyStatus} />
+
+                                        : null}
+                                </Grid>
+                        )) : (<Typography textAlign={'center'} fontSize={"28px"} color={"#ADADAD"} sx={{zIndex:1, marginTop:-3, marginLeft:2.5}}>No Linked Elderly</Typography>)}
                     </Grid>
                 </Box>
             </main>
 
+            {/* display posts */}
             <div>
-                <Typography component="h2" align="left" alignItems="left" sx={{ color: 'black', position: 'absolute', fontFamily: 'Roboto', fontWeight: 500, fontSize: 22, marginLeft: 9, marginTop: -9 }}>
+                <Typography component="h2" align="left" alignItems="left" sx={{ color: 'black', position: 'absolute', fontFamily: 'Roboto', fontWeight: 500, fontSize: 22, marginLeft: 15, marginTop: -9 }}>
                     Posts
                 </Typography>
             </div>
 
-            <main>
-                <Grid container spacing={2}>
+            <main style={{marginLeft:40}}>
+                <Grid container spacing={2} sx={{marginBottom:20}}>
                     <Grid item xs={8}>
                         <Box width='70%'>
-                            <Grid container spacing={54} flexDirection='column'>
+                            <Grid container spacing={56} flexDirection='column'>
                                 {posts.map((post: any) => (
-                                    <Grid item key={post.id}> {/* Use post.id as the key */}
+                                    <Grid item key={post.id}> 
                                         <Posts
                                             post={post}
-                                            elderlyInvolvedArray={post.elderlyInvolved} // Use the actual property from the post object
-                                            imagesArray={post.images} // Use the actual property from the post object
+                                            elderlyInvolvedArray={post.elderlyInvolved}
+                                            imagesArray={post.images} 
                                         />
                                     </Grid>
                                 ))}
                             </Grid>
                         </Box>
                     </Grid>
+
+                    {/* display notifications */}
                     <Grid item xs={4}>
                         <Box>
                             <Notifications />

@@ -191,7 +191,7 @@ export function Login() {
               <Copyright sx={{ mt: 5, mb: 5 }} />
               <Grid container spacing={2}   direction="row" justifyContent="center" alignItems="center">
                 <Grid item xs={8}>
-                  <Link href="https://bridgify.s3.ap-southeast-1.amazonaws.com/Bridgify.apk">
+                  <Link href="https://bridgify.s3.ap-southeast-1.amazonaws.com/mobile/Bridgify.apk">
                     <Button variant="outlined" startIcon={<DownloadIcon />}>
                       Download Our Mobile APP APK
                     </Button>

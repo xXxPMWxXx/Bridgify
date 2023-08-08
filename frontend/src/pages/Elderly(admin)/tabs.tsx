@@ -4,7 +4,7 @@ import { Box, Typography, LinearProgress, Modal, Avatar, Grid, TextField, FormCo
     Switch, FormGroup, Button, ListItemText, OutlinedInput, Snackbar, Alert, IconButton, InputAdornment, 
     Dialog, DialogActions, DialogTitle, DialogContentText, DialogContent, } from '@mui/material';
 import dayjs, { Dayjs } from 'dayjs';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
+import { TextareaAutosize } from '@mui/base/TextareaAutosize';
 import { useNavigate } from 'react-router-dom';
 import BasicDatePicker from './dateElement';
 import MUIDataTable from "mui-datatables";
@@ -191,9 +191,12 @@ export function ElderlyTab() {
     return (
         <Box
             sx={{
-                display: 'flex',
                 justifyContent: 'center',
                 alignItems: 'center',
+                width:"100%",
+                overflow:"auto",
+                boxShadow:"5", 
+                marginBottom:5
             }}
         >
             {dataLoaded ?
