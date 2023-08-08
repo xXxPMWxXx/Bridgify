@@ -2,10 +2,20 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import { Avatar, AvatarGroup, CardContent, CardMedia, ImageList, ImageListItem, Modal } from '@mui/material';
-import { Card } from 'react-bootstrap';
+import { Avatar, AvatarGroup, CardContent, CardMedia, ImageList, ImageListItem, MobileStepper, Modal } from '@mui/material';
+import { Button, Card } from 'react-bootstrap';
 import Carousel from 'react-material-ui-carousel';
 import CarouselSlide from 'react-material-ui-carousel';
+
+import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
+import SwipeableViews from 'react-swipeable-views';
+import { autoPlay } from 'react-swipeable-views-utils';
+import { useTheme } from '@mui/material/styles';
+
+
+const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
+
 
 interface postInfo {
   post: {
@@ -76,6 +86,25 @@ export default function Posts(props: PostProps) {
     setenlargeImg(false);
   };
 
+  //TEST
+
+  const theme = useTheme();
+  const [activeStep, setActiveStep] = React.useState(0);
+  const maxSteps = imagesArray.length;
+
+  const handleNext = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  };
+
+  const handleBack = () => {
+    setActiveStep((prevActiveStep) => prevActiveStep - 1);
+  };
+
+  const handleStepChange = (step: number) => {
+    setActiveStep(step);
+  };
+  
+
   return (
     <Grid item xs={8} md={6}>
       {/* <CardActionArea component="a"> */}
@@ -107,13 +136,13 @@ export default function Posts(props: PostProps) {
             {post.description}
           </Typography>
 
-          <Carousel sx={{ maxHeight: 300, height: '100%', maxWidth: 650, width: '100%', mt: 5, marginLeft: 8 }}>
+          {/* <Carousel sx={{ height:"100%", maxWidth: 650, mt: 5, marginLeft: 8 }}>
             {imagesArray.map((imgName: any) => (
               <CarouselSlide key={imgName} >
                 <Card >
                   <CardMedia
                     image={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${imgName}`}
-                    sx={{ height: 250, objectFit: 'inherit', cursor: "pointer" }}
+                    sx={{ height: 250, objectFit: 'contain', cursor: "pointer" }}
                     onClick={handleShowDialog}
                   />
                   {enlargeImg && (
@@ -154,7 +183,64 @@ export default function Posts(props: PostProps) {
                 </Card>
               </CarouselSlide>
             ))}
-          </Carousel>
+          </Carousel> */}
+
+          <AutoPlaySwipeableViews
+          axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
+          index={activeStep}
+          onChangeIndex={handleStepChange}
+          enableMouseEvents
+          style={{marginLeft:138, marginTop:20}}
+          >
+            {imagesArray.map((image, index) => (
+              <div key={image}>
+                {Math.abs(activeStep - index) <= 2? (
+                  <Box
+                    component="img"
+                    sx={{
+                      height: 255,
+                      display: 'block',
+                      maxWidth: 400,
+                      overflow: 'hidden',
+                      width: '100%',
+                    }}
+                    src={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${image}?w=200&h=200&fit=crop&auto=format`}
+                    alt="image"
+                  />
+                ) : null}
+              </div>
+            ))}
+          </AutoPlaySwipeableViews>
+          <MobileStepper
+        steps={maxSteps}
+        position="static"
+        activeStep={activeStep}
+        nextButton={
+          <Button
+            size="sm"
+            onClick={handleNext}
+            disabled={activeStep === maxSteps - 1}
+          >
+            Next
+            {theme.direction === 'rtl' ? (
+              <KeyboardArrowLeft />
+            ) : (
+              <KeyboardArrowRight />
+            )}
+          </Button>
+        }
+        backButton={
+          <Button size="sm" onClick={handleBack} disabled={activeStep === 0}>
+            {theme.direction === 'rtl' ? (
+              <KeyboardArrowRight />
+            ) : (
+              <KeyboardArrowLeft />
+            )}
+            Back
+          </Button>
+        }
+      />
+
         </CardContent>
       </Card>
 
