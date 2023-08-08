@@ -26,6 +26,8 @@ export const Home = () => {
         getPosts();
     }, []);
 
+    const userName = window.localStorage.getItem('userName');
+
     const [openSnackbar, setOpenSnackbar] = useState(false);
     const [alertType, setAlertType]: any = useState('info');
     const [alertMsg, setAlertMsg] = useState('');
@@ -68,9 +70,9 @@ export const Home = () => {
                 id: elderly.id,
                 name: elderly.name,
                 image: `${process.env.REACT_APP_BACKEND_IMAGES_URL}/trained_face/${elderly.photo}`,
-                status: elderly.status.awake === 'True' ? 'Awake' : 'Asleep',
+                status: elderly.status.awake.toUpperCase() === 'TRUE' ? 'Awake' : 'Asleep',
                 activity: elderly.status.current_activity,
-                medication: elderly.status.taken_med === 'True' ? 'Taken' : 'Not Taken',
+                medication: elderly.status.taken_med.toUpperCase() === 'TRUE' ? 'Taken' : 'Not Taken',
                 condition: elderly.status.condition,
                 elderlyData: elderly
             }));
@@ -131,7 +133,7 @@ export const Home = () => {
 
             <div style={{ display: 'flex', justifyContent: 'center' }}>
                 <Typography component="h1" align="center" sx={{ color: 'white', position: 'absolute', fontFamily: 'Roboto', fontWeight: 500, fontSize: 42, marginTop: 5 }}>
-                    Welcome!
+                    Welcome, {userName}!
                 </Typography>
             </div>
 
