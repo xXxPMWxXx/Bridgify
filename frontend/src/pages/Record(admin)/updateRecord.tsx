@@ -124,7 +124,7 @@ export default function UpdateRecord(props: any) {
                         >
                             <MenuItem value={"medical"}>Medical</MenuItem>
                             <MenuItem value={"medication"}>Medication</MenuItem>
-                            <MenuItem value={"other"}>Others</MenuItem>
+                            <MenuItem value={"others"}>Others</MenuItem>
                         </Select>
                     </FormControl>
 
