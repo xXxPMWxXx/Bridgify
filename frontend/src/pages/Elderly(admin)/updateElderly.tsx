@@ -4,7 +4,7 @@ import {
      InputLabel, Select, MenuItem, InputAdornment, FormGroup, FormControlLabel, 
      Switch, OutlinedInput, Checkbox, ListItemText
 } from '@mui/material';
-import TextareaAutosize from '@mui/base/TextareaAutosize';
+import {TextareaAutosize} from '@mui/base/TextareaAutosize';
 import React, { useEffect, useState } from 'react';
 import { Sheet } from '@mui/joy';
 import BasicDatePicker from './dateElement';
