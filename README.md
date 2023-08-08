@@ -59,7 +59,7 @@ Make sure your Docker is running
 - Please make sure you have install Node js (V18)
 - cd Bridgify => npm install
 - cd Bridgify/backend => npm install
-- cd Bridgify/frontend => npm install
+- cd Bridgify/frontend => npm install --legacy-peer-deps
 - cd Bridgify => npm start => to run both frontend && backend
 
 ### AWS EC2
