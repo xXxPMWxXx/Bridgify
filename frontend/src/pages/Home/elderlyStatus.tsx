@@ -1,6 +1,6 @@
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
-import { CardActionArea, CardContent, CardMedia } from '@mui/material';
+import { CardContent, CardMedia } from '@mui/material';
 import { Card } from 'react-bootstrap';
 import awakeIcon from '../../images/awakeStatus.png';
 import asleepIcon from '../../images/asleepStatus.png';
@@ -24,7 +24,6 @@ export default function ElderlyStatus(props: elderlyStatusInfo) {
     return (
         <div onClick={onClick}>
             <Grid item xs={5} md={6}>
-                {/* <CardActionArea component="a"> */}
                 <Card style={{
                     display: 'flex', width: 330, height: 145, backgroundColor: 'rgba(249, 224, 219, 0.80)', borderRadius: '10px', marginLeft: 20, marginTop: 12, cursor: "pointer"
                 }}>
@@ -60,7 +59,6 @@ export default function ElderlyStatus(props: elderlyStatusInfo) {
                         </div>
                     </CardContent>
                 </Card>
-                {/* </CardActionArea> */}
             </Grid>
         </div>
     );

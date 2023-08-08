@@ -28,9 +28,6 @@ export const Home = () => {
 
     const userName = window.localStorage.getItem('userName');
 
-    const [openSnackbar, setOpenSnackbar] = useState(false);
-    const [alertType, setAlertType]: any = useState('info');
-    const [alertMsg, setAlertMsg] = useState('');
     const token = window.localStorage.getItem('accessToken');
     const email = window.localStorage.getItem('email');
     const [elderly, setElderly]: any[] = useState([]);
@@ -58,10 +55,6 @@ export const Home = () => {
 
             if (!response.ok) {
                 const apiResponse = await response.json();
-                // Show alert message
-                setOpenSnackbar(true);
-                setAlertType('error');
-                setAlertMsg(apiResponse['message']);
                 return;
             }
 

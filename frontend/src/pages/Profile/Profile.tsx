@@ -20,7 +20,6 @@ export const Profile = () => {
     const [alertType, setAlertType]: any = useState('info');
     const [alertMsg, setAlertMsg] = useState('');
     const [elderlyID, setElderlyID] = useState('');
-    const [mode, setMode] = useState('Add');
 
     const token = window.localStorage.getItem('accessToken');
     const userName = window.localStorage.getItem('userName');
@@ -74,9 +73,6 @@ export const Profile = () => {
 
     const handleElderlyID = (e: any) => {
         setElderlyID(e.target.value.toUpperCase());
-    }
-    const handleMode = (e: any) => {
-        setMode(e.target.value);
     }
 
     const handleSubmit = (event: any) => {

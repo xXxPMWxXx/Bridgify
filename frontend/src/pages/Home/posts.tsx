@@ -2,17 +2,13 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import { Avatar, AvatarGroup, CardContent, CardMedia, ImageList, ImageListItem, MobileStepper, Modal } from '@mui/material';
+import { Avatar, AvatarGroup, CardContent, MobileStepper } from '@mui/material';
 import { Button, Card } from 'react-bootstrap';
-import Carousel from 'react-material-ui-carousel';
-import CarouselSlide from 'react-material-ui-carousel';
-
 import KeyboardArrowLeft from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import { useTheme } from '@mui/material/styles';
-import { makeStyles } from '@mui/styles';
 
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -22,7 +18,6 @@ interface postInfo {
   post: {
     id: string;
     elderlyInvolved: string;
-    //profileImage: string;
     caption: string;
     time: string;
     imagesCount: number;
@@ -109,7 +104,6 @@ export default function Posts(props: PostProps) {
 
   return (
     <Grid item xs={8} md={6}>
-      {/* <CardActionArea component="a"> */}
       <Card style={{ display: 'flex', width: '780px', height: '435px', position: 'absolute', backgroundColor: 'rgba(249, 224, 219, 0.50)', borderRadius: '10px', marginLeft: 56, marginTop: -30, marginBottom: 10 }}>
         <CardContent sx={{ flex: 1 }}>
           <div style={{ marginRight: 640, marginTop: 10 }}>
@@ -137,55 +131,6 @@ export default function Posts(props: PostProps) {
           <Typography sx={{ fontFamily: 'Roboto', marginLeft: 17.4, fontSize: 16 }}>
             {post.description}
           </Typography>
-
-          {/* <Carousel sx={{ height:"100%", maxWidth: 650, mt: 5, marginLeft: 8 }}>
-            {imagesArray.map((imgName: any) => (
-              <CarouselSlide key={imgName} >
-                <Card >
-                  <CardMedia
-                    image={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${imgName}`}
-                    sx={{ height: 250, objectFit: 'contain', cursor: "pointer" }}
-                    onClick={handleShowDialog}
-                  />
-                  {enlargeImg && (
-                    <Modal
-                      open={enlargeImg}
-                      onClose={handleCloseDialog}
-                      aria-labelledby="modal-title"
-                      aria-describedby="modal-description"
-                    >
-                      <Box sx={{
-                        position: 'absolute',
-                        top: '50%',
-                        left: '50%',
-                        transform: 'translate(-50%, -50%)',
-                        bgcolor: 'background.paper',
-                        boxShadow: 24,
-                        p: 4,
-                        maxWidth: '80%',
-                        maxHeight: '80vh',
-                        overflow: 'auto',
-                      }}>
-                        <ImageList sx={{ width: 800, height: 900 }} cols={3} rowHeight={200}>
-                          {imagesArray.map((imgName) => (
-                            <ImageListItem key={imgName}>
-                              <img
-                                src={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${imgName}?w=200&h=200&fit=crop&auto=format`}
-                                srcSet={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${imgName}?w=200&h=200&fit=crop&auto=format&dpr=2 2x`}
-                                alt={imgName}
-                                loading="lazy"
-                              />
-                            </ImageListItem>
-                          ))}
-                        </ImageList>
-                      </Box>
-                    </Modal>
-
-                  )}
-                </Card>
-              </CarouselSlide>
-            ))}
-          </Carousel> */}
 
           <AutoPlaySwipeableViews
           axis={theme.direction === 'rtl' ? 'x-reverse' : 'x'}
