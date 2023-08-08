@@ -41,45 +41,45 @@ class _ProfilePageState extends State<ProfilePage> {
           elevation: 1,
           backgroundColor: Theme.of(context).scaffoldBackgroundColor,
           leading: FutureBuilder(
-              future: APIService.getUserProfile(),
-              builder: (BuildContext context, AsyncSnapshot<Object> model) {
-                var userProfileData = model.data as Map<String, dynamic>?;
-                if (model.hasData) {
-                  if (userProfileData?["accRole"] == "Admin") {
-                    return IconButton(
-                      onPressed: () async {
-                        Navigator.pushNamedAndRemoveUntil(
-                          context,
-                          '/adminHome',
-                          (Route<dynamic> route) {
-                            return route.settings.name == '/adminHome';
-                          },
-                        );
-                      },
-                      icon: const Icon(
-                        Icons.arrow_back_ios,
-                        
-                      ),
-                    );
-                  }
+            future: APIService.getUserProfile(),
+            builder: (BuildContext context, AsyncSnapshot<Object> model) {
+              var userProfileData = model.data as Map<String, dynamic>?;
+              if (model.hasData) {
+                if (userProfileData?["accRole"] == "Admin") {
+                  return IconButton(
+                    onPressed: () async {
+                      Navigator.pushNamedAndRemoveUntil(
+                        context,
+                        '/adminHome',
+                        (Route<dynamic> route) {
+                          return route.settings.name == '/adminHome';
+                        },
+                      );
+                    },
+                    icon: const Icon(
+                      Icons.arrow_back_ios,
+                    ),
+                  );
                 }
-                //public user
-                return IconButton(
-                  onPressed: () async {
-                    Navigator.pushNamedAndRemoveUntil(
-                      context,
-                      '/home',
-                      (Route<dynamic> route) {
-                        return route.settings.name == '/home';
-                      },
-                    );
-                  },
-                  icon: Icon(
-                    Icons.arrow_back_ios,
-                    color: HexColor('#207A35'),
-                  ),
-                );
-              }),
+              }
+              //public user
+              return IconButton(
+                onPressed: () async {
+                  Navigator.pushNamedAndRemoveUntil(
+                    context,
+                    '/home',
+                    (Route<dynamic> route) {
+                      return route.settings.name == '/home';
+                    },
+                  );
+                },
+                icon: Icon(
+                  Icons.arrow_back_ios,
+                  color: HexColor('#207A35'),
+                ),
+              );
+            },
+          ),
           actions: [
             IconButton(
               onPressed: () {
@@ -88,7 +88,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   context,
                   '/settings',
                 );
-                
               },
               icon: Icon(
                 Icons.settings,
@@ -135,7 +134,6 @@ class _ProfilePageState extends State<ProfilePage> {
         },
         child: ListView(
           children: [
-           
             picPicker(
               context,
               imagePathUpdate ?? "",
@@ -143,7 +141,6 @@ class _ProfilePageState extends State<ProfilePage> {
               (file) => {
                 setState(
                   () {
-                    
                     imagePathUpdate = file.path;
                     updateUserRequestModel!.profileImage = imagePathUpdate;
                     isImageSelected = true;
@@ -172,7 +169,6 @@ class _ProfilePageState extends State<ProfilePage> {
                     isReadonly: true,
                     paddingRight: 0,
                     paddingLeft: 0,
-          
                     initialValue: emailUpdate ?? "",
                     obscureText: false,
                     prefixIcon: const Icon(Icons.mail),
@@ -341,7 +337,6 @@ class _ProfilePageState extends State<ProfilePage> {
                   width: 150,
                   "SAVE",
                   () {
-                    
                     if (validateAndSave() &&
                         passwordUpdate != confirmPasswordUpdate) {
                       showDialog(
@@ -433,7 +428,6 @@ class _ProfilePageState extends State<ProfilePage> {
           imageFile = picker.pickImage(source: ImageSource.gallery);
           imageFile.then((file) async {
             onFilePicked(file);
-            
           }).catchError((e) {
             Navigator.of(context).pop();
           });

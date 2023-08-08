@@ -1,3 +1,4 @@
+import 'package:bridgify/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:snippet_coder_utils/hex_color.dart';
 
@@ -55,20 +56,46 @@ class AboutUsScreen extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
             },
-            child: IconButton(
-              onPressed: () async {
-                Navigator.pushNamedAndRemoveUntil(
-                  context,
-                  '/home',
-                  (Route<dynamic> route) {
-                    return route.settings.name == '/home';
+            child: FutureBuilder(
+              future: APIService.getUserProfile(),
+              builder: (BuildContext context, AsyncSnapshot<Object> model) {
+                var userProfileData = model.data as Map<String, dynamic>?;
+                if (model.hasData) {
+                  if (userProfileData?["accRole"] == "Admin") {
+                    return IconButton(
+                      onPressed: () async {
+                        Navigator.pushNamedAndRemoveUntil(
+                          context,
+                          '/adminHome',
+                          (Route<dynamic> route) {
+                            return route.settings.name == '/adminHome';
+                          },
+                        );
+                      },
+                      icon: const Icon(
+                        Icons.arrow_back_ios,
+                        color: Colors.white,
+                      ),
+                    );
+                  }
+                }
+                //public user
+                return IconButton(
+                  onPressed: () async {
+                    Navigator.pushNamedAndRemoveUntil(
+                      context,
+                      '/home',
+                      (Route<dynamic> route) {
+                        return route.settings.name == '/home';
+                      },
+                    );
                   },
+                  icon: Icon(
+                    Icons.arrow_back_ios,
+                    color: HexColor('#207A35'),
+                  ),
                 );
               },
-              icon: Icon(
-                Icons.arrow_back_ios,
-                color: HexColor('#FFFFFF'),
-              ),
             ),
           ),
         )

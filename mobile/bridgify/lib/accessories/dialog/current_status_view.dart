@@ -26,9 +26,9 @@ class _CurrentStatusState extends State<CurrentStatus> {
         SizedBox(
           height: MediaQuery.of(context).size.height * 0.3 +
               (MediaQuery.of(context).size.height *
-                  0.05 *
+                  0.07 *
                   widget.model.status!.medication!.length),
-          width: MediaQuery.of(context).size.width * 0.7,
+          width: MediaQuery.of(context).size.width,
           child: Container(),
         ),
         Positioned(
@@ -136,54 +136,66 @@ class _CurrentStatusState extends State<CurrentStatus> {
             ),
           ),
         ),
-        Positioned(
+        const Positioned(
           left: 20,
           top: 175,
           child: Text.rich(
             TextSpan(
               text: "Current Condition: ",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
                 color: Colors.black54,
                 fontWeight: FontWeight.w600,
               ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: widget.model.status!.condition!,
-                  style: const TextStyle(
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
             ),
           ),
         ),
         Positioned(
           left: 20,
-          top: 200,
+          top: 190,
+          child: Text.rich(
+            TextSpan(
+              text: widget.model.status!.condition!,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
+            ),
+          ),
+        ),
+        const Positioned(
+          left: 20,
+          top: 215,
           child: Text.rich(
             TextSpan(
               text: "Condition Description: ",
-              style: const TextStyle(
+              style: TextStyle(
                 fontSize: 15,
                 color: Colors.black54,
                 fontWeight: FontWeight.w600,
               ),
-              children: <TextSpan>[
-                TextSpan(
-                  text: widget.model.status!.condition_description!,
-                  style: const TextStyle(
-                    color: Colors.black87,
-                  ),
-                ),
-              ],
+            ),
+          ),
+        ),
+        Positioned(
+          left: 20,
+          top: 230,
+          child: Text.rich(
+            TextSpan(
+              text: widget.model.status!.condition_description!,
+              style: const TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+                color: Colors.black87,
+              ),
             ),
           ),
         ),
         if (widget.model.status!.medication!.isNotEmpty)
           Positioned(
             left: 20,
-            top: 225,
+            top: 255,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -243,7 +255,7 @@ class _CurrentStatusState extends State<CurrentStatus> {
           right: 0,
           top: 0,
           child: Container(
-            height: 45, 
+            height: 45,
             color: widget.model.status!.awake!.toLowerCase() == "true"
                 ? HexColor("#33A11D")
                 : Colors.grey,
