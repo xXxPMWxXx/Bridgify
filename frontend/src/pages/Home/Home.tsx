@@ -9,6 +9,7 @@ import Posts from './posts';
 import Notifications from './notifications';
 import DisplayElderly from './displayElderly';
 
+// background styling
 const Background = styled("div")({
     position: 'absolute',
     width: '100%',
@@ -27,7 +28,6 @@ export const Home = () => {
     }, []);
 
     const userName = window.localStorage.getItem('userName');
-
     const token = window.localStorage.getItem('accessToken');
     const email = window.localStorage.getItem('email');
     const [elderly, setElderly]: any[] = useState([]);
@@ -58,6 +58,7 @@ export const Home = () => {
                 return;
             }
 
+            //getting the elderly information of each linked elderly
             const elderlyResponse = await response.json();
             const elderlyArray = elderlyResponse.map((elderly: any) => ({
                 id: elderly.id,
@@ -94,6 +95,7 @@ export const Home = () => {
 
             const postResponse = await response.json();
 
+            //getting post information
             const postArray = postResponse.map((post: any) => ({
                 id: post.id,
                 elderlyInvolved: post.elderlyInvolved,
@@ -130,6 +132,7 @@ export const Home = () => {
                 </Typography>
             </div>
 
+            {/* display elderly status */}
             <main>
                 <Box display='flex' justifyContent='center' alignItems='center' height='60vh' width='100%'>
                     <Grid container spacing={-5} justifyContent="center">
@@ -148,6 +151,7 @@ export const Home = () => {
                 </Box>
             </main>
 
+            {/* display posts */}
             <div>
                 <Typography component="h2" align="left" alignItems="left" sx={{ color: 'black', position: 'absolute', fontFamily: 'Roboto', fontWeight: 500, fontSize: 22, marginLeft: 15, marginTop: -9 }}>
                     Posts
@@ -171,6 +175,8 @@ export const Home = () => {
                             </Grid>
                         </Box>
                     </Grid>
+
+                    {/* display notifications */}
                     <Grid item xs={4}>
                         <Box>
                             <Notifications />
