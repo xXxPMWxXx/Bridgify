@@ -2,7 +2,7 @@ import * as React from 'react';
 import Typography from '@mui/material/Typography';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import { Avatar, AvatarGroup, CardActionArea, CardContent, CardMedia, Modal } from '@mui/material';
+import { Avatar, AvatarGroup, CardContent, CardMedia, ImageList, ImageListItem, Modal } from '@mui/material';
 import { Card } from 'react-bootstrap';
 import Carousel from 'react-material-ui-carousel';
 import CarouselSlide from 'react-material-ui-carousel';
@@ -68,9 +68,11 @@ export default function Posts(props: PostProps) {
 
   const [enlargeImg, setenlargeImg] = React.useState(false);
   const handleShowDialog = () => {
+    console.log("showing")
     setenlargeImg(true);
   };
   const handleCloseDialog = () => {
+    console.log("closing")
     setenlargeImg(false);
   };
 
@@ -133,25 +135,28 @@ export default function Posts(props: PostProps) {
                         maxHeight: '80vh',
                         overflow: 'auto',
                       }}>
-                        <img
-                          className="image"
-                          src={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${imgName}`}
-                          onClick={handleShowDialog}
-                          alt="no image"
-                        />
+                        <ImageList sx={{ width: 800, height: 900 }} cols={3} rowHeight={200}>
+                          {imagesArray.map((imgName) => (
+                            <ImageListItem key={imgName}>
+                              <img
+                                src={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${imgName}?w=200&h=200&fit=crop&auto=format`}
+                                srcSet={`${process.env.REACT_APP_BACKEND_IMAGES_URL}/post/${imgName}?w=200&h=200&fit=crop&auto=format&dpr=2 2x`}
+                                alt={imgName}
+                                loading="lazy"
+                              />
+                            </ImageListItem>
+                          ))}
+                        </ImageList>
                       </Box>
                     </Modal>
+
                   )}
                 </Card>
-
               </CarouselSlide>
-
-
             ))}
           </Carousel>
         </CardContent>
       </Card>
-      {/* </CardActionArea> */}
 
     </Grid>
   );

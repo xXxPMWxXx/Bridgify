@@ -37,20 +37,20 @@ const medication = [
 
 export default function DisplayElderly(props: any) {
     const [updateOpen, setUpdateOpen] = React.useState(true);
-    const [elderly, Setelderly] = React.useState({ ...props.elderly });
+    const [elderly] = React.useState({ ...props.elderly });
     //to load the data
-    const [elderlyID, setElderlyID] = useState(elderly.id);
-    const [elderlyName, setElderlyName] = useState(elderly.name);
+    const [elderlyID] = useState(elderly.id);
+    const [elderlyName] = useState(elderly.name);
     const DOBArr = elderly.DOB.split('/');
-    const [DOB, setDOB] = React.useState(`${DOBArr[2]}-${DOBArr[1]}-${DOBArr[0]}`);
-    const [currentActivity, setCurrentActivity] = useState(elderly.status.current_activity);
-    const [medicationSelected, setMedication] = useState(elderly.status.medication);
-    const [temp, setTemp] = useState(elderly.status.current_temp);
-    const [condition, setCondition] = useState(elderly.status.condition);
-    const [conditionDescription, setConditionDescription] = useState(elderly.status.condition_description);
-    const [awake, setAwake] = useState((String(elderly.status.awake).toLowerCase() === 'true'));
-    const [takenMed, setTakenMed] = useState((String(elderly.status.taken_med).toLowerCase() === 'true'));
-    const [elderlyPhoto, setElderlyPhoto] = useState(elderly.photo);
+    const [DOB] = React.useState(`${DOBArr[2]}-${DOBArr[1]}-${DOBArr[0]}`);
+    const [currentActivity] = useState(elderly.status.current_activity);
+    const [medicationSelected] = useState(elderly.status.medication);
+    const [temp] = useState(elderly.status.current_temp);
+    const [condition] = useState(elderly.status.condition);
+    const [conditionDescription] = useState(elderly.status.condition_description);
+    const [awake] = useState((String(elderly.status.awake).toLowerCase() === 'true'));
+    const [takenMed] = useState((String(elderly.status.taken_med).toLowerCase() === 'true'));
+    const [elderlyPhoto] = useState(elderly.photo);
 
     //for modal
     const style = {
