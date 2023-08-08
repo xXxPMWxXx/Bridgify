@@ -12,6 +12,7 @@ import KeyboardArrowRight from '@mui/icons-material/KeyboardArrowRight';
 import SwipeableViews from 'react-swipeable-views';
 import { autoPlay } from 'react-swipeable-views-utils';
 import { useTheme } from '@mui/material/styles';
+import { makeStyles } from '@mui/styles';
 
 
 const AutoPlaySwipeableViews = autoPlay(SwipeableViews);
@@ -88,6 +89,7 @@ export default function Posts(props: PostProps) {
 
   //TEST
 
+
   const theme = useTheme();
   const [activeStep, setActiveStep] = React.useState(0);
   const maxSteps = imagesArray.length;
@@ -108,7 +110,7 @@ export default function Posts(props: PostProps) {
   return (
     <Grid item xs={8} md={6}>
       {/* <CardActionArea component="a"> */}
-      <Card style={{ display: 'flex', width: '800px', height: '415px', position: 'absolute', backgroundColor: 'rgba(249, 224, 219, 0.50)', borderRadius: '10px', marginLeft: 56, marginTop: -30, marginBottom: 10 }}>
+      <Card style={{ display: 'flex', width: '780px', height: '435px', position: 'absolute', backgroundColor: 'rgba(249, 224, 219, 0.50)', borderRadius: '10px', marginLeft: 56, marginTop: -30, marginBottom: 10 }}>
         <CardContent sx={{ flex: 1 }}>
           <div style={{ marginRight: 640, marginTop: 10 }}>
             <AvatarGroup max={3}>
@@ -129,7 +131,7 @@ export default function Posts(props: PostProps) {
             <span style={{ fontWeight: 500 }}>{elderlyInvolvedArray[0].split(/[()]/)[0]}</span> is {post.caption}
           </Typography>}
 
-          <Typography sx={{ fontFamily: 'Roboto', marginLeft: 81.5, marginTop: -3, color: '#909090' }}>
+          <Typography sx={{ fontFamily: 'Roboto', marginLeft: 77.5, marginTop: -3, color: '#909090' }}>
             {getTimeElapsed(post.time)}
           </Typography>
           <Typography sx={{ fontFamily: 'Roboto', marginLeft: 17.4, fontSize: 16 }}>
@@ -190,7 +192,7 @@ export default function Posts(props: PostProps) {
           index={activeStep}
           onChangeIndex={handleStepChange}
           enableMouseEvents
-          style={{marginLeft:138, marginTop:20}}
+          style={{marginLeft:138, marginTop:15}}
           >
             {imagesArray.map((image, index) => (
               <div key={image}>
@@ -198,7 +200,7 @@ export default function Posts(props: PostProps) {
                   <Box
                     component="img"
                     sx={{
-                      height: 255,
+                      height: 275,
                       display: 'block',
                       maxWidth: 400,
                       overflow: 'hidden',
@@ -215,13 +217,14 @@ export default function Posts(props: PostProps) {
         steps={maxSteps}
         position="static"
         activeStep={activeStep}
+        style={{backgroundColor:'transparent', width:'230px', marginLeft:220}}
         nextButton={
           <Button
             size="sm"
             onClick={handleNext}
             disabled={activeStep === maxSteps - 1}
+            style={{borderRadius:'100%', backgroundColor:'transparent', color:'black', borderColor:'transparent'}}
           >
-            Next
             {theme.direction === 'rtl' ? (
               <KeyboardArrowLeft />
             ) : (
@@ -230,13 +233,17 @@ export default function Posts(props: PostProps) {
           </Button>
         }
         backButton={
-          <Button size="sm" onClick={handleBack} disabled={activeStep === 0}>
+          <Button 
+            size="sm" 
+            onClick={handleBack} 
+            disabled={activeStep === 0}
+            style={{borderRadius:'100%', backgroundColor:'transparent', color:'black', borderColor:'transparent'}}
+          >
             {theme.direction === 'rtl' ? (
               <KeyboardArrowRight />
             ) : (
               <KeyboardArrowLeft />
             )}
-            Back
           </Button>
         }
       />

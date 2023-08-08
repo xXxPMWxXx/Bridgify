@@ -163,7 +163,7 @@ export const Home = () => {
                 <Grid container spacing={2} sx={{marginBottom:20}}>
                     <Grid item xs={8}>
                         <Box width='70%'>
-                            <Grid container spacing={54} flexDirection='column'>
+                            <Grid container spacing={56} flexDirection='column'>
                                 {posts.map((post: any) => (
                                     <Grid item key={post.id}> 
                                         <Posts
